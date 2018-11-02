@@ -1,0 +1,26 @@
+.browse table {
+    width: 85%;
+    margin: auto;
+    margin-top: 2em;
+    border-color: grey;
+    border-collapse: collapse;
+}
+
+.browse caption {
+    background: #739025;
+    padding: 0.3em 1em;
+    color: #fff;
+    text-align: left;
+}       
+
+.browse th {
+    border: 1px solid #c4c4c4;
+    white-space: nowrap; 
+    background: #ddd;
+    color: #777;
+}
+
+.browse td {
+    border: 1px solid #c4c4c4;
+    padding: 0.3em 1em;
+}       

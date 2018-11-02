@@ -1,0 +1,37 @@
+// Import material theming functions and definitions
+@import '../../dfam-app-theme';
+
+// Reference standard color theme from dfam-app-theme
+$primary: mat-color($dfam-app-primary);
+
+.mat-expansion-panel-header-title {
+  flex-grow: 0;
+  flex-basis: 30%;
+  color: $primary;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.mat-expansion-panel-header-description {
+  align-items: left;
+  font-size: 13px;
+  font-weight: 700;
+  color: #666;
+}
+
+// TODO: Is there a way to add a class to a material element or 
+//       in some other way only identify a subset of buttons in
+//       an Angular component that you want to decorate differently?
+button {
+  line-height: 20px; 
+  min-width: unset;
+}
+
+.blog-article-title {
+  font-size: 1em;
+}
+
+.blog-article-date {
+  font-size: .9em;
+  color: #777;
+}

@@ -1,0 +1,85 @@
+<div class='dfam-home' fxLayout="row" fxFlex="50" fxFlexOffset="25">
+  <div fxLayout="column">
+    <h2>Dfam release 3.0 (January 2018, #### entries)</h2>
+    <div>The Dfam database is a collection of <b>DNA Transposable Element</b> sequence alignments, <b>hidden Markov Models (HMMs)</b>, <b>consensus sequences</b>, and genome annotations. 
+    <a  (click)="showMore1=!showMore1">{{showMore1==false ? 'More...' : 'Less...'}}</a>
+    </div>
+    <br>
+    <div [hidden]="!showMore1">
+        Transposable elements (or interspersed repeats) account for a substantial portion of eukaryotic genomes. Accurate annotation of TEs enables research into their biology and can shed light on the evolutionary processes that shape genomes. Dfam represents a collection of multiple sequence alignments, each containing a set of representative members of a specific transposable element family. These alignments (seed alignments) are used to generate HMMs and consensus sequences for each family. The Dfam website gives information about each family, and provides genome annotations for a collection of core genomes. The HMM models, and consensus sequences may also be downloaded from the ftp site, for example to mask repeats in new genomes.
+        <p></p>
+    </div>
+    <div>
+      This site also hosts the <a href="#/public/repository">Transposable Element Raw Dataset Repository</a>, which is a place to find community provided datasets in various stages of curation. Examples may include the raw output of denovo repeat finding tools ( RepeatModeler, RECON, RepeatScout, REPET etc ), seed alignments for new families, or annotation data for new genomes.
+      <hr>
+    </div>
+
+    <div>
+      <h2>Quick Links</h2>
+      <p>You can find data in Dfam in various ways...</p>
+      <mat-accordion>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title color="primary">SEQUENCE SEARCH</mat-panel-title>
+            <mat-panel-description>Analyze your DNA sequence for Dfam matches</mat-panel-description>
+          </mat-expansion-panel-header>
+          <div fxLayout="row">
+            <mat-form-field fxFlex="80" fxFlexOffset="32">
+              <textarea matInput rows="10" cols="60" placeholder="Sequence"></textarea>
+            </mat-form-field>
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+              <button mat-raised-button class="accordian-button" color="primary">Go</button>
+              &nbsp;
+              <button mat-raised-button>Example</button>
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title color="primary">VIEW A DFAM ENTRY</mat-panel-title>
+            <mat-panel-description>View Dfam entry annotation and alignments</mat-panel-description>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>VIEW A SEQUENCE</mat-panel-title>
+            <mat-panel-description>View pre-calculated annotations on a DNA seqeunce</mat-panel-description>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>KEYWORD SEARCH</mat-panel-title>
+            <mat-panel-description>Query Dfam by keyword</mat-panel-description>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>JUMP TO</mat-panel-title>
+            <mat-panel-description>Query Dfam by keyword</mat-panel-description>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <hr>
+    </div>
+
+    <div id="citation">
+      <h2>Citing Dfam</h2>
+      <blockquote>
+        <a href="http://nar.oxfordjournals.org/content/44/D1/D81.full" class="ext">The Dfam database of repetitive DNA families</a>
+        <p>Robert Hubley; Robert D. Finn; Jody Clements; Sean R. Eddy; Thomas A. Jones; Weidong Bao; Arian F.A. Smit; Travis J. Wheeler</p>
+        <p><span class="bold">Nucleic Acids Research</span> (2016) Database Issue 44:D81-89. doi: 10.1093/nar/gkv1272</p>
+      </blockquote>
+      <hr>
+    </div>
+
+    <div class="blog clearfix">
+        <h2>Recent Dfam <a href="http://xfam.wordpress.com/tag/dfam/" class="ext">blog</a> posts</h2>
+        <div *ngIf="dfamBlogArticles.length >= 1">
+            <a class="ext blog-article-title" href="{{dfamBlogArticles[0].link}}">{{dfamBlogArticles[0].title}}</a><br><span class="blog-article-date">{{dfamBlogArticles[0].date}}</span>
+            <div>{{dfamBlogArticles[0].snippet}}[...]</div>
+        </div>
+        <hr>
+    </div>
+
+   </div>
+</div>

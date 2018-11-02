@@ -1,0 +1,61 @@
+@import '~@angular/material/theming';
+
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+//
+// Dfam Colors
+//
+$mat-dfam: (
+        50: #eef2e5,
+        100: #d5debe,
+        200: #b9c892,
+        300: #9db166,
+        400: #88a146,
+        500: #739025,
+        600: #6b8821,
+        700: #607d1b,
+        800: #567316,
+        900: #43610d,
+        A100: #d5ff96,
+        A200: #c1ff63,
+        A400: #adff30,
+        A700: #a3ff16,
+        contrast:  (
+            50: #ffffff,
+            100: #ffffff,
+            200: #ffffff,
+            300: #ffffff,
+            400: #ffffff,
+            500: #000000,
+            600: #000000,
+            700: #000000,
+            800: #000000,
+            900: #000000,
+            A100: #ffffff,
+            A200: #ffffff,
+            A400: #ffffff,
+            A700: #ffffff
+       )
+    );
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$dfam-app-primary: mat-palette($mat-dfam);
+$dfam-app-accent:  mat-palette($mat-dfam, 600, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$dfam-app-warn:    mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$dfam-app-theme: mat-light-theme($dfam-app-primary, $dfam-app-accent, $dfam-app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($dfam-app-theme);

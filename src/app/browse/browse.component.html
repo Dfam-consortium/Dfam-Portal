@@ -1,0 +1,40 @@
+<div class='dfam-browse' fxLayout="row" fxFlex="50" fxFlexOffset="25">
+  <div fxLayout="column">
+    <h2>Browse Entries</h2>
+    <hr>
+    <div><!-- TODO: Develop more useful ways to browse the database -->
+      You can use the links below to find lists of entries which begin with the chosen letter (or number) or view all the entries on one page.
+      <div fxLayout="row">
+        <li class="oneline"  *ngFor="let prefix of prefixes">
+          <a routerLink="/browse/{{prefix}}">{{prefix}}</a>
+        </li>
+        <li class="oneline">
+          <a routerLink="/browse/">[all]</a>
+        </li>
+      </div>
+    </div>
+    <div class="browse"> 
+        <table> 
+            <caption class="plastic">{{totalEntriesMsg}}</caption> 
+            <thead> 
+                <tr> 
+                    <!-- TODO: Accession here -->
+                    <th>Name</th> <!-- NOTE: May be blank -->
+                    <th>Classification</th> 
+                    <!-- TODO: Taxa here -->
+                    <th>Description</th> 
+                    <!--TODO: length here--> 
+                    <!--TODO: abundance here--> 
+                </tr> 
+            </thead> 
+            <tbody class="families"> 
+                <tr *ngFor="let family of families.results"> 
+                    <td><a routerLink="/family/{{family.name}}">{{family.name}}</a></td> 
+                    <td>{{family.repeat_type_name}}</td> 
+                    <td>{{family.description}}</td> 
+                </tr> 
+            </tbody> 
+        </table> 
+     </div> 
+   </div>
+</div>
