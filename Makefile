@@ -9,9 +9,7 @@ PROJ = Dfam
 WEB_DIR = /usr/local/Dfam
 DEV_DIR = /usr/local/Dfam_dev
 
-DIRS = app app/layout app/overview  app/public  \
-       app/rmlib  app/services  app/upload \
-       assets/css  assets/download assets/images 
+DIRS = 
 
 HTML := $(shell find app/ -name '*.html') index.html
 
@@ -64,6 +62,3 @@ clean:
 	-for X in $(DIRS) ; do \
           rm $$X/*~ $$X/*.bak ; \
           done
-
-
-

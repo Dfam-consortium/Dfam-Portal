@@ -1,6 +1,6 @@
 # Dfam
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.3.
+Web portal for the Dfam resource ( www.dfam.org ).  Dfam is a collection of DNA Transposable Element sequence alignments, hidden Markov Models (HMMs), consensus sequences, and genome annotations. The portal is based on Angular 7.x and requires an instance of the REST Dfam-API running on the same machine.
 
 ## Development server
 
@@ -24,4 +24,4 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 ## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+To get more help please submit a request through the issue tracker at https://github.com/Dfam-consortium/Dfam-Portal or email help@dfam.org.
