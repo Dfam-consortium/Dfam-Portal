@@ -12,7 +12,7 @@ export class HomeComponent {
   title = 'Dfam';
   showMore1=false;
   result: Object;
-  dfamBlogArticles: Object;
+  dfamBlogArticles: Object = [];
 
   constructor(http: Http) {
   http.get('http://query.yahooapis.com/v1/public/yql?q=select * from xml where url=\'https://xfam.wordpress.com/category/dfam/feed/\' &format=json')

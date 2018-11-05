@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { DfamAPIService } from '../dfam-api/dfam-api.service';
+import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
   selector: '',

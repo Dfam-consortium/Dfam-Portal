@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-
 @Component({
-  selector: 'layout-header',
-  templateUrl: './header.component.html'
+  selector: 'public-layout-header',
+  templateUrl: './public-header.component.html'
 })
-export class HeaderComponent {
+export class PublicHeaderComponent {
   constructor() {}
 
 }

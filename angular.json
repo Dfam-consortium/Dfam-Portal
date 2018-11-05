@@ -61,7 +61,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "port": 10060,
+            "port": 10050,
             "browserTarget": "Dfam:build"
           },
           "configurations": {

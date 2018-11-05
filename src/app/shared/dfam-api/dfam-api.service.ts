@@ -3,7 +3,9 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 
+//
 // TODO: Can this constant come from the app.json file so that it's easy to redirect?
+//
 const endpoint = 'http://www.repeatmasker.org:10010/';
 const httpOptions = {
   headers: new HttpHeaders({
@@ -23,7 +25,9 @@ export class DfamAPIService {
     return body || { };
   }
 
+  //
   // Example:  An existing RmDB API endpoint to get sumary data for families
+  //
   getFamilies(name_prefix): Observable<any> {
     
     if ( name_prefix )
@@ -34,7 +38,27 @@ export class DfamAPIService {
         map(this.extractData));
   }
 
+  //
+  // Example:  An existing RmDB API endpoint to login
+  //
+  login(email, password): Observable<any> {
+    let body = new URLSearchParams();
+    body.set('email', email);
+    body.set('password', password);
+
+    let options = {
+        headers: new HttpHeaders().set('Content-Type', 
+                      'application/x-www-form-urlencoded')
+    };
+    return this.http.post(endpoint + 'login',
+                          body.toString(), options).pipe(
+        map(this.extractData));
+  }
+
+
+  //
   // TODO: Insert real Dfam-API endpoints here
+  //
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

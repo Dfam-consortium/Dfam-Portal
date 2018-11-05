@@ -1,0 +1,54 @@
+<body fxLayout="column" class="auth-body">
+  <div fxFlex="2">
+  </div>
+  <div fxLayout="row">
+    <button fxFlexOffset="2" label="Home" mat-button matTooltip="Return to the public site" routerLink="/home">
+      <mat-icon aria-label="Login">
+        <svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_home_24px" x="216" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
+      </mat-icon>
+    </button>
+  </div>
+  <div fxLayout="column" fxLayoutAlign="center center" style="height: 100%">
+    <div fxFlex="20%">
+      <mat-card>
+        <mat-card-header>
+          <img style="height:55px;width:177px;" src="assets/images/dfam_logo.png" alt="Dfam_consensus" />
+        </mat-card-header>
+        <mat-card-content>
+          <div fxLayout="column" fxLayoutAlign="space-around center">
+            <p></p>
+            <a [routerLink]="['/login']" *ngIf="authType == 'register'">Have an account?</a>
+            <a [routerLink]="['/register']" *ngIf="authType == 'login'">Need an account?</a>
+            <mat-form-field *ngIf="authType == 'register'">
+              <input 
+                    [attr.disabled]="isSubmitting"
+                    #full_name
+                    matInput 
+                    placeholder="Full Name"
+                    type="text" >
+            </mat-form-field>
+            <mat-form-field>
+              <input
+                    [attr.disabled]="isSubmitting"
+                    #email
+                    matInput 
+                    placeholder="Email"
+                    type="text">
+             </mat-form-field>
+             <mat-form-field>
+               <input
+                    [attr.disabled]="isSubmitting"
+                    #password
+                    matInput 
+                    placeholder="Password"
+                    type="password">
+             </mat-form-field>
+             <button mat-raised-button color="primary" (click)="submitForm(email.value, full_name ? full_name.value : '', password.value)">
+              {{ title }}
+             </button>
+           </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</body>

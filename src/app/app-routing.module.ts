@@ -3,14 +3,38 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { BrowseComponent } from './browse/browse.component';
 import { AboutComponent } from './about/about.component';
+import { AuthComponent } from './auth/auth.component';
+import { WorkbenchLayoutComponent } from './shared';
+import { UserComponent } from './workbench/user/user.component';
+import { PublicLayoutComponent } from './shared';
+import { PublicFooterComponent } from './shared';
+import { PublicHeaderComponent } from './shared';
 
-
-const routes: Routes = [
+export const PUBLIC_ROUTES: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'browse', component: BrowseComponent },
   { path: 'browse/:prefix', component: BrowseComponent },
-  { path: 'about', component: AboutComponent}
- ];
+  { path: 'about', component: AboutComponent} 
+];
+
+export const SECURE_ROUTES: Routes = [
+  { path: 'user', component: UserComponent }
+];
+
+const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'login', component: AuthComponent},
+  { path: 'register', component: AuthComponent},
+  { path: '', component: PublicLayoutComponent, data: { title: 'Public Views' }, children: PUBLIC_ROUTES },
+  { path: 'workbench', component: WorkbenchLayoutComponent, data: { title: 'Workbench Views' }, children: SECURE_ROUTES }
+];
+
+//  { path: 'workbench', component: WorkbenchLayoutComponent, canActivate: [Guard], data: { title: 'Workbench Views' }, children: SECURE_ROUTES }
+
+
+// TO enable tracing:
+//  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

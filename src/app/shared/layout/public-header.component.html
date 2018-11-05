@@ -1,0 +1,26 @@
+<div fxLayout="column">
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="space-between center">
+    <a href="/Dfam_consensus">
+      <img style="margin:1em;height:55px;width:177px;" src="assets/images/dfam_logo.png" alt="Dfam_consensus" />
+    </a>
+    <div>
+      <button mat-button routerLink="/home" color="primary"><b>HOME</b></button> |
+      <button mat-button routerLink="/browse" color="primary"><b>BROWSE</b></button> |
+      <!-- TODO: add routes for the remaining pages -->
+      <button mat-button color="primary"><b>CLASSIFICATION</b></button> |
+      <button mat-button color="primary"><b>REPOSITORY</b></button> |
+      <button mat-button color="primary"><b>DOWNLOAD</b></button> |
+      <button mat-button routerLink="/about" color="primary"><b>ABOUT</b></button>
+    </div>
+    <a href="http://www.systemsbiology.org">
+      <img style="margin:1em;height:75px" src="assets/images/ISB_Logo.png" alt="ISB" />
+    </a>
+  </div>
+  <div fxLayout="row">
+    <span fxFlex=""></span>
+    <button mat-button label="Login" routerLink="/login"><span fxFlex="">Log in</span>
+       <mat-icon svgIcon="loginic:login-icon" aria-label="Login" aria-hidden="true"><svg width="100%" height="100%" viewBox="0 0 24 24" id="login-icon" x="24" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M19,3H5C3.89,3 3,3.89 3,5V9H5V5H19V19H5V15H3V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M10.08,15.58L11.5,17L16.5,12L11.5,7L10.08,8.41L12.67,11H3V13H12.67L10.08,15.58Z"></path></svg></mat-icon>
+    </button>
+  </div>
+</div>
+

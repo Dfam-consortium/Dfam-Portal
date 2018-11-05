@@ -9,6 +9,10 @@
 // Reference standard color theme from dfam-app-theme
 $primary: mat-color($dfam-app-primary);
 
+html, body, app-root {
+  height: 100%;
+  margin: 0px;
+}
 
 body {
   font: 14px Roboto;

@@ -74,10 +74,9 @@
 
     <div class="blog clearfix">
         <h2>Recent Dfam <a href="http://xfam.wordpress.com/tag/dfam/" class="ext">blog</a> posts</h2>
-        <div *ngIf="dfamBlogArticles.length >= 1">
-            <a class="ext blog-article-title" href="{{dfamBlogArticles[0].link}}">{{dfamBlogArticles[0].title}}</a><br><span class="blog-article-date">{{dfamBlogArticles[0].date}}</span>
-            <div>{{dfamBlogArticles[0].snippet}}[...]</div>
-        </div>
+          <div *ngFor="let art of dfamBlogArticles | slice: 0:1">
+          <a class="ext blog-article-title" href="{{art.link}}">{{art.title}}</a><br><span class="blog-article-date">{{dfamBlogArticles[0].date}}</span>
+          <div>{{art.snippet}}[...]</div>
         <hr>
     </div>
 
