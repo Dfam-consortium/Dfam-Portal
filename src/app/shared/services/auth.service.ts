@@ -72,22 +72,36 @@ export class AuthService implements CanActivate {
 
   attemptAuth(type, credentials): Observable<User> {
     const route = (type === 'login') ? '/login' : '';
-    return this.dfamAPIService.login( credentials.email, credentials.password )
-      .pipe(map(
-      data => {
-        const decodedToken = this.jwtHelper.decodeToken(data.token);
-        const expirationDate = this.jwtHelper.getTokenExpirationDate(data.token);
-        const isExpired = this.jwtHelper.isTokenExpired(data.token);
-   // TODO: Remove 
-   console.log("user.service: JWT Details - ");
-   console.log("raw data: " + JSON.stringify(data));
-   console.log("decoded token: " + JSON.stringify(decodedToken));
-   console.log("experiation date: " + expirationDate);
-   console.log("isExpired: " + isExpired);
-        this.setAuth(data.token);
-        return data;
-      }
-    ));
+    if (type === 'login') {
+      return this.dfamAPIService.login( credentials.email, credentials.password )
+        .pipe(map(
+        data => {
+          const decodedToken = this.jwtHelper.decodeToken(data.token);
+          const expirationDate = this.jwtHelper.getTokenExpirationDate(data.token);
+          const isExpired = this.jwtHelper.isTokenExpired(data.token);
+     // TODO: Remove 
+     console.log("user.service: JWT Details - ");
+     console.log("raw data: " + JSON.stringify(data));
+     console.log("decoded token: " + JSON.stringify(decodedToken));
+     console.log("experiation date: " + expirationDate);
+     console.log("isExpired: " + isExpired);
+          // TODO: finish auth
+          this.setAuth({
+            email: null,
+            token: data.token,
+            username: null,
+            bio: null,
+            image: null,
+          });
+          return data;
+        }
+      ));
+    } else if (type === 'register') {
+      return this.dfamAPIService.register( credentials.fullname, credentials.email, credentials.password )
+        .pipe(map(data => {
+          return data;
+        }));
+    }
   }
 
   // Other useful endpoints
