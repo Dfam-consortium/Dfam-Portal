@@ -33,7 +33,7 @@ import { AboutComponent } from "./about/about.component";
 import { PublicFooterComponent,
          PublicHeaderComponent, PublicLayoutComponent,
          WorkbenchLayoutComponent } from "./shared";
-import { AuthModule } from './auth/auth.module';
+import { LoginModule } from './login/login.module';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -64,7 +64,7 @@ export function tokenGetter() {
     MatInputModule,
     MatIconModule,
     MatCardModule,
-    AuthModule,
+    LoginModule,
     BrowserModule,
     // Angular-Jwt for decoding tokens and sending it along through HTTP request auto-magically
     JwtModule.forRoot({

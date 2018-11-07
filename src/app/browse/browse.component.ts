@@ -40,7 +40,6 @@ export class BrowseComponent {
       prefix = this.route.snapshot.params['prefix'];
     
     this.dfamapi.getFamilies(prefix).subscribe((data: {}) => {
-      console.log(data);
       this.families = data;
       if ( "totalHits" in data )
         this.totalEntriesMsg = data['totalHits'] + " entries beginning with " + prefix;

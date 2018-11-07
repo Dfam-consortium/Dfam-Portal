@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
 import { DfamAPIService } from '../dfam-api/dfam-api.service';
 import { JwtService } from './jwt.service';
-import { map ,  distinctUntilChanged } from 'rxjs/operators';
+import { map, take, distinctUntilChanged } from 'rxjs/operators';
 
 // RMH: I like typescript but I would like to reuse code 
 //      in plain-old-ES5/ES6...so maybe less explicit typing??
@@ -18,10 +19,10 @@ export interface User {
 }
 
 @Injectable()
-export class UserService {
+export class AuthService implements CanActivate {
+
   private currentUserSubject = new BehaviorSubject<User>({} as User);
   public currentUser = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
-
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
@@ -31,6 +32,14 @@ export class UserService {
     private jwtService: JwtService,
     private jwtHelper: JwtHelperService
   ) {}
+
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot ): Observable<boolean> {
+     //return this.isAuthenticated.pipe(take(1), map(isAuth => !isAuth));
+     console.log("I am checking " + this.isAuthenticated );
+     return this.isAuthenticated;
+  }
 
   // Verify JWT in localstorage with server and load user's info.
   // This runs once on application startup.

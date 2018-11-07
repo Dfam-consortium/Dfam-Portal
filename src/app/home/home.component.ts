@@ -18,13 +18,11 @@ export class HomeComponent {
   http.get('http://query.yahooapis.com/v1/public/yql?q=select * from xml where url=\'https://xfam.wordpress.com/category/dfam/feed/\' &format=json')
            .pipe(map(res => res.json()))
            .subscribe(res => {
-              console.log(res);
               var monthNames = ["January", "February", "March", "April", "May",
                                 "June", "July", "August", "September",
                                 "October", "November", "December" ];
               if (res && res.query && res.query.results && res.query.results.rss && res.query.results.rss.channel && res.query.results.rss.channel.item) {
                 var articles = res.query.results.rss.channel.item;
-                console.log(articles);
                 var articleData = [];
                 articles.forEach(function(article) {
                     var pubDate = new Date(article.pubDate);

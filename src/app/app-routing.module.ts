@@ -3,12 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { BrowseComponent } from './browse/browse.component';
 import { AboutComponent } from './about/about.component';
-import { AuthComponent } from './auth/auth.component';
+import { LoginComponent } from './login/login.component';
 import { WorkbenchLayoutComponent } from './shared';
 import { UserComponent } from './workbench/user/user.component';
 import { PublicLayoutComponent } from './shared';
 import { PublicFooterComponent } from './shared';
 import { PublicHeaderComponent } from './shared';
+import { AuthService } from './shared';
 
 export const PUBLIC_ROUTES: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -24,10 +25,10 @@ export const SECURE_ROUTES: Routes = [
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'login', component: AuthComponent},
-  { path: 'register', component: AuthComponent},
+  { path: 'login', component: LoginComponent},
+  { path: 'register', component: LoginComponent},
   { path: '', component: PublicLayoutComponent, data: { title: 'Public Views' }, children: PUBLIC_ROUTES },
-  { path: 'workbench', component: WorkbenchLayoutComponent, data: { title: 'Workbench Views' }, children: SECURE_ROUTES }
+  { path: 'workbench', component: WorkbenchLayoutComponent, canActivate: [AuthService], data: { title: 'Workbench Views' }, children: SECURE_ROUTES }
 ];
 
 //  { path: 'workbench', component: WorkbenchLayoutComponent, canActivate: [Guard], data: { title: 'Workbench Views' }, children: SECURE_ROUTES }

@@ -15,10 +15,9 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
 // Project Imports
-import { AuthComponent } from './auth.component';
+import { LoginComponent } from './login.component';
 import { UserComponent } from '../workbench/user/user.component';
-import { NoAuthGuard } from './no-auth-guard.service';
-import { UserService } from '../shared/services/user.service';
+import { AuthService } from '../shared/services/auth.service';
 import { JwtService } from '../shared/services/jwt.service';
 
 
@@ -35,13 +34,12 @@ import { JwtService } from '../shared/services/jwt.service';
     FlexLayoutModule
   ],
   declarations: [
-    AuthComponent,
+    LoginComponent,
     UserComponent
   ],
   providers: [
-    NoAuthGuard,
     JwtService,
-    UserService
+    AuthService
   ]
 })
-export class AuthModule {}
+export class LoginModule {}

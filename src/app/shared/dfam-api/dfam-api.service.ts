@@ -52,13 +52,15 @@ export class DfamAPIService {
     };
     return this.http.post(endpoint + 'login',
                           body.toString(), options).pipe(
-        map(this.extractData));
+                                catchError(this.handleError('login', [])))
+                            .pipe(map(this.extractData));
   }
 
 
   //
   // TODO: Insert real Dfam-API endpoints here
   //
+
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

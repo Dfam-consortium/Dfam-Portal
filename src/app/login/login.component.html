@@ -1,4 +1,4 @@
-<body fxLayout="column" class="auth-body">
+<body fxLayout="column" class="login-body">
   <div fxFlex="2">
   </div>
   <div fxLayout="row">
@@ -12,14 +12,14 @@
     <div fxFlex="20%">
       <mat-card>
         <mat-card-header>
-          <img style="height:55px;width:177px;" src="assets/images/dfam_logo.png" alt="Dfam_consensus" />
+          <img style="height:55px;width:177px;" src="assets/images/dfam_logo.png" alt="Dfam" />
         </mat-card-header>
         <mat-card-content>
           <div fxLayout="column" fxLayoutAlign="space-around center">
             <p></p>
-            <a [routerLink]="['/login']" *ngIf="authType == 'register'">Have an account?</a>
-            <a [routerLink]="['/register']" *ngIf="authType == 'login'">Need an account?</a>
-            <mat-form-field *ngIf="authType == 'register'">
+            <a [routerLink]="['/login']" *ngIf="loginType == 'register'">Have an account?</a>
+            <a [routerLink]="['/register']" *ngIf="loginType == 'login'">Need an account?</a>
+            <mat-form-field *ngIf="loginType == 'register'">
               <input 
                     [attr.disabled]="isSubmitting"
                     #full_name
@@ -40,10 +40,11 @@
                     [attr.disabled]="isSubmitting"
                     #password
                     matInput 
+                    (keyup.enter)="submitForm(email.value, full_name ? full_name.value : '', password.value)"
                     placeholder="Password"
                     type="password">
              </mat-form-field>
-             <button mat-raised-button color="primary" (click)="submitForm(email.value, full_name ? full_name.value : '', password.value)">
+             <button type="submit" mat-raised-button color="primary" (click)="submitForm(email.value, full_name ? full_name.value : '', password.value)">
               {{ title }}
              </button>
            </div>
