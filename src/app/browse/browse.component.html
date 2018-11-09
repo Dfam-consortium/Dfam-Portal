@@ -23,7 +23,7 @@
                     <th>Classification</th> 
                     <!-- TODO: Taxa here -->
                     <th>Description</th> 
-                    <!--TODO: length here--> 
+                    <th>Length</th>
                     <!--TODO: abundance here--> 
                 </tr> 
             </thead> 
@@ -32,6 +32,7 @@
                     <td><a routerLink="/family/{{family.name}}">{{family.name}}</a></td> 
                     <td>{{family.repeat_type_name}}</td> 
                     <td>{{family.description}}</td> 
+                    <td>{{family.length}}</td>
                 </tr> 
             </tbody> 
         </table> 
