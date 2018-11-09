@@ -1,0 +1,30 @@
+<div *ngIf="!family">
+Loading data...
+</div>
+
+<h2><span matTooltip="Coding Sequences">Coding Sequences</span></h2>
+
+<ol>
+  <li *ngFor="let cs of family?.coding_seqs">
+    <p><strong>Product:</strong> </p>
+    <p><strong>Description:</strong> </p>
+    <p><strong>Translation:</strong> </p>
+    <p><strong>Frameshifts:</strong> </p>
+    <p><strong>Stop codons:</strong> </p>
+    <p><strong>Exons:</strong> </p>
+    <p><strong>CDS Range:</strong> </p>
+    <p><strong>Strand:</strong> </p>
+  </li>
+</ol>
+
+<h2><span matTooltip="Features">Features</span></h2>
+
+<ol>
+  <li *ngFor="let feat of family?.features">
+    <p><strong>Type:</strong> </p>
+    <p><strong>Range:</strong> </p>
+    <p><strong>Description:</strong> </p>
+    <p><strong>Attributes:</strong> </p>
+  </li>
+</ol>
+

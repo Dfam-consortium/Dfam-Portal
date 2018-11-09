@@ -18,7 +18,7 @@
             <caption class="plastic">{{totalEntriesMsg}}</caption> 
             <thead> 
                 <tr> 
-                    <!-- TODO: Accession here -->
+                    <th>Accession</th>
                     <th>Name</th> <!-- NOTE: May be blank -->
                     <th>Classification</th> 
                     <!-- TODO: Taxa here -->
@@ -29,7 +29,8 @@
             </thead> 
             <tbody class="families"> 
                 <tr *ngFor="let family of families.results"> 
-                    <td><a routerLink="/family/{{family.name}}">{{family.name}}</a></td> 
+                    <td><a routerLink="/family/{{family.accession}}">{{family.accession}}</a></td>
+                    <td>{{family.name}}</td>
                     <td>{{family.repeat_type_name}}</td> 
                     <td>{{family.description}}</td> 
                     <td>{{family.length}}</td>

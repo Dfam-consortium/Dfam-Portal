@@ -18,11 +18,14 @@ import { JwtModule } from '@auth0/angular-jwt';
 
 // Material Imports
 import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
-import {MatCardModule} from '@angular/material/card';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 // Application Imports
 import { AppComponent } from './app.component';
@@ -34,6 +37,14 @@ import { PublicFooterComponent,
          PublicHeaderComponent, PublicLayoutComponent,
          WorkbenchLayoutComponent } from "./shared";
 import { LoginModule } from './login/login.module';
+import { FamilyComponent } from './family/family.component';
+import { FamilySummaryComponent } from './family/family-summary.component';
+import { FamilySeedComponent } from './family/family-seed.component';
+import { FamilyFeaturesComponent } from './family/family-features.component';
+import { FamilyModelComponent } from './family/family-model.component';
+import { FamilyAnnotationsComponent } from './family/family-annotations.component';
+import { FamilyRelationshipsComponent } from './family/family-relationships.component';
+import { FamilyDownloadComponent } from './family/family-download.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -48,7 +59,15 @@ export function tokenGetter() {
     PublicFooterComponent,
     PublicLayoutComponent,
     WorkbenchLayoutComponent,
-    PublicHeaderComponent
+    PublicHeaderComponent,
+    FamilyComponent,
+    FamilySummaryComponent,
+    FamilySeedComponent,
+    FamilyFeaturesComponent,
+    FamilyModelComponent,
+    FamilyAnnotationsComponent,
+    FamilyRelationshipsComponent,
+    FamilyDownloadComponent,
   ],
   imports: [
     CommonModule,
@@ -59,11 +78,14 @@ export function tokenGetter() {
     HttpClientModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatCardModule,
     MatExpansionModule,
     MatFormFieldModule,
-    MatInputModule,
     MatIconModule,
-    MatCardModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTabsModule,
+    MatTooltipModule,
     LoginModule,
     BrowserModule,
     // Angular-Jwt for decoding tokens and sending it along through HTTP request auto-magically

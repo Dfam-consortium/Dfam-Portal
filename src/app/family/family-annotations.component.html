@@ -1,0 +1,46 @@
+<h2><span matTooltip="Overview">Overview</span></h2>
+
+For each annotated genome within this family's taxa we calculate
+the number, length, and divergence of annotations above the model
+score thresholds.
+
+<table *ngIf="stats?.length">
+<thead>
+<tr>
+  <td rowspan="2">Species 1</td>
+  <td colspan="3">Gathering Threshold</td>
+  <td colspan="3">Trusted Threshold</td>
+</tr>
+<tr>
+  <td>Count</td>
+  <td>Avg. Len</td>
+  <td>Kimura Div.</td>
+  <td>Count</td>
+  <td>Avg. Len</td>
+  <td>Kimura Div.</td>
+</tr>
+</thead>
+
+<tr *ngFor="let stat of stats">
+<td>{{stat.species}}</td>
+<td>{{stat.gathering_all}}</td>
+<td>TODO</td>
+<td>{{stat.divergence}} TODO</td>
+<td>{{stat.trusted_all}}</td>
+<td>TODO</td>
+<td>{{stat.divergence}} TODO</td>
+</tr>
+
+</table>
+
+<div *ngIf="!stats">
+Loading statistics...
+</div>
+
+<div *ngIf="stats?.length === 0">
+No statistics available for this family.
+</div>
+
+<h2><span matTooltip="Genome Annotation Distribution">Genome Annotation Distribution</span></h2>
+
+

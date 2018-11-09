@@ -1,0 +1,13 @@
+<h2>Model</h2>
+<button mat-raised-button (click)="downloadHmm()">HMM</button>
+<button mat-raised-button (click)="downloadSeed()">Seed</button>
+
+<h2>Genome Specific Files</h2>
+
+<table>
+  <tr *ngFor="let assembly of assemblies">
+    <td>{{assembly.name}}</td>
+    <td><button mat-raised-button (click)="downloadAssemblyAnnotations(assembly.id, true)">Non-redundant hits</button></td>
+    <td><button mat-raised-button (click)="downloadAssemblyAnnotations(assembly.id, false)">All hits</button></td>
+  </tr>
+</table>

@@ -1,0 +1,12 @@
+<h2>Relationships with other families</h2>
+
+<div *ngIf="!relationships">
+Loading relationship data...
+</div>
+
+<div *ngIf="relationships?.length === 0">
+No relationships recorded.
+</div>
+
+<div id="overlap">
+</div>
