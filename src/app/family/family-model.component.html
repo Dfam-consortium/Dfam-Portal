@@ -46,23 +46,23 @@
       </mat-option>
     </mat-select>
 
-    <div #conservationGraph></div>
-
-    <div class="key"><div style="background:#7753D3;"></div> <span>% coverage</span></div>
-    <div class="key"><div style="background:#9AC231;"></div> <span>Relative % identity</span></div>
-    <div class="key"><div style="background:#AAAAAA;"></div> <span>Number of inserts following position</span></div>
+    <dfam-family-model-hitprofile [data]="hitprofileData">
+    </dfam-family-model-hitprofile>
 
     <h3>Non-Redundant Coverage</h3>
     Number of aligned bases per model position, among the non-redundant hits in dfamseq.
-    <div #nrphCoverage></div>
+    <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.nrph" colorSet="2">
+    </dfam-family-model-coverage>
 
     <h3>Redundant Coverage</h3>
     Number of aligned bases per model position, using the hits in dfamseq.
-    <div #redundantCoverage></div>
+    <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.all" colorSet="2">
+    </dfam-family-model-coverage>
 
     <h3>False Coverage</h3>
     Number of aligned bases per model position, using the hits from an artificial sequence devoid of TEs.
-    <div #falseCoverage></div>
+    <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.false">
+    </dfam-family-model-coverage>
 
   </div>
 

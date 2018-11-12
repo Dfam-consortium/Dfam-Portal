@@ -45,6 +45,8 @@ import { FamilyModelComponent } from './family/family-model.component';
 import { FamilyAnnotationsComponent } from './family/family-annotations.component';
 import { FamilyRelationshipsComponent } from './family/family-relationships.component';
 import { FamilyDownloadComponent } from './family/family-download.component';
+import { FamilyModelCoverageComponent } from './family/family-model-coverage.component';
+import { FamilyModelHitprofileComponent } from './family/family-model-hitprofile.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -68,6 +70,8 @@ export function tokenGetter() {
     FamilyAnnotationsComponent,
     FamilyRelationshipsComponent,
     FamilyDownloadComponent,
+    FamilyModelCoverageComponent,
+    FamilyModelHitprofileComponent,
   ],
   imports: [
     CommonModule,

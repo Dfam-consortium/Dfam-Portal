@@ -18,9 +18,6 @@ export class FamilyModelComponent implements OnInit {
 
   @ViewChild('logoGraphic') private logoGraphic: ElementRef;
   @ViewChild('conservationGraph') private conservationGraph: ElementRef;
-  @ViewChild('nrphCoverage') private nrphCoverage: ElementRef;
-  @ViewChild('redundantCoverage') private redundantCoverage: ElementRef;
-  @ViewChild('falseCoverage') private falseCoverage: ElementRef;
 
   family;
 
@@ -52,6 +49,8 @@ export class FamilyModelComponent implements OnInit {
 
   thresholds: {id: string; label: string; graph: {}}[];
 
+  hitprofileData;
+
   private _selectedThreshold: string;
   get selectedThreshold(): string {
     return this._selectedThreshold;
@@ -60,28 +59,7 @@ export class FamilyModelComponent implements OnInit {
     this._selectedThreshold = value;
     const conservation = this.assemblyData[this.selectedAssembly].model_conservation;
     const graph_data = this.thresholds.find(t => t.id === this.selectedThreshold).graph;
-    const el = this.conservationGraph.nativeElement;
-    el.innerHTML = '';
-    window.dfamHitProfilePlot(el, graph_data);
-  }
-
-  drawCoverageGraphs() {
-    const coverage = this.assemblyData[this.selectedAssembly].model_coverage;
-
-    const graphs = {
-      'nrph': this.nrphCoverage,
-      'all': this.redundantCoverage,
-      'false': this.falseCoverage,
-    };
-
-    Object.keys(graphs).forEach(function(key) {
-      const el = graphs[key].nativeElement;
-      const data = coverage[key];
-      const color_set = (key === 'false') ? undefined : 2;
-
-      el.innerHTML = '';
-      window.dfamCoveragePlot(el, { data, color_set });
-    });
+    this.hitprofileData = graph_data;
   }
 
   ngOnInit() {
@@ -149,11 +127,9 @@ export class FamilyModelComponent implements OnInit {
           mcov[key] = JSON.parse(mcov[key]);
         });
         this.assemblyData[assembly].model_coverage = mcov;
-        this.drawCoverageGraphs();
       });
     } else {
       this.selectedThreshold = 'TC';
-      this.drawCoverageGraphs();
     }
   }
 

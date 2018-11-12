@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -14,7 +14,7 @@ declare global {
   templateUrl: './family-seed.component.html',
   styleUrls: ['./family-seed.component.scss']
 })
-export class FamilySeedComponent implements OnInit, OnDestroy {
+export class FamilySeedComponent implements OnInit {
 
   @ViewChild('seedContainer')
   private seedContainer: ElementRef;
@@ -39,7 +39,8 @@ export class FamilySeedComponent implements OnInit, OnDestroy {
 
   viewer;
 
-  resizeHandler() {
+  @HostListener('window:resize')
+  onResize() {
     if (this.viewer) {
       this.viewer.resize();
     }
@@ -51,13 +52,8 @@ export class FamilySeedComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    window.addEventListener('resize', this.resizeHandler.bind(this));
     this.getLength();
     this.getSeed();
-  }
-
-  ngOnDestroy() {
-    window.removeEventListener('resize', this.resizeHandler.bind(this));
   }
 
   getLength() {
