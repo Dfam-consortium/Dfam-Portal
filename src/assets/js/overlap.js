@@ -87,6 +87,36 @@ function Overlap(options) {
 
       if (target_family) {
         location.href = '/family/' + target_family.auto_overlap.target.accession;
+        return;
+      }
+
+      var region;
+      if (scaled_x > that.overlap_area) {// in the control region
+        if (scaled_x < (that.overlap_area + 55)) {
+          region = 'id';
+        } else if (scaled_x < (that.overlap_area + 95)) {
+          region = 'coverage';
+        } else {
+          region = 'evalue';
+        }
+      }
+
+      if (region) {
+        if (that.order === region) {
+          if (that.orientation === 'down') {
+            that.orientation = 'up';
+          } else {
+            that.orientation = 'down';
+          }
+        } else {
+          that.order = region;
+          that.orientation = 'down';
+        }
+
+        var context = this.getContext('2d');
+        that.drawModel(context);
+        that.drawOverlaps(context);
+        return;
       }
     });
 
@@ -141,6 +171,8 @@ function Overlap(options) {
   };
 
   this.drawModel = function (context) {
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+
     var y = 0,
       height = 10,
       arrow_width = parseInt(height / 2, 10);
