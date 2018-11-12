@@ -19,6 +19,8 @@ export class FamilySeedComponent implements OnInit, OnDestroy {
   @ViewChild('seedContainer')
   private seedContainer: ElementRef;
 
+  length;
+
   _stockholmData: string;
   get stockholmData(): string {
     return this._stockholmData;
@@ -50,11 +52,17 @@ export class FamilySeedComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     window.addEventListener('resize', this.resizeHandler.bind(this));
+    this.getLength();
     this.getSeed();
   }
 
   ngOnDestroy() {
     window.removeEventListener('resize', this.resizeHandler.bind(this));
+  }
+
+  getLength() {
+    const accession = this.route.parent.snapshot.params['id'];
+    this.dfamapi.getFamily(accession).subscribe(f => this.length = f.length);
   }
 
   getSeed() {

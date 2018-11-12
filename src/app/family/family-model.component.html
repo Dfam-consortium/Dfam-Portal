@@ -2,14 +2,19 @@
 
 <h2>Details</h2>
 <h3>HMM</h3>
-<p><strong>Model Masking:</strong> {{family.model_masked}}</p>
-<p><strong>Default NC Threshold:</strong> </p>
+<p><strong>Model Mask:</strong> {{family.model_mask || "None"}}</p>
+<p><strong>Default NC Threshold:</strong> {{family.hmm_general_nc || "N/A"}} </p>
 
 <h3>Consensus</h3>
-Sequence:
-<div style="overflow: scroll;">
-{{family.consensus_sequence}}
-</div>
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Sequence</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <samp class="consensus_seq">
+  {{family.consensus_sequence}}
+  </samp>
+</mat-expansion-panel>
 
 <h2>HMM Logo</h2>
 
@@ -32,6 +37,8 @@ Sequence:
   <div *ngIf="selectedAssembly">
 
     <h3>Coverage, Conservation, and Inserts</h3>
+
+    <strong>False discovery rate</strong>: {{assemblyData[selectedAssembly].hmm_fdr || "Unknown"}}
 
     <mat-select [(value)]="selectedThreshold">
       <mat-option *ngFor="let th of thresholds" value="{{th.id}}">

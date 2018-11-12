@@ -1,5 +1,13 @@
+<div *ngIf="length !== undefined">
+<strong>Length</strong>: {{length}}
+</div>
+
 <div *ngIf="!stockholmData">
 Loading seed alignment...
+</div>
+
+<div *ngIf="stockholmData">
+Representation of the seed alignment sequences, indicating the number of aligned bases per model position and the length distribution across the model.
 </div>
 
 <div #seedContainer>

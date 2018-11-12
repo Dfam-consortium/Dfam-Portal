@@ -24,15 +24,6 @@ export class FamilyModelComponent implements OnInit {
 
   family;
 
-  private knownThresholds = {
-    'GA': 'Gathering Cutoff',
-    'TC': 'Trusted Cutoff',
-    '2': '1.0e-2',
-    '4': '1.0e-4',
-    '8': '1.0e-8',
-    '16': '1.0e-16',
-  };
-
   constructor(
     private dfamapi: DfamAPIService,
     private route: ActivatedRoute
@@ -98,8 +89,16 @@ export class FamilyModelComponent implements OnInit {
     this.getModelData();
   }
 
-  getThresholdTitle(id: string) {
-    return this.knownThresholds[id] || id;
+  getThresholdTitle(assembly_info: any, id: string) {
+    if (id == 'GA') {
+      return `Gathering ${assembly_info.hmm_hit_ga} bits`;
+    } else if (id == 'TC') {
+      return `Trusted ${assembly_info.hmm_hit_ga} bits`;
+    } else if (['2', '4', '8', '16'].indexOf(id) !== -1) {
+      return `E-value 1.0e-${id}`;
+    } else {
+      return id;
+    }
   }
 
   getFamily() {
@@ -122,13 +121,17 @@ export class FamilyModelComponent implements OnInit {
 
   getAssemblyData(assembly) {
     if (!this.assemblyData[assembly]) {
+      const assembly_info = this.assemblies.find(a => a.id == assembly);
+      this.assemblyData[assembly] = {
+        hmm_fdr: assembly_info.hmm_fdr,
+      };
+
       const accession = this.route.parent.snapshot.params['id'];
-      this.assemblyData[assembly] = {};
       this.dfamapi.getFamilyAssemblyModelConservation(accession, assembly).subscribe(mcons => {
         this.assemblyData[assembly].model_conservation = mcons;
         this.thresholds = [];
         mcons.forEach(mcon => {
-          const label = `${this.getThresholdTitle(mcon.threshold)} (${mcon.num_seqs})`;
+          const label = `${this.getThresholdTitle(assembly_info, mcon.threshold)} (${mcon.num_seqs})`;
 
           this.thresholds.push({
             id: mcon.threshold,

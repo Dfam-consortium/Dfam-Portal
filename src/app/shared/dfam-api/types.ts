@@ -13,6 +13,8 @@ export class Family {
   target_site_cons: string;
   refineable: boolean;
   disabled: boolean;
+  model_mask: string;
+  hmm_general_nc: number;
 
   aliases: {database: string; alias: string}[];
   search_stages: {name: string}[];

@@ -1,3 +1,11 @@
+.consensus_seq {
+  display: block;
+  max-width: 800px;
+  max-height: 8em;
+  overflow-wrap: break-word;
+  overflow: auto;
+}
+
 .key {
   margin-left: 55px;
 }
