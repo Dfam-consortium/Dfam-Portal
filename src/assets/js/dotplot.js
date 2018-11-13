@@ -5,6 +5,16 @@ function DotPlot(options) {
   this.target = options.target || document.body;
   this.data   = options.data || {};
 
+  function createSVGElement(elem) {
+    return document.createElementNS("http://www.w3.org/2000/svg", elem);
+  }
+
+  function setSVGAttrs(svg, attrs) {
+    Object.keys(attrs).forEach(function(k) {
+      svg.setAttributeNS(null, k, attrs[k]);
+    });
+  }
+
   this.render = function () {
     // plot the dimensions of the graphic
     this.width = options.data.model_end - options.data.model_start;
@@ -15,110 +25,140 @@ function DotPlot(options) {
       this.height  = options.data.target_end - options.data.target_start;
     }
 
-    // attach a canvas element if it isn't there already
-    var context = Raphael(this.target, 300, 300);
-    this.drawPlot(context);
-    this.drawAxes(context);
-    context.setViewBox(0,0,this.width,this.height);
+    var svg = createSVGElement("svg");
+    setSVGAttrs(svg, { "width": "300", "height": "300", viewBox: "0 0 300 300" });
+
+    var plot = this.drawPlot(280, 280);
+    setSVGAttrs(plot, { "transform": "translate(20,20)" });
+    svg.appendChild(plot);
+
+    var axes = this.drawAxes(300, 300, 20, 20);
+    svg.appendChild(axes);
+
+    this.target.appendChild(svg);
   }
 
-  this.drawAxes = function (context) {
-    //draw y-axis down the left
-    context.path('M0,0l0,' + this.height).attr({'stroke-width': 2});
-    target_label = this.data.auto_overlap.target.id;
-    target_start = this.data.target_start;
-    target_end   = this.data.target_end;
+  this.drawAxes = function (rwidth, rheight, startx, starty) {
+    var g = createSVGElement("g");
+    setSVGAttrs(g, { "font-size": "10px" });
+
+    var xunit = (rwidth - startx) / this.cigar.length;
+    var yunit = (rheight - starty) / this.cigar.length;
+
+    var axisLines = createSVGElement("path");
+    setSVGAttrs(axisLines, {
+      d: "M" + startx + "," + (starty + this.height * yunit) + "L" + startx + "," + starty + "h" + this.width * xunit,
+      fill: "none",
+      stroke: "black",
+      "stroke-width": "2px",
+    });
+
+    g.appendChild(axisLines);
+
+    function createLabel(x, y, text, anchor) {
+      var label = createSVGElement("text");
+      label.textContent = text.toString();
+      setSVGAttrs(label, { "x": x, "y": y, "text-anchor": anchor });
+      return label;
+    }
+
+    var xlabels = createSVGElement("g");
+    var xtxform = "translate(0, " + starty/2 + ")";
+    setSVGAttrs(xlabels, { "transform": xtxform });
+
+    var model_label = this.data.auto_overlap.model.id;
+    var model_start = this.data.model_start;
+    var model_end = this.data.model_end;
+
+    var left_x = startx;
+    var right_x = startx + this.width * xunit;
+    var center_x = (left_x + right_x) / 2;
+
+    xlabels.appendChild(createLabel(center_x, 0, model_label, "middle"));
+    xlabels.appendChild(createLabel(left_x, 0, model_start, "start"));
+    xlabels.appendChild(createLabel(right_x, 0, model_end, "end"));
+    g.appendChild(xlabels);
+
+    var ylabels = createSVGElement("g");
+    var ytxform = "translate(" + startx/2 + "," + rheight + ") rotate(-90)";
+    setSVGAttrs(ylabels, { "transform": ytxform });
+
+    var target_label = this.data.auto_overlap.target.id;
+    var target_start = this.data.target_start;
+    var target_end   = this.data.target_end;
     if (this.strand === '-') {
       target_start = this.data.target_end;
       target_end   = this.data.target_start;
     }
-    //have to draw a canvas here to get vertical text.
-    var canvas = document.createElement("canvas");
-    canvas.classList.add("y-axis");
-    canvas.width = 20;
-    canvas.height = 300;
-    this.target.insertBefore(canvas, this.target.firstChild);
 
-    var y_context = canvas.getContext('2d');
-    y_context.fillStyle = "#333333";
-    y_context.textAlign = "right";
-    y_context.font = "normal 10px Arial";
-    y_context.textBaseline = "top";
+    var left_y = rheight - starty - this.height * yunit;
+    var right_y = rheight - starty;
+    var center_y = (left_y + right_y) / 2;
 
-    y_context.save()
-    y_context.translate(3, 1);
-    y_context.rotate(-Math.PI/2);
-    y_context.fillText(target_start, 1, 0);
-    y_context.restore();
+    ylabels.appendChild(createLabel(center_y, 0, target_label, "middle"));
+    ylabels.appendChild(createLabel(right_y, 0, target_start, "end"));
+    ylabels.appendChild(createLabel(left_y, 0, target_end, "start"));
+    g.appendChild(ylabels);
 
-    y_context.save()
-    y_context.textAlign = "left";
-    y_context.translate(3, 295);
-    y_context.rotate(-Math.PI/2);
-    y_context.fillText(target_end, 1, 0);
-    y_context.restore();
-
-    y_context.textAlign = "center";
-    y_context.font = "normal 12px Arial";
-    y_context.translate(3, 300 / 2);
-    y_context.rotate(-Math.PI/2);
-    y_context.fillText(target_label, 1, 0);
-
-    //draw x-axis across the top
-    //create a div with width 300 and a margin of 30
-    context.path('M0,0l' + this.width + ',0').attr({'stroke-width': 2});
-    model_label = this.data.auto_overlap.model.id;
-    model_start = this.data.model_start;
-    model_end = this.data.model_end;
-    this.target.insertAdjacentHTML('afterbegin', '<div style="font-family: Arial,sans-serif; font-size:12px; margin-left:20px;"><p style="text-align: center;">' +
-      model_label + '<span style="float: left; font-size=10px;">' + model_start  + '</span><span style="float: right; font-size=10px;">' +
-      model_end + '</span></p></div>')
-
+    return g;
   }
 
-  this.drawPlot = function (context) {
+  this.drawPlot = function (rwidth, rheight) {
     var that = this;
     //split cigar string into array of characters
     var chars = this.cigar.split('');
     if (this.strand === '-') {
       chars = chars.reverse();
     }
-    var x = 1;
-    if (this.strand === '-') {
-      x = this.width
-    }
-    var y = 1;
 
-    var previousState = 'M';
-    var path = 'M' + x + ' ' + y;
+    var xunit = rwidth / chars.length;
+    var yunit = rheight / chars.length;
+
+    var x = 0;
+    if (this.strand === '-') {
+      x = this.width * xunit;
+    }
+    var y = 0;
+
+    var path = 'M ' + x + ' , ' + y;
 
     chars.forEach(function(ch) {
+      var dx = 0;
+      var dy = 0;
+
       //for each item in data string draw a dota / move the line to a point.
       if (ch[0] === 'M') {
-        //make sure we go back to black lines
+        dy = yunit;
         if (that.strand === '-') {
-          x--; y++;
+          dx = -xunit;
         }
         else {
-          x++; y++;
+          dx = xunit;
         }
       }
       else if (ch[0] === 'I') {
-        //change color to red
-        y++;
+        dy = yunit;
       }
       else if (ch[0] === 'D'){
-        //change color to blue
         if (that.strand === '-') {
-          x--;
+          dx = -xunit;
         }
         else {
-          x++;
+          dx = xunit;
         }
       }
-      path += 'L'+ x + ' ' + y;
+      path += 'l '+ dx + ' , ' + dy + ' ';
     });
-    context.path(path);
+
+    var pathEl = createSVGElement("path");
+    setSVGAttrs(pathEl, {
+      d: path,
+      fill: "none",
+      stroke: "black",
+      "stroke-width": "1px",
+    });
+
+    return pathEl;
   }
 }
 
