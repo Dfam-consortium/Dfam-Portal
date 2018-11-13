@@ -47,6 +47,7 @@ import { FamilyRelationshipsComponent } from './family/family-relationships.comp
 import { FamilyDownloadComponent } from './family/family-download.component';
 import { FamilyModelCoverageComponent } from './family/family-model-coverage.component';
 import { FamilyModelHitprofileComponent } from './family/family-model-hitprofile.component';
+import { FamilyModelLogoComponent } from './family/family-model-logo.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -72,6 +73,7 @@ export function tokenGetter() {
     FamilyDownloadComponent,
     FamilyModelCoverageComponent,
     FamilyModelHitprofileComponent,
+    FamilyModelLogoComponent,
   ],
   imports: [
     CommonModule,

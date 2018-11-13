@@ -26,14 +26,7 @@ export class FamilyModelComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
-  _hmmLogo: string;
-  get hmmLogo(): string {
-    return this._hmmLogo;
-  }
-  set hmmLogo(value: string) {
-    this._hmmLogo = value;
-    // TODO: activate hmm_logo
-  }
+  hmmLogo: string;
 
   assemblies = [];
 
