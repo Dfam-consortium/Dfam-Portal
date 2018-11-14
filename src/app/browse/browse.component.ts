@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
@@ -8,42 +10,59 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
   styleUrls: ['./browse.component.scss']
 })
 export class BrowseComponent {
-  title = 'Browse Dfam';
-  navigationSubscription;
-  totalEntriesMsg = "";
-  families:any = [];
-  prefixes:any = ["A", "B", "C", "D", "E", "F", "G", "H", 
-                  "I", "J", "K", "L", "M", "N", "O", "P",
-                  "Q", "R", "S", "T", "U", "V", "W", "X", 
-                  "Y", "Z", "0", "1", "2", "3", "4", "5",
-                  "6", "7", "8", "9"];
+  families:any = {};
 
-  constructor(public dfamapi:DfamAPIService, private route: ActivatedRoute, private router: Router) { 
+  search: any = {};
 
-     this.navigationSubscription = this.router.events.subscribe((e: any) => {
-       // If it is a NavigationEnd event re-initalise the component
-       if (e instanceof NavigationEnd) {
-         this.getFamilies();
-       }
-     });
-  
-  }
+  displayColumns = [ "accession", "name", "classification", "clades", "description", "length" ];
+  dataRows = [{"name": "test"}];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  constructor(
+    private route: ActivatedRoute,
+    private dfamapi:DfamAPIService
+  ) { }
 
   ngOnInit() {
+    this.getFamilies();
+
+    const initialKeywords = this.route.snapshot.queryParamMap.get("keywords")
+    if (initialKeywords) {
+      this.search.keywords = initialKeywords;
+    }
+  }
+
+  searchApiOptions: any = { };
+
+  searchChanged() {
+    this.searchApiOptions.name = this.search.name;
+    this.searchApiOptions.classification = this.search.classification;
+    this.searchApiOptions.clade = this.search.clade;
+    this.searchApiOptions.keywords = this.search.keywords;
+    this.paginator.pageIndex = 0;
+    this.getFamilies();
+  }
+
+  sortChanged(sort: Sort) {
+    console.log(sort);
+    if (sort.direction) {
+      this.searchApiOptions.sort = sort.active + ":" + sort.direction;
+    } else {
+      delete this.searchApiOptions.sort;
+    }
+    this.getFamilies();
+  }
+
+  pageChanged(event: PageEvent) {
     this.getFamilies();
   }
 
   getFamilies() {
-    this.families = [];
-    let prefix = "A";
-    if ( this.route.snapshot.params['prefix'] )
-      prefix = this.route.snapshot.params['prefix'];
-    
-    this.dfamapi.getFamilies(prefix).subscribe((data: {}) => {
+    this.searchApiOptions.limit = this.paginator.pageSize;
+    this.searchApiOptions.start = this.paginator.pageSize * this.paginator.pageIndex;
+    this.dfamapi.getFamilies(this.searchApiOptions).subscribe((data: {}) => {
       this.families = data;
-      if ( "totalHits" in data )
-        this.totalEntriesMsg = data['totalHits'] + " entries beginning with " + prefix;
     });
   }
-  
 }

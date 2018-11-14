@@ -23,7 +23,6 @@ export const PUBLIC_ROUTES: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'browse', component: BrowseComponent },
-  { path: 'browse/:prefix', component: BrowseComponent },
   { path: 'family/:id', component: FamilyComponent, children: [
     { path: '', redirectTo: 'summary', pathMatch: 'full' },
     { path: 'summary', component: FamilySummaryComponent },

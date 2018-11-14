@@ -14,7 +14,7 @@ export class HomeComponent {
   result: Object;
   dfamBlogArticles: Object = [];
 
-  constructor(http: Http) {
+  constructor(private router: Router, http: Http) {
   http.get('http://query.yahooapis.com/v1/public/yql?q=select * from xml where url=\'https://xfam.wordpress.com/category/dfam/feed/\' &format=json')
            .pipe(map(res => res.json()))
            .subscribe(res => {
@@ -42,5 +42,11 @@ export class HomeComponent {
 
                }
            });
+  }
+
+  searchKeywords: string;
+
+  searchByKeywords() {
+    this.router.navigate(['browse'], { queryParams: { "keywords": this.searchKeywords } });
   }
 }

@@ -1,42 +1,75 @@
-<div class='dfam-browse' fxLayout="row" fxFlex="50" fxFlexOffset="25">
+<div class='dfam-browse' fxFlex="50" fxFlexOffset="25">
   <div fxLayout="column">
     <h2>Browse Entries</h2>
-    <hr>
-    <div><!-- TODO: Develop more useful ways to browse the database -->
-      You can use the links below to find lists of entries which begin with the chosen letter (or number) or view all the entries on one page.
-      <div fxLayout="row">
-        <li class="oneline"  *ngFor="let prefix of prefixes">
-          <a routerLink="/browse/{{prefix}}">{{prefix}}</a>
-        </li>
-        <li class="oneline">
-          <a routerLink="/browse/">[all]</a>
-        </li>
-      </div>
-    </div>
-    <div class="browse"> 
-        <table> 
-            <caption class="plastic">{{totalEntriesMsg}}</caption> 
-            <thead> 
-                <tr> 
-                    <th>Accession</th>
-                    <th>Name</th> <!-- NOTE: May be blank -->
-                    <th>Classification</th> 
-                    <!-- TODO: Taxa here -->
-                    <th>Description</th> 
-                    <th>Length</th>
-                    <!--TODO: abundance here--> 
-                </tr> 
-            </thead> 
-            <tbody class="families"> 
-                <tr *ngFor="let family of families.results"> 
-                    <td><a routerLink="/family/{{family.accession}}">{{family.accession}}</a></td>
-                    <td>{{family.name}}</td>
-                    <td>{{family.repeat_type_name}}</td> 
-                    <td>{{family.description}}</td> 
-                    <td>{{family.length}}</td>
-                </tr> 
-            </tbody> 
-        </table> 
-     </div> 
+    <mat-divider></mat-divider>
+
+    <mat-card>
+      <mat-form-field>
+        <input matInput type="text"
+            placeholder="Family Name"
+            [(ngModel)]="search.name"
+            (input)="searchChanged()">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text"
+            placeholder="Classification"
+            [(ngModel)]="search.classification"
+            (input)="searchChanged()">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text"
+            placeholder="Clade"
+            [(ngModel)]="search.clade"
+            (input)="searchChanged()">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text"
+            placeholder="Keywords"
+            [(ngModel)]="search.keywords"
+            (input)="searchChanged()">
+      </mat-form-field>
+    </mat-card>
+
+    <div class="browse">
+        <table mat-table matSort (matSortChange)="sortChanged($event)"
+                [dataSource]="families.results">
+            <ng-container matColumnDef="accession">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Accession</th>
+                <td mat-cell *matCellDef="let family">
+                  <a routerLink="/family/{{family.accession}}">
+                    {{family.accession}}
+                  </a>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <td mat-cell *matCellDef="let family">{{family.name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="classification">
+                <th mat-header-cell *matHeaderCellDef>Classification</th>
+                <td mat-cell *matCellDef="let family">{{family.repeat_type_name}}/{{family.repeat_subtype_name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="clades">
+                <th mat-header-cell *matHeaderCellDef>Clades</th>
+                <td mat-cell *matCellDef="let family">{{family.clades.join(", ")}}</td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let family">{{family.description}}</td>
+            </ng-container>
+            <ng-container matColumnDef="length">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Length</th>
+                <td mat-cell *matCellDef="let family">{{family.length}}</td>
+            </ng-container>
+            <ng-container matColumnDef="abundance">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Abundance</th>
+                <td mat-cell *matCellDef="let family">{{family.abundance}}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+            <tr mat-row *matRowDef="let families; columns: displayColumns"></tr>
+        </table>
+        <mat-paginator [pageSize]="20" [length]="families?.total_count" (page)="pageChanged($event)"></mat-paginator>
+     </div>
    </div>
 </div>

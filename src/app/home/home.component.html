@@ -49,13 +49,24 @@
         <mat-expansion-panel hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>KEYWORD SEARCH</mat-panel-title>
-            <mat-panel-description>Query Dfam by keyword</mat-panel-description>
+            <mat-panel-description>Query Dfam by keywords</mat-panel-description>
           </mat-expansion-panel-header>
+
+          <div fxLayout="row">
+            <mat-form-field fxFlex="80" fxFlexOffset="32">
+              <input matInput type="text" placeholder="Keywords" [(ngModel)]="searchKeywords">
+            </mat-form-field>
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+              <button mat-raised-button color="primary" (click)="searchByKeywords()">Go</button>
+              &nbsp;
+              <button mat-raised-button (click)="searchKeywords='tigger'">Example</button>
+            </div>
+          </div>
         </mat-expansion-panel>
         <mat-expansion-panel hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>JUMP TO</mat-panel-title>
-            <mat-panel-description>Query Dfam by keyword</mat-panel-description>
+            <mat-panel-description>Go straight to an entry by accession</mat-panel-description>
           </mat-expansion-panel-header>
         </mat-expansion-panel>
       </mat-accordion>

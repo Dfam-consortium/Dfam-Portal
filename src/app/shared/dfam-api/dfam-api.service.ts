@@ -41,14 +41,33 @@ export class DfamAPIService {
       .pipe(catchError(this.handleError("getFamily", null)));
   }
 
-  getFamilies(name_prefix: string): Observable<FamilySummary[]> {
+  getFamilies(apiOptions: any): Observable<FamilySummary[]> {
     const url = endpoint + 'families';
     const options = {
       params: new HttpParams().set('format', 'summary')
     };
 
-    if ( name_prefix ) {
-      options.params = options.params.set('name_prefix', name_prefix);
+    if ( apiOptions.name ) {
+      options.params = options.params.set('name', apiOptions.name);
+    }
+
+    if ( apiOptions.classification ) {
+      options.params = options.params.set('classification', apiOptions.classification);
+    }
+
+    if ( apiOptions.clade ) {
+      options.params = options.params.set('clade', apiOptions.clade);
+    }
+
+    if ( apiOptions.keywords ) {
+      options.params = options.params.set('keywords', apiOptions.keywords);
+    }
+
+    options.params = options.params.set('start', (apiOptions.start || 0).toString());
+    options.params = options.params.set('limit', (apiOptions.limit || 20).toString());
+
+    if (apiOptions.sort) {
+      options.params = options.params.set('sort', apiOptions.sort);
     }
 
     return this.http.get<FamilySummary[]>(url, options)

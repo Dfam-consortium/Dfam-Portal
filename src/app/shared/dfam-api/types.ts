@@ -30,4 +30,6 @@ export class FamilySummary {
   length: number;
   repeat_type_name?: string;
   repeat_subtype_name?: string;
+
+  clades: string[];
 }
