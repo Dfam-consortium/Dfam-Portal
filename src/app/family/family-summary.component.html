@@ -1,18 +1,26 @@
 <div *ngIf="family">
 
 <h2>Description</h2>
+<mat-divider></mat-divider>
 <p>{{family.description}}</p>
 
-<h2><span matTooltip="Classification and Taxa">Classification and Taxa</span></h2>
+<h2>Classification and Taxa <mat-icon [matTooltip]="help.classification">help</mat-icon></h2>
+<mat-divider></mat-divider>
 <p><strong>Classification:</strong> {{family.classification}}</p>
 <p><strong>Taxa:</strong> {{family.clades.join("; ")}}</p>
 
-<h2><span matTooltip="Curation Details">Curation Details</span></h2>
+<h2>Curation Details<mat-icon [matTooltip]="help.curation">help</mat-icon></h2>
+<mat-divider></mat-divider>
 <p><strong>Status:</strong> Unassessed</p>
 <p><strong>Length:</strong> {{family.length}}</p>
 <p><strong>Target Site Duplication:</strong> {{family.target_site_cons || "None"}}</p>
 
-<h2><span matTooltip="Citations">Citations</span></h2>
+<h2>Citations <mat-icon [matTooltip]="help.citations">help</mat-icon></h2>
+<mat-divider></mat-divider>
+<div *ngIf="!family.citations.length">
+No recorded citations for this family.
+</div>
+
 <ol>
   <li *ngFor="let cit of family.citations">
     <p>
@@ -27,11 +35,17 @@
 </ol>
 
 <h2>Source</h2>
+<mat-divider></mat-divider>
 <p><strong>Submitter:</strong> </p>
 <p><strong>Created On:</strong> {{family.date_created}}</p>
 <p><strong>Modified On:</strong> {{family.date_modified}}</p>
 
-<h2><span matTooltip="Aliases and External Links">Aliases and External Links</span></h2>
+<h2>Aliases and External Links <mat-icon [matTooltip]="help.aliases">help</mat-icon></h2>
+<mat-divider></mat-divider>
+<div *ngIf="!family.aliases.length">
+No recorded aliases for this family.
+</div>
+
 <ul>
   <li *ngFor="let alias of family.aliases">
     {{alias.database}}: {{alias.alias}}

@@ -1,8 +1,10 @@
-<h2>Model</h2>
+<h2>Models <mat-icon [matTooltip]="help.models">help</mat-icon></h2>
+<mat-divider></mat-divider>
 <button mat-raised-button (click)="downloadHmm()">HMM</button>
 <button mat-raised-button (click)="downloadSeed()">Seed</button>
 
-<h2>Genome Specific Files</h2>
+<h2>Annotations <mat-icon [matTooltip]="help.annotations">help</mat-icon></h2>
+<mat-divider></mat-divider>
 
 <table>
   <tr *ngFor="let assembly of assemblies">

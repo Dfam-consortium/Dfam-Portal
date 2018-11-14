@@ -1,6 +1,7 @@
 <div *ngIf="family">
 
-<h2>Details</h2>
+<h2>Details <mat-icon [matTooltip]="help.details">help</mat-icon></h2>
+<mat-divider></mat-divider>
 <h3>HMM</h3>
 <p><strong>Model Mask:</strong> {{family.model_mask || "None"}}</p>
 <p><strong>Default NC Threshold:</strong> {{family.hmm_general_nc || "N/A"}} </p>
@@ -16,7 +17,8 @@
   </samp>
 </mat-expansion-panel>
 
-<h2>HMM Logo</h2>
+<h2>HMM Logo <mat-icon [matTooltip]="help.logo">help</mat-icon></h2>
+<mat-divider></mat-divider>
 
 <dfam-family-model-logo [data]="hmmLogo">
 </dfam-family-model-logo>
@@ -28,46 +30,55 @@
   </div>
 </div>
 
+<h2>HMM Genome Specific Characteristics <mat-icon [matTooltip]="help.genome">help</mat-icon></h2>
+<mat-divider></mat-divider>
+<div *ngIf="!assemblies.length">
+Genome-specific characteristics are not available for this family.
+</div>
+
 <div *ngIf="assemblies.length">
 
-  <h2>HMM Genome Specific Characteristics</h2>
-  <mat-select placeholder="Select genome" [(value)]="selectedAssembly">
-  <mat-option *ngFor="let assembly of assemblies" value="{{assembly.id}}">
-  {{assembly.name}}
-  </mat-option>
-  </mat-select>
-
-  <div *ngIf="selectedAssembly">
-
-    <h3>Coverage, Conservation, and Inserts</h3>
-
-    <strong>False discovery rate</strong>: {{assemblyData[selectedAssembly].hmm_fdr || "Unknown"}}
-
-    <mat-select [(value)]="selectedThreshold">
-      <mat-option *ngFor="let th of thresholds" value="{{th.id}}">
-        {{th.label}}
+  <mat-form-field>
+    <mat-select appearance="standard" placeholder="Genome" [(value)]="selectedAssembly">
+      <mat-option *ngFor="let assembly of assemblies" value="{{assembly.id}}">
+        {{assembly.name}}
       </mat-option>
     </mat-select>
+  </mat-form-field>
+
+  <mat-card *ngIf="selectedAssembly">
+
+    <h3>Coverage, Conservation, and Inserts <mat-icon [matTooltip]="help.hitProfile">help</mat-icon></h3>
+
+    <p><strong>False discovery rate</strong>: {{assemblyData[selectedAssembly].hmm_fdr || "Unknown"}}</p>
+
+    <mat-form-field class="threshold-field">
+      <mat-select appearance="standard" placeholder="Threshold" [(value)]="selectedThreshold">
+        <mat-option *ngFor="let th of thresholds" value="{{th.id}}">
+          {{th.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
     <dfam-family-model-hitprofile [data]="hitprofileData">
     </dfam-family-model-hitprofile>
 
-    <h3>Non-Redundant Coverage</h3>
+    <h3>Non-Redundant Coverage <mat-icon [matTooltip]="help.nrph">help</mat-icon></h3>
     Number of aligned bases per model position, among the non-redundant hits in dfamseq.
     <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.nrph" colorSet="2">
     </dfam-family-model-coverage>
 
-    <h3>Redundant Coverage</h3>
+    <h3>Redundant Coverage <mat-icon [matTooltip]="help.all">help</mat-icon></h3>
     Number of aligned bases per model position, using the hits in dfamseq.
     <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.all" colorSet="2">
     </dfam-family-model-coverage>
 
-    <h3>False Coverage</h3>
+    <h3>False Coverage <mat-icon [matTooltip]="help.false">help</mat-icon></h3>
     Number of aligned bases per model position, using the hits from an artificial sequence devoid of TEs.
     <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.false">
     </dfam-family-model-coverage>
 
-  </div>
+  </mat-card>
 
 </div>
 

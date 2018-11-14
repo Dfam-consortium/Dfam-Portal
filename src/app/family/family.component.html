@@ -1,4 +1,8 @@
-<h1 *ngIf="family">{{family.name}} ({{family.accession}})</h1>
+<h1 *ngIf="family">{{family.accession}}
+  <span *ngIf="family.name">
+  [{{family.name}}]
+  </span>
+</h1>
 
 <nav mat-tab-nav-bar>
   <a mat-tab-link

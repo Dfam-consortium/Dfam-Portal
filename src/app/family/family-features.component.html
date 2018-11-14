@@ -2,7 +2,12 @@
 Loading data...
 </div>
 
-<h2><span matTooltip="Coding Sequences">Coding Sequences</span></h2>
+<h2>Coding Sequences <mat-icon [matTooltip]="help.coding_seqs">help</mat-icon></h2>
+<mat-divider></mat-divider>
+
+<div *ngIf="!family?.coding_seqs">
+No coding sequences recorded for this family.
+</div>
 
 <ol>
   <li *ngFor="let cs of family?.coding_seqs">
@@ -17,7 +22,12 @@ Loading data...
   </li>
 </ol>
 
-<h2><span matTooltip="Features">Features</span></h2>
+<h2>Features <mat-icon [matTooltip]="help.features">help</mat-icon></h2>
+<mat-divider></mat-divider>
+
+<div *ngIf="!family?.features">
+No features recorded for this family.
+</div>
 
 <ol>
   <li *ngFor="let feat of family?.features">

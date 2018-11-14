@@ -16,6 +16,16 @@ declare global {
 })
 export class FamilyModelComponent implements OnInit {
 
+  help = {
+    details: "Details of both the Hidden Markov Model (HMM) and Consensus model for this family",
+    logo: "Representation of the per-position residue and indel conservation of the HMM. Each position in the model is represented by a stack of letters, with the stack height indicating the information content of the position, and rate and expected length of insertions after each position shown in the fields below each stack.",
+    genome: "For each included genome, coverage and conservation statistics are generated based on the HMM",
+    hitProfile: "Plot showing, for hits above a variety of thresholds, (1) the distribution of hits along the model, (2) the position-specific levels of conservation of those hits, and (3) the position-specific rates of insertion among those hits.  For a selected threshold, the purple line shows, for each model position, the fraction of all hits that have a match to that position, considering only RPH-filtered hits (hits for which this model is deemed to fit the sequence better than any other Dfam model).  Among RPH-filtered hits, the green line shows, for each position, the average percent identity for a window of length 7 around the position. The grey line shows the number of insertions among those hits. In the threshold selection box, the number in parentheses shows the number of hits meeting the given threshold.",
+    nrph: "Plot showing the distribution across the model for all above-threshold hits, after removing redundant profile hits (RPHs: hits to other Dfam profile HMMs that are deemed to  be of higher quality than the corresponding hit to this model).",
+    all: "Plot showing how all above-threshold matches to dfamseq are distributed across the model. These hits may include many hits that are preferentially hit by some other model.",
+    false: "Plot showing how matches to artificial non-TE sequence are distributed across the model.",
+  };
+
   @ViewChild('logoGraphic') private logoGraphic: ElementRef;
   @ViewChild('conservationGraph') private conservationGraph: ElementRef;
 

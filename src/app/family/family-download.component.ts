@@ -10,6 +10,11 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 })
 export class FamilyDownloadComponent implements OnInit {
 
+  help = {
+    models: "Download model files (HMM or Stockholm seed alignments)",
+    annotations: "Download per-genome annotation results",
+  };
+
   assemblies: [];
 
   constructor(

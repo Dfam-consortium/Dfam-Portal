@@ -9,6 +9,11 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 })
 export class FamilyFeaturesComponent implements OnInit {
 
+  help = {
+    coding_seqs: "Coding regions found in this family",
+    features: "Other features associated with this family",
+  };
+
   family;
 
   constructor(
