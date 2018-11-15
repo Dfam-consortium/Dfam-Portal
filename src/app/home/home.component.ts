@@ -49,4 +49,10 @@ export class HomeComponent {
   searchByKeywords() {
     this.router.navigate(['browse'], { queryParams: { "keywords": this.searchKeywords } });
   }
+
+  gotoAccession: string;
+
+  onGotoAccession() {
+    this.router.navigate(['family', this.gotoAccession]);
+  }
 }

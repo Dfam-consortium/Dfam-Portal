@@ -39,6 +39,21 @@
             <mat-panel-title color="primary">VIEW A DFAM ENTRY</mat-panel-title>
             <mat-panel-description>View Dfam entry annotation and alignments</mat-panel-description>
           </mat-expansion-panel-header>
+
+          <div fxLayout="column" fxFlexOffset="32">
+            <p>
+            Enter an entry accession (e.g. DF0000001) to see all data for that entry.
+            </p>
+
+            <div fxLayout="row">
+              <mat-form-field fxFlex="80">
+                <input matInput type="text" placeholder="Accession" [(ngModel)]="gotoAccession">
+              </mat-form-field>
+              <div fxLayoutAlign="space-around center">
+              <button mat-raised-button color="primary" (click)="onGotoAccession()">Go</button>
+              </div>
+            </div>
+          </div>
         </mat-expansion-panel>
         <mat-expansion-panel hideToggle>
           <mat-expansion-panel-header>
