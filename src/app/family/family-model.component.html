@@ -17,7 +17,10 @@
   </samp>
 </mat-expansion-panel>
 
-<h2>HMM Logo <mat-icon [matTooltip]="help.logo">help</mat-icon></h2>
+<h2>HMM Logo
+  <mat-icon [matTooltip]="help.logo">help</mat-icon>
+  <button mat-flat-button [matTooltip]="help.downloadLogo" (click)="onDownloadLogo()"><mat-icon>arrow_downward</mat-icon></button>
+</h2>
 <mat-divider></mat-divider>
 
 <dfam-family-model-logo [data]="hmmLogo">

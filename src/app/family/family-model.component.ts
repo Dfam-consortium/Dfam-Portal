@@ -19,6 +19,7 @@ export class FamilyModelComponent implements OnInit {
   help = {
     details: "Details of both the Hidden Markov Model (HMM) and Consensus model for this family",
     logo: "Representation of the per-position residue and indel conservation of the HMM. Each position in the model is represented by a stack of letters, with the stack height indicating the information content of the position, and rate and expected length of insertions after each position shown in the fields below each stack.",
+    downloadLogo: "Download the HMM logo as an image file.",
     genome: "For each included genome, coverage and conservation statistics are generated based on the HMM",
     hitProfile: "Plot showing, for hits above a variety of thresholds, (1) the distribution of hits along the model, (2) the position-specific levels of conservation of those hits, and (3) the position-specific rates of insertion among those hits.  For a selected threshold, the purple line shows, for each model position, the fraction of all hits that have a match to that position, considering only RPH-filtered hits (hits for which this model is deemed to fit the sequence better than any other Dfam model).  Among RPH-filtered hits, the green line shows, for each position, the average percent identity for a window of length 7 around the position. The grey line shows the number of insertions among those hits. In the threshold selection box, the number in parentheses shows the number of hits meeting the given threshold.",
     nrph: "Plot showing the distribution across the model for all above-threshold hits, after removing redundant profile hits (RPHs: hits to other Dfam profile HMMs that are deemed to  be of higher quality than the corresponding hit to this model).",
@@ -136,4 +137,20 @@ export class FamilyModelComponent implements OnInit {
     }
   }
 
+  onDownloadLogo() {
+    const accession = this.route.parent.snapshot.params['id'];
+    this.dfamapi.getFamilyHmmLogoImage(accession).subscribe(data => {
+      const blob = new Blob([data], { type: 'image/png' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.style.display = 'none';
+      link.href = url;
+      link.rel = 'noopener';
+      link.download = accession + '.png';
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+      link.remove();
+    });
+  }
 }

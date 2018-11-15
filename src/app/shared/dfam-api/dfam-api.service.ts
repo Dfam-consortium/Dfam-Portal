@@ -97,6 +97,18 @@ export class DfamAPIService {
     );
   }
 
+  getFamilyHmmLogoImage(accession: string): Observable<Blob> {
+    const url = this.familyPath(accession) + '/hmm';
+
+    const options = {
+      params: new HttpParams().set('format', 'image'),
+      responseType: 'blob' as 'blob',
+    };
+    return this.http.get(url, options).pipe(
+      catchError(this.handleError("getFamilyHmmLogoImage", null))
+    );
+  }
+
   getFamilySeed(accession: string): Observable<string> {
     const url = this.familyPath(accession) + '/seed';
     const options = {
