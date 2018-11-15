@@ -119,17 +119,6 @@ export class DfamAPIService {
       .pipe(catchError(this.handleError("getFamilySeed", "")));
   }
 
-  getFamilySeedGraph(accession: string): Observable<any> {
-    const url = this.familyPath(accession) + '/seed';
-    const options = {
-      params: new HttpParams().set('format', 'graph'),
-    };
-    return this.http.get(url, options).pipe(
-      map(this.extractData),
-      catchError(this.handleError("getFamilySeedGraph", null))
-    );
-  }
-
   getFamilyRelationships(accession: string): Observable<any> {
     const url = this.familyPath(accession) + '/relationships';
     return this.http.get(url).pipe(
