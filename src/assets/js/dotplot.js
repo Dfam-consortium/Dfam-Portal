@@ -25,14 +25,26 @@ function DotPlot(options) {
       this.height  = options.data.target_end - options.data.target_start;
     }
 
-    var svg = createSVGElement("svg");
-    setSVGAttrs(svg, { "width": "300", "height": "300", viewBox: "0 0 300 300" });
+    var pwidth, pheight;
+    if (this.width > this.height) {
+      pwidth = 280;
+      pheight = Math.round(this.height / this.width * pwidth);
+    } else {
+      pheight = 280;
+      pwidth = Math.round(this.width / this.height * pheight);
+    }
 
-    var plot = this.drawPlot(280, 280);
+    var rwidth = pwidth + 20;
+    var rheight = pheight + 20;
+
+    var svg = createSVGElement("svg");
+    setSVGAttrs(svg, { "width": rwidth.toString(), "height": rheight.toString(), viewBox: `0 0 ${rwidth} ${rheight}` });
+
+    var plot = this.drawPlot(pwidth, pheight);
     setSVGAttrs(plot, { "transform": "translate(20,20)" });
     svg.appendChild(plot);
 
-    var axes = this.drawAxes(300, 300, 20, 20);
+    var axes = this.drawAxes(rwidth, rheight, 20, 20);
     svg.appendChild(axes);
 
     this.target.appendChild(svg);
@@ -42,8 +54,8 @@ function DotPlot(options) {
     var g = createSVGElement("g");
     setSVGAttrs(g, { "font-size": "10px" });
 
-    var xunit = (rwidth - startx) / this.cigar.length;
-    var yunit = (rheight - starty) / this.cigar.length;
+    var xunit = (rwidth - startx) / this.width;
+    var yunit = (rheight - starty) / this.height;
 
     var axisLines = createSVGElement("path");
     setSVGAttrs(axisLines, {
@@ -103,7 +115,7 @@ function DotPlot(options) {
     return g;
   }
 
-  this.drawPlot = function (rwidth, rheight) {
+  this.drawPlot = function (pwidth, pheight) {
     var that = this;
     //split cigar string into array of characters
     var chars = this.cigar.split('');
@@ -111,8 +123,8 @@ function DotPlot(options) {
       chars = chars.reverse();
     }
 
-    var xunit = rwidth / chars.length;
-    var yunit = rheight / chars.length;
+    var xunit = pwidth / this.width;
+    var yunit = pheight / this.height;
 
     var x = 0;
     if (this.strand === '-') {
