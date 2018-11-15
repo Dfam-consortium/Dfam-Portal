@@ -95,7 +95,8 @@ function HitProfilePlot(options) {
     this.target.querySelector('svg').addEventListener('click', function (e) {
       var x = parseInt(e.offsetX) - self.leftMargin;
       var scaled_x = scale(x , self.width - self.rightMargin - self.leftMargin, self.data.points[0].length);
-      hmm_logo.scrollToColumn(scaled_x);
+      var positionEvent = new CustomEvent("model_position", { detail: scaled_x, bubbles: true });
+      e.target.dispatchEvent(positionEvent);
     });
 
   };

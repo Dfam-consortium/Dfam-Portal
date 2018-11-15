@@ -94,10 +94,10 @@ function Coverage(options) {
 
     var that = this;
     canvas.addEventListener('click', function (e) {
-      var y = parseInt(e.offsetX);
-      var x = parseInt(e.offsetY) - that.margin;
+      var x = parseInt(e.offsetX) - that.margin;
       var scaled_x = scale(x, that.width - that.margin, that.data.length);
-      // TODO: hmm_logo.scrollToColumn(scaled_x);
+      var positionEvent = new CustomEvent("model_position", { detail: scaled_x, bubbles: true });
+      canvas.dispatchEvent(positionEvent);
     });
   };
 

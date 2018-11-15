@@ -17,6 +17,8 @@ export class FamilyModelLogoComponent implements OnInit {
 
   @ViewChild('logo') logo: ElementRef;
 
+  logoObject: any;
+
   constructor() { }
 
   ngOnInit() {
@@ -26,7 +28,13 @@ export class FamilyModelLogoComponent implements OnInit {
     if (this.data) {
       const el = this.logo.nativeElement;
       el.innerHTML = '';
-      window.$(el).hmm_logo( { data: this.data });
+      this.logoObject = window.$(el).hmm_logo( { data: this.data });
+    }
+  }
+
+  public scrollTo(position: number) {
+    if (this.logoObject) {
+      this.logoObject.scrollToColumn(position);
     }
   }
 }

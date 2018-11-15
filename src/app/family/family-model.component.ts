@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { FamilyModelLogoComponent } from './family-model-logo.component';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -26,9 +27,6 @@ export class FamilyModelComponent implements OnInit {
     all: "Plot showing how all above-threshold matches to dfamseq are distributed across the model. These hits may include many hits that are preferentially hit by some other model.",
     false: "Plot showing how matches to artificial non-TE sequence are distributed across the model.",
   };
-
-  @ViewChild('logoGraphic') private logoGraphic: ElementRef;
-  @ViewChild('conservationGraph') private conservationGraph: ElementRef;
 
   family;
 
@@ -66,9 +64,16 @@ export class FamilyModelComponent implements OnInit {
     this.hitprofileData = graph_data;
   }
 
+  @ViewChild(FamilyModelLogoComponent) logoComponent: FamilyModelLogoComponent;
+
   ngOnInit() {
     this.getFamily();
     this.getModelData();
+  }
+
+  @HostListener('model_position', ['$event.detail'])
+  onModelPosition(position: number) {
+    this.logoComponent.scrollTo(position);
   }
 
   getThresholdTitle(assembly_info: any, id: string) {
