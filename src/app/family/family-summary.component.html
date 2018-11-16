@@ -37,8 +37,8 @@ No recorded citations for this family.
 <h2>Source</h2>
 <mat-divider></mat-divider>
 <p><strong>Submitter:</strong> </p>
-<p><strong>Created On:</strong> {{family.date_created}}</p>
-<p><strong>Modified On:</strong> {{family.date_modified}}</p>
+<p><strong>Created On:</strong> {{family.date_created | date: 'medium'}}</p>
+<p><strong>Modified On:</strong> {{family.date_modified | date: 'medium'}}</p>
 
 <h2>Aliases and External Links <mat-icon [matTooltip]="help.aliases">help</mat-icon></h2>
 <mat-divider></mat-divider>
