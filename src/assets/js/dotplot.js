@@ -38,7 +38,7 @@ function DotPlot(options) {
     var rheight = pheight + 20;
 
     var svg = createSVGElement("svg");
-    setSVGAttrs(svg, { "width": rwidth.toString(), "height": rheight.toString(), viewBox: `0 0 ${rwidth} ${rheight}` });
+    setSVGAttrs(svg, { "width": rwidth.toString(), "height": rheight.toString(), viewBox: "0 0 " + rwidth.toString() + " " + rheight.toString() });
 
     var plot = this.drawPlot(pwidth, pheight);
     setSVGAttrs(plot, { "transform": "translate(20,20)" });
