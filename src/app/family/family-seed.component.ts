@@ -22,6 +22,7 @@ export class FamilySeedComponent implements OnInit {
   private seedContainer: ElementRef;
 
   length;
+  seeds_count;
 
   _stockholmData: string;
   get stockholmData(): string {
@@ -35,6 +36,7 @@ export class FamilySeedComponent implements OnInit {
     container.appendChild(canvas);
     const seedAlign = new window.DfamSeedAlignment();
     seedAlign.parseStockholm(value);
+    this.seeds_count = seedAlign.alignments.length;
     const summary = seedAlign.toAlignmentSummary();
     this.viewer = new window.AlignmentSummaryViewer(canvas, container, summary);
   }

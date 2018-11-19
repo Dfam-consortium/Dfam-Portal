@@ -28,6 +28,8 @@
             [(ngModel)]="search.keywords"
             (input)="searchChanged()">
       </mat-form-field>
+
+      <p>Total results: {{families.total_count}}</p>
     </mat-card>
 
     <div class="browse">
@@ -69,7 +71,7 @@
             <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
             <tr mat-row *matRowDef="let families; columns: displayColumns"></tr>
         </table>
-        <mat-paginator [pageSize]="20" [length]="families?.total_count" (page)="pageChanged($event)"></mat-paginator>
+        <mat-paginator [pageSize]="20" [pageSizeOptions]="[20,50,100]" [length]="families?.total_count" (page)="pageChanged($event)"></mat-paginator>
      </div>
    </div>
 </div>
