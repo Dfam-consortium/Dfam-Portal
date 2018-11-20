@@ -146,16 +146,7 @@ export class FamilyModelComponent implements OnInit {
     const accession = this.route.parent.snapshot.params['id'];
     this.dfamapi.getFamilyHmmLogoImage(accession).subscribe(data => {
       const blob = new Blob([data], { type: 'image/png' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.style.display = 'none';
-      link.href = url;
-      link.rel = 'noopener';
-      link.download = accession + '.png';
-      document.body.appendChild(link);
-      link.click();
-      window.URL.revokeObjectURL(url);
-      link.remove();
+      window.saveAs(blob, accession + '.png');
     });
   }
 }

@@ -24,12 +24,13 @@
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
     "@auth0/angular-jwt": "^2.0.0",
+    "AlignmentSummaryViewer": "https://github.com/Dfam-consortium/AlignmentSummaryViewer",
+    "Dfam-js": "https://github.com/Dfam-consortium/Dfam-js",
     "core-js": "^2.5.4",
+    "file-saver": "^2.0.0",
     "raphael": "=2.1.0",
     "rxjs": "~6.3.3",
-    "zone.js": "~0.8.26",
-    "Dfam-js": "https://github.com/Dfam-consortium/Dfam-js",
-    "AlignmentSummaryViewer": "https://github.com/Dfam-consortium/AlignmentSummaryViewer"
+    "zone.js": "~0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.10.0",

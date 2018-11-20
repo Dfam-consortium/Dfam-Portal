@@ -31,6 +31,7 @@
             ],
             "scripts": [
               "node_modules/raphael/raphael.js",
+              "node_modules/file-saver/dist/FileSaver.js",
               "node_modules/Dfam-js/dist/Dfam-js.js",
               "node_modules/AlignmentSummaryViewer/dist/AlignmentSummaryViewer.js"
             ]
@@ -45,6 +46,10 @@
                 {
                   "replace": "node_modules/raphael/raphael.js",
                   "with": "node_modules/raphael/raphael.min.js"
+                },
+                {
+                  "replace": "node_modules/file-saver/dist/FileSaver.js",
+                  "with": "node_modules/file-saver/dist/FileSaver.min.js"
                 },
                 {
                   "replace": "node_modules/Dfam-js/dist/Dfam-js.js",

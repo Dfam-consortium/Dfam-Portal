@@ -3,6 +3,12 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
+declare global {
+  interface Window {
+    saveAs( blob: Blob|File|string, filename?: string, options?: any );
+  }
+}
+
 @Component({
   selector: 'dfam-family-download',
   templateUrl: './family-download.component.html',
@@ -55,16 +61,7 @@ export class FamilyDownloadComponent implements OnInit {
   download(observable: Observable<any>, filename: string) {
     observable.subscribe(data => {
       const blob = new Blob([data], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.style.display = 'none';
-      link.href = url;
-      link.rel = 'noopener';
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      window.URL.revokeObjectURL(url);
-      link.remove();
+      window.saveAs(blob, filename);
     });
   }
 
