@@ -30,7 +30,7 @@
             <div fxLayout="row" fxLayoutAlign="space-around center">
               <button mat-raised-button class="accordian-button" color="primary">Go</button>
               &nbsp;
-              <button mat-raised-button>Example</button>
+              <button mat-raised-button type="button">Example</button>
             </div>
           </div>
         </mat-expansion-panel>
@@ -45,14 +45,15 @@
             Enter an entry accession (e.g. DF0000001) to see all data for that entry.
             </p>
 
-            <div fxLayout="row">
+            <form fxLayout="row">
               <mat-form-field fxFlex="80">
-                <input matInput type="text" placeholder="Accession" [(ngModel)]="gotoAccession">
+                <input matInput type="text" name="accession" placeholder="Accession" [(ngModel)]="gotoAccession">
               </mat-form-field>
+              &nbsp;
               <div fxLayoutAlign="space-around center">
               <button mat-raised-button color="primary" (click)="onGotoAccession()">Go</button>
               </div>
-            </div>
+            </form>
           </div>
         </mat-expansion-panel>
         <mat-expansion-panel hideToggle>
@@ -91,7 +92,8 @@
 
               <div>
                 <button mat-raised-button color="primary" (click)="onGotoAnnotations()">Go</button>
-                <button mat-raised-button (click)="onExampleAnnotations()">Example</button>
+                &nbsp;
+                <button mat-raised-button type="button" (click)="onExampleAnnotations()">Example</button>
               </div>
             </form>
           </div>
@@ -103,16 +105,17 @@
             <mat-panel-description>Query Dfam by keywords</mat-panel-description>
           </mat-expansion-panel-header>
 
-          <div fxLayout="row">
+          <form fxLayout="row">
             <mat-form-field fxFlex="80" fxFlexOffset="32">
-              <input matInput type="text" placeholder="Keywords" [(ngModel)]="searchKeywords">
+              <input matInput type="text" name="keywords" placeholder="Keywords" [(ngModel)]="searchKeywords">
             </mat-form-field>
+            &nbsp;
             <div fxLayout="row" fxLayoutAlign="space-around center">
               <button mat-raised-button color="primary" (click)="searchByKeywords()">Go</button>
               &nbsp;
-              <button mat-raised-button (click)="searchKeywords='tigger'">Example</button>
+              <button mat-raised-button type="button" (click)="searchKeywords='tigger'">Example</button>
             </div>
-          </div>
+          </form>
         </mat-expansion-panel>
       </mat-accordion>
       <hr>
