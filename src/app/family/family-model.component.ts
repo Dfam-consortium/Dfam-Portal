@@ -74,6 +74,7 @@ export class FamilyModelComponent implements OnInit {
   @HostListener('model_position', ['$event.detail'])
   onModelPosition(position: number) {
     this.logoComponent.scrollTo(position);
+    this.logoComponent.logo.nativeElement.scrollIntoView();
   }
 
   getThresholdTitle(assembly_info: any, id: string) {
