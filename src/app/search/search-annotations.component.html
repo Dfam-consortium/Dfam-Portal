@@ -126,8 +126,8 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="nhmmerColumns"></tr>
-        <tr mat-row *matRowDef="let hit; columns: nhmmerColumns"></tr>
-        <tr mat-row [ngClass]="{'collapsed': !hit.show_alignment}" mat-row *matRowDef="let hit; columns: ['alignment_expander', 'alignment']"></tr>
+        <tr mat-row [id]="hit.row_id" *matRowDef="let hit; columns: nhmmerColumns"></tr>
+        <tr mat-row [ngClass]="{'collapsed': !hit.show_alignment}" *matRowDef="let hit; columns: ['alignment_expander', 'alignment']"></tr>
       </table>
 
       <table #trfResultsSort="matSort" mat-table matSort [dataSource]="trfResultsSource">
@@ -153,7 +153,7 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="trfColumns"></tr>
-        <tr mat-row *matRowDef="let hit; columns: trfColumns"></tr>
+        <tr mat-row [id]="hit.row_id" *matRowDef="let hit; columns: trfColumns"></tr>
       </table>
     </div>
     </div>

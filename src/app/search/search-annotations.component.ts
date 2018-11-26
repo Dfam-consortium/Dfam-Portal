@@ -84,6 +84,16 @@ export class SearchAnnotationsComponent implements OnInit {
       this.search.family,
       this.search.nrph
     ).subscribe(results => {
+
+      // Add 'row_id' values so the visualization can jump to the table rows
+      let i = 0;
+      results.nhmmer.forEach(function(hmm_hit) {
+        hmm_hit.row_id = "annotation_" + (i++);
+      });
+      results.trf.forEach(function(trf_hit) {
+        trf_hit.row_id = "annotation_" + (i++);
+      });
+
       this.results = results;
       this.results.assembly = assembly;
       this.nhmmerResultsSource.data = results.nhmmer;

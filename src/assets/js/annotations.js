@@ -146,10 +146,9 @@ function AnnotationsGraphic(options) {
           this.attr({stroke:'none', 'stroke-width': 1});
         })
         .click(function () {
-          // TODO: class not id
-          var el = document.getElementById("repeat" + (i + 1) + '_' + repeat.ali_start)
+          var el = document.getElementById(repeat.row_id);
           el.style.backgroundColor = '#ffe87c';
-          // TODO: animate to white over 3 seconds, then clear background color
+          setTimeout(function() { el.style.backgroundColor = null; }, 3000);
           el.scrollIntoView(false);
         });
     });
@@ -191,10 +190,9 @@ function AnnotationsGraphic(options) {
           this.attr({stroke:'none', 'stroke-width': 1});
         })
         .click(function () {
-          // TODO: class not id
-          var el = document.getElementById("repeat" + (i + 1) + '_' + repeat.start);
+          var el = document.getElementById(repeat.row_id);
           el.style.backgroundColor = '#ffe87c';
-          // TODO: animate to white over 3 seconds, then clear background color
+          setTimeout(function() { el.style.backgroundColor = null; }, 3000);
           el.scrollIntoView(false);
         });
     });
