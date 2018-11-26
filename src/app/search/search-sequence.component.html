@@ -1,0 +1,61 @@
+<div fxFlex="50" fxFlexOffset="25">
+
+<h2>Sequence Search</h2>
+
+<div>
+  <p>
+  Find Dfam matches to your sequence of interest. Paste your nucleotide sequence
+  into the box below, to have it searched for matching Dfam entries.
+  </p>
+
+  <p>
+  This search comprises of two parts, a search of the sequence against all of the
+  Dfam models and a search against TRF, the tandem repeat finder. Overlapping Dfam
+  matches (near perfect overlaps) are automatically removed as part of the search
+  method, in order to remove the model redundancy.
+  </p>
+
+  <p>
+  The recommended method of searching is to put the source organism of the query
+  sequence, and let the software determine the best cut-off for each model, where
+  the more stringent thresholds will be used for sequences where the source
+  organism does not match the model specificity. Otherwise the more liberal
+  gathering thresholds will be used. Alternatively, you can specify an E-value to
+  use for each model. The search system can be downloaded and run locally. There
+  are more details of both the search and dfamscan.pl in the help section.
+  </p>
+</div>
+
+<form>
+  <mat-form-field>
+    <textarea matInput placeholder="Sequence" name="sequence" [(ngModel)]="search.sequence">
+    </textarea>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Query Organism" name="organism" [(ngModel)]="search.assembly">
+      <mat-option value="hg38">Human</mat-option>
+      <mat-option value="mm10">Mouse</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div>
+    Cut-off:
+    <mat-radio-group name="cutoff" [(ngModel)]="search.cutoff">
+      <mat-radio-button value="curated">Dfam curated threshold</mat-radio-button>
+      <mat-radio-button value="evalue">Use E-value</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <mat-form-field>
+    <input matInput type="text" placeholder="E-value" name="evalue" [(ngModel)]="search.evalue">
+  </mat-form-field>
+
+  <div class="buttons">
+    <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+    <button mat-raised-button (click)="onReset()">Reset</button>
+    <button mat-raised-button (click)="onExample()">Example</button>
+  </div>
+</form>
+
+</div>

@@ -1,0 +1,112 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
+
+@Component({
+  selector: 'app-search-annotations',
+  templateUrl: './search-annotations.component.html',
+  styleUrls: ['./search-annotations.component.scss']
+})
+export class SearchAnnotationsComponent implements OnInit {
+
+  search: any = {};
+
+  results: any;
+
+  @ViewChild('nhmmerResultsSort') nhmmerResultsSort: MatSort;
+  nhmmerColumns = ["expander", "sequence", "accession", "bit_score", "e_value", "model_start", "model_end", "ali_start", "ali_end", "strand"];
+  nhmmerResultsSource = new MatTableDataSource();
+
+  @ViewChild('trfResultsSort') trfResultsSort: MatSort;
+  trfColumns = ["sequence", "type", "start", "end", "repeat_length"];
+  trfResultsSource = new MatTableDataSource();
+
+  constructor(
+    private dfamapi: DfamAPIService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) { }
+
+  ngOnInit() {
+    this.nhmmerResultsSource.sort = this.nhmmerResultsSort;
+    this.trfResultsSource.sort = this.trfResultsSort;
+    this.onReset();
+
+    const query = this.route.snapshot.queryParamMap;
+    let submit = false;
+    if (query.has('assembly')) {
+      this.search.assembly = query.get('assembly');
+      submit = true;
+    }
+    if (query.has('chromosome')) {
+      this.search.chromosome = query.get('chromosome');
+      submit = true;
+    }
+    if (query.has('start')) {
+      this.search.start = query.get('start');
+      submit = true;
+    }
+    if (query.has('end')) {
+      this.search.end = query.get('end');
+      submit = true;
+    }
+    if (query.has('family')) {
+      this.search.family = query.get('family');
+      submit = true;
+    }
+    if (query.has('nrph')) {
+      this.search.nrph = Boolean(query.get('nrph'));
+      submit = true;
+    }
+
+    if (submit) {
+      this.onSubmit();
+    }
+  }
+
+  onSubmit() {
+    this.results = null;
+    this.nhmmerResultsSource.data = [];
+    this.trfResultsSource.data = [];
+
+    this.router.navigate([], { relativeTo: this.route, queryParams: this.search });
+
+
+    const assembly = this.search.assembly;
+
+    this.dfamapi.getAnnotations(
+      this.search.assembly,
+      this.search.chromosome,
+      this.search.start,
+      this.search.end,
+      this.search.family,
+      this.search.nrph
+    ).subscribe(results => {
+      this.results = results;
+      this.results.assembly = assembly;
+      this.nhmmerResultsSource.data = results.nhmmer;
+      this.trfResultsSource.data = results.trf;
+    });
+  }
+
+  onReset() {
+    this.search.assembly = "hg38";
+    this.search.chromosome = "";
+    this.search.start = null;
+    this.search.end = null;
+    this.search.family = null;
+    this.search.nrph = true;
+  }
+
+  onExample() {
+    this.search.assembly = "hg38";
+    this.search.chromosome = "chr3";
+    this.search.start = "147733000";
+    this.search.end = "147766820";
+    this.search.family = null;
+    this.search.nrph = true;
+  }
+
+}

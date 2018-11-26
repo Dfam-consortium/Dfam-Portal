@@ -223,6 +223,46 @@ export class DfamAPIService {
     );
   }
 
+  getAnnotations(assembly: string, chrom: string, start: number, end: number, family?: string, nrph?: boolean): Observable<any> {
+    const url = endpoint + 'annotations';
+    const options = {
+      params: new HttpParams()
+        .set('assembly', assembly)
+        .set('chrom', chrom)
+        .set('start', start.toString())
+        .set('end', end.toString())
+    };
+
+    if (family !== null) {
+      options.params = options.params.set('family', family);
+    }
+
+    if (nrph !== null) {
+      options.params = options.params.set('nrph', nrph.toString());
+    }
+
+    return this.http.get(url, options).pipe(
+      map(this.extractData),
+      catchError(this.handleError("getAnnotations", {})),
+    );
+  }
+
+  getAlignment(assembly: string, chrom: string, start: number, end: number, family: string): Observable<any> {
+    const url = endpoint + 'alignment';
+    const options = {
+      params: new HttpParams()
+        .set('assembly', assembly)
+        .set('chrom', chrom)
+        .set('start', start.toString())
+        .set('end', end.toString())
+        .set('family', family)
+    };
+
+    return this.http.get(url, options).pipe(
+      map(this.extractData),
+      catchError(this.handleError("getAlignment", {})),
+    );
+  }
 
   login(email, password): Observable<any> {
     const body = new HttpParams()

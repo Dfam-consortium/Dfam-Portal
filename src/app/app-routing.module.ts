@@ -10,6 +10,9 @@ import { FamilyModelComponent } from './family/family-model.component';
 import { FamilyAnnotationsComponent } from './family/family-annotations.component';
 import { FamilyRelationshipsComponent } from './family/family-relationships.component';
 import { FamilyDownloadComponent } from './family/family-download.component';
+import { SearchComponent } from './search/search.component';
+import { SearchSequenceComponent } from './search/search-sequence.component';
+import { SearchAnnotationsComponent } from './search/search-annotations.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './login/login.component';
 import { WorkbenchLayoutComponent } from './shared';
@@ -22,6 +25,11 @@ import { AuthService } from './shared';
 export const PUBLIC_ROUTES: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+  { path: 'search', component: SearchComponent, children: [
+    { path: '', redirectTo: 'sequence', pathMatch: 'full' },
+    { path: 'sequence', component: SearchSequenceComponent },
+    { path: 'annotations', component: SearchAnnotationsComponent },
+  ] },
   { path: 'browse', component: BrowseComponent },
   { path: 'family/:id', component: FamilyComponent, children: [
     { path: '', redirectTo: 'summary', pathMatch: 'full' },

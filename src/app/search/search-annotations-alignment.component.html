@@ -1,0 +1,13 @@
+<p>
+{{data}}
+</p>
+
+<pre>
+  <ng-container *ngFor="let chunk of chunks">
+                  {{stars.substring(0, chunk.mod_str.length)}}
+Model  {{chunk.mod_start.toString().padStart(10)}} <span [innerHTML]="chunk.mod_markup"></span> {{chunk.mod_end}}
+                  {{chunk.match_str}}
+Query  {{chunk.seq_start.toString().padStart(10)}} <span [innerHTML]="chunk.seq_markup"></span> {{chunk.seq_end}}
+PP                {{chunk.pp_str}}
+  </ng-container>
+</pre>

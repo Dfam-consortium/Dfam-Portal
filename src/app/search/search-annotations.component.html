@@ -1,0 +1,161 @@
+<div fxLayout="column">
+  <div fxLayout="row">
+    <div fxFlex="50" fxFlexOffset="25">
+
+    <h2>Retrieve Hits</h2>
+
+    <div>
+      <p>
+      Retrieve pre-calculated Dfam matches for up to 50Kbp ranges of genomic
+      sequence.
+      </p>
+
+      <p>
+      Pre-calculated matches are from Dfam + nhmmer searches against dfamseq, which
+      contains reference assemblies for human [hg38], mouse [mm10], zebrafish
+      [danRer10], worm [ce10], and fly [dm6]
+      </p>
+
+      <p>
+      By default, redundant profile hits (RPH) will be removed as indicated by the
+      checkbox. You can optionally make the search specific to a model by entering
+      the Dfam accession or identifier.
+      </p>
+
+      <p>
+      The search will analyze both strands between the co-ordinate range, fetching
+      both Dfam model matches that score above the gathering threshold and Tandem
+      Repeat Finder (TRF) matches.
+      </p>
+    </div>
+
+    <form>
+      <!-- TODO: populate from DB -->
+      <mat-form-field>
+        <mat-select placeholder="Organism" name="organism" [(ngModel)]="search.assembly">
+          <mat-option value="hg38">Human</mat-option>
+          <mat-option value="mm10">Mouse</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- TODO: populate from DB -->
+      <mat-form-field>
+        <input matInput placeholder="Chromosome" name="chromosome" [(ngModel)]="search.chromosome">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Start" name="start" [(ngModel)]="search.start">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="End" name="end" [(ngModel)]="search.end">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Dfam entry (optional)" name="family" [(ngModel)]="search.family">
+      </mat-form-field>
+
+      <mat-checkbox name="nrph" [(ngModel)]="search.nrph">Remove redundant profile hits</mat-checkbox>
+
+      <div class="buttons">
+        <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+        <button mat-raised-button (click)="onReset()">Reset</button>
+        <button mat-raised-button (click)="onExample()">Example</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+
+  <div>
+    <dfam-search-annotations-graph [data]="results">
+    </dfam-search-annotations-graph>
+
+    <div fxLayout="row">
+    <div fxFlex="80" fxFlexOffset="10">
+      <table #nhmmerResultsSort="matSort" mat-table multiTemplateDataRows matSort [dataSource]="nhmmerResultsSource">
+        <ng-container matColumnDef="expander">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let hit"><button (click)="hit.show_alignment = !hit.show_alignment">{{hit.show_alignment ? 'v' : '&gt;'}}</button></td>
+        </ng-container>
+        <ng-container matColumnDef="sequence">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sequence</th>
+          <td mat-cell *matCellDef="let hit">{{hit.sequence}}</td>
+        </ng-container>
+        <ng-container matColumnDef="accession">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Family</th>
+          <td mat-cell *matCellDef="let hit"><a routerLink="/family/{{hit.accession}}">{{hit.query}}</a></td>
+        </ng-container>
+        <ng-container matColumnDef="bit_score">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Bit Score</th>
+          <td mat-cell *matCellDef="let hit">{{hit.bit_score}}</td>
+        </ng-container>
+        <ng-container matColumnDef="e_value">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>E-value</th>
+          <td mat-cell *matCellDef="let hit">{{hit.e_value}}</td>
+        </ng-container>
+        <ng-container matColumnDef="model_start">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>(Model) start</th>
+          <td mat-cell *matCellDef="let hit">{{hit.model_start}}</td>
+        </ng-container>
+        <ng-container matColumnDef="model_end">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>(Model) end</th>
+          <td mat-cell *matCellDef="let hit">{{hit.model_end}}</td>
+        </ng-container>
+        <ng-container matColumnDef="ali_start">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>(Alignment) start</th>
+          <td mat-cell *matCellDef="let hit">{{hit.ali_start}}</td>
+        </ng-container>
+        <ng-container matColumnDef="ali_end">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>(Alignment) end</th>
+          <td mat-cell *matCellDef="let hit">{{hit.ali_end}}</td>
+        </ng-container>
+        <ng-container matColumnDef="strand">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Strand</th>
+          <td mat-cell *matCellDef="let hit">{{hit.strand}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="alignment_expander">
+          <td *matCellDef="let hit"></td>
+        </ng-container>
+        <ng-container matColumnDef="alignment">
+          <td colspan="8" *matCellDef="let hit">
+            <dfam-search-annotations-alignment *ngIf="hit.show_alignment" [query]="{assembly: results.assembly, chrom: hit.sequence, start: hit.ali_start, end: hit.ali_end, family: hit.accession}">
+            </dfam-search-annotations-alignment>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="nhmmerColumns"></tr>
+        <tr mat-row *matRowDef="let hit; columns: nhmmerColumns"></tr>
+        <tr mat-row [ngClass]="{'collapsed': !hit.show_alignment}" mat-row *matRowDef="let hit; columns: ['alignment_expander', 'alignment']"></tr>
+      </table>
+
+      <table #trfResultsSort="matSort" mat-table matSort [dataSource]="trfResultsSource">
+        <ng-container matColumnDef="sequence">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sequence</th>
+          <td mat-cell *matCellDef="let hit">{{hit.sequence}}</td>
+        </ng-container>
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+          <td mat-cell *matCellDef="let hit">{{hit.type}}</td>
+        </ng-container>
+        <ng-container matColumnDef="start">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Start</th>
+          <td mat-cell *matCellDef="let hit">{{hit.start}}</td>
+        </ng-container>
+        <ng-container matColumnDef="end">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>End</th>
+          <td mat-cell *matCellDef="let hit">{{hit.end}}</td>
+        </ng-container>
+        <ng-container matColumnDef="repeat_length">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Period</th>
+          <td mat-cell *matCellDef="let hit">{{hit.repeat_length}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="trfColumns"></tr>
+        <tr mat-row *matRowDef="let hit; columns: trfColumns"></tr>
+      </table>
+    </div>
+    </div>
+  </div>
+</div>

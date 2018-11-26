@@ -19,12 +19,14 @@ import { JwtModule } from '@auth0/angular-jwt';
 // Material Imports
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSortModule} from '@angular/material/sort';
 import {MatTableModule} from '@angular/material/table';
@@ -52,6 +54,11 @@ import { FamilyDownloadComponent } from './family/family-download.component';
 import { FamilyModelCoverageComponent } from './family/family-model-coverage.component';
 import { FamilyModelHitprofileComponent } from './family/family-model-hitprofile.component';
 import { FamilyModelLogoComponent } from './family/family-model-logo.component';
+import { SearchComponent } from './search/search.component';
+import { SearchSequenceComponent } from './search/search-sequence.component';
+import { SearchAnnotationsComponent } from './search/search-annotations.component';
+import { SearchAnnotationsGraphComponent } from './search/search-annotations-graph.component';
+import { SearchAnnotationsAlignmentComponent } from './search/search-annotations-alignment.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -78,6 +85,11 @@ export function tokenGetter() {
     FamilyModelCoverageComponent,
     FamilyModelHitprofileComponent,
     FamilyModelLogoComponent,
+    SearchComponent,
+    SearchSequenceComponent,
+    SearchAnnotationsComponent,
+    SearchAnnotationsGraphComponent,
+    SearchAnnotationsAlignmentComponent,
   ],
   imports: [
     CommonModule,
@@ -89,12 +101,14 @@ export function tokenGetter() {
     BrowserAnimationsModule,
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatPaginatorModule,
+    MatRadioModule,
     MatSelectModule,
     MatSortModule,
     MatTableModule,

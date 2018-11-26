@@ -1,0 +1,16 @@
+form > * {
+  width: 100%;
+}
+
+.buttons > * {
+  margin: 1em;
+}
+
+table {
+  width: 100%;
+}
+
+// TODO: hacky, would rather not render the row at all
+.collapsed {
+  height: 0;
+}
