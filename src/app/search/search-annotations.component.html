@@ -67,12 +67,16 @@
     </div>
   </div>
 
-  <div>
+  <div *ngIf="results">
     <dfam-search-annotations-graph [data]="results">
     </dfam-search-annotations-graph>
 
     <div fxLayout="row">
     <div fxFlex="80" fxFlexOffset="10">
+      <h3>
+        Your search found {{results.nhmmer.length}} matches.
+        <button type="button" class="right" (click)="onDownloadNhmmer()">Download</button>
+      </h3>
       <table #nhmmerResultsSort="matSort" mat-table multiTemplateDataRows matSort [dataSource]="nhmmerResultsSource">
         <ng-container matColumnDef="expander">
           <th mat-header-cell *matHeaderCellDef></th>
@@ -130,6 +134,10 @@
         <tr mat-row [ngClass]="{'collapsed': !hit.show_alignment}" *matRowDef="let hit; columns: ['alignment_expander', 'alignment']"></tr>
       </table>
 
+      <h3>
+        TRF matches
+        <button type="button" class="right" (click)="onDownloadTrf()">Download</button>
+      </h3>
       <table #trfResultsSort="matSort" mat-table matSort [dataSource]="trfResultsSource">
         <ng-container matColumnDef="sequence">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Sequence</th>

@@ -119,4 +119,25 @@ export class SearchAnnotationsComponent implements OnInit {
     this.search.nrph = true;
   }
 
+  onDownloadNhmmer() {
+    let data = "";
+    if (this.results) {
+      this.results.nhmmer.forEach(function(hit) {
+        data += `${hit.sequence}\t${hit.accession}\t${hit.bit_score}\t${hit.e_value}\t${hit.seq_start}\t${hit.seq_end}\t${hit.ali_start}\t${hit.ali_end}\t${hit.strand}\n`;
+      });
+    }
+    const blob = new Blob([data], { type: 'text/plain' });
+    window.saveAs(blob, 'search_results.hits');
+  }
+
+  onDownloadTrf() {
+    let data = "";
+    if (this.results) {
+      this.results.trf.forEach(function(hit) {
+        data += `${hit.sequence}\t${hit.type}\t${hit.start}\t${hit.end}\t${hit.repeat_length}\n`;
+      });
+    }
+    const blob = new Blob([data], { type: 'text/plain' });
+    window.saveAs(blob, 'search_results.hits');
+  }
 }
