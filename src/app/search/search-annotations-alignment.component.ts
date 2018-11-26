@@ -41,10 +41,10 @@ export class SearchAnnotationsAlignmentComponent implements OnInit {
       for (let i = 0; i < data.hmm.string.length; i += this.WIDTH) {
         const chunk: any = {};
 
-        chunk.mod_str = data.hmm.string.substring(i, i + this.WIDTH).trim();
-        chunk.match_str = data.match.string.substring(i, i + this.WIDTH).trim();
-        chunk.seq_str = data.seq.string.substring(i, i + this.WIDTH).trim();
-        chunk.pp_str = data.pp.string.substring(i, i + this.WIDTH).trim();
+        chunk.mod_str = data.hmm.string.substring(i, i + this.WIDTH);
+        chunk.match_str = data.match.string.substring(i, i + this.WIDTH);
+        chunk.seq_str = data.seq.string.substring(i, i + this.WIDTH);
+        chunk.pp_str = data.pp.string.substring(i, i + this.WIDTH);
 
         chunk.mod_markup = "<span class='hmmmatch'>";
         for (let i = 0; i < chunk.mod_str.length; i++) {

@@ -124,7 +124,7 @@
         </ng-container>
         <ng-container matColumnDef="alignment">
           <td colspan="8" *matCellDef="let hit">
-            <dfam-search-annotations-alignment *ngIf="hit.show_alignment" [query]="{assembly: results.assembly, chrom: hit.sequence, start: hit.ali_start, end: hit.ali_end, family: hit.accession}">
+            <dfam-search-annotations-alignment *ngIf="hit.show_alignment" [query]="{assembly: results.assembly, chrom: hit.sequence, start: hit.seq_start, end: hit.seq_end, family: hit.accession}">
             </dfam-search-annotations-alignment>
           </td>
         </ng-container>
