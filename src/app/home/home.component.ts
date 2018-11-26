@@ -55,4 +55,28 @@ export class HomeComponent {
   onGotoAccession() {
     this.router.navigate(['family', this.gotoAccession]);
   }
+
+  annotations = {
+    assembly: "hg38",
+    chromosome: "",
+    start: "",
+    end: "",
+  };
+
+  onGotoAnnotations() {
+    this.router.navigate(['search', 'annotations'], { queryParams: {
+      "assembly": this.annotations.assembly,
+      "chromosome": this.annotations.chromosome,
+      "start": this.annotations.start,
+      "end": this.annotations.end,
+      "nrph": true,
+    } });
+  }
+
+  onExampleAnnotations() {
+    this.annotations.assembly = "hg38";
+    this.annotations.chromosome = "chr3";
+    this.annotations.start = '147733000';
+    this.annotations.end = '147766820';
+  }
 }

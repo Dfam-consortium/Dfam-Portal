@@ -60,6 +60,42 @@
             <mat-panel-title>VIEW A SEQUENCE</mat-panel-title>
             <mat-panel-description>View pre-calculated annotations on a DNA seqeunce</mat-panel-description>
           </mat-expansion-panel-header>
+
+          <div fxLayout="row">
+            <form fxFlex="80" fxFlexOffset="32">
+
+              <div>
+                <!-- TODO: populate from DB -->
+                <mat-form-field>
+                  <mat-select placeholder="Organism" name="organism" [(ngModel)]="annotations.assembly">
+                    <mat-option value="hg38">Human</mat-option>
+                    <mat-option value="mm10">Mouse</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                &nbsp;
+                <!-- TODO: populate from DB -->
+                <mat-form-field>
+                  <input matInput placeholder="Chromosome" name="chromosome" [(ngModel)]="annotations.chromosome">
+                </mat-form-field>
+              </div>
+
+              <div>
+                <mat-form-field>
+                  <input matInput placeholder="Start" name="start" [(ngModel)]="annotations.start">
+                </mat-form-field>
+                &nbsp;
+                <mat-form-field>
+                  <input matInput placeholder="End" name="end" [(ngModel)]="annotations.end">
+                </mat-form-field>
+              </div>
+
+              <div>
+                <button mat-raised-button color="primary" (click)="onGotoAnnotations()">Go</button>
+                <button mat-raised-button (click)="onExampleAnnotations()">Example</button>
+              </div>
+            </form>
+          </div>
+
         </mat-expansion-panel>
         <mat-expansion-panel hideToggle>
           <mat-expansion-panel-header>
