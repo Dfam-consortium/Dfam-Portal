@@ -14,7 +14,16 @@ table {
   float: right;
 }
 
-// TODO: hacky, would rather not render the row at all
-.collapsed {
-  height: 0;
+h3 {
+  background-color: #cccccc;
+  margin-bottom: 0;
+  padding: 0.5em;
+}
+
+tr:hover {
+  background-color: #dddddd;
+}
+
+.hidden {
+  display: none;
 }

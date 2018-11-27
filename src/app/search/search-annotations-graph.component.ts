@@ -23,9 +23,9 @@ export class SearchAnnotationsGraphComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    const el = this.graph.nativeElement;
+    el.innerHTML = '';
     if (this.data) {
-      const el = this.graph.nativeElement;
-      el.innerHTML = '';
       window.dfamAnnotationsGraphic(el, this.data);
     }
   }

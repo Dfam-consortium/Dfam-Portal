@@ -64,14 +64,14 @@
     </div>
   </div>
 
-  <div *ngIf="results">
-    <dfam-search-annotations-graph [data]="results">
-    </dfam-search-annotations-graph>
+  <dfam-search-annotations-graph [data]="results">
+  </dfam-search-annotations-graph>
 
+  <div [class.hidden]="!results">
     <div fxLayout="row">
     <div fxFlex="80" fxFlexOffset="10">
       <h3>
-        Your search found {{results.nhmmer.length}} matches.
+        Your search found {{results?.nhmmer?.length}} matches.
         <button type="button" class="right" (click)="onDownloadNhmmer()">Download</button>
       </h3>
       <table #nhmmerResultsSort="matSort" mat-table multiTemplateDataRows matSort [dataSource]="nhmmerResultsSource">
@@ -96,19 +96,19 @@
           <td mat-cell *matCellDef="let hit">{{hit.e_value}}</td>
         </ng-container>
         <ng-container matColumnDef="model_start">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>(Model) start</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Model start</th>
           <td mat-cell *matCellDef="let hit">{{hit.model_start}}</td>
         </ng-container>
         <ng-container matColumnDef="model_end">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>(Model) end</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Model end</th>
           <td mat-cell *matCellDef="let hit">{{hit.model_end}}</td>
         </ng-container>
         <ng-container matColumnDef="ali_start">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>(Alignment) start</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Alignment start</th>
           <td mat-cell *matCellDef="let hit">{{hit.ali_start}}</td>
         </ng-container>
         <ng-container matColumnDef="ali_end">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>(Alignment) end</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Alignment end</th>
           <td mat-cell *matCellDef="let hit">{{hit.ali_end}}</td>
         </ng-container>
         <ng-container matColumnDef="strand">
@@ -128,7 +128,7 @@
 
         <tr mat-header-row *matHeaderRowDef="nhmmerColumns"></tr>
         <tr mat-row [id]="hit.row_id" *matRowDef="let hit; columns: nhmmerColumns"></tr>
-        <tr mat-row [ngClass]="{'collapsed': !hit.show_alignment}" *matRowDef="let hit; columns: ['alignment_expander', 'alignment']"></tr>
+        <tr mat-row [ngClass]="{'hidden': !hit.show_alignment}" *matRowDef="let hit; columns: ['alignment_expander', 'alignment']"></tr>
       </table>
 
       <h3>

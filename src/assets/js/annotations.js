@@ -160,7 +160,7 @@ function AnnotationsGraphic(options) {
     var y = this.forward_height + 6;
     this.data.trf.forEach(function(hit, i) {
       //calculate start and end
-      var x = Math.floor(scale(hit.start - 1, that.data.length, that.width));
+      var x = Math.floor(scale(hit.start - offset, that.data.length, that.width));
       var width = Math.ceil(scale(hit.end - parseInt(hit.start) + 1, that.data.length, that.width));
       //draw a rectangle
       var repeat = hit;
@@ -168,7 +168,7 @@ function AnnotationsGraphic(options) {
       context.rect(x, y, width, 8 )
         .attr({fill:"#444444", stroke: "none"})
         .mouseover( function() {
-          var text = repeat.type + ' : ' + (repeat.start + offset) + ' - ' + (repeat.end + offset);
+          var text = repeat.type + ' : ' + (repeat.start) + ' - ' + (repeat.end);
           label = context.text(x, y - 10, text).attr({fill: '#000'});
           var ld = label.getBBox();
           if (ld.x < 0) {
