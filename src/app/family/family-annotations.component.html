@@ -8,28 +8,26 @@ score thresholds.
 <table *ngIf="stats?.length">
 <thead>
 <tr>
-  <td rowspan="2">Species 1</td>
-  <td colspan="3">Gathering Threshold</td>
-  <td colspan="3">Trusted Threshold</td>
+  <th rowspan="2">Species</th>
+  <th rowspan="2">Avg. Hit Length</th>
+  <th colspan="2">Gathering Threshold</th>
+  <th colspan="2">Trusted Threshold</th>
 </tr>
 <tr>
-  <td>Count</td>
-  <td>Avg. Len</td>
-  <td>Kimura Div.</td>
-  <td>Count</td>
-  <td>Avg. Len</td>
-  <td>Kimura Div.</td>
+  <th>Count</th>
+  <th>Kimura Div.</th>
+  <th>Count</th>
+  <th>Kimura Div.</th>
 </tr>
 </thead>
 
 <tr *ngFor="let stat of stats">
 <td>{{stat.species}}</td>
+<td>{{stat.avg_hit_length}}</td>
 <td>{{stat.gathering_all}}</td>
-<td>TODO</td>
-<td>{{stat.divergence}} TODO</td>
+<td>{{stat.gathering_divergence}}</td>
 <td>{{stat.trusted_all}}</td>
-<td>TODO</td>
-<td>{{stat.divergence}} TODO</td>
+<td>{{stat.trusted_divergence}}</td>
 </tr>
 
 </table>
