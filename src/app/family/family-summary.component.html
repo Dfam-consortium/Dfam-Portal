@@ -11,7 +11,7 @@
 
 <h2>Curation Details<mat-icon [matTooltip]="help.curation">help</mat-icon></h2>
 <mat-divider></mat-divider>
-<p><strong>Status:</strong> Unassessed</p>
+<p><strong>Status:</strong> {{family.curation_state_name}} <mat-icon [matTooltip]="family.curation_state_description">help</mat-icon></p>
 <p><strong>Length:</strong> {{family.length}}</p>
 <p><strong>Target Site Duplication:</strong> {{family.target_site_cons || "None"}}</p>
 
