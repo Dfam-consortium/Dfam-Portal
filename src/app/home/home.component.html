@@ -66,15 +66,12 @@
             <form fxFlex="80" fxFlexOffset="32">
 
               <div>
-                <!-- TODO: populate from DB -->
                 <mat-form-field>
                   <mat-select placeholder="Organism" name="organism" [(ngModel)]="annotations.assembly">
-                    <mat-option value="hg38">Human</mat-option>
-                    <mat-option value="mm10">Mouse</mat-option>
+                    <mat-option *ngFor="let assembly of assemblies" [value]="assembly.id">{{assembly.name}}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 &nbsp;
-                <!-- TODO: populate from DB -->
                 <mat-form-field>
                   <input matInput placeholder="Chromosome" name="chromosome" [(ngModel)]="annotations.chromosome">
                 </mat-form-field>

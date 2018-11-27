@@ -15,6 +15,8 @@ export class SearchAnnotationsComponent implements OnInit {
 
   results: any;
 
+  assemblies: any[] = [];
+
   @ViewChild('nhmmerResultsSort') nhmmerResultsSort: MatSort;
   nhmmerColumns = ["expander", "sequence", "accession", "bit_score", "e_value", "model_start", "model_end", "ali_start", "ali_end", "strand"];
   nhmmerResultsSource = new MatTableDataSource();
@@ -32,6 +34,9 @@ export class SearchAnnotationsComponent implements OnInit {
   ngOnInit() {
     this.nhmmerResultsSource.sort = this.nhmmerResultsSort;
     this.trfResultsSource.sort = this.trfResultsSort;
+
+    this.getAssemblies();
+
     this.onReset();
 
     const query = this.route.snapshot.queryParamMap;
@@ -64,6 +69,10 @@ export class SearchAnnotationsComponent implements OnInit {
     if (submit) {
       this.onSubmit();
     }
+  }
+
+  getAssemblies() {
+    this.dfamapi.getAssemblies().subscribe(data => this.assemblies = data);
   }
 
   onSubmit() {

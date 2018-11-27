@@ -35,6 +35,14 @@ export class DfamAPIService {
     return this.familyPath(accession) + '/assemblies/' + encodeURIComponent(id);
   }
 
+  getAssemblies(): Observable<any> {
+    const url = endpoint + 'assemblies';
+    return this.http.get(url).pipe(
+      map(this.extractData),
+      catchError(this.handleError("getAssemblies", [])),
+    );
+  }
+
   getFamily(accession: string): Observable<Family> {
     const url = this.familyPath(accession);
     return this.http.get<Family>(url)

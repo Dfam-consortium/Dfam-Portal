@@ -3,18 +3,20 @@ import { Router } from '@angular/router';
 import {Http, Response} from '@angular/http'
 import {map} from 'rxjs/operators';
 
+import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
+
 @Component({
   selector: '',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   title = 'Dfam';
   showMore1=false;
   result: Object;
   dfamBlogArticles: Object = [];
 
-  constructor(private router: Router, http: Http) {
+  constructor(private dfamapi: DfamAPIService, private router: Router, http: Http) {
   http.get('http://query.yahooapis.com/v1/public/yql?q=select * from xml where url=\'https://xfam.wordpress.com/category/dfam/feed/\' &format=json')
            .pipe(map(res => res.json()))
            .subscribe(res => {
@@ -44,6 +46,10 @@ export class HomeComponent {
            });
   }
 
+  ngOnInit() {
+    this.dfamapi.getAssemblies().subscribe(data => this.assemblies = data);
+  }
+
   searchKeywords: string;
 
   searchByKeywords() {
@@ -55,6 +61,8 @@ export class HomeComponent {
   onGotoAccession() {
     this.router.navigate(['family', this.gotoAccession]);
   }
+
+  assemblies: any[] = [];
 
   annotations = {
     assembly: "hg38",
