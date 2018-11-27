@@ -59,6 +59,7 @@ import { SearchSequenceComponent } from './search/search-sequence.component';
 import { SearchAnnotationsComponent } from './search/search-annotations.component';
 import { SearchAnnotationsGraphComponent } from './search/search-annotations-graph.component';
 import { SearchAnnotationsAlignmentComponent } from './search/search-annotations-alignment.component';
+import { HelpIconComponent } from './shared/help-icon/help-icon.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -90,6 +91,7 @@ export function tokenGetter() {
     SearchAnnotationsComponent,
     SearchAnnotationsGraphComponent,
     SearchAnnotationsAlignmentComponent,
+    HelpIconComponent,
   ],
   imports: [
     CommonModule,

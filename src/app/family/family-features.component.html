@@ -2,7 +2,7 @@
 Loading data...
 </div>
 
-<h2>Coding Sequences <mat-icon [matTooltip]="help.coding_seqs">help</mat-icon></h2>
+<h2>Coding Sequences <dfam-help-icon [matTooltip]="help.coding_seqs"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
 
 <div *ngIf="!family?.coding_seqs">
@@ -22,7 +22,7 @@ No coding sequences recorded for this family.
   </li>
 </ol>
 
-<h2>Features <mat-icon [matTooltip]="help.features">help</mat-icon></h2>
+<h2>Features <dfam-help-icon [matTooltip]="help.features"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
 
 <div *ngIf="!family?.features">
