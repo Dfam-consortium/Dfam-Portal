@@ -36,7 +36,8 @@ No recorded citations for this family.
 
 <h2>Source</h2>
 <mat-divider></mat-divider>
-<p><strong>Submitter:</strong> </p>
+<p><strong>Submitter:</strong> {{family.submitter || "Unknown"}}</p>
+<p><strong>Author:</strong> {{family.author || "Unknown"}}</p>
 <p><strong>Created On:</strong> {{family.date_created | date: 'medium'}}</p>
 <p><strong>Modified On:</strong> {{family.date_modified | date: 'medium'}}</p>
 
