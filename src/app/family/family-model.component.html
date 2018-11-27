@@ -44,7 +44,7 @@ Genome-specific characteristics are not available for this family.
 
   <mat-card *ngIf="selectedAssembly">
 
-    <h3>Coverage, Conservation, and Inserts <mat-icon [matTooltip]="help.hitProfile">help</mat-icon></h3>
+    <h3>Coverage, Conservation, and Inserts <mat-icon [matTooltip]="help.conservation">help</mat-icon></h3>
 
     <p><strong>False discovery rate</strong>: {{assemblyData[selectedAssembly].hmm_fdr || "Unknown"}}</p>
 
@@ -56,8 +56,8 @@ Genome-specific characteristics are not available for this family.
       </mat-select>
     </mat-form-field>
 
-    <dfam-family-model-hitprofile [data]="hitprofileData">
-    </dfam-family-model-hitprofile>
+    <dfam-family-model-conservation [data]="conservationData">
+    </dfam-family-model-conservation>
 
     <h3>Non-Redundant Coverage <mat-icon [matTooltip]="help.nrph">help</mat-icon></h3>
     Number of aligned bases per model position, among the non-redundant hits in dfamseq.

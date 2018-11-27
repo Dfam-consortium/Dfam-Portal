@@ -52,7 +52,7 @@ import { FamilyAnnotationsComponent } from './family/family-annotations.componen
 import { FamilyRelationshipsComponent } from './family/family-relationships.component';
 import { FamilyDownloadComponent } from './family/family-download.component';
 import { FamilyModelCoverageComponent } from './family/family-model-coverage.component';
-import { FamilyModelHitprofileComponent } from './family/family-model-hitprofile.component';
+import { FamilyModelConservationComponent } from './family/family-model-conservation.component';
 import { FamilyModelLogoComponent } from './family/family-model-logo.component';
 import { SearchComponent } from './search/search.component';
 import { SearchSequenceComponent } from './search/search-sequence.component';
@@ -83,7 +83,7 @@ export function tokenGetter() {
     FamilyRelationshipsComponent,
     FamilyDownloadComponent,
     FamilyModelCoverageComponent,
-    FamilyModelHitprofileComponent,
+    FamilyModelConservationComponent,
     FamilyModelLogoComponent,
     SearchComponent,
     SearchSequenceComponent,

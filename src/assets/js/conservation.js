@@ -54,13 +54,13 @@ function nice_bounds(axis_start, axis_end, num_ticks) {
   }
 }
 
-// Hit Profile Graphic
+// Conservation Graphic
 //
 // options.data ( required ):
 //   .points []
 //   .max
 
-function HitProfilePlot(options) {
+function ConservationPlot(options) {
   options = options || {};
   this.data = options.data || null;
   this.target = options.target || document.body;
@@ -281,8 +281,8 @@ function HitProfilePlot(options) {
   }
 }
 
-window.dfamHitProfilePlot = function(target, data) {
-  var plot = new HitProfilePlot({data: data, target: target});
+window.dfamConservationPlot = function(target, data) {
+  var plot = new ConservationPlot({data: data, target: target});
   plot.render();
   return plot;
 };
