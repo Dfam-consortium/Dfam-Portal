@@ -1,3 +1,25 @@
+function highlightFade(element, duration) {
+  var start = [60, 100, 50];
+  var target = [60, 100, 100];
+  function interp(n, frac) {
+    return start[n] + (target[n] - start[n]) * frac;
+  }
+
+  var elapsed = 0;
+  var stepTime = 50;
+  function step() {
+    elapsed += stepTime;
+    var frac = elapsed / duration;
+    var hsl = "hsl(" + interp(0, frac) + ", " + interp(1, frac) + "%, " + interp(2, frac) + "%)";
+    element.style.backgroundColor = hsl;
+    if (elapsed < duration) {
+      setTimeout(step, stepTime);
+    }
+  }
+
+  setTimeout(step, stepTime);
+};
+
 function AnnotationsGraphic(options) {
   options = (options) ? options : {};
   this.data = options.data || null;
@@ -147,8 +169,7 @@ function AnnotationsGraphic(options) {
         })
         .click(function () {
           var el = document.getElementById(repeat.row_id);
-          el.style.backgroundColor = '#ffe87c';
-          setTimeout(function() { el.style.backgroundColor = null; }, 3000);
+          highlightFade(el, 1000);
           el.scrollIntoView(false);
         });
     });
@@ -191,8 +212,7 @@ function AnnotationsGraphic(options) {
         })
         .click(function () {
           var el = document.getElementById(repeat.row_id);
-          el.style.backgroundColor = '#ffe87c';
-          setTimeout(function() { el.style.backgroundColor = null; }, 3000);
+          highlightFade(el, 1000);
           el.scrollIntoView(false);
         });
     });
