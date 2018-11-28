@@ -18,7 +18,48 @@ function highlightFade(element, duration) {
   }
 
   setTimeout(step, stepTime);
+}
+
+var REPEAT_COLORS = {
+  "None": "#cccccc",
+  "Other TE": "#3f6cbf",
+  "LINE": "#739025",
+  "SINE": "#AFD353",
+  "LTR": "#3fbfb4",
+  "DNA Transposon": "#bf793f",
+  "Unknown": "#923fbf",
+  "Satellite": "#b7a4e8",
+  "RNA": "#bf3f41",
 };
+
+var REPEAT_TYPES = {
+  "ARTEFACT": "Other TE",
+  "DNA": "DNA Transposon",
+  "LINE": "LINE",
+  "LTR": "LTR",
+  "Low_complexity": "None",
+  "Other": "Unknown",
+  "RC": "Other TE",
+  "RNA": "RNA",
+  "SINE": "SINE",
+  "Satellite": "Satellite",
+  "Simple_repeat": "None",
+  "Unknown": "Unknown",
+  "buffer": "Other TE",
+  "rRNA": "RNA",
+  "scRNA": "RNA",
+  "snRNA": "RNA",
+  "tRNA": "RNA",
+  "Retroposon": "Other TE",
+  "Segmental": "Other TE",
+  "PLE": "Other TE",
+  "DIRS": "Other TE",
+};
+
+function getRepeatColor(type) {
+  var simple_type = REPEAT_TYPES[type] || "Unknown";
+  return REPEAT_COLORS[simple_type];
+}
 
 function AnnotationsGraphic(options) {
   options = (options) ? options : {};
@@ -28,16 +69,23 @@ function AnnotationsGraphic(options) {
   this.width  = options.width || this.target.offsetWidth;
 
   this.render = function () {
+    var container = document.createElement("div");
+    this.target.appendChild(container);
+
     // plot the dimensions of the graphic
     this.setHeight();
     // attach the canvas
-    var context = Raphael(this.target, this.width, this.height);
+    var context = Raphael(container, this.width, this.height);
 
     this.drawQueryReference(context);
     // draw trf hits on sequence line
     this.drawTRFHits(context);
     // draw nhmmer hits above and below the sequence
     this.drawNhmmerHits(context);
+
+    var legend = document.createElement("span");
+    container.appendChild(legend);
+    this.drawLegend(legend);
   }
 
   this.setHeight = function() {
@@ -129,10 +177,9 @@ function AnnotationsGraphic(options) {
         y = that.forward_height - 6 - hit.y_offset;
       }
       var repeat = hit;
-      repeat.color = repeat.color || '#ccc';
       var label_set = context.set();
       context.rect(x, y, width, 8 )
-        .attr({fill: repeat.color, stroke: 'none'})
+        .attr({fill: getRepeatColor(repeat.type || 'Unknown'), stroke: 'none'})
         .mouseover( function() {
           var text = repeat.query + ' : ' + (repeat.ali_start) + ' - ' + (repeat.ali_end);
 
@@ -224,6 +271,21 @@ function AnnotationsGraphic(options) {
                   .attr({fill: "#aaa", stroke: "none"});
     var label = context.text(1, y + 12, this.data.query)
                   .attr({'text-anchor': 'start'});
+  }
+
+  this.drawLegend = function(element) {
+    element.style.border = "1.5px solid black";
+    element.style.borderRadius = "4px";
+
+    Object.keys(REPEAT_COLORS).forEach(function(name) {
+      var item = document.createElement("span");
+      item.className = "key";
+      item.style.margin = "0.5em";
+      item.innerHTML = "<span style='background: " +
+        REPEAT_COLORS[name] + "; width: 10px; height: 10px;" +
+        " margin-right: 0.5em; display: inline-block;'></span> " + name + "";
+      element.appendChild(item);
+    });
   }
 }
 
