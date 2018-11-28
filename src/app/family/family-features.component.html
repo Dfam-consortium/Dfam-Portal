@@ -5,36 +5,46 @@ Loading data...
 <h2>Coding Sequences <dfam-help-icon [matTooltip]="help.coding_seqs"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
 
-<div *ngIf="!family?.coding_seqs">
+<div *ngIf="!family?.coding_seqs?.length">
 No coding sequences recorded for this family.
 </div>
 
-<ol>
+<ul>
   <li *ngFor="let cs of family?.coding_seqs">
-    <p><strong>Product:</strong> </p>
-    <p><strong>Description:</strong> </p>
-    <p><strong>Translation:</strong> </p>
-    <p><strong>Frameshifts:</strong> </p>
-    <p><strong>Stop codons:</strong> </p>
-    <p><strong>Exons:</strong> </p>
-    <p><strong>CDS Range:</strong> </p>
-    <p><strong>Strand:</strong> </p>
+    <p><strong>Product:</strong> {{cs.product}}</p>
+    <p><strong>Description:</strong> {{cs.description}}</p>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Translation</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <samp class="coding_seq">
+      {{cs.translation}}
+      </samp>
+    </mat-expansion-panel>
+    <p><strong>Frameshifts:</strong> {{cs.frameshifts}}</p>
+    <p><strong>Stop codons:</strong> {{cs.stop_codons}}</p>
+    <p><strong>Exons:</strong> {{cs.exon_count}}</p>
+    <p><strong>CDS Range:</strong> {{cs.start}}-{{cs.end}}</p>
+    <p><strong>Strand:</strong> {{cs.reverse ? '-' : '+'}}</p>
   </li>
-</ol>
+</ul>
 
 <h2>Features <dfam-help-icon [matTooltip]="help.features"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
 
-<div *ngIf="!family?.features">
+<div *ngIf="!family?.features?.length">
 No features recorded for this family.
 </div>
 
-<ol>
+<ul>
   <li *ngFor="let feat of family?.features">
-    <p><strong>Type:</strong> </p>
-    <p><strong>Range:</strong> </p>
-    <p><strong>Description:</strong> </p>
-    <p><strong>Attributes:</strong> </p>
+    <p><strong>Type:</strong> {{feat.type}}</p>
+    <p><strong>Range:</strong> {{feat.model_start_pos}}-{{feat.model_end_pos}} </p>
+    <p><strong>Description:</strong> {{feat.description}}</p>
+    <p><strong>Attributes:</strong></p>
+    <ul>
+      <li *ngFor="let attr of feat.attributes">{{attr.key}}: {{attr.value}}</li>
+    </ul>
   </li>
-</ol>
-
+</ul>
