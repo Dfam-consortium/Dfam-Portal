@@ -19,16 +19,16 @@ export class SearchSequenceComponent implements OnInit {
   }
 
   onReset() {
-    this.search.sequence = "";
-    this.search.assembly = "";
-    this.search.cutoff = "curated";
+    this.search.sequence = '';
+    this.search.assembly = '';
+    this.search.cutoff = 'curated';
     this.search.evalue = 0.001;
   }
 
   onExample() {
-    this.search.sequence = "test";
-    this.search.assembly = "hg38";
-    this.search.cutoff = "curated";
+    this.search.sequence = 'test';
+    this.search.assembly = 'hg38';
+    this.search.cutoff = 'curated';
     this.search.evalue = 0.001;
   }
 

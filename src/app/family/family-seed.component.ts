@@ -16,7 +16,7 @@ declare global {
 })
 export class FamilySeedComponent implements OnInit {
 
-  help = "Visualization of the coverage of the family's seed alignment.";
+  help = 'Visualization of the coverage of the family\'s seed alignment.';
 
   @ViewChild('seedContainer')
   private seedContainer: ElementRef;

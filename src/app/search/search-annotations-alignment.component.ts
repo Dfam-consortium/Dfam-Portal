@@ -16,16 +16,16 @@ export class SearchAnnotationsAlignmentComponent implements OnInit {
     family: string,
   };
 
-  stars = ".........*".repeat(10);
+  stars = '.........*'.repeat(10);
   chunks: any[] = [];
+
+  WIDTH = 80;
 
   constructor(private dfamapi: DfamAPIService) { }
 
   ngOnInit() {
     this.getAlignment();
   }
-
-  WIDTH = 80;
 
   getAlignment() {
     this.dfamapi.getAlignment(this.query.assembly, this.query.chrom,
@@ -46,29 +46,29 @@ export class SearchAnnotationsAlignmentComponent implements OnInit {
         chunk.seq_str = data.seq.string.substring(i, i + this.WIDTH);
         chunk.pp_str = data.pp.string.substring(i, i + this.WIDTH);
 
-        chunk.mod_markup = "<span class='hmmmatch'>";
+        chunk.mod_markup = '<span class="hmmmatch">';
         for (let i = 0; i < chunk.mod_str.length; i++) {
           const match = chunk.match_str[i];
           const ch = chunk.mod_str[i];
           // TODO: batch consecutive groups
-          if(match == ' ') {
-            chunk.mod_markup += "<span class='hmmminus'>" + ch + "</span>";
-          } else if (match == '+') {
-            chunk.mod_markup += "<span class='hmmplus'>" + ch + "</span>";
+          if (match === ' ') {
+            chunk.mod_markup += '<span class="hmmminus">' + ch + '</span>';
+          } else if (match === '+') {
+            chunk.mod_markup += '<span class="hmmplus">' + ch + '</span>';
           } else {
             chunk.mod_markup += ch;
           }
         }
-        chunk.mod_markup += "</span>";
+        chunk.mod_markup += '</span>';
 
-        chunk.seq_markup = "";
+        chunk.seq_markup = '';
         for (let i = 0; i < chunk.seq_str.length; i++) {
           let pp = chunk.pp_str[i];
           const ch = chunk.seq_str[i];
-          if (pp == '*') {
+          if (pp === '*') {
             pp = 'star';
           }
-          if (pp == ' ') {
+          if (pp === ' ') {
             pp = 'gap';
           }
 

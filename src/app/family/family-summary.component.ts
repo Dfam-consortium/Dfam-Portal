@@ -10,10 +10,10 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 export class FamilySummaryComponent implements OnInit {
 
   help = {
-    classification: "The Dfam classification for the family, and the specificity of the family",
-    curation: "",
-    citations: "List of known citations for this family",
-    aliases: "Names for this family in other databases",
+    classification: 'The Dfam classification for the family, and the specificity of the family',
+    curation: '',
+    citations: 'List of known citations for this family',
+    aliases: 'Names for this family in other databases',
   };
 
   family;

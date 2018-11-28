@@ -5,35 +5,33 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: '',
   templateUrl: './browse.component.html',
   styleUrls: ['./browse.component.scss']
 })
-export class BrowseComponent {
-  families:any = {};
+export class BrowseComponent implements OnInit {
+
+  families: any = {};
 
   search: any = {};
+  searchApiOptions: any = { };
 
-  displayColumns = [ "accession", "name", "classification", "clades", "description", "length" ];
-  dataRows = [{"name": "test"}];
+  displayColumns = [ 'accession', 'name', 'classification', 'clades', 'description', 'length' ];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private route: ActivatedRoute,
-    private dfamapi:DfamAPIService
+    private dfamapi: DfamAPIService,
   ) { }
 
   ngOnInit() {
     this.getFamilies();
 
-    const initialKeywords = this.route.snapshot.queryParamMap.get("keywords")
+    const initialKeywords = this.route.snapshot.queryParamMap.get('keywords');
     if (initialKeywords) {
       this.search.keywords = initialKeywords;
     }
   }
-
-  searchApiOptions: any = { };
 
   searchChanged() {
     this.searchApiOptions.name = this.search.name;
@@ -47,7 +45,7 @@ export class BrowseComponent {
   sortChanged(sort: Sort) {
     console.log(sort);
     if (sort.direction) {
-      this.searchApiOptions.sort = sort.active + ":" + sort.direction;
+      this.searchApiOptions.sort = sort.active + ':' + sort.direction;
     } else {
       delete this.searchApiOptions.sort;
     }

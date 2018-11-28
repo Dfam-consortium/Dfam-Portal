@@ -15,7 +15,7 @@ declare global {
 })
 export class FamilyRelationshipsComponent implements OnInit {
 
-  help = "A representation of the relationships between TE entries. Simple glyphs are used to represent the location of regions of similarity between models. The case of reverse complement similarity is shown using a purple glyph with inverted orientation. Each glyph is shown with accompanying percent identity between the entry consensus sequences, match e-value, and percent shared coverage (length). The list of related entries can be sorted by any of these fields.";
+  help = 'A representation of the relationships between TE entries. Simple glyphs are used to represent the location of regions of similarity between models. The case of reverse complement similarity is shown using a purple glyph with inverted orientation. Each glyph is shown with accompanying percent identity between the entry consensus sequences, match e-value, and percent shared coverage (length). The list of related entries can be sorted by any of these fields.';
 
   constructor(
     private dfamapi: DfamAPIService,

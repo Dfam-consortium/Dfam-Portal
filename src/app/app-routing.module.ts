@@ -41,7 +41,7 @@ export const PUBLIC_ROUTES: Routes = [
     { path: 'relationships', component: FamilyRelationshipsComponent },
     { path: 'download', component: FamilyDownloadComponent },
   ]},
-  { path: 'about', component: AboutComponent} 
+  { path: 'about', component: AboutComponent}
 ];
 
 export const SECURE_ROUTES: Routes = [
@@ -53,10 +53,12 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'register', component: LoginComponent},
   { path: '', component: PublicLayoutComponent, data: { title: 'Public Views' }, children: PUBLIC_ROUTES },
-  { path: 'workbench', component: WorkbenchLayoutComponent, canActivate: [AuthService], data: { title: 'Workbench Views' }, children: SECURE_ROUTES }
+  { path: 'workbench', component: WorkbenchLayoutComponent, canActivate: [AuthService],
+    data: { title: 'Workbench Views' }, children: SECURE_ROUTES }
 ];
 
-//  { path: 'workbench', component: WorkbenchLayoutComponent, canActivate: [Guard], data: { title: 'Workbench Views' }, children: SECURE_ROUTES }
+//  { path: 'workbench', component: WorkbenchLayoutComponent, canActivate: [Guard],
+//    data: { title: 'Workbench Views' }, children: SECURE_ROUTES }
 
 
 // TO enable tracing:

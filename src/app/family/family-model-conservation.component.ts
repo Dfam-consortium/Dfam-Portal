@@ -5,7 +5,7 @@ import { Component, Input, OnChanges, OnInit, ElementRef, ViewChild, HostListene
   templateUrl: './family-model-conservation.component.html',
   styleUrls: ['./family-model-conservation.component.scss']
 })
-export class FamilyModelConservationComponent implements OnInit {
+export class FamilyModelConservationComponent implements OnInit, OnChanges {
 
   @Input() data;
 

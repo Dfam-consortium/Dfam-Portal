@@ -18,11 +18,12 @@ export class SearchAnnotationsComponent implements OnInit {
   assemblies: any[] = [];
 
   @ViewChild('nhmmerResultsSort') nhmmerResultsSort: MatSort;
-  nhmmerColumns = ["expander", "sequence", "accession", "bit_score", "e_value", "model_start", "model_end", "ali_start", "ali_end", "strand"];
+  nhmmerColumns = ['expander', 'sequence', 'accession', 'bit_score', 'e_value',
+    'model_start', 'model_end', 'ali_start', 'ali_end', 'strand'];
   nhmmerResultsSource = new MatTableDataSource();
 
   @ViewChild('trfResultsSort') trfResultsSort: MatSort;
-  trfColumns = ["sequence", "type", "start", "end", "repeat_length"];
+  trfColumns = ['sequence', 'type', 'start', 'end', 'repeat_length'];
   trfResultsSource = new MatTableDataSource();
 
   constructor(
@@ -97,10 +98,10 @@ export class SearchAnnotationsComponent implements OnInit {
       // Add 'row_id' values so the visualization can jump to the table rows
       let i = 0;
       results.nhmmer.forEach(function(hmm_hit) {
-        hmm_hit.row_id = "annotation_" + (i++);
+        hmm_hit.row_id = 'annotation_' + (i++);
       });
       results.trf.forEach(function(trf_hit) {
-        trf_hit.row_id = "annotation_" + (i++);
+        trf_hit.row_id = 'annotation_' + (i++);
       });
 
       this.results = results;
@@ -111,8 +112,8 @@ export class SearchAnnotationsComponent implements OnInit {
   }
 
   onReset() {
-    this.search.assembly = "hg38";
-    this.search.chromosome = "";
+    this.search.assembly = 'hg38';
+    this.search.chromosome = '';
     this.search.start = null;
     this.search.end = null;
     this.search.family = null;
@@ -120,19 +121,20 @@ export class SearchAnnotationsComponent implements OnInit {
   }
 
   onExample() {
-    this.search.assembly = "hg38";
-    this.search.chromosome = "chr3";
-    this.search.start = "147733000";
-    this.search.end = "147766820";
+    this.search.assembly = 'hg38';
+    this.search.chromosome = 'chr3';
+    this.search.start = '147733000';
+    this.search.end = '147766820';
     this.search.family = null;
     this.search.nrph = true;
   }
 
   onDownloadNhmmer() {
-    let data = "";
+    let data = '';
     if (this.results) {
       this.results.nhmmer.forEach(function(hit) {
-        data += `${hit.sequence}\t${hit.accession}\t${hit.bit_score}\t${hit.e_value}\t${hit.seq_start}\t${hit.seq_end}\t${hit.ali_start}\t${hit.ali_end}\t${hit.strand}\n`;
+        data += `${hit.sequence}\t${hit.accession}\t${hit.bit_score}\t${hit.e_value}\t` +
+          `${hit.seq_start}\t${hit.seq_end}\t${hit.ali_start}\t${hit.ali_end}\t${hit.strand}\n`;
       });
     }
     const blob = new Blob([data], { type: 'text/plain' });
@@ -140,7 +142,7 @@ export class SearchAnnotationsComponent implements OnInit {
   }
 
   onDownloadTrf() {
-    let data = "";
+    let data = '';
     if (this.results) {
       this.results.trf.forEach(function(hit) {
         data += `${hit.sequence}\t${hit.type}\t${hit.start}\t${hit.end}\t${hit.repeat_length}\n`;

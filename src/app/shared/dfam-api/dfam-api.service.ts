@@ -39,14 +39,14 @@ export class DfamAPIService {
     const url = endpoint + 'assemblies';
     return this.http.get(url).pipe(
       map(this.extractData),
-      catchError(this.handleError("getAssemblies", [])),
+      catchError(this.handleError('getAssemblies', [])),
     );
   }
 
   getFamily(accession: string): Observable<Family> {
     const url = this.familyPath(accession);
     return this.http.get<Family>(url)
-      .pipe(catchError(this.handleError("getFamily", null)));
+      .pipe(catchError(this.handleError('getFamily', null)));
   }
 
   getFamilies(apiOptions: any): Observable<FamilySummary[]> {
@@ -79,7 +79,7 @@ export class DfamAPIService {
     }
 
     return this.http.get<FamilySummary[]>(url, options)
-      .pipe(catchError(this.handleError("getFamilies", [])));
+      .pipe(catchError(this.handleError('getFamilies', [])));
   }
 
   getFamilyHmm(accession: string): Observable<string> {
@@ -90,7 +90,7 @@ export class DfamAPIService {
       responseType: 'text' as 'text',
     };
     return this.http.get(url, options)
-      .pipe(catchError(this.handleError("getFamilyHmm", "")));
+      .pipe(catchError(this.handleError('getFamilyHmm', '')));
   }
 
   getFamilyHmmLogo(accession: string): Observable<any> {
@@ -101,7 +101,7 @@ export class DfamAPIService {
     };
     return this.http.get(url, options).pipe(
       map(this.extractData),
-      catchError(this.handleError("getFamilyHmmLogo", null))
+      catchError(this.handleError('getFamilyHmmLogo', null))
     );
   }
 
@@ -113,7 +113,7 @@ export class DfamAPIService {
       responseType: 'blob' as 'blob',
     };
     return this.http.get(url, options).pipe(
-      catchError(this.handleError("getFamilyHmmLogoImage", null))
+      catchError(this.handleError('getFamilyHmmLogoImage', null))
     );
   }
 
@@ -124,14 +124,14 @@ export class DfamAPIService {
       responseType: 'text' as 'text',
     };
     return this.http.get(url, options)
-      .pipe(catchError(this.handleError("getFamilySeed", "")));
+      .pipe(catchError(this.handleError('getFamilySeed', '')));
   }
 
   getFamilyRelationships(accession: string): Observable<any> {
     const url = this.familyPath(accession) + '/relationships';
     return this.http.get(url).pipe(
       map(this.extractData),
-      catchError(this.handleError("getFamilyRelationships", [])),
+      catchError(this.handleError('getFamilyRelationships', [])),
     );
   }
 
@@ -139,7 +139,7 @@ export class DfamAPIService {
     const url = this.familyPath(accession) + '/assemblies';
     return this.http.get(url).pipe(
       map(this.extractData),
-      catchError(this.handleError("getFamilyAssemblies", [])),
+      catchError(this.handleError('getFamilyAssemblies', [])),
     );
   }
 
@@ -149,7 +149,7 @@ export class DfamAPIService {
       params: new HttpParams().set('model', 'hmm'),
     };
     return this.http.get(url, options)
-      .pipe(catchError(this.handleError("getFamilyAssemblyModelCoverage", null)));
+      .pipe(catchError(this.handleError('getFamilyAssemblyModelCoverage', null)));
   }
 
   getFamilyAssemblyModelConservation(accession: string, assembly: string): Observable<any> {
@@ -158,7 +158,7 @@ export class DfamAPIService {
       params: new HttpParams().set('model', 'hmm'),
     };
     return this.http.get(url, options)
-      .pipe(catchError(this.handleError("getFamilyAssemblyModelConservation", null)));
+      .pipe(catchError(this.handleError('getFamilyAssemblyModelConservation', null)));
   }
 
   getFamilyAssemblyAnnotations(accession: string, assembly: string, nrph: boolean): Observable<string> {
@@ -168,13 +168,13 @@ export class DfamAPIService {
       responseType: 'text' as 'text',
     };
     return this.http.get(url, options)
-      .pipe(catchError(this.handleError("getFamilyAssemblyAnnotations", "")));
+      .pipe(catchError(this.handleError('getFamilyAssemblyAnnotations', '')));
   }
 
   getFamilyAssemblyAnnotationStats(accession: string, assembly: string): Observable<any> {
     const url = this.familyAssemblyPath(accession, assembly) + '/annotation_stats';
     return this.http.get(url)
-      .pipe(catchError(this.handleError("getFamilyAssemblyAnnotationStats", null)));
+      .pipe(catchError(this.handleError('getFamilyAssemblyAnnotationStats', null)));
   }
 
   getFamilyAssemblyKaryoImage(accession: string, assembly: string, nrph: boolean): Observable<Blob> {
@@ -184,7 +184,7 @@ export class DfamAPIService {
       responseType: 'blob' as 'blob',
     };
     return this.http.get(url, options)
-      .pipe(catchError(this.handleError("getFamilyAssemblyKaryoImage", null)));
+      .pipe(catchError(this.handleError('getFamilyAssemblyKaryoImage', null)));
   }
 
   getFamilyAssemblyKaryoImageHtmlMap(accession: string, assembly: string, nrph: boolean): Observable<string> {
@@ -194,7 +194,7 @@ export class DfamAPIService {
       responseType: 'text' as 'text',
     };
     return this.http.get(url, options)
-      .pipe(catchError(this.handleError("getFamilyAssemblyKaryoImageHtmlMap", "")));
+      .pipe(catchError(this.handleError('getFamilyAssemblyKaryoImageHtmlMap', '')));
   }
 
   getFamilyAssemblyKaryoImageKey(accession: string, assembly: string, nrph: boolean): Observable<string> {
@@ -204,14 +204,14 @@ export class DfamAPIService {
       responseType: 'text' as 'text',
     };
     return this.http.get(url, options)
-      .pipe(catchError(this.handleError("getFamilyAssemblyKaryoImageKey", "")));
+      .pipe(catchError(this.handleError('getFamilyAssemblyKaryoImageKey', '')));
   }
 
   getClasses(): Observable<any> {
     const url = endpoint + 'classes';
     return this.http.get(url).pipe(
       map(this.extractData),
-      catchError(this.handleError("getClasses", [])),
+      catchError(this.handleError('getClasses', [])),
     );
   }
 
@@ -227,7 +227,7 @@ export class DfamAPIService {
     }
     return this.http.get(url, options).pipe(
       map(this.extractData),
-      catchError(this.handleError("getTaxa", [])),
+      catchError(this.handleError('getTaxa', [])),
     );
   }
 
@@ -251,7 +251,7 @@ export class DfamAPIService {
 
     return this.http.get(url, options).pipe(
       map(this.extractData),
-      catchError(this.handleError("getAnnotations", {})),
+      catchError(this.handleError('getAnnotations', {})),
     );
   }
 
@@ -268,7 +268,7 @@ export class DfamAPIService {
 
     return this.http.get(url, options).pipe(
       map(this.extractData),
-      catchError(this.handleError("getAlignment", {})),
+      catchError(this.handleError('getAlignment', {})),
     );
   }
 
