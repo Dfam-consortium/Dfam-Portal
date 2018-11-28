@@ -1,28 +1,3 @@
 .results {
   white-space: pre;
 }
-
-:host /deep/ .hmmminus {
-  background-color: #ffffff;
-}
-
-// TODO: base these on the color theme
-:host /deep/ .hmmplus {
-  background-color: #d1e59c;
-}
-
-:host /deep/ .hmmmatch {
-  background-color: #93b92f;
-}
-
-:host /deep/ .heatgap { background-color: #ffffff; }
-:host /deep/ .heat1 { background-color: #f4f4f4; }
-:host /deep/ .heat2 { background-color: #eaeaea; }
-:host /deep/ .heat3 { background-color: #e0e0e0; }
-:host /deep/ .heat4 { background-color: #d6d6d6; }
-:host /deep/ .heat5 { background-color: #cccccc; }
-:host /deep/ .heat6 { background-color: #c1c1c1; }
-:host /deep/ .heat7 { background-color: #b7b7b7; }
-:host /deep/ .heat8 { background-color: #adadad; }
-:host /deep/ .heat9 { background-color: #a3a3a3; }
-:host /deep/ .heatstar { background-color: #999999; }

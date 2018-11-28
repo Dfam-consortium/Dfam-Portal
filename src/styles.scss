@@ -91,6 +91,23 @@ div.outline {
     letter-spacing: 3px;
 }
 
+// Annotations alignment color coding
+// TODO: base these on the color theme
+.hmmminus { background-color: #ffffff; }
+.hmmplus { background-color: #d1e59c; }
+.hmmmatch { background-color: #93b92f; }
+.heatgap { background-color: #ffffff; }
+.heat1 { background-color: #f4f4f4; }
+.heat2 { background-color: #eaeaea; }
+.heat3 { background-color: #e0e0e0; }
+.heat4 { background-color: #d6d6d6; }
+.heat5 { background-color: #cccccc; }
+.heat6 { background-color: #c1c1c1; }
+.heat7 { background-color: #b7b7b7; }
+.heat8 { background-color: #adadad; }
+.heat9 { background-color: #a3a3a3; }
+.heatstar { background-color: #999999; }
+
 
 // OLD Dfam CSS -- wading through it to see what we want
 
