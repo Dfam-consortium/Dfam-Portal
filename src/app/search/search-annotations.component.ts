@@ -17,11 +17,6 @@ export class SearchAnnotationsComponent implements OnInit {
 
   assemblies: any[] = [];
 
-  @ViewChild('nhmmerResultsSort') nhmmerResultsSort: MatSort;
-  nhmmerColumns = ['expander', 'sequence', 'accession', 'bit_score', 'e_value',
-    'model_start', 'model_end', 'ali_start', 'ali_end', 'strand'];
-  nhmmerResultsSource = new MatTableDataSource();
-
   @ViewChild('trfResultsSort') trfResultsSort: MatSort;
   trfColumns = ['sequence', 'type', 'start', 'end', 'repeat_length'];
   trfResultsSource = new MatTableDataSource();
@@ -33,7 +28,6 @@ export class SearchAnnotationsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.nhmmerResultsSource.sort = this.nhmmerResultsSort;
     this.trfResultsSource.sort = this.trfResultsSort;
 
     this.getAssemblies();
@@ -78,7 +72,6 @@ export class SearchAnnotationsComponent implements OnInit {
 
   onSubmit() {
     this.results = null;
-    this.nhmmerResultsSource.data = [];
     this.trfResultsSource.data = [];
 
     this.router.navigate([], { relativeTo: this.route, queryParams: this.search });
@@ -106,7 +99,6 @@ export class SearchAnnotationsComponent implements OnInit {
 
       this.results = results;
       this.results.assembly = assembly;
-      this.nhmmerResultsSource.data = results.nhmmer;
       this.trfResultsSource.data = results.trf;
     });
   }
@@ -127,18 +119,6 @@ export class SearchAnnotationsComponent implements OnInit {
     this.search.end = '147766820';
     this.search.family = null;
     this.search.nrph = true;
-  }
-
-  onDownloadNhmmer() {
-    let data = '';
-    if (this.results) {
-      this.results.nhmmer.forEach(function(hit) {
-        data += `${hit.sequence}\t${hit.accession}\t${hit.bit_score}\t${hit.e_value}\t` +
-          `${hit.seq_start}\t${hit.seq_end}\t${hit.ali_start}\t${hit.ali_end}\t${hit.strand}\n`;
-      });
-    }
-    const blob = new Blob([data], { type: 'text/plain' });
-    window.saveAs(blob, 'search_results.hits');
   }
 
   onDownloadTrf() {

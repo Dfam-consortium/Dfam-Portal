@@ -61,6 +61,7 @@ import { SearchAnnotationsGraphComponent } from './search/search-annotations-gra
 import { SearchAnnotationsAlignmentComponent } from './search/search-annotations-alignment.component';
 import { HelpIconComponent } from './shared/help-icon/help-icon.component';
 import { FamilyAnnotationsKaryotypeComponent } from './family/family-annotations-karyotype.component';
+import { SearchAnnotationsNhmmerComponent } from './search/search-annotations-nhmmer.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -94,6 +95,7 @@ export function tokenGetter() {
     SearchAnnotationsAlignmentComponent,
     HelpIconComponent,
     FamilyAnnotationsKaryotypeComponent,
+    SearchAnnotationsNhmmerComponent,
   ],
   imports: [
     CommonModule,
