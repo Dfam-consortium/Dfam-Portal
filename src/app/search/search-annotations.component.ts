@@ -13,6 +13,7 @@ export class SearchAnnotationsComponent implements OnInit {
 
   search: any = {};
 
+  loading: boolean;
   results: any;
 
   assemblies: any[] = [];
@@ -71,11 +72,8 @@ export class SearchAnnotationsComponent implements OnInit {
   }
 
   onSubmit() {
-    this.results = null;
-    this.trfResultsSource.data = [];
-
+    this.loading = true;
     this.router.navigate([], { relativeTo: this.route, queryParams: this.search });
-
 
     const assembly = this.search.assembly;
 
@@ -100,6 +98,7 @@ export class SearchAnnotationsComponent implements OnInit {
       this.results = results;
       this.results.assembly = assembly;
       this.trfResultsSource.data = results.trf;
+      this.loading = false;
     });
   }
 

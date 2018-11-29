@@ -1,6 +1,4 @@
-<div *ngIf="!family">
-Loading data...
-</div>
+<dfam-loader [loading]="!family">
 
 <h2>Coding Sequences <dfam-help-icon [matTooltip]="help.coding_seqs"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
@@ -48,3 +46,5 @@ No features recorded for this family.
     </ul>
   </li>
 </ul>
+
+</dfam-loader>

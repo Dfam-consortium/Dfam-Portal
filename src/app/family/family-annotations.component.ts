@@ -15,6 +15,8 @@ export class FamilyAnnotationsComponent implements OnInit {
 
   stats: {}[] = [];
   assemblies = [];
+  loadingKaryotype: boolean;
+  loadingAnnotationData: boolean;
   karyotypeData: any;
   annotationData: any;
 
@@ -59,6 +61,9 @@ export class FamilyAnnotationsComponent implements OnInit {
     const accession = this.route.parent.snapshot.params['id'];
     this.dfamapi.getFamilyAssemblies(accession).subscribe(data => {
       this.assemblies = data;
+      if (data.length) {
+        this.selectedAssembly = data[0].id;
+      }
       for (const assembly of data) {
         this.dfamapi.getFamilyAssemblyAnnotationStats(accession, assembly.id)
           .subscribe(stats => {
@@ -71,17 +76,22 @@ export class FamilyAnnotationsComponent implements OnInit {
 
   getKaryotypeData() {
     const accession = this.route.parent.snapshot.params['id'];
+    this.loadingKaryotype = true;
     this.dfamapi.getFamilyAssemblyKaryotype(accession, this.selectedAssembly).subscribe(data => {
       this.karyotypeData = data;
+      this.loadingKaryotype = false;
     });
   }
 
   getAnnotationData(chrom: string, start: number, end: number) {
+    this.loadingAnnotationData = true;
+
     const accession = this.route.parent.snapshot.params['id'];
     const nrph = this.selectedVisualizationType === 'nrph';
 
     this.dfamapi.getAnnotations(this.selectedAssembly, chrom, start, end, accession, nrph).subscribe(data => {
       this.annotationData = data;
+      this.loadingAnnotationData = false;
     });
   }
 }

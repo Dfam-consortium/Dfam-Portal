@@ -36,6 +36,7 @@ export class FamilyModelComponent implements OnInit {
   ) { }
 
   hmmLogo: string;
+  downloadingLogo: boolean;
 
   assemblies = [];
 
@@ -144,10 +145,12 @@ export class FamilyModelComponent implements OnInit {
   }
 
   onDownloadLogo() {
+    this.downloadingLogo = true;
     const accession = this.route.parent.snapshot.params['id'];
     this.dfamapi.getFamilyHmmLogoImage(accession).subscribe(data => {
       const blob = new Blob([data], { type: 'image/png' });
       window.saveAs(blob, accession + '.png');
+      this.downloadingLogo = false;
     });
   }
 }

@@ -32,9 +32,7 @@ score thresholds.
 
 </table>
 
-<div *ngIf="!stats">
-Loading statistics...
-</div>
+<dfam-loader [loading]="!stats">
 
 <div *ngIf="stats?.length === 0">
 No statistics are available for this family.
@@ -64,12 +62,18 @@ Genome-specific characteristics are not available for this family.
       &nbsp;
       <mat-radio-button *ngIf="hasGiemsa" name="image_type" value="giemsa">Giemsa Staining</mat-radio-button>
     </mat-radio-group>
-    <dfam-family-annotations-karyotype #karyotype [data]="karyotypeData" [visualizationType]="selectedVisualizationType">
-    </dfam-family-annotations-karyotype>
+    <dfam-loader [loading]="loadingKaryotype">
+      <dfam-family-annotations-karyotype #karyotype [data]="karyotypeData" [visualizationType]="selectedVisualizationType">
+      </dfam-family-annotations-karyotype>
+    </dfam-loader>
 
-    <div *ngIf="annotationData">
-      <dfam-search-annotations-nhmmer [assembly]="selectedAssembly" [data]="annotationData.nhmmer">
-      </dfam-search-annotations-nhmmer>
-    </div>
+    <dfam-loader [loading]="loadingAnnotationData">
+      <div *ngIf="annotationData">
+        <dfam-search-annotations-nhmmer [assembly]="selectedAssembly" [data]="annotationData.nhmmer">
+        </dfam-search-annotations-nhmmer>
+      </div>
+    </dfam-loader>
   </mat-card>
 </div>
+
+</dfam-loader>

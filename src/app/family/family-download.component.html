@@ -13,3 +13,6 @@
     <td><button mat-raised-button (click)="downloadAssemblyAnnotations(assembly.id, false)">All hits</button></td>
   </tr>
 </table>
+
+<dfam-loader [loading]="queuedCount > 0">
+</dfam-loader>

@@ -26,6 +26,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSortModule} from '@angular/material/sort';
@@ -62,6 +63,7 @@ import { SearchAnnotationsAlignmentComponent } from './search/search-annotations
 import { HelpIconComponent } from './shared/help-icon/help-icon.component';
 import { FamilyAnnotationsKaryotypeComponent } from './family/family-annotations-karyotype.component';
 import { SearchAnnotationsNhmmerComponent } from './search/search-annotations-nhmmer.component';
+import { LoaderComponent } from './shared/loader/loader.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -96,6 +98,7 @@ export function tokenGetter() {
     HelpIconComponent,
     FamilyAnnotationsKaryotypeComponent,
     SearchAnnotationsNhmmerComponent,
+    LoaderComponent,
   ],
   imports: [
     CommonModule,
@@ -114,6 +117,7 @@ export function tokenGetter() {
     MatIconModule,
     MatInputModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
     MatRadioModule,
     MatSelectModule,
     MatSortModule,
