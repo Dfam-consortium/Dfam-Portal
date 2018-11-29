@@ -33,7 +33,8 @@
               "node_modules/raphael/raphael.js",
               "node_modules/file-saver/dist/FileSaver.js",
               "node_modules/Dfam-js/dist/Dfam-js.js",
-              "node_modules/AlignmentSummaryViewer/dist/AlignmentSummaryViewer.js"
+              "node_modules/AlignmentSummaryViewer/dist/AlignmentSummaryViewer.js",
+              "node_modules/Karyotype/src/Karyotype.js"
             ]
           },
           "configurations": {

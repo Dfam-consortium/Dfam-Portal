@@ -177,34 +177,12 @@ export class DfamAPIService {
       .pipe(catchError(this.handleError('getFamilyAssemblyAnnotationStats', null)));
   }
 
-  getFamilyAssemblyKaryoImage(accession: string, assembly: string, nrph: boolean): Observable<Blob> {
-    const url = this.familyAssemblyPath(accession, assembly) + '/karyoimage';
-    const options = {
-      params: new HttpParams().set('nrph', nrph.toString()).set('part', 'heatmap'),
-      responseType: 'blob' as 'blob',
-    };
-    return this.http.get(url, options)
-      .pipe(catchError(this.handleError('getFamilyAssemblyKaryoImage', null)));
-  }
-
-  getFamilyAssemblyKaryoImageHtmlMap(accession: string, assembly: string, nrph: boolean): Observable<string> {
-    const url = this.familyAssemblyPath(accession, assembly) + '/karyoimage';
-    const options = {
-      params: new HttpParams().set('nrph', nrph.toString()).set('part', 'html_map'),
-      responseType: 'text' as 'text',
-    };
-    return this.http.get(url, options)
-      .pipe(catchError(this.handleError('getFamilyAssemblyKaryoImageHtmlMap', '')));
-  }
-
-  getFamilyAssemblyKaryoImageKey(accession: string, assembly: string, nrph: boolean): Observable<string> {
-    const url = this.familyAssemblyPath(accession, assembly) + '/karyoimage';
-    const options = {
-      params: new HttpParams().set('nrph', nrph.toString()).set('part', 'img_key'),
-      responseType: 'text' as 'text',
-    };
-    return this.http.get(url, options)
-      .pipe(catchError(this.handleError('getFamilyAssemblyKaryoImageKey', '')));
+  getFamilyAssemblyKaryotype(accession: string, assembly: string): Observable<Blob> {
+    const url = this.familyAssemblyPath(accession, assembly) + '/karyotype';
+    return this.http.get(url).pipe(
+      map(this.extractData),
+      catchError(this.handleError('getFamilyAssemblyKaryotype', null))
+    );
   }
 
   getClasses(): Observable<any> {

@@ -14,6 +14,17 @@ export class FamilyAnnotationsComponent implements OnInit {
   };
 
   stats: {}[] = [];
+  assemblies = [];
+  karyotypeData: any;
+
+  private _selectedAssembly: string;
+  get selectedAssembly(): string {
+    return this._selectedAssembly;
+  }
+  set selectedAssembly(assembly: string) {
+    this._selectedAssembly = assembly;
+    this.getKaryotypeData(assembly);
+  }
 
   constructor(
     private dfamapi: DfamAPIService,
@@ -21,12 +32,13 @@ export class FamilyAnnotationsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getStatsData();
+    this.getData();
   }
 
-  getStatsData() {
+  getData() {
     const accession = this.route.parent.snapshot.params['id'];
     this.dfamapi.getFamilyAssemblies(accession).subscribe(data => {
+      this.assemblies = data;
       for (const assembly of data) {
         this.dfamapi.getFamilyAssemblyAnnotationStats(accession, assembly.id)
           .subscribe(stats => {
@@ -37,4 +49,10 @@ export class FamilyAnnotationsComponent implements OnInit {
     });
   }
 
+  getKaryotypeData(assembly: string) {
+    const accession = this.route.parent.snapshot.params['id'];
+    this.dfamapi.getFamilyAssemblyKaryotype(accession, assembly).subscribe(data => {
+      this.karyotypeData = data;
+    });
+  }
 }
