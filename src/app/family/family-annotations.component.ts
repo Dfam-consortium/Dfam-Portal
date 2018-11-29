@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -16,6 +16,19 @@ export class FamilyAnnotationsComponent implements OnInit {
   stats: {}[] = [];
   assemblies = [];
   karyotypeData: any;
+  annotationData: any;
+
+  get hasGiemsa(): boolean {
+    if (this.karyotypeData) {
+      if (this.karyotypeData.singleton_contigs) {
+        if (this.karyotypeData.singleton_contigs[0].giemsa) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
 
   private _selectedAssembly: string;
   get selectedAssembly(): string {
@@ -23,8 +36,10 @@ export class FamilyAnnotationsComponent implements OnInit {
   }
   set selectedAssembly(assembly: string) {
     this._selectedAssembly = assembly;
-    this.getKaryotypeData(assembly);
+    this.getKaryotypeData();
   }
+
+  selectedVisualizationType: string = "nrph";
 
   constructor(
     private dfamapi: DfamAPIService,
@@ -33,6 +48,11 @@ export class FamilyAnnotationsComponent implements OnInit {
 
   ngOnInit() {
     this.getData();
+  }
+
+  @HostListener('karyotypeclicked', ['$event.detail'])
+  onKaryotypeClicked(detail: any) {
+    this.getAnnotationData(detail.contig, detail.start, detail.end);
   }
 
   getData() {
@@ -49,10 +69,19 @@ export class FamilyAnnotationsComponent implements OnInit {
     });
   }
 
-  getKaryotypeData(assembly: string) {
+  getKaryotypeData() {
     const accession = this.route.parent.snapshot.params['id'];
-    this.dfamapi.getFamilyAssemblyKaryotype(accession, assembly).subscribe(data => {
+    this.dfamapi.getFamilyAssemblyKaryotype(accession, this.selectedAssembly).subscribe(data => {
       this.karyotypeData = data;
+    });
+  }
+
+  getAnnotationData(chrom: string, start: number, end: number) {
+    const accession = this.route.parent.snapshot.params['id'];
+    const nrph = this.selectedVisualizationType === 'nrph';
+
+    this.dfamapi.getAnnotations(this.selectedAssembly, chrom, start, end, accession, nrph).subscribe(data => {
+      this.annotationData = data;
     });
   }
 }

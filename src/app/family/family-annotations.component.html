@@ -57,7 +57,19 @@ Genome-specific characteristics are not available for this family.
   </mat-form-field>
 
   <mat-card *ngIf="selectedAssembly">
-    <dfam-family-annotations-karyotype [data]="karyotypeData">
+    <mat-radio-group [(ngModel)]="selectedVisualizationType">
+      <mat-radio-button name="image_type" value="nrph">Non-Redundant Hits</mat-radio-button>
+      &nbsp;
+      <mat-radio-button name="image_type" value="all">All Hits</mat-radio-button>
+      &nbsp;
+      <mat-radio-button *ngIf="hasGiemsa" name="image_type" value="giemsa">Giemsa Staining</mat-radio-button>
+    </mat-radio-group>
+    <dfam-family-annotations-karyotype #karyotype [data]="karyotypeData" [visualizationType]="selectedVisualizationType">
     </dfam-family-annotations-karyotype>
+
+    <div *ngIf="annotationData">
+      <dfam-search-annotations-nhmmer [assembly]="selectedAssembly" [data]="annotationData.nhmmer">
+      </dfam-search-annotations-nhmmer>
+    </div>
   </mat-card>
 </div>

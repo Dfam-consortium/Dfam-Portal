@@ -15,6 +15,17 @@ export class FamilyAnnotationsKaryotypeComponent implements OnInit {
 
   @Input() data;
 
+  private dfamKaryotype;
+
+  private _visualizationType: string;
+  get visualizationType(): string { return this._visualizationType; }
+  @Input() set visualizationType(kind: string) {
+    this._visualizationType = kind;
+    if (this.dfamKaryotype) {
+      this.dfamKaryotype.switchVisualization(kind);
+    }
+  };
+
   @ViewChild('karyotype') karyotype: ElementRef;
 
   constructor() { }
@@ -26,7 +37,8 @@ export class FamilyAnnotationsKaryotypeComponent implements OnInit {
     if (this.data) {
       const el = this.karyotype.nativeElement;
       el.innerHTML = '';
-      new window.Karyotype(el, this.data);
+      this.dfamKaryotype = new window.Karyotype(el, this.data);
+      this.dfamKaryotype.switchVisualization(this.visualizationType);
     }
   }
 
