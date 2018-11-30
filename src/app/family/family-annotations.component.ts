@@ -91,6 +91,7 @@ export class FamilyAnnotationsComponent implements OnInit {
 
     this.dfamapi.getAnnotations(this.selectedAssembly, chrom, start, end, accession, nrph).subscribe(data => {
       this.annotationData = data;
+      this.annotationData.title = `${chrom}:${start}-${end}`;
       this.loadingAnnotationData = false;
     });
   }

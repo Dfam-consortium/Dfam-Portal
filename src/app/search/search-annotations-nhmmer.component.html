@@ -1,5 +1,5 @@
 <h3>
-  Your search found {{data?.length}} matches.
+  <span *ngIf="search">{{search}}:</span> {{data?.length}} matches
   <button type="button" class="right" (click)="onDownload()">Download</button>
 </h3>
 <table #sort="matSort" mat-table multiTemplateDataRows matSort [dataSource]="dataSource">

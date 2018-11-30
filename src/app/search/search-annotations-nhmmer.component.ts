@@ -9,6 +9,8 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class SearchAnnotationsNhmmerComponent implements OnInit {
 
+  @Input() search: string;
+
   private _data: any[];
   get data(): any[] { return this._data; }
 

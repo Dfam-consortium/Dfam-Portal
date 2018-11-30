@@ -69,7 +69,7 @@ Genome-specific characteristics are not available for this family.
 
     <dfam-loader [loading]="loadingAnnotationData">
       <div *ngIf="annotationData">
-        <dfam-search-annotations-nhmmer [assembly]="selectedAssembly" [data]="annotationData.nhmmer">
+        <dfam-search-annotations-nhmmer [assembly]="selectedAssembly" [data]="annotationData.nhmmer" [search]="annotationData.title">
         </dfam-search-annotations-nhmmer>
       </div>
     </dfam-loader>
