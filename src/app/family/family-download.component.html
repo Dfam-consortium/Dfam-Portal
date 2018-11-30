@@ -1,18 +1,53 @@
 <h2>Models <dfam-help-icon [matTooltip]="help.models"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
-<button mat-raised-button (click)="downloadHmm()">HMM</button>
-<button mat-raised-button (click)="downloadSeed()">Seed</button>
+
+<div fxFlexLayout="row">
+  <mat-card fxFlex="20">
+    <mat-card-title>HMM</mat-card-title>
+    Hidden Markov Model representing this family.
+    <br>
+    <button mat-raised-button (click)="downloadHmm()"><mat-icon>arrow_downward</mat-icon></button>
+  </mat-card>
+
+  <mat-card fxFlex="20">
+    <mat-card-title>SEED</mat-card-title>
+    Stockholm formatted seed alignment used to generate the HMM.
+    <br>
+    <button mat-raised-button (click)="downloadSeed()"><mat-icon>arrow_downward</mat-icon></button>
+  </mat-card>
+</div>
 
 <h2>Annotations <dfam-help-icon [matTooltip]="help.annotations"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
 
-<table>
-  <tr *ngFor="let assembly of assemblies">
-    <td>{{assembly.name}}</td>
-    <td><button mat-raised-button (click)="downloadAssemblyAnnotations(assembly.id, true)">Non-redundant hits</button></td>
-    <td><button mat-raised-button (click)="downloadAssemblyAnnotations(assembly.id, false)">All hits</button></td>
-  </tr>
-</table>
+<div *ngIf="assemblies?.length; else noAssemblies">
+  <p>
+    Hits for this model found via dfamseq, tab-delimited.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Species</th>
+        <th>Non-redundant hits</th>
+        <th>All hits</th>
+      </tr>
+    </thead>
+    <tr *ngFor="let assembly of assemblies">
+      <td>{{assembly.name}}</td>
+      <td>
+        <button mat-raised-button (click)="downloadAssemblyAnnotations(assembly.id, true)"><mat-icon>arrow_downward</mat-icon></button>
+      </td>
+      <td>
+        <button mat-raised-button (click)="downloadAssemblyAnnotations(assembly.id, false)"><mat-icon>arrow_downward</mat-icon></button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<ng-template #noAssemblies>
+  <p>No assembly-specific annotations available for this family.</p>
+</ng-template>
 
 <dfam-loader [loading]="queuedCount > 0">
 </dfam-loader>
