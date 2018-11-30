@@ -18,9 +18,9 @@ export class SearchAnnotationsComponent implements OnInit {
 
   assemblies: any[] = [];
 
-  @ViewChild('trfResultsSort') trfResultsSort: MatSort;
-  trfColumns = ['sequence', 'type', 'start', 'end', 'repeat_length'];
-  trfResultsSource = new MatTableDataSource();
+  @ViewChild('tandemResultsSort') tandemResultsSort: MatSort;
+  tandemColumns = ['sequence', 'type', 'start', 'end', 'repeat_length'];
+  tandemResultsSource = new MatTableDataSource();
 
   constructor(
     private dfamapi: DfamAPIService,
@@ -29,7 +29,7 @@ export class SearchAnnotationsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.trfResultsSource.sort = this.trfResultsSort;
+    this.tandemResultsSource.sort = this.tandemResultsSort;
 
     this.getAssemblies();
 
@@ -88,16 +88,16 @@ export class SearchAnnotationsComponent implements OnInit {
 
       // Add 'row_id' values so the visualization can jump to the table rows
       let i = 0;
-      results.nhmmer.forEach(function(hmm_hit) {
-        hmm_hit.row_id = 'annotation_' + (i++);
+      results.hits.forEach(function(hit) {
+        hit.row_id = 'annotation_' + (i++);
       });
-      results.trf.forEach(function(trf_hit) {
-        trf_hit.row_id = 'annotation_' + (i++);
+      results.tandem_repeats.forEach(function(tr_hit) {
+        tr_hit.row_id = 'annotation_' + (i++);
       });
 
       this.results = results;
       this.results.assembly = assembly;
-      this.trfResultsSource.data = results.trf;
+      this.tandemResultsSource.data = results.tandem_repeats;
       this.loading = false;
     });
   }
@@ -120,10 +120,10 @@ export class SearchAnnotationsComponent implements OnInit {
     this.search.nrph = true;
   }
 
-  onDownloadTrf() {
+  onDownloadTandem() {
     let data = '';
     if (this.results) {
-      this.results.trf.forEach(function(hit) {
+      this.results.tandem_repeats.forEach(function(hit) {
         data += `${hit.sequence}\t${hit.type}\t${hit.start}\t${hit.end}\t${hit.repeat_length}\n`;
       });
     }

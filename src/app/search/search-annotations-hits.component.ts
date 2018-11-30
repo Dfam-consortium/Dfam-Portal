@@ -3,11 +3,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-  selector: 'dfam-search-annotations-nhmmer',
-  templateUrl: './search-annotations-nhmmer.component.html',
-  styleUrls: ['./search-annotations-nhmmer.component.scss']
+  selector: 'dfam-search-annotations-hits',
+  templateUrl: './search-annotations-hits.component.html',
+  styleUrls: ['./search-annotations-hits.component.scss']
 })
-export class SearchAnnotationsNhmmerComponent implements OnInit {
+export class SearchAnnotationsHitsComponent implements OnInit {
 
   @Input() search: string;
 

@@ -62,7 +62,7 @@ import { SearchAnnotationsGraphComponent } from './search/search-annotations-gra
 import { SearchAnnotationsAlignmentComponent } from './search/search-annotations-alignment.component';
 import { HelpIconComponent } from './shared/help-icon/help-icon.component';
 import { FamilyAnnotationsKaryotypeComponent } from './family/family-annotations-karyotype.component';
-import { SearchAnnotationsNhmmerComponent } from './search/search-annotations-nhmmer.component';
+import { SearchAnnotationsHitsComponent } from './search/search-annotations-hits.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 
 export function tokenGetter() {
@@ -97,7 +97,7 @@ export function tokenGetter() {
     SearchAnnotationsAlignmentComponent,
     HelpIconComponent,
     FamilyAnnotationsKaryotypeComponent,
-    SearchAnnotationsNhmmerComponent,
+    SearchAnnotationsHitsComponent,
     LoaderComponent,
   ],
   imports: [

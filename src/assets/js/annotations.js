@@ -78,10 +78,10 @@ function AnnotationsGraphic(options) {
     var context = Raphael(container, this.width, this.height);
 
     this.drawQueryReference(context);
-    // draw trf hits on sequence line
-    this.drawTRFHits(context);
-    // draw nhmmer hits above and below the sequence
-    this.drawNhmmerHits(context);
+    // draw tandem hits on sequence line
+    this.drawTandemHits(context);
+    // draw model hits above and below the sequence
+    this.drawModelHits(context);
 
     var legend = document.createElement("span");
     container.appendChild(legend);
@@ -95,7 +95,7 @@ function AnnotationsGraphic(options) {
     var reverse_max_x = [];
 
     //loop over the data elements and work out the max x and y coordinates.
-    this.data.nhmmer.forEach(function(hit, i) {
+    this.data.hits.forEach(function(hit, i) {
       var x = 0, width = 0, y_offset = 0;
 
       if (hit.strand === '-') {
@@ -163,9 +163,9 @@ function AnnotationsGraphic(options) {
     return y;
   }
 
-  this.drawNhmmerHits = function(context) {
+  this.drawModelHits = function(context) {
     var that = this;
-    this.data.nhmmer.forEach(function(hit, i) {
+    this.data.hits.forEach(function(hit, i) {
       var x = hit.x, y = 0, width = hit.width;
 
       if (hit.strand === '-') {
@@ -222,11 +222,11 @@ function AnnotationsGraphic(options) {
     });
   }
 
-  this.drawTRFHits = function(context) {
+  this.drawTandemHits = function(context) {
     var that = this;
     var offset = parseInt(this.data.offset) || '';
     var y = this.forward_height + 6;
-    this.data.trf.forEach(function(hit, i) {
+    this.data.tandem_repeats.forEach(function(hit, i) {
       //calculate start and end
       var x = Math.floor(scale(hit.start - offset, that.data.length, that.width));
       var width = Math.ceil(scale(hit.end - parseInt(hit.start) + 1, that.data.length, that.width));
