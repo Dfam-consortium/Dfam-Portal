@@ -29,6 +29,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSortModule} from '@angular/material/sort';
 import {MatTableModule} from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -64,6 +65,7 @@ import { HelpIconComponent } from './shared/help-icon/help-icon.component';
 import { FamilyAnnotationsKaryotypeComponent } from './family/family-annotations-karyotype.component';
 import { SearchAnnotationsHitsComponent } from './search/search-annotations-hits.component';
 import { LoaderComponent } from './shared/loader/loader.component';
+import { ErrorsSnackbarComponent } from './shared/layout/errors-snackbar.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -99,6 +101,7 @@ export function tokenGetter() {
     FamilyAnnotationsKaryotypeComponent,
     SearchAnnotationsHitsComponent,
     LoaderComponent,
+    ErrorsSnackbarComponent,
   ],
   imports: [
     CommonModule,
@@ -120,6 +123,7 @@ export function tokenGetter() {
     MatProgressSpinnerModule,
     MatRadioModule,
     MatSelectModule,
+    MatSnackBarModule,
     MatSortModule,
     MatTableModule,
     MatTabsModule,
