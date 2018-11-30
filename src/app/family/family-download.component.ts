@@ -63,8 +63,10 @@ export class FamilyDownloadComponent implements OnInit {
   download(observable: Observable<any>, filename: string) {
     this.queuedCount += 1;
     observable.subscribe(data => {
-      const blob = new Blob([data], { type: 'text/plain' });
-      window.saveAs(blob, filename);
+      if (data) {
+        const blob = new Blob([data], { type: 'text/plain' });
+        window.saveAs(blob, filename);
+      }
       this.queuedCount -= 1;
     });
   }

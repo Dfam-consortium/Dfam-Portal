@@ -117,27 +117,34 @@ export class FamilyModelComponent implements OnInit {
 
       const accession = this.route.parent.snapshot.params['id'];
       this.dfamapi.getFamilyAssemblyModelConservation(accession, assembly).subscribe(mcons => {
-        this.assemblyData[assembly].model_conservation = mcons;
         this.thresholds = [];
-        mcons.forEach(mcon => {
-          const label = `${this.getThresholdTitle(assembly_info, mcon.threshold)} (${mcon.num_seqs})`;
+        this.assemblyData[assembly].model_conservation = mcons;
 
-          this.thresholds.push({
-            id: mcon.threshold,
-            label,
-            graph: {
-              points: JSON.parse(mcon.graph),
-              max: mcon.max_insert,
-            }
+        if (mcons) {
+          mcons.forEach(mcon => {
+            const label = `${this.getThresholdTitle(assembly_info, mcon.threshold)} (${mcon.num_seqs})`;
+
+            this.thresholds.push({
+              id: mcon.threshold,
+              label,
+              graph: {
+                points: JSON.parse(mcon.graph),
+                max: mcon.max_insert,
+              }
+            });
           });
-        });
-        this.selectedThreshold = 'TC';
+          this.selectedThreshold = 'TC';
+        }
       });
+
       this.dfamapi.getFamilyAssemblyModelCoverage(accession, assembly).subscribe(mcov => {
-        Object.keys(mcov).forEach(function(key) {
-          mcov[key] = JSON.parse(mcov[key]);
-        });
         this.assemblyData[assembly].model_coverage = mcov;
+
+        if (mcov) {
+          Object.keys(mcov).forEach(function(key) {
+            mcov[key] = JSON.parse(mcov[key]);
+          });
+        }
       });
     } else {
       this.selectedThreshold = 'TC';
@@ -148,8 +155,10 @@ export class FamilyModelComponent implements OnInit {
     this.downloadingLogo = true;
     const accession = this.route.parent.snapshot.params['id'];
     this.dfamapi.getFamilyHmmLogoImage(accession).subscribe(data => {
-      const blob = new Blob([data], { type: 'image/png' });
-      window.saveAs(blob, accession + '.png');
+      if (data) {
+        const blob = new Blob([data], { type: 'image/png' });
+        window.saveAs(blob, accession + '.png');
+      }
       this.downloadingLogo = false;
     });
   }
