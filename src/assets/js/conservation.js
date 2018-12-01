@@ -165,7 +165,7 @@ function ConservationPlot(options) {
       .attr({"text-anchor": "end"});
 
     //draw x-max
-    context.text(this.width - this.rightMargin, this.height - (this.bottomMargin - 8), this.data.points[0].length)
+    var x_max_text = context.text(this.width - this.rightMargin, this.height - (this.bottomMargin - 8), this.data.points[0].length)
       .attr({"text-anchor": "end"});
     var xmax = this.line_path(
       this.width - this.rightMargin,
@@ -175,7 +175,7 @@ function ConservationPlot(options) {
     );
     context.path(xmax);
 
-    //var x_max_left = this.width - context.measureText(this.data.points[0].length).width;
+    var x_max_left = this.width - this.rightMargin - x_max_text.getBBox().width;
 
     //draw left y-max
     context.text(this.leftMargin - 3, 4, '100').attr({"text-anchor": "end"});
@@ -201,15 +201,17 @@ function ConservationPlot(options) {
     var x_start = x_ticks.steps;
     for (var x_start = x_ticks.steps; x_start < x_ticks.max; x_start += x_ticks.steps) {
       var x = scale(x_start, this.data.points[0].length, this.width - this.leftMargin - this.rightMargin) + this.leftMargin;
-      //TODO: fix the overlap detection
-      //var text_width = context.measureText(x_start).width
-      //var x_right = x + (text_width / 2);
-      //if (x_right >= x_max_left) {
-      //  break;
-     // }
       var y = this.height - this.bottomMargin;
-      context.path(this.line_path(x, y, x, y + 3));
-      context.text(x, y + 8, x_start);
+      var x_line = context.path(this.line_path(x, y, x, y + 3));
+      var x_text = context.text(x, y + 8, x_start);
+
+      var text_width = x_text.getBBox().width;
+      var x_right = x + (text_width / 2);
+      if (x_right >= x_max_left) {
+        x_line.remove();
+        x_text.remove();
+        break;
+      }
     }
 
     //draw right y-max
