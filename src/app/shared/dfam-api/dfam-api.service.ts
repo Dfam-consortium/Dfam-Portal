@@ -190,7 +190,7 @@ export class DfamAPIService {
     const url = endpoint + 'classes';
     return this.http.get(url).pipe(
       map(this.extractData),
-      catchError(this.handleError('getClasses', [])),
+      catchError(this.handleError('getClasses', {})),
     );
   }
 

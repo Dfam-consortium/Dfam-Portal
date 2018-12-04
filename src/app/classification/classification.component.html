@@ -1,0 +1,79 @@
+<div>
+  <h3>Transposable Element Classification</h3>
+  <p>
+    Dfam_consensus uses a newly developed classification system for repetitive
+    sequences that combines concepts from established systems and with phylogenies
+    based on reverse transcriptase and transposases. Classification names have been
+    chosen to be as descriptive as possible while still honoring the most widely
+    used acronyms for well-defined classes. In this hierarchy class names may not
+    be unique rather the concatenation of terms from the root of the system should
+    be used to uniquely identify a classification.
+  </p>
+  <p>
+    The interactive visualization below provides an easy way to explore and query
+    the classification hierarchy. Clicking on individual nodes expands/collapses
+    sections of the tree. Typing within the search field will expand and highlight
+    matches within the tree.
+  </p>
+
+  <div fxLayout="row">
+    <div fxLayoutAlign="start start">
+      <button mat-button type="button" (click)="classificationTree.expandAll()"><mat-icon aria-label="Expand">unfold_more</mat-icon></button>
+      <button mat-button type="button" (click)="classificationTree.collapseAll()"><mat-icon aria-label="Collapse">unfold_less</mat-icon></button>
+    </div>
+    <div>
+      <mat-form-field>
+        <input matInput placeholder="Search" [(ngModel)]="liveSearchInput">
+      </mat-form-field>
+    </div>
+  </div>
+
+  <dfam-loader [loading]="!classes">
+    <dfam-classification-tree #classificationTree [classes]="classes" [search]="searchInput">
+    </dfam-classification-tree>
+  </dfam-loader>
+
+  <hr>
+
+  <h4>Download</h4>
+  <p>
+    A raw export of the classification dataset can be obtained as a comma
+    separated file suitable for loading into Excel.
+  </p>
+
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <button *ngIf="tsv" mat-button type="button" (click)="onDownload()">
+      <mat-icon>arrow_downward</mat-icon>
+    </button>
+  </div>
+
+  <hr>
+
+  <div>
+    <h4>References</h4>
+    <p>
+      Piégu, Benoît, et al. "A survey of transposable element classification
+      syste - a call for a fundamental update to meet the challenge of their
+      diversity and complexity." Molecular phylogenetics and evolution 86 (2015):
+      90-109.
+    </p>
+    <p>
+      Kapitonov, Vladimir V., and Jerzy Jurka. "A universal classification of
+      eukaryotic transposable elements implemented in Repbase." Nature Reviews
+      Genetics 9.5 (2008): 411-412.
+    </p>
+    <p>
+      Wicker, Thomas, et al. "A unified classification system for eukaryotic
+      transposable elements." Nature Reviews Genetics 8.12 (2007): 973-982.
+    </p>
+    <p>
+      Curcio, M. Joan, and Keith M. Derbyshire. "The outs and ins of
+      transposition: from mu to kangaroo." Nature Reviews Molecular Cell Biology
+      4.11 (2003): 865-877.
+    </p>
+    <p>
+      Asmit, AFA, Hubley, R &amp; Green, P. RepeatMasker Open-4.0. 2013-2015
+      http://www.repeatmasker.org.
+    </p>
+  </div>
+</div>

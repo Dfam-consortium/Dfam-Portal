@@ -66,6 +66,8 @@ import { FamilyAnnotationsKaryotypeComponent } from './family/family-annotations
 import { SearchAnnotationsHitsComponent } from './search/search-annotations-hits.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { ErrorsSnackbarComponent } from './shared/layout/errors-snackbar.component';
+import { ClassificationComponent } from './classification/classification.component';
+import { ClassificationTreeComponent } from './classification/classification-tree.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -102,6 +104,8 @@ export function tokenGetter() {
     SearchAnnotationsHitsComponent,
     LoaderComponent,
     ErrorsSnackbarComponent,
+    ClassificationComponent,
+    ClassificationTreeComponent,
   ],
   imports: [
     CommonModule,
