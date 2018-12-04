@@ -186,24 +186,32 @@ export class DfamAPIService {
     );
   }
 
-  getClasses(): Observable<any> {
+  getClasses(name?: string): Observable<any> {
     const url = endpoint + 'classes';
-    return this.http.get(url).pipe(
+    const options = {
+      params: new HttpParams(),
+      responseType: 'json' as 'json',
+    };
+    if (name) {
+      options.params = options.params.set('name', name);
+    }
+    return this.http.get(url, options).pipe(
       map(this.extractData),
       catchError(this.handleError('getClasses', {})),
     );
   }
 
   // TODO: handling of name, limit
-  getTaxa(annotated: boolean): Observable<any> {
+  getTaxa(name: string): Observable<any> {
     const url = endpoint + 'taxa';
     const options = {
-      params: new HttpParams().set('name', '').set('limit', '20'),
+      params: new HttpParams(),
     };
 
-    if (annotated) {
-      options.params = options.params.set('annotated', annotated.toString());
+    if (name) {
+      options.params = options.params.set('name', name);
     }
+
     return this.http.get(url, options).pipe(
       map(this.extractData),
       catchError(this.handleError('getTaxa', [])),
