@@ -7,11 +7,11 @@ declare global {
 }
 
 @Component({
-  selector: 'dfam-search-annotations-graph',
-  templateUrl: './search-annotations-graph.component.html',
-  styleUrls: ['./search-annotations-graph.component.scss']
+  selector: 'dfam-search-results-graph',
+  templateUrl: './search-results-graph.component.html',
+  styleUrls: ['./search-results-graph.component.scss']
 })
-export class SearchAnnotationsGraphComponent implements OnInit, OnChanges {
+export class SearchResultsGraphComponent implements OnInit, OnChanges {
 
   @Input() data;
 

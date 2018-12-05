@@ -2,11 +2,11 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: 'dfam-search-annotations-alignment',
-  templateUrl: './search-annotations-alignment.component.html',
-  styleUrls: ['./search-annotations-alignment.component.scss']
+  selector: 'dfam-search-results-alignment',
+  templateUrl: './search-results-alignment.component.html',
+  styleUrls: ['./search-results-alignment.component.scss']
 })
-export class SearchAnnotationsAlignmentComponent implements OnInit {
+export class SearchResultsAlignmentComponent implements OnInit {
 
   @Input() query: {
     assembly: string,

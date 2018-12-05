@@ -59,16 +59,17 @@ import { FamilyModelConservationComponent } from './family/family-model-conserva
 import { FamilyModelLogoComponent } from './family/family-model-logo.component';
 import { SearchComponent } from './search/search.component';
 import { SearchSequenceComponent } from './search/search-sequence.component';
-import { SearchAnnotationsComponent } from './search/search-annotations.component';
-import { SearchAnnotationsGraphComponent } from './search/search-annotations-graph.component';
-import { SearchAnnotationsAlignmentComponent } from './search/search-annotations-alignment.component';
+import { SearchResultsComponent } from './search/search-results.component';
+import { SearchResultsGraphComponent } from './search/search-results-graph.component';
+import { SearchResultsAlignmentComponent } from './search/search-results-alignment.component';
 import { HelpIconComponent } from './shared/help-icon/help-icon.component';
 import { FamilyAnnotationsKaryotypeComponent } from './family/family-annotations-karyotype.component';
-import { SearchAnnotationsHitsComponent } from './search/search-annotations-hits.component';
+import { SearchResultsHitsComponent } from './search/search-results-hits.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { ErrorsSnackbarComponent } from './shared/layout/errors-snackbar.component';
 import { ClassificationComponent } from './classification/classification.component';
 import { ClassificationTreeComponent } from './classification/classification-tree.component';
+import { SearchAnnotationsComponent } from './search/search-annotations.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -97,16 +98,17 @@ export function tokenGetter() {
     FamilyModelLogoComponent,
     SearchComponent,
     SearchSequenceComponent,
-    SearchAnnotationsComponent,
-    SearchAnnotationsGraphComponent,
-    SearchAnnotationsAlignmentComponent,
+    SearchResultsComponent,
+    SearchResultsGraphComponent,
+    SearchResultsAlignmentComponent,
     HelpIconComponent,
     FamilyAnnotationsKaryotypeComponent,
-    SearchAnnotationsHitsComponent,
+    SearchResultsHitsComponent,
     LoaderComponent,
     ErrorsSnackbarComponent,
     ClassificationComponent,
     ClassificationTreeComponent,
+    SearchAnnotationsComponent,
   ],
   imports: [
     CommonModule,

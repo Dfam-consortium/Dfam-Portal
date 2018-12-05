@@ -1,7 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
@@ -13,14 +11,10 @@ export class SearchAnnotationsComponent implements OnInit {
 
   search: any = {};
 
-  loading: boolean;
-  results: any;
-
   assemblies: any[] = [];
 
-  @ViewChild('tandemResultsSort') tandemResultsSort: MatSort;
-  tandemColumns = ['sequence', 'type', 'start', 'end', 'repeat_length'];
-  tandemResultsSource = new MatTableDataSource();
+  loading: boolean;
+  results: any;
 
   constructor(
     private dfamapi: DfamAPIService,
@@ -29,8 +23,6 @@ export class SearchAnnotationsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.tandemResultsSource.sort = this.tandemResultsSort;
-
     this.getAssemblies();
 
     this.onReset();
@@ -97,7 +89,6 @@ export class SearchAnnotationsComponent implements OnInit {
 
       this.results = results;
       this.results.assembly = assembly;
-      this.tandemResultsSource.data = results.tandem_repeats;
       this.loading = false;
     });
   }
@@ -118,16 +109,5 @@ export class SearchAnnotationsComponent implements OnInit {
     this.search.end = '147766820';
     this.search.family = null;
     this.search.nrph = true;
-  }
-
-  onDownloadTandem() {
-    let data = '';
-    if (this.results) {
-      this.results.tandem_repeats.forEach(function(hit) {
-        data += `${hit.sequence}\t${hit.type}\t${hit.start}\t${hit.end}\t${hit.repeat_length}\n`;
-      });
-    }
-    const blob = new Blob([data], { type: 'text/plain' });
-    window.saveAs(blob, 'search_results.hits');
   }
 }

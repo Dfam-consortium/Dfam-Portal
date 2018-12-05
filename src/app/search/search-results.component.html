@@ -1,0 +1,42 @@
+<dfam-search-results-graph [data]="data">
+</dfam-search-results-graph>
+
+<div [class.hidden]="!data">
+  <div fxLayout="row">
+  <div fxFlex="80" fxFlexOffset="10">
+
+    <dfam-search-results-hits [data]="data?.hits" [assembly]="data?.assembly">
+    </dfam-search-results-hits>
+
+    <h3>
+      Tandem and Simple Repeats
+      <button type="button" class="right" (click)="onDownloadTandem()">Download</button>
+    </h3>
+    <table #tandemResultsSort="matSort" mat-table matSort [dataSource]="tandemResultsSource">
+      <ng-container matColumnDef="sequence">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sequence</th>
+        <td mat-cell *matCellDef="let hit">{{hit.sequence}}</td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+        <td mat-cell *matCellDef="let hit">{{hit.type}}</td>
+      </ng-container>
+      <ng-container matColumnDef="start">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Start</th>
+        <td mat-cell *matCellDef="let hit">{{hit.start}}</td>
+      </ng-container>
+      <ng-container matColumnDef="end">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>End</th>
+        <td mat-cell *matCellDef="let hit">{{hit.end}}</td>
+      </ng-container>
+      <ng-container matColumnDef="repeat_length">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Period</th>
+        <td mat-cell *matCellDef="let hit">{{hit.repeat_length}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="tandemColumns"></tr>
+      <tr mat-row [id]="hit.row_id" *matRowDef="let hit; columns: tandemColumns"></tr>
+    </table>
+  </div>
+  </div>
+</div>

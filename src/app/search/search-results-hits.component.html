@@ -49,8 +49,8 @@
   </ng-container>
   <ng-container matColumnDef="alignment">
     <td colspan="8" *matCellDef="let hit">
-      <dfam-search-annotations-alignment *ngIf="hit.show_alignment" [query]="{assembly: assembly, chrom: hit.sequence, start: hit.seq_start, end: hit.seq_end, family: hit.accession}">
-      </dfam-search-annotations-alignment>
+      <dfam-search-results-alignment *ngIf="hit.show_alignment" [query]="{assembly: assembly, chrom: hit.sequence, start: hit.seq_start, end: hit.seq_end, family: hit.accession}">
+      </dfam-search-results-alignment>
     </td>
   </ng-container>
 
