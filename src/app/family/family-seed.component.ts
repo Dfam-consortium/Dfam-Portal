@@ -24,6 +24,7 @@ export class FamilySeedComponent implements OnInit {
   length;
   seeds_count;
 
+  loading: boolean;
   _stockholmData: string;
   get stockholmData(): string {
     return this._stockholmData;
@@ -67,6 +68,9 @@ export class FamilySeedComponent implements OnInit {
 
   getSeed() {
     const accession = this.route.parent.snapshot.params['id'];
-    this.dfamapi.getFamilySeed(accession).subscribe(s => this.stockholmData = s);
+    this.dfamapi.getFamilySeed(accession).subscribe(data => {
+      this.stockholmData = data;
+      this.loading = false;
+    });
   }
 }

@@ -7,7 +7,7 @@
 <strong>Length</strong>: {{length}}
 </div>
 
-<dfam-loader [loading]="!stockholmData">
+<dfam-loader [loading]="loading">
 <div *ngIf="stockholmData">
 Representation of the <strong>{{seeds_count}}</strong> seed alignment sequences, indicating the number of aligned bases per model position and the length distribution across the model.
 </div>
