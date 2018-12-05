@@ -68,6 +68,14 @@ export class DfamAPIService {
       options.params = options.params.set('clade', apiOptions.clade);
     }
 
+    if ( apiOptions.clade_ancestors && apiOptions.clade_descendants ) {
+      options.params = options.params.set('clade_relatives', 'both');
+    } else if ( apiOptions.clade_ancestors ) {
+      options.params = options.params.set('clade_relatives', 'ancestors');
+    } else if ( apiOptions.clade_descendants ) {
+      options.params = options.params.set('clade_relatives', 'descendants');
+    }
+
     if ( apiOptions.keywords ) {
       options.params = options.params.set('keywords', apiOptions.keywords);
     }

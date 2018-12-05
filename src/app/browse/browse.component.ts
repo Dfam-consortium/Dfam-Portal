@@ -116,6 +116,8 @@ export class BrowseComponent implements OnInit {
     this.searchApiOptions.name = this.search.name;
     this.searchApiOptions.classification = this.search.classification ? this.search.classification.full_name : null;
     this.searchApiOptions.clade = this.search.clade;
+    this.searchApiOptions.clade_ancestors = this.search.clade_ancestors;
+    this.searchApiOptions.clade_descendants = this.search.clade_descendants;
     this.searchApiOptions.keywords = this.search.keywords;
     this.paginator.pageIndex = 0;
     this.getFamilies();

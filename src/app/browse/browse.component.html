@@ -51,6 +51,18 @@
         </mat-option>
       </mat-autocomplete>
 
+      <mat-checkbox
+          [(ngModel)]="search.clade_ancestors"
+          (change)="searchChanged()">
+        Ancestors
+      </mat-checkbox>
+
+      <mat-checkbox
+          [(ngModel)]="search.clade_descendants"
+          (change)="searchChanged()">
+        Descendants
+      </mat-checkbox>
+
       <mat-form-field>
         <input matInput type="text"
             placeholder="Keywords"
