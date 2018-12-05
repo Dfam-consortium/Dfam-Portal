@@ -67,8 +67,6 @@ export class BrowseComponent implements OnInit {
     }
 
     this.classSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
-      if (search_term.length < 2) { return; }
-
       this.dfamapi.getClasses(search_term).subscribe(classes => {
         this.classOptions = classes.filter(f => f.name !== "root");
 
@@ -96,8 +94,6 @@ export class BrowseComponent implements OnInit {
     });
 
     this.cladeSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
-      if (search_term.length < 3) { return; }
-
       this.dfamapi.getTaxa(search_term).subscribe(clades => {
         this.cladeOptions = clades.taxa.filter(f => f.name !== "root");
         this.cladeOptions.forEach(c => {
@@ -163,6 +159,10 @@ export class BrowseComponent implements OnInit {
     this.searchApiOptions.start = this.paginator.pageSize * this.paginator.pageIndex;
     this.dfamapi.getFamilies(this.searchApiOptions).subscribe((data: {}) => {
       this.families = data;
+      this.families.results.forEach(function(family) {
+        family.clades_display = family.clades.map(cl => cl.substring(cl.lastIndexOf(';') + 1)).join(', ');
+        family.clades_tooltip = family.clades.join(', ');
+      });
     });
   }
 }

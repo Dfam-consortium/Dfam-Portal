@@ -8,6 +8,14 @@ mat-form-field, mat-checkbox {
   height: 30px;
 }
 
+.classification-option .nomatch {
+  font-style: italic;
+}
+
+.classification-option .right {
+  float: right;
+}
+
 .browse table {
   width: 100%;
 }

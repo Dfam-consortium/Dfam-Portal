@@ -27,8 +27,10 @@
             class="classification-option"
             *ngFor="let class of classOptions"
             [value]="class">
+          <span [ngClass]="{'nomatch': !class.count}">
           <span [innerHTML]="class.name_markup"></span>
-          <span *ngIf="class.count"> [{{class.count}}]</span>
+          <span class="right" *ngIf="class.count"> [{{class.count}}]</span>
+          </span>
         </mat-option>
       </mat-autocomplete>
 
@@ -74,49 +76,53 @@
     </mat-card>
 
     <div class="browse">
-       <table mat-table matSort (matSortChange)="sortChanged($event)"
-             [dataSource]="families.results">
-         <ng-container matColumnDef="accession">
-           <th mat-header-cell *matHeaderCellDef mat-sort-header>Accession</th>
-           <td mat-cell *matCellDef="let family">
-             <a routerLink="/family/{{family.accession}}">
-               {{family.accession}}
-             </a>
-           </td>
-         </ng-container>
-         <ng-container matColumnDef="name">
-           <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-           <td mat-cell *matCellDef="let family">{{family.name}}</td>
-         </ng-container>
-         <ng-container matColumnDef="classification">
-           <th mat-header-cell *matHeaderCellDef>Classification</th>
-           <td mat-cell *matCellDef="let family">
-             <span [matTooltip]="family.classification">
-               {{family.classification.substring(family.classification.lastIndexOf(';') + 1)}}
-             </span>
-           </td>
-         </ng-container>
-         <ng-container matColumnDef="clades">
-           <th mat-header-cell *matHeaderCellDef>Clades</th>
-           <td mat-cell *matCellDef="let family">{{family.clades.join(", ")}}</td>
-         </ng-container>
-         <ng-container matColumnDef="description">
-           <th mat-header-cell *matHeaderCellDef>Description</th>
-           <td mat-cell *matCellDef="let family">{{family.description}}</td>
-         </ng-container>
-         <ng-container matColumnDef="length">
-           <th mat-header-cell *matHeaderCellDef mat-sort-header>Length</th>
-           <td mat-cell *matCellDef="let family">{{family.length}}</td>
-         </ng-container>
-         <ng-container matColumnDef="abundance">
-           <th mat-header-cell *matHeaderCellDef mat-sort-header>Abundance</th>
-           <td mat-cell *matCellDef="let family">{{family.abundance}}</td>
-         </ng-container>
+      <table mat-table matSort (matSortChange)="sortChanged($event)"
+            [dataSource]="families.results">
+        <ng-container matColumnDef="accession">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Accession</th>
+          <td mat-cell *matCellDef="let family">
+            <a routerLink="/family/{{family.accession}}">
+              {{family.accession}}
+            </a>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let family">{{family.name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="classification">
+          <th mat-header-cell *matHeaderCellDef>Classification</th>
+          <td mat-cell *matCellDef="let family">
+            <span [matTooltip]="family.classification">
+              {{family.classification.substring(family.classification.lastIndexOf(';') + 1)}}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="clades">
+          <th mat-header-cell *matHeaderCellDef>Clades</th>
+          <td mat-cell *matCellDef="let family">
+            <span [matTooltip]="family.clades_tooltip">
+              {{family.clades_display}}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let family">{{family.description}}</td>
+        </ng-container>
+        <ng-container matColumnDef="length">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Length</th>
+          <td mat-cell *matCellDef="let family">{{family.length}}</td>
+        </ng-container>
+        <ng-container matColumnDef="abundance">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Abundance</th>
+          <td mat-cell *matCellDef="let family">{{family.abundance}}</td>
+        </ng-container>
 
-         <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
-         <tr mat-row *matRowDef="let families; columns: displayColumns"></tr>
-       </table>
-       <mat-paginator [pageSize]="20" [pageSizeOptions]="[20,50,100]" [length]="families?.total_count" (page)="pageChanged($event)"></mat-paginator>
+        <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+        <tr mat-row *matRowDef="let families; columns: displayColumns"></tr>
+      </table>
+      <mat-paginator [pageSize]="20" [pageSizeOptions]="[20,50,100]" [length]="families?.total_count" (page)="pageChanged($event)"></mat-paginator>
     </div>
   </div>
 </div>
