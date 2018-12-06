@@ -267,6 +267,49 @@ export class DfamAPIService {
     );
   }
 
+  postSearch(sequence, organism, cutoff, evalue) {
+    const url = endpoint + 'searches';
+    const body = new HttpParams()
+      .set('sequence', sequence)
+      .set('organism', organism)
+      .set('cutoff', cutoff)
+      .set('evalue', evalue);
+
+    const options = {
+      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
+    };
+    return this.http.post(url, body.toString(), options).pipe(
+      map(this.extractData),
+      catchError(this.handleError('postSearch', null)),
+    );
+  }
+
+  getSearchResults(id: string) {
+    const url = endpoint + 'searches/' + id;
+
+    return this.http.get(url).pipe(
+      map(this.extractData),
+      catchError(this.handleError('getSearchResults', null)),
+    );
+  }
+
+  getSearchResultAlignment(id: string, sequence: string, start: number, end: number, family: string): Observable<any> {
+    const url = endpoint + 'searches/' + id + '/alignment';
+
+    const options = {
+      params: new HttpParams()
+        .set('sequence', sequence)
+        .set('start', start.toString())
+        .set('end', end.toString())
+        .set('family', family)
+    };
+
+    return this.http.get(url, options).pipe(
+      map(this.extractData),
+      catchError(this.handleError('getSearchResultAlignment', {})),
+    );
+  }
+
   login(email, password): Observable<any> {
     const body = new HttpParams()
       .set('email', email)

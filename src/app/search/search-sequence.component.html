@@ -28,14 +28,20 @@
 
 <form>
   <mat-form-field>
-    <textarea matInput placeholder="Sequence" name="sequence" [(ngModel)]="search.sequence">
+    <textarea
+        matInput
+        class="sequence-field"
+        rows="10"
+        placeholder="Sequence"
+        name="sequence"
+        [(ngModel)]="search.sequence">
     </textarea>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Query Organism" name="organism" [(ngModel)]="search.assembly">
-      <mat-option value="hg38">Human</mat-option>
-      <mat-option value="mm10">Mouse</mat-option>
+    <mat-select placeholder="Query Organism" name="organism" [(ngModel)]="search.organism">
+      <mat-option *ngFor="let organism of organisms" [value]="organism.name">{{organism.name}}</mat-option>
+      <mat-option value="other">Other</mat-option>
     </mat-select>
   </mat-form-field>
 
@@ -43,11 +49,11 @@
     Cut-off:
     <mat-radio-group name="cutoff" [(ngModel)]="search.cutoff">
       <mat-radio-button value="curated">Dfam curated threshold</mat-radio-button>
-      <mat-radio-button value="evalue">Use E-value</mat-radio-button>
+      <mat-radio-button value="evalue">E-value</mat-radio-button>
     </mat-radio-group>
   </div>
 
-  <mat-form-field>
+  <mat-form-field *ngIf="search.cutoff === 'evalue'">
     <input matInput type="text" placeholder="E-value" name="evalue" [(ngModel)]="search.evalue">
   </mat-form-field>
 
@@ -57,5 +63,7 @@
     <button mat-raised-button (click)="onExample()">Example</button>
   </div>
 </form>
+
+<dfam-loader [loading]="loading"></dfam-loader>
 
 </div>

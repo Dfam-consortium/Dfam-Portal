@@ -1,0 +1,12 @@
+<dfam-loader [loading]="loading">
+  <p>{{message}}</p>
+
+  <mat-form-field *ngIf="results">
+    <mat-select placeholder="Query" [(ngModel)]="selectedResult">
+      <mat-option *ngFor="let result of results" [value]="result">{{result.query}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <dfam-search-results [data]="selectedResult" [getAlignCallback]="getAlignment.bind(this)">
+  </dfam-search-results>
+</dfam-loader>

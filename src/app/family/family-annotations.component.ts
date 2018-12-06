@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -94,5 +95,9 @@ export class FamilyAnnotationsComponent implements OnInit {
       this.annotationData.title = `${chrom}:${start}-${end}`;
       this.loadingAnnotationData = false;
     });
+  }
+
+  getAlignment(hit): Observable<any> {
+    return this.dfamapi.getAlignment(this.selectedAssembly, hit.sequence, hit.seq_start, hit.seq_end, hit.accession);
   }
 }

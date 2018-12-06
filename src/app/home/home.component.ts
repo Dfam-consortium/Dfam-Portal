@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import {Http, Response} from '@angular/http'
 import {map} from 'rxjs/operators';
 
+import { SearchSequenceComponent } from '../search/search-sequence.component';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
@@ -70,6 +71,22 @@ export class HomeComponent implements OnInit {
     start: "",
     end: "",
   };
+
+  searchSequence: string;
+
+  onSubmitSearch() {
+    this.dfamapi.postSearch(this.searchSequence, "other", "curated", 0).subscribe(result => {
+      if (result) {
+        this.router.navigate(['search', 'results', result.id]);
+      } else {
+        // TODO: Report an error status
+      }
+    });
+  }
+
+  onExampleSearch() {
+    this.searchSequence = SearchSequenceComponent.example.sequence;
+  }
 
   onGotoAnnotations() {
     this.router.navigate(['search', 'annotations'], { queryParams: {

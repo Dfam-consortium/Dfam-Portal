@@ -12,6 +12,7 @@ import { FamilyRelationshipsComponent } from './family/family-relationships.comp
 import { FamilyDownloadComponent } from './family/family-download.component';
 import { SearchComponent } from './search/search.component';
 import { SearchSequenceComponent } from './search/search-sequence.component';
+import { SearchSequenceResultsComponent } from './search/search-sequence-results.component';
 import { SearchAnnotationsComponent } from './search/search-annotations.component';
 import { ClassificationComponent } from './classification/classification.component';
 import { AboutComponent } from './about/about.component';
@@ -29,6 +30,7 @@ export const PUBLIC_ROUTES: Routes = [
   { path: 'search', component: SearchComponent, children: [
     { path: '', redirectTo: 'sequence', pathMatch: 'full' },
     { path: 'sequence', component: SearchSequenceComponent },
+    { path: 'results/:id', component: SearchSequenceResultsComponent },
     { path: 'annotations', component: SearchAnnotationsComponent },
   ] },
   { path: 'browse', component: BrowseComponent },

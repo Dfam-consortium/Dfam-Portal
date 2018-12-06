@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -61,6 +62,10 @@ export class SearchAnnotationsComponent implements OnInit {
 
   getAssemblies() {
     this.dfamapi.getAssemblies().subscribe(data => this.assemblies = data);
+  }
+
+  getAlignment(hit): Observable<any> {
+    return this.dfamapi.getAlignment(this.results.assembly, hit.sequence, hit.seq_start, hit.seq_end, hit.accession);
   }
 
   onSubmit() {

@@ -25,12 +25,12 @@
           </mat-expansion-panel-header>
           <div fxLayout="row">
             <mat-form-field fxFlex="80" fxFlexOffset="32">
-              <textarea matInput rows="10" cols="60" placeholder="Sequence"></textarea>
+              <textarea matInput rows="10" cols="60" placeholder="Sequence" [(ngModel)]="searchSequence"></textarea>
             </mat-form-field>
             <div fxLayout="row" fxLayoutAlign="space-around center">
-              <button mat-raised-button class="accordian-button" color="primary">Go</button>
+              <button mat-raised-button class="accordian-button" color="primary" (click)="onSubmitSearch()">Go</button>
               &nbsp;
-              <button mat-raised-button type="button">Example</button>
+              <button mat-raised-button type="button" (click)="onExampleSearch()">Example</button>
             </div>
           </div>
         </mat-expansion-panel>

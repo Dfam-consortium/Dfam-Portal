@@ -70,6 +70,7 @@ import { ErrorsSnackbarComponent } from './shared/layout/errors-snackbar.compone
 import { ClassificationComponent } from './classification/classification.component';
 import { ClassificationTreeComponent } from './classification/classification-tree.component';
 import { SearchAnnotationsComponent } from './search/search-annotations.component';
+import { SearchSequenceResultsComponent } from './search/search-sequence-results.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -109,6 +110,7 @@ export function tokenGetter() {
     ClassificationComponent,
     ClassificationTreeComponent,
     SearchAnnotationsComponent,
+    SearchSequenceResultsComponent,
   ],
   imports: [
     CommonModule,

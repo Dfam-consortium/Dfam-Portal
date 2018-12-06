@@ -5,7 +5,7 @@
   <div fxLayout="row">
   <div fxFlex="80" fxFlexOffset="10">
 
-    <dfam-search-results-hits [data]="data?.hits" [assembly]="data?.assembly">
+    <dfam-search-results-hits [data]="data?.hits" [assembly]="data?.assembly" [getAlignCallback]="getAlignCallback">
     </dfam-search-results-hits>
 
     <h3>

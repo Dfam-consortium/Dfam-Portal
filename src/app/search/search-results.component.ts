@@ -10,6 +10,8 @@ import { MatTableDataSource } from '@angular/material/table';
 export class SearchResultsComponent implements OnInit, OnChanges {
 
   @Input() data: any;
+  @Input() showSequence: boolean;
+  @Input() getAlignCallback;
 
   @ViewChild('tandemResultsSort') tandemResultsSort: MatSort;
   tandemColumns = ['sequence', 'type', 'start', 'end', 'repeat_length'];

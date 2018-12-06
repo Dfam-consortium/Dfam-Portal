@@ -65,7 +65,7 @@
   </div>
 
   <dfam-loader [loading]="loading">
-    <dfam-search-results [data]="results">
+    <dfam-search-results [data]="results" [getAlignCallback]="getAlignment.bind(this)">
     </dfam-search-results>
   </dfam-loader>
 </div>
