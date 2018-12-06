@@ -344,11 +344,12 @@ export class DfamAPIService {
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
+      let message = `${operation} failed`;
+      if (error.error && error.error.message) {
+        message += ": " + error.error.message;
+      }
 
-      this.errorsService.logError({
-        message: `${operation} failed`,
-        error: error,
-      });
+      this.errorsService.logError({ message , error });
 
       // Let the app keep running by returning an empty result.
       return of(result as T);
