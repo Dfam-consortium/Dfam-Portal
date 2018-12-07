@@ -24,7 +24,7 @@ export class FamilySeedComponent implements OnInit {
   length;
   seeds_count;
 
-  loading: boolean;
+  loading = true;
   _stockholmData: string;
   get stockholmData(): string {
     return this._stockholmData;
@@ -32,14 +32,16 @@ export class FamilySeedComponent implements OnInit {
   set stockholmData(value: string) {
     this._stockholmData = value;
 
-    const container = this.seedContainer.nativeElement;
-    const canvas = document.createElement('canvas');
-    container.appendChild(canvas);
-    const seedAlign = new window.DfamSeedAlignment();
-    seedAlign.parseStockholm(value);
-    this.seeds_count = seedAlign.alignments.length;
-    const summary = seedAlign.toAlignmentSummary();
-    this.viewer = new window.AlignmentSummaryViewer(canvas, container, summary);
+    if (value) {
+      const container = this.seedContainer.nativeElement;
+      const canvas = document.createElement('canvas');
+      container.appendChild(canvas);
+      const seedAlign = new window.DfamSeedAlignment();
+      seedAlign.parseStockholm(value);
+      this.seeds_count = seedAlign.alignments.length;
+      const summary = seedAlign.toAlignmentSummary();
+      this.viewer = new window.AlignmentSummaryViewer(canvas, container, summary);
+    }
   }
 
   viewer;
@@ -69,8 +71,8 @@ export class FamilySeedComponent implements OnInit {
   getSeed() {
     const accession = this.route.parent.snapshot.params['id'];
     this.dfamapi.getFamilySeed(accession).subscribe(data => {
-      this.stockholmData = data;
       this.loading = false;
+      this.stockholmData = data;
     });
   }
 }
