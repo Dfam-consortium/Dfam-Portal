@@ -1,6 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
+
+declare global {
+  interface Window {
+    dfamFamilyFeaturesVisualization(target: any, data: any): any;
+  }
+}
 
 @Component({
   selector: 'dfam-family-features',
@@ -16,6 +22,8 @@ export class FamilyFeaturesComponent implements OnInit {
 
   family;
 
+  @ViewChild('outlet') outlet: ElementRef;
+
   constructor(
     private dfamapi: DfamAPIService,
     private route: ActivatedRoute
@@ -29,7 +37,22 @@ export class FamilyFeaturesComponent implements OnInit {
     const accession = this.route.parent.snapshot.params['id'];
     this.dfamapi.getFamily(accession).subscribe(data => {
       this.family = data;
+
+      const el = this.outlet.nativeElement;
+      el.innerHTML = "";
+      if (data) {
+        if (data.features.length > 0 || data.coding_seqs.length > 0) {
+          this.visualization = window.dfamFamilyFeaturesVisualization(el, data);
+        }
+      }
     });
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    if (this.visualization) {
+      this.visualization.render();
+    }
   }
 
 }
