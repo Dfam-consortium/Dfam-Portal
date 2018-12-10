@@ -160,8 +160,14 @@ export class BrowseComponent implements OnInit {
     this.dfamapi.getFamilies(this.searchApiOptions).subscribe((data: {}) => {
       this.families = data;
       this.families.results.forEach(function(family) {
-        family.clades_display = family.clades.map(cl => cl.substring(cl.lastIndexOf(';') + 1)).join(', ');
-        family.clades_tooltip = family.clades.join(', ');
+        if (family.classification) {
+          let cls = family.classification;
+          family.classification_display = cls.substring(cls.lastIndexOf(';') + 1);
+        }
+        if (family.clades) {
+          family.clades_display = family.clades.map(cl => cl.substring(cl.lastIndexOf(';') + 1)).join(', ');
+          family.clades_tooltip = family.clades.join(', ');
+        }
       });
     });
   }

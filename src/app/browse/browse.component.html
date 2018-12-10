@@ -94,7 +94,7 @@
           <th mat-header-cell *matHeaderCellDef>Classification</th>
           <td mat-cell *matCellDef="let family">
             <span [matTooltip]="family.classification">
-              {{family.classification.substring(family.classification.lastIndexOf(';') + 1)}}
+              {{family.classification_display}}
             </span>
           </td>
         </ng-container>
