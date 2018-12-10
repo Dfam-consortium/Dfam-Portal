@@ -24,6 +24,8 @@ export class FamilyFeaturesComponent implements OnInit {
 
   @ViewChild('outlet') outlet: ElementRef;
 
+  visualization: any;
+
   constructor(
     private dfamapi: DfamAPIService,
     private route: ActivatedRoute

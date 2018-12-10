@@ -64,6 +64,44 @@ FeaturesVisualization.prototype.render = function() {
 
   var DIMENSIONS = this.DIMENSIONS;
 
+  if (this.data.target_site_cons) {
+    // Draw TSD boxes on either side of axis
+
+    var tsdTextL = createSVGText(DIMENSIONS.margin.left, DIMENSIONS.margin.top + 5, "TSD");
+    var tsdTextLTitle = createSVGElement("title");
+    tsdTextLTitle.innerHTML = this.data.target_site_cons;
+    tsdTextL.appendChild(tsdTextLTitle);
+    this.svg.appendChild(tsdTextL);
+    var tsdTextLBB = tsdTextL.getBBox();
+
+    var tsdTextR = createSVGText(this.width - DIMENSIONS.margin.right, DIMENSIONS.margin.top + 5, "TSD", "end");
+    var tsdTextRTitle = createSVGElement("title");
+    tsdTextRTitle.innerHTML = this.data.target_site_cons;
+    tsdTextR.appendChild(tsdTextRTitle);
+    this.svg.appendChild(tsdTextR);
+    var tsdTextRBB = tsdTextR.getBBox();
+
+    var tsdBoxL = createSVGElement("rect");
+    this.svg.appendChild(tsdBoxL);
+    setSVGAttrs(tsdBoxL, {
+      "x": tsdTextLBB.x, "y": tsdTextLBB.y,
+      "width": tsdTextLBB.width, "height": tsdTextLBB.height,
+      "fill": "none", "stroke": "black",
+    });
+
+    var tsdBoxR = createSVGElement("rect");
+    this.svg.appendChild(tsdBoxR);
+    setSVGAttrs(tsdBoxR, {
+      "x": tsdTextRBB.x, "y": tsdTextRBB.y,
+      "width": tsdTextRBB.width,
+      "height": tsdTextRBB.height,
+      "fill": "none", "stroke": "black",
+    });
+
+    DIMENSIONS.margin.left += tsdBoxL.getBBox().width + 4;
+    DIMENSIONS.margin.right += tsdBoxR.getBBox().width + 4;
+  }
+
   this.inWidth = this.width - DIMENSIONS.margin.left - DIMENSIONS.margin.right;
 
   // Render the main axis and labels
@@ -94,8 +132,18 @@ FeaturesVisualization.prototype.render = function() {
 
   this.height += textHeight;
 
+  // Figure out how many tick marks to draw
+  var endWidth = endLabel.getBBox().width;
+  var maxTickCount = (this.inWidth - endWidth) / endWidth;
+  var ticksAt = Math.pow(10, Math.floor(Math.log10(this.data.length))) / 2;
+  if (this.data.length / ticksAt > maxTickCount) {
+    ticksAt *= 2;
+  }
+  if (this.data.length / ticksAt > maxTickCount) {
+    ticksAt = this.data.length;
+  }
+
   // Render peridoic axis tick marks
-  var ticksAt = Math.pow(10, Math.floor(Math.log10(this.data.length) - 0.5));
   for (var x = ticksAt; x < this.data.length; x += ticksAt) {
     // -1 because positions are 1-based
     var scaled_x = scale(x - 1, this.data.length, this.inWidth);
@@ -106,7 +154,13 @@ FeaturesVisualization.prototype.render = function() {
     var label = createSVGText(scaled_x, textHeight, x, "middle");
     axisG.appendChild(label);
 
-    // TODO: delete line and label if they overlap endLabel
+    // Remove labels that overlap with the end label
+    var bbox = label.getBBox()
+    if ((bbox.x + bbox.width) > endLabel.getBBox().x) {
+      line.remove();
+      label.remove();
+      break;
+    }
   }
 
   this.height += 10;

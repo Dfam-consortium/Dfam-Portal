@@ -21,6 +21,8 @@ export class Family {
   buffer_stages: {name: string; start: number; end: number}[];
   citations: {pmid: number, title: string, authors: string, journal: string, pubdate: string}[];
   clades: string[];
+  features: any[];
+  coding_seqs: any[];
 }
 
 export class FamilySummary {

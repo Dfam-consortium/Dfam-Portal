@@ -12,8 +12,8 @@ No coding sequences recorded for this family.
 
 <ul>
   <li *ngFor="let cs of family?.coding_seqs">
-    <p><strong>Product:</strong> {{cs.product}}</p>
-    <p><strong>Description:</strong> {{cs.description}}</p>
+    <strong>Product:</strong> {{cs.product}}<br>
+    <strong>Description:</strong> {{cs.description}}<br>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>Translation</mat-panel-title>
@@ -23,11 +23,11 @@ No coding sequences recorded for this family.
       {{cs.translation}}
       </samp>
     </mat-expansion-panel>
-    <p><strong>Frameshifts:</strong> {{cs.frameshifts}}</p>
-    <p><strong>Stop codons:</strong> {{cs.stop_codons}}</p>
-    <p><strong>Exons:</strong> {{cs.exon_count}}</p>
-    <p><strong>CDS Range:</strong> {{cs.start}}-{{cs.end}}</p>
-    <p><strong>Strand:</strong> {{cs.reverse ? '-' : '+'}}</p>
+    <strong>Frameshifts:</strong> {{cs.frameshifts}}<br>
+    <strong>Stop codons:</strong> {{cs.stop_codons}}<br>
+    <strong>Exons:</strong> {{cs.exon_count}}<br>
+    <strong>CDS Range:</strong> {{cs.start}}-{{cs.end}}<br>
+    <strong>Strand:</strong> {{cs.reverse ? '-' : '+'}}<br>
   </li>
 </ul>
 
@@ -40,10 +40,11 @@ No features recorded for this family.
 
 <ul>
   <li *ngFor="let feat of family?.features">
-    <p><strong>Type:</strong> {{feat.type}}</p>
-    <p><strong>Range:</strong> {{feat.model_start_pos}}-{{feat.model_end_pos}} </p>
-    <p><strong>Description:</strong> {{feat.description}}</p>
-    <p><strong>Attributes:</strong></p>
+    <strong>Label:</strong> {{feat.label}}<br>
+    <strong>Type:</strong> {{feat.type}}<br>
+    <strong>Range:</strong> {{feat.model_start_pos}}-{{feat.model_end_pos}}<br>
+    <strong>Description:</strong> {{feat.description}}<br>
+    <strong>Attributes:</strong><br>
     <ul>
       <li *ngFor="let attr of feat.attributes">{{attr.attribute}}: {{attr.value}}</li>
     </ul>
