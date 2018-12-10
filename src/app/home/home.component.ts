@@ -12,10 +12,10 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  title = 'Dfam';
   showMore1=false;
-  result: Object;
   dfamBlogArticles: Object = [];
+
+  totalEntries: number;
 
   constructor(private dfamapi: DfamAPIService, private router: Router, http: Http) {
   http.get('http://query.yahooapis.com/v1/public/yql?q=select * from xml where url=\'https://xfam.wordpress.com/category/dfam/feed/\' &format=json')
@@ -49,6 +49,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.dfamapi.getAssemblies().subscribe(data => this.assemblies = data);
+    this.dfamapi.getFamilies({ limit: 0 }).subscribe(data => this.totalEntries = data.total_count);
   }
 
   searchKeywords: string;

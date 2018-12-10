@@ -50,7 +50,7 @@ export class DfamAPIService {
       .pipe(catchError(this.handleError('getFamily', null)));
   }
 
-  getFamilies(apiOptions: any): Observable<FamilySummary[]> {
+  getFamilies(apiOptions: any): Observable<any> {
     const url = endpoint + 'families';
     const options = {
       params: new HttpParams().set('format', 'summary')
@@ -87,8 +87,8 @@ export class DfamAPIService {
       options.params = options.params.set('sort', apiOptions.sort);
     }
 
-    return this.http.get<FamilySummary[]>(url, options)
-      .pipe(catchError(this.handleError('getFamilies', [])));
+    return this.http.get<any>(url, options)
+      .pipe(catchError(this.handleError('getFamilies', {})));
   }
 
   getFamilyHmm(accession: string): Observable<string> {

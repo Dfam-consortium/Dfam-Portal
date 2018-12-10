@@ -1,6 +1,8 @@
 <div class='dfam-home' fxLayout="row" fxFlex="50" fxFlexOffset="25">
   <div fxLayout="column">
-    <h2>Dfam release 3.0 (January 2018, #### entries)</h2>
+    <h2>Dfam release 3.0 (January 2018<span *ngIf="totalEntries !== undefined">,
+      {{totalEntries}} entries</span>)
+    </h2>
     <div>The Dfam database is a collection of <b>DNA Transposable Element</b> sequence alignments, <b>hidden Markov Models (HMMs)</b>, <b>consensus sequences</b>, and genome annotations. 
     <a  (click)="showMore1=!showMore1">{{showMore1==false ? 'More...' : 'Less...'}}</a>
     </div>
@@ -136,7 +138,9 @@
     <div class="blog clearfix">
         <h2>Recent Dfam <a href="http://xfam.wordpress.com/tag/dfam/" class="ext">blog</a> posts</h2>
           <div *ngFor="let art of dfamBlogArticles | slice: 0:1">
-          <a class="ext blog-article-title" href="{{art.link}}">{{art.title}}</a><br><span class="blog-article-date">{{dfamBlogArticles[0].date}}</span>
+          <a class="ext blog-article-title" href="{{art.link}}">{{art.title}}</a>
+          <br>
+          <span class="blog-article-date">{{art.date}}</span>
           <div>{{art.snippet}}[...]</div>
         <hr>
     </div>
