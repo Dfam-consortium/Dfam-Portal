@@ -45,7 +45,8 @@ import { AboutComponent } from './about/about.component';
 import { PublicFooterComponent,
          PublicHeaderComponent, PublicLayoutComponent,
          WorkbenchLayoutComponent } from './shared';
-import { LoginModule } from './login/login.module';
+import { LoginComponent } from './login/login.component';
+import { UserComponent } from './workbench/user/user.component';
 import { FamilyComponent } from './family/family.component';
 import { FamilySummaryComponent } from './family/family-summary.component';
 import { FamilySeedComponent } from './family/family-seed.component';
@@ -86,6 +87,8 @@ export function tokenGetter() {
     PublicLayoutComponent,
     WorkbenchLayoutComponent,
     PublicHeaderComponent,
+    LoginComponent,
+    UserComponent,
     FamilyComponent,
     FamilySummaryComponent,
     FamilySeedComponent,
@@ -138,7 +141,6 @@ export function tokenGetter() {
     MatTableModule,
     MatTabsModule,
     MatTooltipModule,
-    LoginModule,
     BrowserModule,
     // Angular-Jwt for decoding tokens and sending it along through HTTP request auto-magically
     JwtModule.forRoot({

@@ -18,6 +18,10 @@ export class LoginComponent implements OnInit {
   errors: Errors = {errors: {}};
   isSubmitting = false;
 
+  fullName: string;
+  email: string;
+  password: string;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -32,13 +36,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  submitForm(email, fullname, password) {
+  submitForm() {
     this.isSubmitting = true;
     this.errors = {errors: {}};
 
-    const credentials = { email: email, 
-                          fullname: fullname, 
-                          password: password };
+    const credentials = { email: this.email,
+                          fullname: this.fullName,
+                          password: this.password };
     if (this.loginType === 'login')
     {
       this.authService

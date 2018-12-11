@@ -18,7 +18,9 @@ export interface User {
   image: string;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService implements CanActivate {
 
   private currentUserSubject = new BehaviorSubject<User>({} as User);

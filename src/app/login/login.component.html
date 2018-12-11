@@ -15,39 +15,38 @@
           <img style="height:55px;width:177px;" src="assets/images/dfam_logo.png" alt="Dfam" />
         </mat-card-header>
         <mat-card-content>
-          <div fxLayout="column" fxLayoutAlign="space-around center">
+          <form fxLayout="column" fxLayoutAlign="space-around center">
             <p></p>
             <a [routerLink]="['/login']" *ngIf="loginType == 'register'">Have an account?</a>
             <a [routerLink]="['/register']" *ngIf="loginType == 'login'">Need an account?</a>
             <mat-form-field *ngIf="loginType == 'register'">
-              <input 
-                    [attr.disabled]="isSubmitting"
-                    #full_name
-                    matInput 
-                    placeholder="Full Name"
-                    type="text" >
+              <input matInput
+                  type="text"
+                  name="fullName"
+                  [attr.disabled]="isSubmitting"
+                  placeholder="Full Name"
+                  [(ngModel)]="fullName">
             </mat-form-field>
             <mat-form-field>
-              <input
-                    [attr.disabled]="isSubmitting"
-                    #email
-                    matInput 
-                    placeholder="Email"
-                    type="text">
-             </mat-form-field>
-             <mat-form-field>
-               <input
-                    [attr.disabled]="isSubmitting"
-                    #password
-                    matInput 
-                    (keyup.enter)="submitForm(email.value, full_name ? full_name.value : '', password.value)"
-                    placeholder="Password"
-                    type="password">
-             </mat-form-field>
-             <button type="submit" mat-raised-button color="primary" (click)="submitForm(email.value, full_name ? full_name.value : '', password.value)">
-              {{ title }}
-             </button>
-           </div>
+              <input matInput
+                  type="text"
+                  name="email"
+                  [attr.disabled]="isSubmitting"
+                  placeholder="Email"
+                  [(ngModel)]="email">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput
+                  type="password"
+                  name="password"
+                  [attr.disabled]="isSubmitting"
+                  placeholder="Password"
+                  [(ngModel)]="password">
+            </mat-form-field>
+            <button type="submit" mat-raised-button color="primary" (click)="submitForm()">
+             {{ title }}
+            </button>
+          </form>
         </mat-card-content>
       </mat-card>
     </div>
