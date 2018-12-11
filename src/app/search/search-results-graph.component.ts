@@ -1,10 +1,6 @@
 import { Component, OnInit, Input, OnChanges, ElementRef, ViewChild } from '@angular/core';
 
-declare global {
-  interface Window {
-    dfamAnnotationsGraphic(target: any, data: any): any;
-  }
-}
+import { AnnotationsGraphic } from '../../js/annotations';
 
 @Component({
   selector: 'dfam-search-results-graph',
@@ -26,7 +22,7 @@ export class SearchResultsGraphComponent implements OnInit, OnChanges {
     const el = this.graph.nativeElement;
     el.innerHTML = '';
     if (this.data) {
-      window.dfamAnnotationsGraphic(el, this.data);
+      new AnnotationsGraphic({ target: el, data: this.data }).render();
     }
   }
 

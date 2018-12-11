@@ -6,11 +6,11 @@ function scale(coord, max, desired) {
 }
 
 function DotPlot(options) {
-  options     = (options) ? options : {};
-  this.cigar  = options.data.cigar || null;
-  this.strand = options.data.strand || '+';
+  options     = options || {};
   this.target = options.target || document.body;
   this.data   = options.data || {};
+  this.cigar  = this.data.cigar || null;
+  this.strand = this.data.strand || '+';
 
   function createSVGElement(elem) {
     return document.createElementNS("http://www.w3.org/2000/svg", elem);
@@ -181,10 +181,7 @@ function DotPlot(options) {
   }
 }
 
-window.dfamDotPlot = function(target, data) {
-  var plot = new DotPlot({target: target, data : data});
-  plot.render();
-};
+export { DotPlot };
 
 function Overlap(options) {
   options = options || {};
@@ -320,7 +317,7 @@ function Overlap(options) {
           if (tooltipCanvas) {
             tooltipCanvas.remove();
           }
-          dfamDotPlot(tooltipContent.querySelector('.dotplot'), match);
+          new DotPlot({ target: tooltipContent.querySelector('.dotplot'), data: match }).render();
         }
         tooltip.style.removeProperty("display");
         that.previous = match;
@@ -555,9 +552,4 @@ function Overlap(options) {
   };
 }
 
-// orientation is for sort ordering
-window.dfamOverlapPlot = function (target, data, order, orientation) {
-  var plot = new Overlap({target: target, data : data, order: order, orientation: orientation});
-  plot.render();
-  return plot;
-};
+export { Overlap };

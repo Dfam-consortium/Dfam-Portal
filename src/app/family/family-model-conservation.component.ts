@@ -1,5 +1,7 @@
 import { Component, Input, OnChanges, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 
+import { ConservationPlot } from '../../js/conservation';
+
 @Component({
   selector: 'dfam-family-model-conservation',
   templateUrl: './family-model-conservation.component.html',
@@ -29,7 +31,7 @@ export class FamilyModelConservationComponent implements OnInit, OnChanges {
     if (this.data) {
       const el = this.graph.nativeElement;
       el.innerHTML = '';
-      window.dfamConservationPlot(el, this.data);
+      new ConservationPlot({ target: el, data: this.data }).render();
     }
   }
 }

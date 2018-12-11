@@ -9,6 +9,7 @@ function nice_number(value, round_) {
   // :latex: \log_y z = \frac{\log_x z}{\log_x y}
   var exponent = Math.floor(Math.log(value) / Math.log(10));
   var fraction = value / Math.pow(10, exponent);
+  var nice_fraction;
 
   if (round_)
     if (fraction < 1.5)
@@ -283,16 +284,12 @@ function ConservationPlot(options) {
   }
 }
 
-window.dfamConservationPlot = function(target, data) {
-  var plot = new ConservationPlot({data: data, target: target});
-  plot.render();
-  return plot;
-};
+export { ConservationPlot };
 
-function Coverage(options) {
-  options = (options) ? options : {};
+function CoveragePlot(options) {
+  options = options || {};
   this.data = options.data || null;
-  this.dom_element = options.dom_element || document.body;
+  this.target = options.target || document.body;
   this.height = 150;
   this.width  = 600;
   this.margin = 55;
@@ -306,18 +303,18 @@ function Coverage(options) {
   }
 
   this.clear = function () {
-    this.dom_element.querySelector('canvas').remove();
+    this.target.querySelector('canvas').remove();
   };
 
   this.render = function(skip_legend) {
-    var canvas = this.dom_element.querySelector('canvas');
+    var canvas = this.target.querySelector('canvas');
     var context = null;
 
     if (!canvas) {
       canvas = document.createElement("canvas");
       canvas.height = this.height;
       canvas.width = this.width;
-      this.dom_element.appendChild(canvas);
+      this.target.appendChild(canvas);
     }
 
     this.canvas = canvas;
@@ -472,15 +469,10 @@ function Coverage(options) {
     });
 
     key_entries.forEach(function(key_html) {
-        self.dom_element.insertAdjacentHTML('beforeend', key_html);
+        self.target.insertAdjacentHTML('beforeend', key_html);
     });
   }
 
 }
 
-window.dfamCoveragePlot = function(target, data) {
-  data.dom_element = target;
-  var plot = new Coverage(data);
-  plot.render();
-  return plot;
-};
+export { CoveragePlot };

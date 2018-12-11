@@ -3,13 +3,6 @@ import { FamilyModelLogoComponent } from './family-model-logo.component';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
-declare global {
-  interface Window {
-    dfamCoveragePlot(target: any, data: any): any;
-    dfamConservationPlot(target: any, data: any): any;
-  }
-}
-
 @Component({
   selector: 'dfam-family-model',
   templateUrl: './family-model.component.html',

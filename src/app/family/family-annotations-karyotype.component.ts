@@ -1,10 +1,6 @@
 import { Component, Input, OnChanges, OnInit, ElementRef, ViewChild } from '@angular/core';
 
-declare global {
-  interface Window {
-    Karyotype: any;
-  }
-}
+import Karyotype from 'Karyotype/src/Karyotype';
 
 @Component({
   selector: 'dfam-family-annotations-karyotype',
@@ -37,7 +33,7 @@ export class FamilyAnnotationsKaryotypeComponent implements OnInit {
     if (this.data) {
       const el = this.karyotype.nativeElement;
       el.innerHTML = '';
-      this.dfamKaryotype = new window.Karyotype(el, this.data);
+      this.dfamKaryotype = new Karyotype(el, this.data);
       this.dfamKaryotype.switchVisualization(this.visualizationType);
     }
   }

@@ -1,6 +1,3 @@
-(function(global) {
-"use strict";
-
 function scale(x, width, target_width) {
   return (x/width) * target_width;
 }
@@ -329,9 +326,4 @@ FeaturesVisualization.prototype.render = function() {
   setSVGAttrs(this.svg, { "width": this.width, "height": this.height });
 };
 
-global.dfamFamilyFeaturesVisualization = function(target, data) {
-  var chart = new FeaturesVisualization({ target: target, data: data });
-  chart.render();
-  return chart;
-};
-})(window);
+export { FeaturesVisualization };

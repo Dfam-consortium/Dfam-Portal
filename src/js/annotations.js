@@ -1,3 +1,8 @@
+function scale(coord, orig, desired) {
+  var scaled = (desired * coord) / orig;
+  return scaled;
+}
+
 function highlightFade(element, duration) {
   var start = [60, 100, 50];
   var target = [60, 100, 100];
@@ -289,7 +294,4 @@ function AnnotationsGraphic(options) {
   }
 }
 
-window.dfamAnnotationsGraphic = function(target, data) {
-  var plot = new AnnotationsGraphic({ data: data, target: target });
-  plot.render();
-};
+export { AnnotationsGraphic };

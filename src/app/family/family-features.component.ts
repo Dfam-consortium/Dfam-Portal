@@ -2,11 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, HostListener } from '@
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
-declare global {
-  interface Window {
-    dfamFamilyFeaturesVisualization(target: any, data: any): any;
-  }
-}
+import { FeaturesVisualization } from '../../js/features';
 
 @Component({
   selector: 'dfam-family-features',
@@ -44,7 +40,8 @@ export class FamilyFeaturesComponent implements OnInit {
       el.innerHTML = "";
       if (data) {
         if (data.features.length > 0 || data.coding_seqs.length > 0) {
-          this.visualization = window.dfamFamilyFeaturesVisualization(el, data);
+          this.visualization = new FeaturesVisualization({ target: el, data });
+          this.visualization.render();
         }
       }
     });

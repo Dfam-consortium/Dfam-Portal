@@ -1,5 +1,7 @@
 import { Component, Input, OnChanges, OnInit, ElementRef, ViewChild } from '@angular/core';
 
+import { CoveragePlot } from '../../js/conservation';
+
 @Component({
   selector: 'dfam-family-model-coverage',
   templateUrl: './family-model-coverage.component.html',
@@ -21,7 +23,7 @@ export class FamilyModelCoverageComponent implements OnInit, OnChanges {
     if (this.data) {
       const el = this.graph.nativeElement;
       el.innerHTML = '';
-      window.dfamCoveragePlot(el, { data: this.data, color_set: this.colorSet });
+      new CoveragePlot({ target: el, data: this.data, color_set: this.colorSet }).render();
     }
   }
 

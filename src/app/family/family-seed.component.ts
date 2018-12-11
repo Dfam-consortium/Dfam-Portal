@@ -2,12 +2,8 @@ import { Component, OnInit, Input, ElementRef, ViewChild, HostListener } from '@
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
-declare global {
-  interface Window {
-    DfamSeedAlignment(): void;
-    AlignmentSummaryViewer(canvas, parent, data): void;
-  }
-}
+import DfamSeedAlignment from 'Dfam-js/dist/Dfam-js';
+import AlignmentSummaryViewer from 'AlignmentSummaryViewer/dist/AlignmentSummaryViewer';
 
 @Component({
   selector: 'dfam-family-seed',
@@ -36,11 +32,11 @@ export class FamilySeedComponent implements OnInit {
       const container = this.seedContainer.nativeElement;
       const canvas = document.createElement('canvas');
       container.appendChild(canvas);
-      const seedAlign = new window.DfamSeedAlignment();
+      const seedAlign = new DfamSeedAlignment();
       seedAlign.parseStockholm(value);
       this.seeds_count = seedAlign.alignments.length;
       const summary = seedAlign.toAlignmentSummary();
-      this.viewer = new window.AlignmentSummaryViewer(canvas, container, summary);
+      this.viewer = new AlignmentSummaryViewer(canvas, container, summary);
     }
   }
 

@@ -2,11 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
-declare global {
-  interface Window {
-    dfamOverlapPlot(target: any, data: {}): any;
-  }
-}
+import { Overlap } from '../../js/overlap';
 
 @Component({
   selector: 'dfam-family-relationships',
@@ -31,7 +27,7 @@ export class FamilyRelationshipsComponent implements OnInit {
   set relationships(value: []) {
     this._relationships = value;
     if (value.length) {
-      window.dfamOverlapPlot(this.outlet.nativeElement, value);
+      new Overlap({ target: this.outlet.nativeElement, data: value }).render();
     }
   }
 

@@ -31,10 +31,7 @@
             ],
             "scripts": [
               "node_modules/raphael/raphael.js",
-              "node_modules/file-saver/dist/FileSaver.js",
-              "node_modules/Dfam-js/dist/Dfam-js.js",
-              "node_modules/AlignmentSummaryViewer/dist/AlignmentSummaryViewer.js",
-              "node_modules/Karyotype/src/Karyotype.js"
+              "node_modules/file-saver/dist/FileSaver.js"
             ]
           },
           "configurations": {
@@ -51,14 +48,6 @@
                 {
                   "replace": "node_modules/file-saver/dist/FileSaver.js",
                   "with": "node_modules/file-saver/dist/FileSaver.min.js"
-                },
-                {
-                  "replace": "node_modules/Dfam-js/dist/Dfam-js.js",
-                  "with": "node_modules/Dfam-js/dist/Dfam-js.min.js"
-                },
-                {
-                  "replace": "node_modules/AlignmentSummaryViewer/dist/AlignmentSummaryViewer.js",
-                  "with": "node_modules/AlignmentSummaryViewer/dist/AlignmentSummaryViewer.min.js"
                 }
               ],
               "optimization": true,
