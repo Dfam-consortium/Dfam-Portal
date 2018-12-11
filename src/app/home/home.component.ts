@@ -1,82 +1,85 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {Http, Response} from '@angular/http'
-import {map} from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 import { SearchSequenceComponent } from '../search/search-sequence.component';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: '',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  showMore1=false;
+
+  constructor(
+    private dfamapi: DfamAPIService,
+    private router: Router,
+    private http: HttpClient,
+  ) {}
+
+  showMore1 = false;
   dfamBlogArticles: Object = [];
 
   totalEntries: number;
 
-  constructor(private dfamapi: DfamAPIService, private router: Router, http: Http) {
-  http.get('http://query.yahooapis.com/v1/public/yql?q=select * from xml where url=\'https://xfam.wordpress.com/category/dfam/feed/\' &format=json')
-           .pipe(map(res => res.json()))
-           .subscribe(res => {
-              var monthNames = ["January", "February", "March", "April", "May",
-                                "June", "July", "August", "September",
-                                "October", "November", "December" ];
-              if (res && res.query && res.query.results && res.query.results.rss && res.query.results.rss.channel && res.query.results.rss.channel.item) {
-                var articles = res.query.results.rss.channel.item;
-                var articleData = [];
-                articles.forEach(function(article) {
-                    var pubDate = new Date(article.pubDate);
-                    // Should scrub the description for HTML tags
-                    articleData.push({
-                        title: article.title,
-                        link: article.link,
-                        date: "" + monthNames[pubDate.getMonth() + 1] + ", " +
-                            pubDate.getFullYear(),
-                        sortDate: pubDate,
-                        snippet: article.description.substr(0,375)
-                    });
-                });
-                this.dfamBlogArticles = articleData.sort(function(a, b) {
-                    return b.sortDate - a.sortDate;
-                });
+  searchSequence: string;
 
-               }
-           });
-  }
+
+  assemblies: any[] = [];
+  annotations = {
+    assembly: 'hg38',
+    chromosome: '',
+    start: '',
+    end: '',
+  };
+
+  gotoAccession: string;
+
+  searchKeywords: string;
 
   ngOnInit() {
     this.dfamapi.getAssemblies().subscribe(data => this.assemblies = data);
     this.dfamapi.getFamilies({ limit: 0 }).subscribe(data => this.totalEntries = data.total_count);
-  }
 
-  searchKeywords: string;
+    const blogUrl = 'http://query.yahooapis.com/v1/public/yql?q=select * from xml where url=\'https://xfam.wordpress.com/category/dfam/feed/\' &format=json';
+    this.http
+      .get<any>(blogUrl, { responseType: 'json' })
+      .subscribe(res => {
+        const monthNames = ['January', 'February', 'March', 'April', 'May',
+                          'June', 'July', 'August', 'September',
+                          'October', 'November', 'December' ];
+        if (res && res.query && res.query.results && res.query.results.rss && res.query.results.rss.channel && res.query.results.rss.channel.item) {
+          const articles = res.query.results.rss.channel.item;
+          const articleData = [];
+          articles.forEach(function(article) {
+            const pubDate = new Date(article.pubDate);
+            // Should scrub the description for HTML tags
+            articleData.push({
+              title: article.title,
+              link: article.link,
+              date: '' + monthNames[pubDate.getMonth() + 1] + ', ' +
+                pubDate.getFullYear(),
+              sortDate: pubDate,
+              snippet: article.description.substr(0, 375)
+            });
+          });
+          this.dfamBlogArticles = articleData.sort(function(a, b) {
+              return b.sortDate - a.sortDate;
+          });
+        }
+      });
+  }
 
   searchByKeywords() {
-    this.router.navigate(['browse'], { queryParams: { "keywords": this.searchKeywords } });
+    this.router.navigate(['browse'], { queryParams: { 'keywords': this.searchKeywords } });
   }
-
-  gotoAccession: string;
 
   onGotoAccession() {
     this.router.navigate(['family', this.gotoAccession]);
   }
 
-  assemblies: any[] = [];
-
-  annotations = {
-    assembly: "hg38",
-    chromosome: "",
-    start: "",
-    end: "",
-  };
-
-  searchSequence: string;
-
   onSubmitSearch() {
-    this.dfamapi.postSearch(this.searchSequence, "other", "curated", 0).subscribe(result => {
+    this.dfamapi.postSearch(this.searchSequence, 'other', 'curated', 0).subscribe(result => {
       if (result) {
         this.router.navigate(['search', 'results', result.id]);
       } else {
@@ -91,17 +94,17 @@ export class HomeComponent implements OnInit {
 
   onGotoAnnotations() {
     this.router.navigate(['search', 'annotations'], { queryParams: {
-      "assembly": this.annotations.assembly,
-      "chromosome": this.annotations.chromosome,
-      "start": this.annotations.start,
-      "end": this.annotations.end,
-      "nrph": true,
+      'assembly': this.annotations.assembly,
+      'chromosome': this.annotations.chromosome,
+      'start': this.annotations.start,
+      'end': this.annotations.end,
+      'nrph': true,
     } });
   }
 
   onExampleAnnotations() {
-    this.annotations.assembly = "hg38";
-    this.annotations.chromosome = "chr3";
+    this.annotations.assembly = 'hg38';
+    this.annotations.chromosome = 'chr3';
     this.annotations.start = '147733000';
     this.annotations.end = '147766820';
   }

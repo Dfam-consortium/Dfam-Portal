@@ -20,8 +20,6 @@ import { LoginComponent } from './login/login.component';
 import { WorkbenchLayoutComponent } from './shared';
 import { UserComponent } from './workbench/user/user.component';
 import { PublicLayoutComponent } from './shared';
-import { PublicFooterComponent } from './shared';
-import { PublicHeaderComponent } from './shared';
 import { AuthService } from './shared';
 
 export const PUBLIC_ROUTES: Routes = [

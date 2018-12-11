@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
@@ -23,7 +23,7 @@ export class FamilyDownloadComponent implements OnInit {
 
   assemblies: [];
 
-  queuedCount: number = 0;
+  queuedCount = 0;
 
   constructor(
     private dfamapi: DfamAPIService,

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
   selector: 'dfam-search-results-alignment',
@@ -17,7 +16,7 @@ export class SearchResultsAlignmentComponent implements OnInit {
 
   WIDTH = 80;
 
-  constructor(private dfamapi: DfamAPIService) { }
+  constructor() { }
 
   ngOnInit() {
     this.getAlignment();
@@ -44,9 +43,9 @@ export class SearchResultsAlignmentComponent implements OnInit {
       chunk.pp_str = data.pp.string.substring(i, i + this.WIDTH);
 
       chunk.mod_markup = '<span class="hmmmatch">';
-      for (let i = 0; i < chunk.mod_str.length; i++) {
-        const match = chunk.match_str[i];
-        const ch = chunk.mod_str[i];
+      for (let j = 0; j < chunk.mod_str.length; j++) {
+        const match = chunk.match_str[j];
+        const ch = chunk.mod_str[j];
         // TODO: batch consecutive groups
         if (match === ' ') {
           chunk.mod_markup += '<span class="hmmminus">' + ch + '</span>';
@@ -59,9 +58,9 @@ export class SearchResultsAlignmentComponent implements OnInit {
       chunk.mod_markup += '</span>';
 
       chunk.seq_markup = '';
-      for (let i = 0; i < chunk.seq_str.length; i++) {
-        let pp = chunk.pp_str[i];
-        const ch = chunk.seq_str[i];
+      for (let j = 0; j < chunk.seq_str.length; j++) {
+        let pp = chunk.pp_str[j];
+        const ch = chunk.seq_str[j];
         if (pp === '*') {
           pp = 'star';
         }

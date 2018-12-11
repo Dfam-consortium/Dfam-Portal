@@ -11,7 +11,7 @@ declare global {
   templateUrl: './family-model-logo.component.html',
   styleUrls: ['./family-model-logo.component.scss']
 })
-export class FamilyModelLogoComponent implements OnInit {
+export class FamilyModelLogoComponent implements OnInit, OnChanges {
 
   @Input() data;
 

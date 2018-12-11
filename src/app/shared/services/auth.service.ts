@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
 import { DfamAPIService } from '../dfam-api/dfam-api.service';
 import { JwtService } from './jwt.service';
-import { map, take, distinctUntilChanged } from 'rxjs/operators';
+import { map, distinctUntilChanged } from 'rxjs/operators';
 
-// RMH: I like typescript but I would like to reuse code 
+// RMH: I like typescript but I would like to reuse code
 //      in plain-old-ES5/ES6...so maybe less explicit typing??
 export interface User {
   email: string;
@@ -30,7 +29,6 @@ export class AuthService implements CanActivate {
 
   constructor (
     private dfamAPIService: DfamAPIService,
-    private http: HttpClient,
     private jwtService: JwtService,
     private jwtHelper: JwtHelperService
   ) {}
@@ -38,8 +36,8 @@ export class AuthService implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot ): Observable<boolean> {
-     //return this.isAuthenticated.pipe(take(1), map(isAuth => !isAuth));
-     console.log("I am checking " + this.isAuthenticated );
+     // return this.isAuthenticated.pipe(take(1), map(isAuth => !isAuth));
+     console.log('I am checking ' + this.isAuthenticated );
      return this.isAuthenticated;
   }
 
@@ -73,7 +71,6 @@ export class AuthService implements CanActivate {
   }
 
   attemptAuth(type, credentials): Observable<User> {
-    const route = (type === 'login') ? '/login' : '';
     if (type === 'login') {
       return this.dfamAPIService.login( credentials.email, credentials.password )
         .pipe(map(
@@ -81,12 +78,12 @@ export class AuthService implements CanActivate {
           const decodedToken = this.jwtHelper.decodeToken(data.token);
           const expirationDate = this.jwtHelper.getTokenExpirationDate(data.token);
           const isExpired = this.jwtHelper.isTokenExpired(data.token);
-     // TODO: Remove 
-     console.log("user.service: JWT Details - ");
-     console.log("raw data: " + JSON.stringify(data));
-     console.log("decoded token: " + JSON.stringify(decodedToken));
-     console.log("experiation date: " + expirationDate);
-     console.log("isExpired: " + isExpired);
+     // TODO: Remove
+     console.log('user.service: JWT Details - ');
+     console.log('raw data: ' + JSON.stringify(data));
+     console.log('decoded token: ' + JSON.stringify(decodedToken));
+     console.log('experiation date: ' + expirationDate);
+     console.log('isExpired: ' + isExpired);
           // TODO: finish auth
           this.setAuth({
             email: null,

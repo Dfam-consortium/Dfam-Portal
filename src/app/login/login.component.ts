@@ -7,7 +7,6 @@ export interface Errors {
 }
 
 @Component({
-  selector: '',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 
@@ -43,8 +42,7 @@ export class LoginComponent implements OnInit {
     const credentials = { email: this.email,
                           fullname: this.fullName,
                           password: this.password };
-    if (this.loginType === 'login')
-    {
+    if (this.loginType === 'login') {
       this.authService
         .attemptAuth(this.loginType, credentials)
         .subscribe(
@@ -54,8 +52,7 @@ export class LoginComponent implements OnInit {
             this.isSubmitting = false;
           }
         );
-    }else 
-    {
+    } else {
       this.isSubmitting = false;
       this.router.navigateByUrl('/home');
     }

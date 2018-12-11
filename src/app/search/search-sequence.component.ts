@@ -3,67 +3,16 @@ import { Router } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: 'app-search-sequence',
+  selector: 'dfam-search-sequence',
   templateUrl: './search-sequence.component.html',
   styleUrls: ['./search-sequence.component.scss']
 })
 export class SearchSequenceComponent implements OnInit {
 
-  search: any = {};
-  organisms: any[] = [];
-
-  loading: boolean;
-
-  @ViewChild('sequenceInput') sequenceInput;
-
   constructor(
     private dfamapi: DfamAPIService,
     private router: Router,
   ) { }
-
-  ngOnInit() {
-    this.getAssemblies();
-    this.onReset();
-  }
-
-  getAssemblies() {
-    this.dfamapi.getAssemblies().subscribe(data => this.organisms = data);
-  }
-
-  onSubmit() {
-    if (this.sequenceInput.invalid) {
-      return;
-    }
-
-    this.loading = true;
-    this.dfamapi.postSearch(
-      this.search.sequence,
-      this.search.organism,
-      this.search.cutoff,
-      this.search.evalue,
-    ).subscribe(result => {
-      if (result) {
-        this.router.navigate(['search', 'results', result.id]);
-      } else {
-        this.loading = false;
-        // TODO: Report an error status
-      }
-    });
-  }
-
-  onReset() {
-    this.search.sequence = '';
-    this.search.organism = '';
-    this.search.cutoff = 'curated';
-    this.search.evalue = 0.001;
-  }
-
-  onExample() {
-    this.search.sequence = SearchSequenceComponent.example.sequence;
-    this.search.organism = SearchSequenceComponent.example.organism;
-    this.search.cutoff = SearchSequenceComponent.example.cutoff;
-    this.search.evalue = SearchSequenceComponent.example.evalue;
-  }
 
 
   static example = {
@@ -304,5 +253,56 @@ TCGGCTCACTTCGACCTCTGCCTCCCCAGTTCAAGTGATTCTCCTGCCTCAGTCTCCTGA`,
     organism: 'Homo sapiens',
     cutoff: 'curated',
     evalue: 0.001,
+  };
+
+  search: any = {};
+  organisms: any[] = [];
+
+  loading: boolean;
+
+  @ViewChild('sequenceInput') sequenceInput;
+
+  ngOnInit() {
+    this.getAssemblies();
+    this.onReset();
+  }
+
+  getAssemblies() {
+    this.dfamapi.getAssemblies().subscribe(data => this.organisms = data);
+  }
+
+  onSubmit() {
+    if (this.sequenceInput.invalid) {
+      return;
+    }
+
+    this.loading = true;
+    this.dfamapi.postSearch(
+      this.search.sequence,
+      this.search.organism,
+      this.search.cutoff,
+      this.search.evalue,
+    ).subscribe(result => {
+      if (result) {
+        this.router.navigate(['search', 'results', result.id]);
+      } else {
+        this.loading = false;
+        // TODO: Report an error status
+      }
+    });
+  }
+
+  onReset() {
+    this.search.sequence = '';
+    this.search.organism = '';
+    this.search.cutoff = 'curated';
+    this.search.evalue = 0.001;
+  }
+
+  onExample() {
+    this.search.sequence = SearchSequenceComponent.example.sequence;
+    this.search.organism = SearchSequenceComponent.example.organism;
+    this.search.cutoff = SearchSequenceComponent.example.cutoff;
+    this.search.evalue = SearchSequenceComponent.example.evalue;
   }
 }

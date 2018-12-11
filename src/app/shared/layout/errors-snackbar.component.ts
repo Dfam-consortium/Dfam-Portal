@@ -35,7 +35,7 @@ export class ErrorsSnackbarComponent implements OnInit, OnDestroy {
 
   showNext() {
     if (this.errorQueue.length) {
-      const errorText = "Error: " + this.errorQueue.shift();
+      const errorText = 'Error: ' + this.errorQueue.shift();
       this.snackBar.open(errorText, '', { duration: 4000 })
         .afterDismissed().subscribe(() => {
           this.showNext();

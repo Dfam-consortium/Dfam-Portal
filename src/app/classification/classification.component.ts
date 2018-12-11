@@ -5,7 +5,7 @@ import { ClassificationTreeComponent } from './classification-tree.component';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: 'app-classification',
+  selector: 'dfam-classification',
   templateUrl: './classification.component.html',
   styleUrls: ['./classification.component.scss']
 })
@@ -40,7 +40,7 @@ export class ClassificationComponent implements OnInit {
 
       this.classes = data;
 
-      let tsvFields = [ 'full_name', 'title', 'description', 'hyperlink',
+      const tsvFields = [ 'full_name', 'title', 'description', 'hyperlink',
         'count', 'repeatmasker_type', 'repeatmasker_subtype', 'repbase_equiv',
         'wicker_equiv', 'curcio_derbyshire_equiv', 'piegu_equiv' ];
 

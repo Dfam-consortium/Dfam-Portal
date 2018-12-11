@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { FamilyModelLogoComponent } from './family-model-logo.component';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
@@ -53,7 +53,6 @@ export class FamilyModelComponent implements OnInit {
   }
   set selectedThreshold(value: string) {
     this._selectedThreshold = value;
-    const conservation = this.assemblyData[this.selectedAssembly].model_conservation;
     const graph_data = this.thresholds.find(t => t.id === this.selectedThreshold).graph;
     this.conservationData = graph_data;
   }

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { MatSort, Sort } from '@angular/material/sort';
+import { Sort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -19,11 +19,11 @@ function preg_quote( str ) {
     // *     example 3: preg_quote("\\.+*?[^]$(){}=!<>|:");
     // *     returns 3: '\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:'
 
-    return (str+'').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, "\\$1");
+    return (str + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, '\\$1');
 }
 
 function has_duplicates(array: any[]) {
-  for (var i = 0; i < array.length - 1; i++) {
+  for (let i = 0; i < array.length - 1; i++) {
     if (array.indexOf(array[i], i + 1) !== -1) {
       return true;
     }
@@ -68,14 +68,14 @@ export class BrowseComponent implements OnInit {
 
     this.classSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
       this.dfamapi.getClasses(search_term).subscribe(classes => {
-        this.classOptions = classes.filter(f => f.name !== "root");
+        this.classOptions = classes.filter(f => f.name !== 'root');
 
         // Cache the list of names and highlight the search term in the leaf name
         this.classOptions.forEach(c => {
           c.names = c.full_name.split(';');
 
           c.leaf_name = c.names[c.names.length - 1];
-          c.leaf_name = c.leaf_name.replace(new RegExp(preg_quote(search_term), 'gi'), "<strong>$&</strong>");
+          c.leaf_name = c.leaf_name.replace(new RegExp(preg_quote(search_term), 'gi'), '<strong>$&</strong>');
           c.name_markup = c.leaf_name;
         });
 
@@ -95,9 +95,9 @@ export class BrowseComponent implements OnInit {
 
     this.cladeSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
       this.dfamapi.getTaxa(search_term).subscribe(clades => {
-        this.cladeOptions = clades.taxa.filter(f => f.name !== "root");
+        this.cladeOptions = clades.taxa.filter(f => f.name !== 'root');
         this.cladeOptions.forEach(c => {
-          let markup = c.species_name.replace(new RegExp(preg_quote(search_term), 'gi'), "<strong>$&</strong>");
+          const markup = c.species_name.replace(new RegExp(preg_quote(search_term), 'gi'), '<strong>$&</strong>');
           c.name_markup = markup;
         });
       });
@@ -105,7 +105,7 @@ export class BrowseComponent implements OnInit {
   }
 
   displayClass(classification: any) {
-    return classification ? classification.name: "";
+    return classification ? classification.name : '';
   }
 
   searchChanged() {
@@ -120,7 +120,7 @@ export class BrowseComponent implements OnInit {
   }
 
   updateClasses() {
-    let search_term = this.search.classification;
+    const search_term = this.search.classification;
 
     if (search_term) {
       this.classSearchTerm.next(search_term);
@@ -131,7 +131,7 @@ export class BrowseComponent implements OnInit {
   }
 
   updateClades() {
-    let search_term = this.search.clade;
+    const search_term = this.search.clade;
     if (search_term) {
       this.cladeSearchTerm.next(search_term);
     } else {
@@ -161,7 +161,7 @@ export class BrowseComponent implements OnInit {
       this.families = data;
       this.families.results.forEach(function(family) {
         if (family.classification) {
-          let cls = family.classification;
+          const cls = family.classification;
           family.classification_display = cls.substring(cls.lastIndexOf(';') + 1);
         }
         if (family.clades) {

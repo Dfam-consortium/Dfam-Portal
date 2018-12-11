@@ -1,20 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 
 import { ErrorsService } from '../services/errors.service';
-import { Family, FamilySummary } from './types';
+import { Family } from './types';
 
 //
 // TODO: Can this constant come from the app.json file so that it's easy to redirect?
 //
 const endpoint = 'http://www.repeatmasker.org:10011/';
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json'
-  })
-};
 
 @Injectable({
   providedIn: 'root'
@@ -346,7 +341,7 @@ export class DfamAPIService {
     return (error: any): Observable<T> => {
       let message = `${operation} failed`;
       if (error.error && error.error.message) {
-        message += ": " + error.error.message;
+        message += ': ' + error.error.message;
       }
 
       this.errorsService.logError({ message , error });

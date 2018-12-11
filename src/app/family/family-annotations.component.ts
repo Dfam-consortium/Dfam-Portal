@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
@@ -42,7 +42,7 @@ export class FamilyAnnotationsComponent implements OnInit {
     this.getKaryotypeData();
   }
 
-  selectedVisualizationType: string = "nrph";
+  selectedVisualizationType = 'nrph';
 
   constructor(
     private dfamapi: DfamAPIService,

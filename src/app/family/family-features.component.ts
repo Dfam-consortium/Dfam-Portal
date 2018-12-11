@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -37,7 +37,7 @@ export class FamilyFeaturesComponent implements OnInit {
       this.family = data;
 
       const el = this.outlet.nativeElement;
-      el.innerHTML = "";
+      el.innerHTML = '';
       if (data) {
         if (data.features.length > 0 || data.coding_seqs.length > 0) {
           this.visualization = new FeaturesVisualization({ target: el, data });

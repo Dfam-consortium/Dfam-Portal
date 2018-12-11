@@ -7,7 +7,7 @@ import Karyotype from 'Karyotype/src/Karyotype';
   templateUrl: './family-annotations-karyotype.component.html',
   styleUrls: ['./family-annotations-karyotype.component.scss']
 })
-export class FamilyAnnotationsKaryotypeComponent implements OnInit {
+export class FamilyAnnotationsKaryotypeComponent implements OnInit, OnChanges {
 
   @Input() data;
 
@@ -20,7 +20,7 @@ export class FamilyAnnotationsKaryotypeComponent implements OnInit {
     if (this.dfamKaryotype) {
       this.dfamKaryotype.switchVisualization(kind);
     }
-  };
+  }
 
   @ViewChild('karyotype') karyotype: ElementRef;
 

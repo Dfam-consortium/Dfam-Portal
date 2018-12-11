@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: 'app-search-sequence-results',
+  selector: 'dfam-search-sequence-results',
   templateUrl: './search-sequence-results.component.html',
   styleUrls: ['./search-sequence-results.component.scss']
 })

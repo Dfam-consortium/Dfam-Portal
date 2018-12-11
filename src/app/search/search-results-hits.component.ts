@@ -21,7 +21,7 @@ export class SearchResultsHitsComponent implements OnInit {
     }
     this._data = value;
     this.dataSource.data = value;
-  };
+  }
 
   @Input() assembly: string;
 
