@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -17,6 +17,8 @@ export class FamilyRelationshipsComponent implements OnInit {
 
   help = 'A representation of the relationships between TE entries. Simple glyphs are used to represent the location of regions of similarity between models. The case of reverse complement similarity is shown using a purple glyph with inverted orientation. Each glyph is shown with accompanying percent identity between the entry consensus sequences, match e-value, and percent shared coverage (length). The list of related entries can be sorted by any of these fields.';
 
+  @ViewChild('outlet') outlet: ElementRef;
+
   constructor(
     private dfamapi: DfamAPIService,
     private route: ActivatedRoute
@@ -29,7 +31,7 @@ export class FamilyRelationshipsComponent implements OnInit {
   set relationships(value: []) {
     this._relationships = value;
     if (value.length) {
-      window.dfamOverlapPlot(document.querySelector('#overlap'), value);
+      window.dfamOverlapPlot(this.outlet.nativeElement, value);
     }
   }
 
