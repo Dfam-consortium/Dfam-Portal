@@ -109,7 +109,7 @@ export class BrowseComponent implements OnInit {
   }
 
   searchChanged() {
-    this.searchApiOptions.name = this.search.name;
+    this.searchApiOptions.name_accession = this.search.name_accession;
     this.searchApiOptions.classification = this.search.classification ? this.search.classification.full_name : null;
     this.searchApiOptions.clade = this.search.clade;
     this.searchApiOptions.clade_ancestors = this.search.clade_ancestors;

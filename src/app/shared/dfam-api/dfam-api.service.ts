@@ -56,8 +56,8 @@ export class DfamAPIService {
       params: new HttpParams().set('format', 'summary')
     };
 
-    if ( apiOptions.name ) {
-      options.params = options.params.set('name', apiOptions.name);
+    if ( apiOptions.name_accession ) {
+      options.params = options.params.set('name_accession', apiOptions.name_accession);
     }
 
     if ( apiOptions.classification ) {
