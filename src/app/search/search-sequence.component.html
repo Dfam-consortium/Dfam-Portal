@@ -34,8 +34,15 @@
         rows="10"
         placeholder="Sequence"
         name="sequence"
-        [(ngModel)]="search.sequence">
+        required
+        minlength="50"
+        [(ngModel)]="search.sequence"
+        #sequenceInput="ngModel">
     </textarea>
+    <div *ngIf="sequenceInput.invalid && (sequenceInput.dirty || sequenceInput.touched)"
+        class="error">
+      Sequence is too short.
+    </div>
   </mat-form-field>
 
   <mat-form-field>
@@ -59,8 +66,8 @@
 
   <div class="buttons">
     <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
-    <button mat-raised-button (click)="onReset()">Reset</button>
-    <button mat-raised-button (click)="onExample()">Example</button>
+    <button mat-raised-button type="button" (click)="onReset()">Reset</button>
+    <button mat-raised-button type="button" (click)="onExample()">Example</button>
   </div>
 </form>
 

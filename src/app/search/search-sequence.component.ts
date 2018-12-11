@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -13,6 +13,8 @@ export class SearchSequenceComponent implements OnInit {
   organisms: any[] = [];
 
   loading: boolean;
+
+  @ViewChild('sequenceInput') sequenceInput;
 
   constructor(
     private dfamapi: DfamAPIService,
@@ -29,6 +31,10 @@ export class SearchSequenceComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.sequenceInput.invalid) {
+      return;
+    }
+
     this.loading = true;
     this.dfamapi.postSearch(
       this.search.sequence,
