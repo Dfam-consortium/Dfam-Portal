@@ -30,7 +30,7 @@ export class SearchSequenceResultsComponent implements OnInit {
         if (results.status === 'ERROR') {
           this.loading = false;
           this.message = results.message;
-        } else if (results.status === 'PEND') {
+        } else if (results.message) {
           this.message = results.message;
           setTimeout(this.getResults.bind(this), 2000);
         } else {
