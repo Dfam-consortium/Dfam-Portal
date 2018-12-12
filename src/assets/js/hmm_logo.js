@@ -11,16 +11,6 @@
 (function ($) {
   "use strict";
 
-  // checking for canvas support and caching result
-  var canv_support = null;
-  function canvasSupport() {
-    if (!canv_support) {
-      var elem = document.createElement('canvas');
-      canv_support = !!(elem.getContext && elem.getContext('2d'));
-    }
-    return canv_support;
-  }
-
   function Letter(letter, options) {
     options = options || {};
     this.value = letter;
@@ -689,10 +679,6 @@
 
       $(canvas).attr('width', width).attr('height', height);
 
-      if (!canvasSupport()) {
-        canvas[0] = G_vmlCanvasManager.initElement(canvas[0]);
-      }
-
       return canvas[0];
     }
 
@@ -840,18 +826,13 @@
       // beginning the first time it is scrolled, because it thinks it has a
       // width of 0.
       if (!this.scrollme) {
-        if (canvasSupport()) {
-          this.scrollme = new EasyScroller($(this.dom_element)[0], {
-            scrollingX: 1,
-            scrollingY: 0,
-            eventTarget: this.called_on
-          });
-        }
+        this.scrollme = new EasyScroller($(this.dom_element)[0], {
+          scrollingX: 1,
+          scrollingY: 0,
+          eventTarget: this.called_on
+        });
       }
 
-      if (target !== 1 && canvasSupport()) {
-        this.scrollme.reflow();
-      }
       return;
     };
 
@@ -874,9 +855,6 @@
         bottom_height = (isNaN(this.data.min_height_obs)) ? 0 : parseInt(this.data.min_height_obs, 10),
         context = null,
         axis_label = "Information Content (bits)";
-      if (!canvasSupport()) {
-        canvas[0] = G_vmlCanvasManager.initElement(canvas[0]);
-      }
 
       context = canvas[0].getContext('2d');
       //draw min/max tick marks
@@ -984,12 +962,6 @@
                 letter_height = parseFloat(values[1]) / this.data.max_height;
                 var y_pos = (this.info_content_height - 2) - previous_height,
                   glyph_height = (this.info_content_height - 2) * letter_height;
-
-                // The positioning in IE is off, so we need to modify the y_pos when
-                // canvas is not supported and we are using VML instead.
-                if (!canvasSupport()) {
-                  y_pos = y_pos + (glyph_height * (letter_height / 2));
-                }
 
                 col_positions[j] = [glyph_height, this.zoomed_column, x_pos, y_pos];
                 previous_height = previous_height + glyph_height;
@@ -1353,196 +1325,222 @@
   $.fn.hmm_logo = function (options) {
     var logo = null,
       logo_graphic = $('<div class="logo_graphic">');
-    if (canvasSupport()) {
-      options = options || {};
+    options = options || {};
 
-      // add some internal divs for scrolling etc.
-      $(this).append(
-        $('<div class="logo_container">').append(logo_graphic).append('<div class="logo_divider">')
-      );
+    // add some internal divs for scrolling etc.
+    $(this).append(
+      $('<div class="logo_container">').append(logo_graphic).append('<div class="logo_divider">')
+    );
 
-      if (!options.data) {
+    if (!options.data) {
+      return;
+    }
+
+    options.dom_element = logo_graphic;
+    options.called_on = this;
+
+    var zoom = options.zoom || 0.4,
+      form = $('<form class="logo_form"><fieldset><label for="position">Column number</label>' +
+        '<input type="text" name="position" class="logo_position"></input>' +
+        '<button class="button logo_change">Go</button></fieldset>' +
+        '</form>'),
+      controls = $('<div class="logo_controls">'),
+      settings = $('<div class="logo_settings">');
+
+    settings.append('<span class="close">x</span>');
+
+    logo = new HMMLogo(options);
+    logo.render(options);
+
+    if (logo.zoom_enabled) {
+      controls.append('<button class="logo_zoomout button">-</button>' +
+        '<button class="logo_zoomin button">+</button>');
+    }
+
+    /* we don't want to toggle if the max height_obs is greater than max theoretical
+     * as letters will fall off the top.
+     */
+    if (logo.scale_height_enabled && (logo.data.max_height_obs < logo.data.max_height_theory)) {
+      var obs_checked = '',
+        theory_checked = '',
+        theory_help = '',
+        obs_help = '';
+
+      if (logo.data.max_height_obs === logo.data.max_height) {
+        obs_checked = 'checked';
+      } else {
+        theory_checked = 'checked';
+      }
+
+      if (options.help) {
+        obs_help = '<a class="help" href="/help#scale_obs" title="Set the y-axis maximum to the maximum observed height.">' +
+          '<span aria-hidden="true" data-icon="?"></span><span class="reader-text">help</span></a>';
+        theory_help = '<a class="help" href="/help#scale_theory" title="Set the y-axis maximum to the theoretical maximum height">' +
+          '<span aria-hidden="true" data-icon="?"></span><span class="reader-text">help</span></a>';
+      }
+
+      var scale_controls = '<fieldset><legend>Scale</legend>' +
+        '<label><input type="radio" name="scale" class="logo_scale" value="obs" ' + obs_checked +
+        '/>Maximum Observed ' + obs_help +
+        '</label></br>' +
+        '<label><input type="radio" name="scale" class="logo_scale" value="theory" ' + theory_checked +
+        '/>Maximum Theoretical ' + theory_help +
+        '</label>' +
+        '</fieldset>';
+
+      settings.append(scale_controls);
+    }
+
+    if (logo.data.height_calc !== 'score' && logo.data.alphabet === 'aa' && logo.data.probs_arr) {
+
+      var def_color = null,
+        con_color = null,
+        def_help = '',
+        con_help = '';
+
+      if (logo.colorscheme === 'default') {
+        def_color = 'checked';
+      } else {
+        con_color = 'checked';
+      };
+
+      if (options.help) {
+        def_help = '<a class="help" href="/help#colors_default" title="Each letter receives its own color.">' +
+          '<span aria-hidden="true" data-icon="?"></span><span class="reader-text">help</span></a>';
+        con_help = '<a class="help" href="/help#colors_consensus" title="Letters are colored as in Clustalx and Jalview, with colors depending on composition of the column.">' +
+          '<span aria-hidden="true" data-icon="?"></span><span class="reader-text">help</span></a>';
+      }
+
+      var color_controls = '<fieldset><legend>Color Scheme</legend>' +
+        '<label><input type="radio" name="color" class="logo_color" value="default" ' + def_color +
+        '/>Default ' + def_help +
+        '</label></br>' +
+        '<label><input type="radio" name="color" class="logo_color" value="consensus" ' + con_color +
+        '/>Consensus Colors ' + con_help +
+        '</label>' +
+        '</fieldset>';
+      settings.append(color_controls);
+    }
+
+    if (logo.data.ali_map) {
+      var mod_checked = null,
+        ali_checked = null,
+        mod_help = '',
+        ali_help = '';
+
+      if (logo.display_ali_map === 0) {
+        mod_checked = 'checked';
+      } else {
+        ali_checked = 'checked';
+      }
+
+      if (options.help) {
+        mod_help = '<a class="help" href="/help#coords_model" title="The coordinates along the top of the plot show the model position.">' +
+          '<span aria-hidden="true" data-icon="?"></span><span class="reader-text">help</span></a>';
+        ali_help = '<a class="help" href="/help#coords_ali" title="The coordinates along the top of the plot show the column in the alignment associated with the model">' +
+          '<span aria-hidden="true" data-icon="?"></span><span class="reader-text">help</span></a>';
+      }
+
+      var ali_controls = '<fieldset><legend>Coordinates</legend>' +
+        '<label><input type="radio" name="coords" class="logo_ali_map" value="model" ' + mod_checked +
+        '/>Model ' + mod_help +
+        '</label></br>' +
+        '<label><input type="radio" name="coords" class="logo_ali_map" value="alignment" ' + ali_checked +
+        '/>Alignment ' + ali_help +
+        '</label>' +
+        '</fieldset>';
+      settings.append(ali_controls);
+    }
+
+    if (settings.children().length > 0) {
+      controls.append('<button class="logo_settings_switch button">Settings</button>');
+      controls.append(settings);
+    }
+
+    form.append(controls);
+    $(this).append(form);
+
+
+    $(this).find('.logo_settings_switch, .logo_settings .close').bind('click', function (e) {
+      e.preventDefault();
+      $('.logo_settings').toggle();
+    });
+
+    $(this).find('.logo_reset').bind('click', function (e) {
+      e.preventDefault();
+      var hmm_logo = logo;
+      hmm_logo.change_zoom({'target': hmm_logo.default_zoom});
+    });
+
+    $(this).find('.logo_change').bind('click', function (e) {
+      e.preventDefault();
+    });
+
+    $(this).find('.logo_zoomin').bind('click', function (e) {
+      e.preventDefault();
+      var hmm_logo = logo;
+      hmm_logo.change_zoom({'distance': 0.1, 'direction': '+'});
+    });
+
+    $(this).find('.logo_zoomout').bind('click', function (e) {
+      e.preventDefault();
+      var hmm_logo = logo;
+      hmm_logo.change_zoom({'distance': 0.1, 'direction': '-'});
+    });
+
+    $(this).find('.logo_scale').bind('change', function (e) {
+      var hmm_logo = logo;
+      hmm_logo.toggle_scale(this.value);
+    });
+
+    $(this).find('.logo_color').bind('change', function (e) {
+      var hmm_logo = logo;
+      hmm_logo.toggle_colorscheme(this.value);
+    });
+
+    $(this).find('.logo_ali_map').bind('change', function (e) {
+      var hmm_logo = logo;
+      hmm_logo.toggle_ali_map(this.value);
+    });
+
+    $(this).find('.logo_position').bind('change', function () {
+      var hmm_logo = logo;
+      if (!this.value.match(/^\d+$/m)) {
         return;
       }
+      hmm_logo.scrollToColumn(this.value, 1);
+    });
 
-      options.dom_element = logo_graphic;
-      options.called_on = this;
+    logo_graphic.bind('dblclick', function (e) {
+      // need to get coordinates of mouse click
+      var hmm_logo = logo,
+        offset = $(this).offset(),
+        x = parseInt((e.pageX - offset.left), 10),
 
-      var zoom = options.zoom || 0.4,
-        form = $('<form class="logo_form"><fieldset><label for="position">Column number</label>' +
-          '<input type="text" name="position" class="logo_position"></input>' +
-          '<button class="button logo_change">Go</button></fieldset>' +
-          '</form>'),
-        controls = $('<div class="logo_controls">'),
-        settings = $('<div class="logo_settings">');
+        // get mouse position in the window
+        window_position = e.pageX - $(this).parent().offset().left,
 
-      settings.append('<span class="close">x</span>');
+        // get column number
+        col = hmm_logo.columnFromCoordinates(x),
 
-      logo = new HMMLogo(options);
-      logo.render(options);
+        // choose new zoom level and zoom in.
+        current = hmm_logo.zoom;
 
-      if (logo.zoom_enabled) {
-        controls.append('<button class="logo_zoomout button">-</button>' +
-          '<button class="logo_zoomin button">+</button>');
+      if (current < 1) {
+        hmm_logo.change_zoom({'target': 1, offset: window_position, column: col});
+      } else {
+        hmm_logo.change_zoom({'target': 0.3, offset: window_position, column: col});
       }
 
-      /* we don't want to toggle if the max height_obs is greater than max theoretical
-       * as letters will fall off the top.
-       */
-      if (logo.scale_height_enabled && (logo.data.max_height_obs < logo.data.max_height_theory)) {
-        var obs_checked = '',
-          theory_checked = '',
-          theory_help = '',
-          obs_help = '';
+      return;
+    });
 
-        if (logo.data.max_height_obs === logo.data.max_height) {
-          obs_checked = 'checked';
-        } else {
-          theory_checked = 'checked';
-        }
-
-        if (options.help) {
-          obs_help = '<a class="help" href="/help#scale_obs" title="Set the y-axis maximum to the maximum observed height.">' +
-            '<span aria-hidden="true" data-icon="?"></span><span class="reader-text">help</span></a>';
-          theory_help = '<a class="help" href="/help#scale_theory" title="Set the y-axis maximum to the theoretical maximum height">' +
-            '<span aria-hidden="true" data-icon="?"></span><span class="reader-text">help</span></a>';
-        }
-
-        var scale_controls = '<fieldset><legend>Scale</legend>' +
-          '<label><input type="radio" name="scale" class="logo_scale" value="obs" ' + obs_checked +
-          '/>Maximum Observed ' + obs_help +
-          '</label></br>' +
-          '<label><input type="radio" name="scale" class="logo_scale" value="theory" ' + theory_checked +
-          '/>Maximum Theoretical ' + theory_help +
-          '</label>' +
-          '</fieldset>';
-
-        settings.append(scale_controls);
-      }
-
-      if (logo.data.height_calc !== 'score' && logo.data.alphabet === 'aa' && logo.data.probs_arr) {
-
-        var def_color = null,
-          con_color = null,
-          def_help = '',
-          con_help = '';
-
-        if (logo.colorscheme === 'default') {
-          def_color = 'checked';
-        } else {
-          con_color = 'checked';
-        };
-
-        if (options.help) {
-          def_help = '<a class="help" href="/help#colors_default" title="Each letter receives its own color.">' +
-            '<span aria-hidden="true" data-icon="?"></span><span class="reader-text">help</span></a>';
-          con_help = '<a class="help" href="/help#colors_consensus" title="Letters are colored as in Clustalx and Jalview, with colors depending on composition of the column.">' +
-            '<span aria-hidden="true" data-icon="?"></span><span class="reader-text">help</span></a>';
-        }
-
-        var color_controls = '<fieldset><legend>Color Scheme</legend>' +
-          '<label><input type="radio" name="color" class="logo_color" value="default" ' + def_color +
-          '/>Default ' + def_help +
-          '</label></br>' +
-          '<label><input type="radio" name="color" class="logo_color" value="consensus" ' + con_color +
-          '/>Consensus Colors ' + con_help +
-          '</label>' +
-          '</fieldset>';
-        settings.append(color_controls);
-      }
-
-      if (logo.data.ali_map) {
-        var mod_checked = null,
-          ali_checked = null,
-          mod_help = '',
-          ali_help = '';
-
-        if (logo.display_ali_map === 0) {
-          mod_checked = 'checked';
-        } else {
-          ali_checked = 'checked';
-        }
-
-        if (options.help) {
-          mod_help = '<a class="help" href="/help#coords_model" title="The coordinates along the top of the plot show the model position.">' +
-            '<span aria-hidden="true" data-icon="?"></span><span class="reader-text">help</span></a>';
-          ali_help = '<a class="help" href="/help#coords_ali" title="The coordinates along the top of the plot show the column in the alignment associated with the model">' +
-            '<span aria-hidden="true" data-icon="?"></span><span class="reader-text">help</span></a>';
-        }
-
-        var ali_controls = '<fieldset><legend>Coordinates</legend>' +
-          '<label><input type="radio" name="coords" class="logo_ali_map" value="model" ' + mod_checked +
-          '/>Model ' + mod_help +
-          '</label></br>' +
-          '<label><input type="radio" name="coords" class="logo_ali_map" value="alignment" ' + ali_checked +
-          '/>Alignment ' + ali_help +
-          '</label>' +
-          '</fieldset>';
-        settings.append(ali_controls);
-      }
-
-      if (settings.children().length > 0) {
-        controls.append('<button class="logo_settings_switch button">Settings</button>');
-        controls.append(settings);
-      }
-
-      form.append(controls);
-      $(this).append(form);
-
-
-      $(this).find('.logo_settings_switch, .logo_settings .close').bind('click', function (e) {
-        e.preventDefault();
-        $('.logo_settings').toggle();
-      });
-
-      $(this).find('.logo_reset').bind('click', function (e) {
-        e.preventDefault();
-        var hmm_logo = logo;
-        hmm_logo.change_zoom({'target': hmm_logo.default_zoom});
-      });
-
-      $(this).find('.logo_change').bind('click', function (e) {
-        e.preventDefault();
-      });
-
-      $(this).find('.logo_zoomin').bind('click', function (e) {
-        e.preventDefault();
-        var hmm_logo = logo;
-        hmm_logo.change_zoom({'distance': 0.1, 'direction': '+'});
-      });
-
-      $(this).find('.logo_zoomout').bind('click', function (e) {
-        e.preventDefault();
-        var hmm_logo = logo;
-        hmm_logo.change_zoom({'distance': 0.1, 'direction': '-'});
-      });
-
-      $(this).find('.logo_scale').bind('change', function (e) {
-        var hmm_logo = logo;
-        hmm_logo.toggle_scale(this.value);
-      });
-
-      $(this).find('.logo_color').bind('change', function (e) {
-        var hmm_logo = logo;
-        hmm_logo.toggle_colorscheme(this.value);
-      });
-
-      $(this).find('.logo_ali_map').bind('change', function (e) {
-        var hmm_logo = logo;
-        hmm_logo.toggle_ali_map(this.value);
-      });
-
-      $(this).find('.logo_position').bind('change', function () {
-        var hmm_logo = logo;
-        if (!this.value.match(/^\d+$/m)) {
-          return;
-        }
-        hmm_logo.scrollToColumn(this.value, 1);
-      });
-
-      logo_graphic.bind('dblclick', function (e) {
-        // need to get coordinates of mouse click
+    if (options.column_info) {
+      logo_graphic.bind('click', function (e) {
         var hmm_logo = logo,
+          info_tab = $('<table class="logo_col_info"></table>'),
+          header = '<tr>',
+          tbody  = '',
           offset = $(this).offset(),
           x = parseInt((e.pageX - offset.left), 10),
 
@@ -1551,117 +1549,86 @@
 
           // get column number
           col = hmm_logo.columnFromCoordinates(x),
+          // clone the column data before reversal or the column gets messed
+          // up in the logo when zoom levels change. Also stops flip-flopping
+          // of the order from ascending to descending.
+          col_data = [],
+          info_cols = 0,
+          i = 0,
+          j = 0,
+          height_header = 'Probability';
 
-          // choose new zoom level and zoom in.
-          current = hmm_logo.zoom;
-
-        if (current < 1) {
-          hmm_logo.change_zoom({'target': 1, offset: window_position, column: col});
+        if (logo.data.height_calc && logo.data.height_calc === 'score') {
+          height_header = 'Score';
+          col_data = logo.data.height_arr[col - 1].slice(0).reverse();
         } else {
-          hmm_logo.change_zoom({'target': 0.3, offset: window_position, column: col});
+          col_data = logo.data.probs_arr[col - 1].slice(0).reverse();
         }
 
-        return;
-      });
-
-      if (options.column_info) {
-        logo_graphic.bind('click', function (e) {
-          var hmm_logo = logo,
-            info_tab = $('<table class="logo_col_info"></table>'),
-            header = '<tr>',
-            tbody  = '',
-            offset = $(this).offset(),
-            x = parseInt((e.pageX - offset.left), 10),
-
-            // get mouse position in the window
-            window_position = e.pageX - $(this).parent().offset().left,
-
-            // get column number
-            col = hmm_logo.columnFromCoordinates(x),
-            // clone the column data before reversal or the column gets messed
-            // up in the logo when zoom levels change. Also stops flip-flopping
-            // of the order from ascending to descending.
-            col_data = [],
-            info_cols = 0,
-            i = 0,
-            j = 0,
-            height_header = 'Probability';
-
-          if (logo.data.height_calc && logo.data.height_calc === 'score') {
-            height_header = 'Score';
-            col_data = logo.data.height_arr[col - 1].slice(0).reverse();
+        info_cols = Math.ceil(col_data.length / 5);
+        //add the headers for each column.
+        for (i = 0; i < info_cols; i++) {
+          // using the i < info_cols - 1 check to make sure the last column doesn't
+          // get marked with the odd class so we don't get a border on the edge of the table.
+          if (info_cols > 1 && i < (info_cols - 1)) {
+            header += '<th>Residue</th><th class="odd">' + height_header + '</th>';
           } else {
-            col_data = logo.data.probs_arr[col - 1].slice(0).reverse();
-          }
-
-          info_cols = Math.ceil(col_data.length / 5);
-          //add the headers for each column.
-          for (i = 0; i < info_cols; i++) {
-            // using the i < info_cols - 1 check to make sure the last column doesn't
-            // get marked with the odd class so we don't get a border on the edge of the table.
-            if (info_cols > 1 && i < (info_cols - 1)) {
-              header += '<th>Residue</th><th class="odd">' + height_header + '</th>';
-            } else {
-              header += '<th>Residue</th><th>' + height_header + '</th>';
-            }
-          }
-
-
-          header += '</tr>';
-          info_tab.append($(header));
-
-          // add the data for each column
-          for (i = 0; i < 5; i++) {
-            tbody += '<tr>';
-            j = i;
-            while (col_data[j]) {
-              var values = col_data[j].split(':', 2),
-                color = '';
-              if (logo.colorscheme === 'default') {
-                color = logo.alphabet + '_' + values[0];
-              }
-              // using the j < 15 check to make sure the last column doesn't get marked
-              // with the odd class so we don't get a border on the edge of the table.
-              if (info_cols > 1  &&  j < 15) {
-                tbody += '<td class="' + color + '"><div></div>' + values[0] + '</td><td class="odd">' + values[1] + '</td>';
-              } else {
-                tbody += '<td class="' + color + '"><div></div>' + values[0] + '</td><td>' + values[1] + '</td>';
-              }
-
-              j += 5;
-            }
-            tbody += '</tr>';
-          }
-
-          info_tab.append($(tbody));
-
-          $(options.column_info).empty()
-            .append($('<p> Column:' + col  + '</p><div><p>Occupancy: ' + logo.data.delete_probs[col - 1] + '</p><p>Insert Probability: ' + logo.data.insert_probs[col - 1] + '</p><p>Insert Length: ' + logo.data.insert_lengths[col - 1] + '</p></div>'))
-            .append(info_tab).show();
-        });
-      }
-
-      $(document).bind(this.attr('id') + ".scrolledTo", function (e, left, top, zoom) {
-        var hmm_logo = logo;
-        hmm_logo.render({target: left});
-      });
-
-      $(document).keydown(function (e) {
-        if (!e.ctrlKey) {
-          if (e.which === 61 || e.which === 107) {
-            zoom += 0.1;
-            logo.change_zoom({'distance': 0.1, 'direction': '+'});
-          }
-          if (e.which === 109 || e.which === 0) {
-            zoom = zoom - 0.1;
-            logo.change_zoom({'distance': 0.1, 'direction': '-'});
+            header += '<th>Residue</th><th>' + height_header + '</th>';
           }
         }
-      });
 
-    } else {
-      $('#logo').replaceWith($('#no_canvas').html());
+
+        header += '</tr>';
+        info_tab.append($(header));
+
+        // add the data for each column
+        for (i = 0; i < 5; i++) {
+          tbody += '<tr>';
+          j = i;
+          while (col_data[j]) {
+            var values = col_data[j].split(':', 2),
+              color = '';
+            if (logo.colorscheme === 'default') {
+              color = logo.alphabet + '_' + values[0];
+            }
+            // using the j < 15 check to make sure the last column doesn't get marked
+            // with the odd class so we don't get a border on the edge of the table.
+            if (info_cols > 1  &&  j < 15) {
+              tbody += '<td class="' + color + '"><div></div>' + values[0] + '</td><td class="odd">' + values[1] + '</td>';
+            } else {
+              tbody += '<td class="' + color + '"><div></div>' + values[0] + '</td><td>' + values[1] + '</td>';
+            }
+
+            j += 5;
+          }
+          tbody += '</tr>';
+        }
+
+        info_tab.append($(tbody));
+
+        $(options.column_info).empty()
+          .append($('<p> Column:' + col  + '</p><div><p>Occupancy: ' + logo.data.delete_probs[col - 1] + '</p><p>Insert Probability: ' + logo.data.insert_probs[col - 1] + '</p><p>Insert Length: ' + logo.data.insert_lengths[col - 1] + '</p></div>'))
+          .append(info_tab).show();
+      });
     }
+
+    $(document).bind(this.attr('id') + ".scrolledTo", function (e, left, top, zoom) {
+      var hmm_logo = logo;
+      hmm_logo.render({target: left});
+    });
+
+    $(document).keydown(function (e) {
+      if (!e.ctrlKey) {
+        if (e.which === 61 || e.which === 107) {
+          zoom += 0.1;
+          logo.change_zoom({'distance': 0.1, 'direction': '+'});
+        }
+        if (e.which === 109 || e.which === 0) {
+          zoom = zoom - 0.1;
+          logo.change_zoom({'distance': 0.1, 'direction': '-'});
+        }
+      }
+    });
 
     return logo;
   };
