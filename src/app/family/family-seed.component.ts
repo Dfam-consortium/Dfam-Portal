@@ -2,7 +2,6 @@ import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
-import DfamSeedAlignment from 'Dfam-js/dist/Dfam-js';
 import AlignmentSummaryViewer from 'AlignmentSummaryViewer/dist/AlignmentSummaryViewer';
 
 @Component({
@@ -21,22 +20,19 @@ export class FamilySeedComponent implements OnInit {
   seeds_count;
 
   loading = true;
-  _stockholmData: string;
-  get stockholmData(): string {
-    return this._stockholmData;
+  _data: any;
+  get data(): any {
+    return this._data;
   }
-  set stockholmData(value: string) {
-    this._stockholmData = value;
+  set data(value: any) {
+    this._data = value;
 
     if (value) {
       const container = this.seedContainer.nativeElement;
       const canvas = document.createElement('canvas');
       container.appendChild(canvas);
-      const seedAlign = new DfamSeedAlignment();
-      seedAlign.parseStockholm(value);
-      this.seeds_count = seedAlign.alignments.length;
-      const summary = seedAlign.toAlignmentSummary();
-      this.viewer = new AlignmentSummaryViewer(canvas, container, summary);
+      this.seeds_count = this.data.num_alignments;
+      this.viewer = new AlignmentSummaryViewer(canvas, container, this.data);
     }
   }
 
@@ -66,9 +62,9 @@ export class FamilySeedComponent implements OnInit {
 
   getSeed() {
     const accession = this.route.parent.snapshot.params['id'];
-    this.dfamapi.getFamilySeed(accession).subscribe(data => {
+    this.dfamapi.getFamilySeedPlot(accession).subscribe(data => {
       this.loading = false;
-      this.stockholmData = data;
+      this.data = data;
     });
   }
 }

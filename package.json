@@ -25,7 +25,6 @@
     "@angular/router": "^7.1.0",
     "@auth0/angular-jwt": "^2.0.0",
     "AlignmentSummaryViewer": "https://github.com/Dfam-consortium/AlignmentSummaryViewer",
-    "Dfam-js": "https://github.com/Dfam-consortium/Dfam-js",
     "Karyotype": "https://github.com/Dfam-consortium/Karyotype",
     "core-js": "^2.5.4",
     "d3": "^3.5.17",
