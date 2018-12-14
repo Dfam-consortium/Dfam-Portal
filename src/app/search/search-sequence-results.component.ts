@@ -37,6 +37,17 @@ export class SearchSequenceResultsComponent implements OnInit {
           this.loading = false;
           this.message = null;
 
+          results.forEach(function(result) {
+            // Add 'row_id' values so the visualization can jump to the table rows
+            let i = 0;
+            result.hits.forEach(function(hit) {
+              hit.row_id = 'annotation_' + (i++);
+            });
+            result.tandem_repeats.forEach(function(tr_hit) {
+              tr_hit.row_id = 'annotation_' + (i++);
+            });
+          });
+
           this.results = results;
           this.selectedResult = results[0];
         }

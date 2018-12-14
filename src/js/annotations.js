@@ -194,7 +194,7 @@ function AnnotationsGraphic(options) {
             y = 40;
           }
 
-          label = context.text(x, y - 10, text).attr({fill: '#000'});
+          var label = context.text(x, y - 10, text).attr({fill: '#000'});
           var ld = label.getBBox();
 
           //flip the label if it is going to go off the end of the graphic.
@@ -242,7 +242,7 @@ function AnnotationsGraphic(options) {
         .attr({fill:"#444444", stroke: "none"})
         .mouseover( function() {
           var text = repeat.type + ' : ' + (repeat.start) + ' - ' + (repeat.end);
-          label = context.text(x, y - 10, text).attr({fill: '#000'});
+          var label = context.text(x, y - 10, text).attr({fill: '#000'});
           var ld = label.getBBox();
           if (ld.x < 0) {
             label.attr({'text-anchor':'start'});
