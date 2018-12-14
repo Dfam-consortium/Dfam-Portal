@@ -15,7 +15,7 @@ function setSVGAttrs(el, attrs) {
 
 function createSVGText(x, y, text, anchor) {
   var el = createSVGElement("text");
-  el.innerHTML = text;
+  el.textContent = text;
   var attrs = { "x": x, "y": y };
   if (anchor) {
     attrs["text-anchor"] = anchor;
@@ -50,7 +50,9 @@ function FeaturesVisualization(options) {
 
 FeaturesVisualization.prototype.render = function() {
   if (this.svg) {
-    this.svg.remove();
+    if (this.svg.parentNode) {
+      this.svg.parentNode.removeChild(this.svg);
+    }
   }
 
   // Create the SVG element
@@ -154,8 +156,8 @@ FeaturesVisualization.prototype.render = function() {
     // Remove labels that overlap with the end label
     var bbox = label.getBBox()
     if ((bbox.x + bbox.width) > endLabel.getBBox().x) {
-      line.remove();
-      label.remove();
+      line.parentNode.removeChild(line);
+      label.parentNode.removeChild(label);
       break;
     }
   }

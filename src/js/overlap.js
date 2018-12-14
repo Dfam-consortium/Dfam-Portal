@@ -315,7 +315,7 @@ function Overlap(options) {
           tooltipContent.innerHTML = '<ul style="margin:0; padding: 0 0 0 1em;"><li style="margin: 0;"><strong>E-value</strong>: ' + match.evalue + '</li></ul><div class="dotplot"></div>';
           var tooltipCanvas = tooltip.querySelector('canvas')
           if (tooltipCanvas) {
-            tooltipCanvas.remove();
+            tooltipCanvas.parentNode.removeChild(tooltipCanvas);
           }
           new DotPlot({ target: tooltipContent.querySelector('.dotplot'), data: match }).render();
         }
