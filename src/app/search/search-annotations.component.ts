@@ -76,10 +76,10 @@ export class SearchAnnotationsComponent implements OnInit {
 
     this.dfamapi.getAnnotations(
       this.search.assembly,
-      this.search.chromosome,
+      this.search.chromosome.trim(),
       this.search.start,
       this.search.end,
-      this.search.family,
+      this.search.family.trim(),
       this.search.nrph
     ).subscribe(results => {
 
@@ -101,9 +101,9 @@ export class SearchAnnotationsComponent implements OnInit {
   onReset() {
     this.search.assembly = 'hg38';
     this.search.chromosome = '';
-    this.search.start = null;
-    this.search.end = null;
-    this.search.family = null;
+    this.search.start = '';
+    this.search.end = '';
+    this.search.family = '';
     this.search.nrph = true;
   }
 
@@ -112,7 +112,7 @@ export class SearchAnnotationsComponent implements OnInit {
     this.search.chromosome = 'chr3';
     this.search.start = '147733000';
     this.search.end = '147766820';
-    this.search.family = null;
+    this.search.family = '';
     this.search.nrph = true;
   }
 }

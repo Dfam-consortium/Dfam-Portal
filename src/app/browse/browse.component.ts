@@ -67,7 +67,7 @@ export class BrowseComponent implements OnInit {
     }
 
     this.classSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
-      this.dfamapi.getClasses(search_term).subscribe(classes => {
+      this.dfamapi.getClasses(search_term.trim()).subscribe(classes => {
         classes = classes.filter(f => f.name !== 'root');
 
         // Cache name variants and highlight the search term in the leaf name
@@ -121,7 +121,7 @@ export class BrowseComponent implements OnInit {
     });
 
     this.cladeSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
-      this.dfamapi.getTaxa(search_term).subscribe(clades => {
+      this.dfamapi.getTaxa(search_term.trim()).subscribe(clades => {
         this.cladeOptions = clades.taxa.filter(f => f.name !== 'root');
         this.cladeOptions.forEach(c => {
           const markup = c.species_name.replace(new RegExp(preg_quote(search_term), 'gi'), '<strong>$&</strong>');
