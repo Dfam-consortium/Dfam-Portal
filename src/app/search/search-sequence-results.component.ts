@@ -57,7 +57,6 @@ export class SearchSequenceResultsComponent implements OnInit {
 
   getAlignment(query) {
     const id = this.route.snapshot.params.id;
-    console.log(query);
     return this.dfamapi.getSearchResultAlignment(id, query.sequence, query.seq_start, query.seq_end, query.accession);
   }
 }
