@@ -1,5 +1,5 @@
-<div class='dfam-home' fxLayout="row" fxFlex="50" fxFlexOffset="25">
-  <div fxLayout="column">
+<div class='dfam-home' fxLayout="row" fxFlex.gt-sm="50" fxFlexOffset.gt-sm="25">
+  <div>
     <h2>Dfam release 3.0 (January 2018<span *ngIf="totalEntries !== undefined">,
       {{totalEntries}} entries</span>)
     </h2>
@@ -25,11 +25,11 @@
             <mat-panel-title color="primary">SEQUENCE SEARCH</mat-panel-title>
             <mat-panel-description>Analyze your DNA sequence for Dfam matches</mat-panel-description>
           </mat-expansion-panel-header>
-          <div fxLayout="row">
-            <mat-form-field fxFlex="80" fxFlexOffset="32">
+          <div fxLayout.gt-sm="row">
+            <mat-form-field fxFlex.gt-sm="80" fxFlexOffset.gt-sm="32">
               <textarea matInput rows="10" cols="60" placeholder="Sequence" [(ngModel)]="searchSequence"></textarea>
             </mat-form-field>
-            <div fxLayout="row" fxLayoutAlign="space-around center">
+            <div fxLayout="row" fxLayoutAlign="start center">
               <button mat-raised-button class="accordian-button" color="primary" (click)="onSubmitSearch()">Go</button>
               &nbsp;
               <button mat-raised-button type="button" (click)="onExampleSearch()">Example</button>
@@ -47,13 +47,13 @@
             <mat-panel-description>View Dfam entry annotation and alignments</mat-panel-description>
           </mat-expansion-panel-header>
 
-          <div fxLayout="column" fxFlexOffset="32">
+          <div fxFlexOffset.gt-sm="32">
             <p>
             Enter an entry accession (e.g. DF0000001) to see all data for that entry.
             </p>
 
             <form fxLayout="row">
-              <mat-form-field fxFlex="80">
+              <mat-form-field fxFlex.gt-sm="80">
                 <input matInput type="text" name="accession" placeholder="Accession" [(ngModel)]="gotoAccession">
               </mat-form-field>
               &nbsp;
@@ -70,7 +70,7 @@
           </mat-expansion-panel-header>
 
           <div fxLayout="row">
-            <form fxFlex="80" fxFlexOffset="32">
+            <form fxFlex.gt-sm="80" fxFlexOffset.gt-sm="32">
 
               <div>
                 <mat-form-field>
@@ -109,12 +109,12 @@
             <mat-panel-description>Query Dfam by keywords</mat-panel-description>
           </mat-expansion-panel-header>
 
-          <form fxLayout="row">
-            <mat-form-field fxFlex="80" fxFlexOffset="32">
+          <form fxLayout.gt-sm="row">
+            <mat-form-field fxFlex.gt-sm="80" fxFlexOffset.gt-sm="32">
               <input matInput type="text" name="keywords" placeholder="Keywords" [(ngModel)]="searchKeywords">
             </mat-form-field>
             &nbsp;
-            <div fxLayout="row" fxLayoutAlign="space-around center">
+            <div fxLayout="row" fxLayoutAlign="start center">
               <button mat-raised-button color="primary" (click)="searchByKeywords()">Go</button>
               &nbsp;
               <button mat-raised-button type="button" (click)="searchKeywords='tigger'">Example</button>
