@@ -27,6 +27,7 @@
     "AlignmentSummaryViewer": "https://github.com/Dfam-consortium/AlignmentSummaryViewer",
     "Karyotype": "https://github.com/Dfam-consortium/Karyotype",
     "core-js": "^2.5.4",
+    "custom-event-polyfill": "^1.0.6",
     "d3": "^3.5.17",
     "file-saver": "^2.0.0",
     "raphael": "^2.2.7",
