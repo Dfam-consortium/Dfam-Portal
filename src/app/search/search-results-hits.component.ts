@@ -37,11 +37,13 @@ export class SearchResultsHitsComponent implements OnInit {
   }
 
   onDownload() {
-    let data = '';
+    let data = 'sequence name\tmodel accession\tmodel name\tbit score\te-value\tmodel start\tmodel end\tstrand\talignment start\talignment end\tenvelope start\tenvelope end\n';
     if (this.data) {
       this.data.forEach(function(hit) {
-        data += `${hit.sequence}\t${hit.accession}\t${hit.bit_score}\t${hit.e_value}\t` +
-          `${hit.seq_start}\t${hit.seq_end}\t${hit.ali_start}\t${hit.ali_end}\t${hit.strand}\n`;
+        data += `${hit.sequence}\t${hit.accession}\t${hit.query}\t` +
+          `${hit.bit_score}\t${hit.e_value}\t${hit.model_start}\t${hit.model_end}\t` +
+          `${hit.strand}\t` +
+          `${hit.ali_start}\t${hit.ali_end}\t${hit.seq_start}\t${hit.seq_end}\n`;
       });
     }
     const blob = new Blob([data], { type: 'text/plain' });
