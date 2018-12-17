@@ -68,28 +68,55 @@ export class BrowseComponent implements OnInit {
 
     this.classSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
       this.dfamapi.getClasses(search_term).subscribe(classes => {
-        this.classOptions = classes.filter(f => f.name !== 'root');
+        classes = classes.filter(f => f.name !== 'root');
 
-        // Cache the list of names and highlight the search term in the leaf name
-        this.classOptions.forEach(c => {
+        // Cache name variants and highlight the search term in the leaf name
+        classes.forEach(c => {
           c.names = c.full_name.split(';');
 
-          c.leaf_name = c.names[c.names.length - 1];
-          c.leaf_name = c.leaf_name.replace(new RegExp(preg_quote(search_term), 'gi'), '<strong>$&</strong>');
-          c.name_markup = c.leaf_name;
+          c.sort_name = c.name.toLowerCase();
+
+          c.name_markup = c.name;
+          c.name_markup = c.name_markup.replace(new RegExp(preg_quote(search_term), 'gi'), '<strong>$&</strong>');
         });
 
-        // Add parent names until the names are unambiguous
+        // Add parent names until the names are unambiguous or a maximum depth is reached
         let depth = 1;
-        while (depth < 2 || has_duplicates(this.classOptions.map(c => c.name_markup))) {
+        while (depth < 5 && (depth < 2 || has_duplicates(classes.map(c => c.name_markup)))) {
           depth += 1;
-          this.classOptions.forEach(c => {
+          classes.forEach(c => {
             let start = c.names.length - depth;
             if (start < 0) { start = 0; }
             const parent_names = c.names.slice(start, c.names.length - 1);
-            c.name_markup = parent_names.join(';') + ';' + c.leaf_name;
+            c.name_markup = parent_names.join(';') + ';' + c.name_markup;
           });
         }
+
+        const exact = [], starts = [], contains = [];
+        classes.forEach(c => {
+          if (c.sort_name === search_term.toLowerCase()) {
+            exact.push(c);
+          } else if (c.sort_name.startsWith(search_term.toLowerCase())) {
+            starts.push(c);
+          } else {
+            contains.push(c);
+          }
+        });
+
+        function compareName(a, b) {
+          if (a.sort_name < b.sort_name) {
+            return -1;
+          } else if (a.sort_name > b.sort_name) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+
+        starts.sort(compareName);
+        contains.sort(compareName);
+
+        this.classOptions = exact.concat(starts).concat(contains);
       });
     });
 
