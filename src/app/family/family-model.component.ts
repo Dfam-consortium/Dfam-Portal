@@ -74,7 +74,7 @@ export class FamilyModelComponent implements OnInit {
     if (id === 'GA') {
       return `Gathering ${assembly_info.hmm_hit_ga} bits`;
     } else if (id === 'TC') {
-      return `Trusted ${assembly_info.hmm_hit_ga} bits`;
+      return `Trusted ${assembly_info.hmm_hit_tc} bits`;
     } else if (['2', '4', '8', '16'].indexOf(id) !== -1) {
       return `E-value 1.0e-${id}`;
     } else {

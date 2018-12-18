@@ -66,17 +66,17 @@ Genome-specific characteristics are not available for this family.
     </dfam-family-model-conservation>
 
     <h3>Non-Redundant Coverage <dfam-help-icon [matTooltip]="help.nrph"></dfam-help-icon></h3>
-    Number of aligned bases per model position, among the non-redundant hits in dfamseq.
+    Number of aligned bases per model position, among the {{assemblyData[selectedAssembly].model_coverage?.nrph_hits}} non-redundant hits in dfamseq.
     <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.nrph" colorSet="2">
     </dfam-family-model-coverage>
 
     <h3>Redundant Coverage <dfam-help-icon [matTooltip]="help.all"></dfam-help-icon></h3>
-    Number of aligned bases per model position, using the hits in dfamseq.
+    Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.all_hits}} hits in dfamseq.
     <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.all" colorSet="2">
     </dfam-family-model-coverage>
 
     <h3>False Coverage <dfam-help-icon [matTooltip]="help.false"></dfam-help-icon></h3>
-    Number of aligned bases per model position, using the hits from an artificial sequence devoid of TEs.
+    Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.false_hits}} hits from an artificial sequence devoid of TEs.
     <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.false">
     </dfam-family-model-coverage>
 
