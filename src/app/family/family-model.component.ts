@@ -43,8 +43,6 @@ export class FamilyModelComponent implements OnInit {
   }
   assemblyData = {};
 
-  thresholds: {id: string; label: string; graph: {}}[];
-
   conservationData;
 
   private _selectedThreshold: string;
@@ -53,7 +51,7 @@ export class FamilyModelComponent implements OnInit {
   }
   set selectedThreshold(value: string) {
     this._selectedThreshold = value;
-    const graph_data = this.thresholds.find(t => t.id === this.selectedThreshold).graph;
+    const graph_data = this.assemblyData[this.selectedAssembly].thresholds.find(t => t.id === this.selectedThreshold).graph;
     this.conservationData = graph_data;
   }
 
@@ -109,14 +107,14 @@ export class FamilyModelComponent implements OnInit {
 
       const accession = this.route.parent.snapshot.params['id'];
       this.dfamapi.getFamilyAssemblyModelConservation(accession, assembly).subscribe(mcons => {
-        this.thresholds = [];
         this.assemblyData[assembly].model_conservation = mcons;
+        const thresholds = this.assemblyData[assembly].thresholds = [];
 
         if (mcons) {
           mcons.forEach(mcon => {
             const label = `${this.getThresholdTitle(assembly_info, mcon.threshold)} (${mcon.num_seqs})`;
 
-            this.thresholds.push({
+            thresholds.push({
               id: mcon.threshold,
               label,
               graph: {

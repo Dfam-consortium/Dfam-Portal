@@ -56,7 +56,7 @@ Genome-specific characteristics are not available for this family.
 
     <mat-form-field class="threshold-field">
       <mat-select appearance="standard" placeholder="Threshold" [(value)]="selectedThreshold">
-        <mat-option *ngFor="let th of thresholds" value="{{th.id}}">
+        <mat-option *ngFor="let th of assemblyData[selectedAssembly]?.thresholds" value="{{th.id}}">
           {{th.label}}
         </mat-option>
       </mat-select>
