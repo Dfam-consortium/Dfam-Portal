@@ -6,14 +6,14 @@
     <mat-card-title>HMM</mat-card-title>
     Hidden Markov Model representing this family.
     <br>
-    <button mat-raised-button (click)="downloadHmm()"><mat-icon>arrow_downward</mat-icon></button>
+    <a mat-raised-button [href]="hmmUrl"><mat-icon>arrow_downward</mat-icon></a>
   </mat-card>
 
   <mat-card fxFlex="20">
     <mat-card-title>SEED</mat-card-title>
     Stockholm formatted seed alignment used to generate the HMM.
     <br>
-    <button mat-raised-button (click)="downloadSeed()"><mat-icon>arrow_downward</mat-icon></button>
+    <a mat-raised-button [href]="seedUrl"><mat-icon>arrow_downward</mat-icon></a>
   </mat-card>
 </div>
 
@@ -36,10 +36,10 @@
     <tr *ngFor="let assembly of assemblies">
       <td>{{assembly.name}}</td>
       <td>
-        <button mat-raised-button (click)="downloadAssemblyAnnotations(assembly.id, true)"><mat-icon>arrow_downward</mat-icon></button>
+        <a mat-raised-button [href]="annotationsUrl(assembly.id, true)"><mat-icon>arrow_downward</mat-icon></a>
       </td>
       <td>
-        <button mat-raised-button (click)="downloadAssemblyAnnotations(assembly.id, false)"><mat-icon>arrow_downward</mat-icon></button>
+        <a mat-raised-button [href]="annotationsUrl(assembly.id, false)"><mat-icon>arrow_downward</mat-icon></a>
       </td>
     </tr>
   </table>

@@ -97,6 +97,10 @@ export class DfamAPIService {
       .pipe(catchError(this.handleError('getFamilyHmm', '')));
   }
 
+  getFamilyHmmDownloadUrl(accession: string): string {
+    return this.familyPath(accession) + '/hmm?format=hmm&download=true';
+  }
+
   getFamilyHmmLogo(accession: string): Observable<any> {
     const url = this.familyPath(accession) + '/hmm';
 
@@ -121,6 +125,10 @@ export class DfamAPIService {
     );
   }
 
+  getFamilyHmmLogoImageDownloadUrl(accession: string): string {
+    return this.familyPath(accession) + '/hmm?format=image&download=true';
+  }
+
   getFamilySeed(accession: string): Observable<string> {
     const url = this.familyPath(accession) + '/seed';
     const options = {
@@ -129,6 +137,10 @@ export class DfamAPIService {
     };
     return this.http.get(url, options)
       .pipe(catchError(this.handleError('getFamilySeed', '')));
+  }
+
+  getFamilySeedDownloadUrl(accession: string): string {
+    return this.familyPath(accession) + '/seed?format=stockholm&download=true';
   }
 
   getFamilySeedPlot(accession: string): Observable<any> {
@@ -183,6 +195,11 @@ export class DfamAPIService {
     };
     return this.http.get(url, options)
       .pipe(catchError(this.handleError('getFamilyAssemblyAnnotations', '')));
+  }
+
+  getFamilyAssemblyAnnotationsDownloadUrl(accession: string, assembly: string, nrph: boolean): string {
+    return this.familyAssemblyPath(accession, assembly) +
+      '/annotations?nrph=' + nrph.toString() + '&download=true';
   }
 
   getFamilyAssemblyAnnotationStats(accession: string, assembly: string): Observable<any> {

@@ -23,6 +23,11 @@ export class FamilyModelComponent implements OnInit {
 
   family;
 
+  get logoUrl() {
+    const accession = this.route.parent.snapshot.params['id'];
+    return this.dfamapi.getFamilyHmmLogoImageDownloadUrl(accession);
+  }
+
   constructor(
     private dfamapi: DfamAPIService,
     private route: ActivatedRoute
@@ -139,17 +144,5 @@ export class FamilyModelComponent implements OnInit {
     } else {
       this.selectedThreshold = 'TC';
     }
-  }
-
-  onDownloadLogo() {
-    this.downloadingLogo = true;
-    const accession = this.route.parent.snapshot.params['id'];
-    this.dfamapi.getFamilyHmmLogoImage(accession).subscribe(data => {
-      if (data) {
-        const blob = new Blob([data], { type: 'image/png' });
-        window.saveAs(blob, accession + '.png');
-      }
-      this.downloadingLogo = false;
-    });
   }
 }

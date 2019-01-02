@@ -21,11 +21,9 @@
 
 <h2>HMM Logo
   <dfam-help-icon [matTooltip]="help.logo"></dfam-help-icon>
-  <button mat-flat-button [matTooltip]="help.downloadLogo" (click)="onDownloadLogo()">
-    <dfam-loader [diameter]="24" [loading]="downloadingLogo">
-      <mat-icon>arrow_downward</mat-icon>
-    </dfam-loader>
-  </button>
+  <a mat-flat-button [matTooltip]="help.downloadLogo" [href]="logoUrl">
+    <mat-icon>arrow_downward</mat-icon>
+  </a>
 </h2>
 <mat-divider></mat-divider>
 

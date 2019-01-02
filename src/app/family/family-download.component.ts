@@ -25,6 +25,21 @@ export class FamilyDownloadComponent implements OnInit {
 
   queuedCount = 0;
 
+  get hmmUrl() {
+    const accession = this.route.parent.snapshot.params['id'];
+    return this.dfamapi.getFamilyHmmDownloadUrl(accession);
+  }
+
+  get seedUrl() {
+    const accession = this.route.parent.snapshot.params['id'];
+    return this.dfamapi.getFamilySeedDownloadUrl(accession);
+  }
+
+  annotationsUrl(assembly, nrph) {
+    const accession = this.route.parent.snapshot.params['id'];
+    return this.dfamapi.getFamilyAssemblyAnnotationsDownloadUrl(accession, assembly, nrph);
+  }
+
   constructor(
     private dfamapi: DfamAPIService,
     private route: ActivatedRoute,
@@ -40,35 +55,4 @@ export class FamilyDownloadComponent implements OnInit {
       this.assemblies = as;
     });
   }
-
-  downloadHmm() {
-    const accession = this.route.parent.snapshot.params['id'];
-    this.download(this.dfamapi.getFamilyHmm(accession), accession + '.hmm');
-  }
-
-  downloadSeed() {
-    const accession = this.route.parent.snapshot.params['id'];
-    this.download(this.dfamapi.getFamilySeed(accession), accession + '.stk');
-  }
-
-  downloadAssemblyAnnotations(assembly: string, nrph: boolean) {
-    const accession = this.route.parent.snapshot.params['id'];
-    const suffix = nrph ? 'nr-hits' : 'hits';
-    this.download(
-      this.dfamapi.getFamilyAssemblyAnnotations(accession, assembly, nrph),
-      `${accession}.${assembly}.${suffix}.tsv`,
-    );
-  }
-
-  download(observable: Observable<any>, filename: string) {
-    this.queuedCount += 1;
-    observable.subscribe(data => {
-      if (data) {
-        const blob = new Blob([data], { type: 'text/plain' });
-        window.saveAs(blob, filename);
-      }
-      this.queuedCount -= 1;
-    });
-  }
-
 }
