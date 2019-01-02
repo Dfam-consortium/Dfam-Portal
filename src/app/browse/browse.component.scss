@@ -1,5 +1,9 @@
+.filters > div {
+  display: inline-block;
+}
+
 mat-form-field, mat-checkbox {
-  margin: 1em;
+  margin: 0 0.5em;
 }
 
 .classification-option, .clade-option {
@@ -17,9 +21,6 @@ mat-form-field, mat-checkbox {
 }
 
 .browse table {
+  margin-top: 1em;
   width: 100%;
-}
-
-.browse td, .browse th {
-  padding: 2px;
 }

@@ -1,79 +1,89 @@
-<div class='dfam-browse' fxFlex.gt-sm="50" fxFlexOffset.gt-sm="25">
+<div class='dfam-browse' fxFlex.gt-sm="60" fxFlexOffset.gt-sm="20">
   <div>
     <h2>Browse Entries</h2>
     <mat-divider></mat-divider>
 
-    <mat-card>
-      <mat-form-field>
-        <input matInput type="text"
-            placeholder="Name/Accession"
-            [(ngModel)]="search.name_accession"
-            (input)="searchChanged()">
-      </mat-form-field>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        Filters
+      </mat-expansion-panel-header>
 
-      <mat-form-field>
-        <input matInput type="text"
-            placeholder="Classification"
-            [(ngModel)]="search.classification"
-            [matAutocomplete]="classAutocomplete"
-            (input)="updateClasses()">
-      </mat-form-field>
-      <mat-autocomplete
-          #classAutocomplete="matAutocomplete"
-          [displayWith]="displayClass"
-          panelWidth="40em"
-          (optionSelected)="searchChanged()">
-        <mat-option
-            class="classification-option"
-            *ngFor="let class of classOptions"
-            [value]="class">
-          <span [ngClass]="{'nomatch': !class.count}">
-          <span [innerHTML]="class.name_markup"></span>
-          <span class="right" *ngIf="class.count"> [{{class.count}}]</span>
-          </span>
-        </mat-option>
-      </mat-autocomplete>
+      <div class="filters">
+        <div>
+          <mat-form-field>
+            <input matInput type="text"
+                placeholder="Name/Accession"
+                [(ngModel)]="search.name_accession"
+                (input)="searchChanged()">
+          </mat-form-field>
 
-      <mat-form-field>
-        <input matInput type="text"
-            placeholder="Clade"
-            [(ngModel)]="search.clade"
-            [matAutocomplete]="cladeAutocomplete"
-            (input)="updateClades()">
-      </mat-form-field>
-      <mat-autocomplete
-          #cladeAutocomplete="matAutocomplete"
-          panelWidth="40em"
-          (optionSelected)="searchChanged()">
-        <mat-option
-            class="clade-option"
-            *ngFor="let clade of cladeOptions"
-            [value]="clade.species_name">
-          <span [innerHTML]="clade.name_markup"></span>
-        </mat-option>
-      </mat-autocomplete>
+          <mat-form-field>
+            <input matInput type="text"
+                placeholder="Classification"
+                [(ngModel)]="search.classification"
+                [matAutocomplete]="classAutocomplete"
+                (input)="updateClasses()">
+          </mat-form-field>
+          <mat-autocomplete
+              #classAutocomplete="matAutocomplete"
+              [displayWith]="displayClass"
+              panelWidth="40em"
+              (optionSelected)="searchChanged()">
+            <mat-option
+                class="classification-option"
+                *ngFor="let class of classOptions"
+                [value]="class">
+              <span [ngClass]="{'nomatch': !class.count}">
+              <span [innerHTML]="class.name_markup"></span>
+              <span class="right" *ngIf="class.count"> [{{class.count}}]</span>
+              </span>
+            </mat-option>
+          </mat-autocomplete>
 
-      <mat-checkbox
-          [(ngModel)]="search.clade_ancestors"
-          (change)="searchChanged()">
-        Ancestors
-      </mat-checkbox>
+          <mat-form-field>
+            <input matInput type="text"
+                placeholder="Keywords"
+                [(ngModel)]="search.keywords"
+                (input)="searchChanged()">
+          </mat-form-field>
+        </div>
 
-      <mat-checkbox
-          [(ngModel)]="search.clade_descendants"
-          (change)="searchChanged()">
-        Descendants
-      </mat-checkbox>
+        <div>
+          <mat-form-field>
+            <input matInput type="text"
+                placeholder="Clade"
+                [(ngModel)]="search.clade"
+                [matAutocomplete]="cladeAutocomplete"
+                (input)="updateClades()">
+          </mat-form-field>
+          <mat-autocomplete
+              #cladeAutocomplete="matAutocomplete"
+              panelWidth="40em"
+              (optionSelected)="searchChanged()">
+            <mat-option
+                class="clade-option"
+                *ngFor="let clade of cladeOptions"
+                [value]="clade.species_name">
+              <span [innerHTML]="clade.name_markup"></span>
+            </mat-option>
+          </mat-autocomplete>
 
-      <mat-form-field>
-        <input matInput type="text"
-            placeholder="Keywords"
-            [(ngModel)]="search.keywords"
-            (input)="searchChanged()">
-      </mat-form-field>
+          <mat-checkbox
+              [(ngModel)]="search.clade_ancestors"
+              (change)="searchChanged()">
+            Ancestors
+          </mat-checkbox>
 
+          <mat-checkbox
+              [(ngModel)]="search.clade_descendants"
+              (change)="searchChanged()">
+            Descendants
+          </mat-checkbox>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
       <p>Total results: {{families.total_count}}</p>
-    </mat-card>
+    </mat-expansion-panel>
 
     <div class="browse">
       <table mat-table matSort (matSortChange)="sortChanged($event)"

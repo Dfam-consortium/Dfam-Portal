@@ -108,6 +108,31 @@ div.outline {
 .heat9 { background-color: #a3a3a3; }
 .heatstar { background-color: #999999; }
 
+// Table styles and overrides for Angular Material
+table.mat-table {
+  border-collapse: collapse;
+}
+
+th.mat-header-cell {
+  background-color: #dddddd;
+  font-weight: bold;
+}
+
+th.mat-header-cell, td.mat-cell {
+  border: 1px solid #cccccc;
+}
+
+tr.mat-row {
+  height: auto !important;
+}
+
+tr.mat-header-row {
+  height: 2em !important;
+}
+
+th.mat-header-cell, td.mat-cell {
+  padding: 1px 0.5em !important;
+}
 
 // OLD Dfam CSS -- wading through it to see what we want
 
