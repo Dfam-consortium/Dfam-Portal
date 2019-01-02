@@ -190,10 +190,11 @@ export class BrowseComponent implements OnInit {
         if (family.classification) {
           const cls = family.classification;
           family.classification_display = cls.substring(cls.lastIndexOf(';') + 1);
+          family.classification_tooltip = cls.replace(/;/g, '; ');
         }
         if (family.clades) {
           family.clades_display = family.clades.map(cl => cl.substring(cl.lastIndexOf(';') + 1)).join(', ');
-          family.clades_tooltip = family.clades.join(', ');
+          family.clades_tooltip = family.clades.map(cl => cl.replace(/;/g, '; ')).join(',');
         }
       });
     });

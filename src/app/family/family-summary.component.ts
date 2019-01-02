@@ -31,6 +31,8 @@ export class FamilySummaryComponent implements OnInit {
     const accession = this.route.parent.snapshot.params['id'];
     this.dfamapi.getFamily(accession).subscribe(data => {
       this.family = data;
+      this.family.display_classification = this.family.classification.replace(/;/g, '; ');
+      this.family.display_clades = this.family.clades.map(c => c.replace(/;/g, '; ')).join(',');
     });
   }
 }

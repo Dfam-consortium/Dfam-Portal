@@ -6,8 +6,8 @@
 
 <h2>Classification and Taxa <dfam-help-icon [matTooltip]="help.classification"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
-<p><strong>Classification:</strong> {{family.classification}}</p>
-<p><strong>Taxa:</strong> {{family.clades.join("; ")}}</p>
+<p><strong>Classification:</strong> {{family.display_classification}}</p>
+<p><strong>Taxa:</strong> {{family.display_clades}}</p>
 
 <h2>Curation Details<dfam-help-icon [matTooltip]="help.curation"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
