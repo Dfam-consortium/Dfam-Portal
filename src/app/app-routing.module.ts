@@ -43,7 +43,10 @@ export const PUBLIC_ROUTES: Routes = [
     { path: 'download', component: FamilyDownloadComponent },
   ]},
   { path: 'classification', component: ClassificationComponent},
-  { path: 'about', component: AboutComponent}
+  { path: 'about', component: AboutComponent},
+
+  // TODO: Set up a more useful 'not found' page
+  { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 
 export const SECURE_ROUTES: Routes = [
