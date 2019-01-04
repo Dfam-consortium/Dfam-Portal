@@ -121,11 +121,17 @@ export class BrowseComponent implements OnInit {
     });
 
     this.cladeSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
+      // escape search_term so it will be found in the escaped markup
+      const escaped_search_term = search_term.replace(/&/, '&amp;').replace(/</, '&lt;').replace(/>/, '&gt;');
+
       this.dfamapi.getTaxa(search_term.trim()).subscribe(clades => {
         this.cladeOptions = clades.taxa.filter(f => f.name !== 'root');
         this.cladeOptions.forEach(c => {
-          const markup = c.species_name.replace(new RegExp(preg_quote(search_term), 'gi'), '<strong>$&</strong>');
-          c.name_markup = markup;
+          c.name_markup = c.name;
+          // escape HTML special chars
+          c.name_markup = c.name_markup.replace(/&/, '&amp;').replace(/</, '&lt;').replace(/>/, '&gt;');
+
+          c.name_markup = c.name_markup.replace(new RegExp(preg_quote(escaped_search_term), 'gi'), '<strong>$&</strong>');
         });
       });
     });
@@ -135,10 +141,14 @@ export class BrowseComponent implements OnInit {
     return classification ? classification.name : '';
   }
 
+  displayClade(clade: any) {
+    return clade ? clade.name : '';
+  }
+
   searchChanged() {
     this.searchApiOptions.name_accession = this.search.name_accession;
     this.searchApiOptions.classification = this.search.classification ? this.search.classification.full_name : null;
-    this.searchApiOptions.clade = this.search.clade;
+    this.searchApiOptions.clade = this.search.clade ? this.search.clade.id : null;
     this.searchApiOptions.clade_ancestors = this.search.clade_ancestors;
     this.searchApiOptions.clade_descendants = this.search.clade_descendants;
     this.searchApiOptions.keywords = this.search.keywords;

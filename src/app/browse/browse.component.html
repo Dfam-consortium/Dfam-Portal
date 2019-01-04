@@ -58,12 +58,13 @@
           </mat-form-field>
           <mat-autocomplete
               #cladeAutocomplete="matAutocomplete"
+              [displayWith]="displayClade"
               panelWidth="40em"
               (optionSelected)="searchChanged()">
             <mat-option
                 class="clade-option"
                 *ngFor="let clade of cladeOptions"
-                [value]="clade.species_name">
+                [value]="clade">
               <span [innerHTML]="clade.name_markup"></span>
             </mat-option>
           </mat-autocomplete>
