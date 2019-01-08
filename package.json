@@ -24,7 +24,7 @@
     "@angular/platform-browser-dynamic": "^7.2.0",
     "@angular/router": "^7.2.0",
     "@auth0/angular-jwt": "^2.1.0",
-    "AlignmentSummaryViewer": "https://github.com/Dfam-consortium/AlignmentSummaryViewer",
+    "AlignmentSummaryViewer": "git+https://github.com/Dfam-consortium/AlignmentSummaryViewer.git",
     "Karyotype": "https://github.com/Dfam-consortium/Karyotype",
     "core-js": "^2.6.1",
     "custom-event-polyfill": "^1.0.6",
