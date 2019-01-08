@@ -9,7 +9,7 @@ import { Family } from './types';
 //
 // TODO: Can this constant come from the app.json file so that it's easy to redirect?
 //
-const endpoint = 'http://www.repeatmasker.org:10011/';
+const endpoint = '/api/';
 
 @Injectable({
   providedIn: 'root'
