@@ -153,6 +153,10 @@ export class DfamAPIService {
       .pipe(catchError(this.handleError('getFamilySeedPlot', null)));
   }
 
+  getFamilyEmblDownloadUrl(accession: string): string {
+    return this.familyPath(accession) + '/sequence?format=embl&download=true';
+  }
+
   getFamilyRelationships(accession: string): Observable<any> {
     const url = this.familyPath(accession) + '/relationships';
     return this.http.get(url).pipe(
