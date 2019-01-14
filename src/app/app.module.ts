@@ -70,6 +70,10 @@ import { ClassificationComponent } from './classification/classification.compone
 import { ClassificationTreeComponent } from './classification/classification-tree.component';
 import { SearchAnnotationsComponent } from './search/search-annotations.component';
 import { SearchSequenceResultsComponent } from './search/search-sequence-results.component';
+import { HelpComponent } from './help/help.component';
+import { HelpSearchComponent } from './help/help-search.component';
+import { HelpFamilyComponent } from './help/help-family.component';
+import { HelpToolsComponent } from './help/help-tools.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -112,6 +116,10 @@ export function tokenGetter() {
     ClassificationTreeComponent,
     SearchAnnotationsComponent,
     SearchSequenceResultsComponent,
+    HelpComponent,
+    HelpSearchComponent,
+    HelpFamilyComponent,
+    HelpToolsComponent,
   ],
   imports: [
     CommonModule,
