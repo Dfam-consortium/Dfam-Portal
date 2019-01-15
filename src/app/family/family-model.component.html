@@ -2,7 +2,7 @@
 
 <div *ngIf="family">
 
-<h2>Details <dfam-help-icon [matTooltip]="help.details"></dfam-help-icon></h2>
+<h2>Details <dfam-help-icon [tooltip]="help.details"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
 <h3>HMM</h3>
 <p><strong>Model Mask:</strong> {{family.model_mask || "None"}}</p>
@@ -20,7 +20,7 @@
 </mat-expansion-panel>
 
 <h2>HMM Logo
-  <dfam-help-icon [matTooltip]="help.logo"></dfam-help-icon>
+  <dfam-help-icon [tooltip]="help.logo"></dfam-help-icon>
   <a mat-flat-button [matTooltip]="help.downloadLogo" [href]="logoUrl">
     <mat-icon>arrow_downward</mat-icon>
   </a>
@@ -30,7 +30,7 @@
 <dfam-family-model-logo [data]="hmmLogo">
 </dfam-family-model-logo>
 
-<h2>HMM Genome Specific Characteristics <dfam-help-icon [matTooltip]="help.genome"></dfam-help-icon></h2>
+<h2>HMM Genome Specific Characteristics <dfam-help-icon [tooltip]="help.genome"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
 <div *ngIf="!assemblies.length">
 Genome-specific characteristics are not available for this family.
@@ -48,7 +48,7 @@ Genome-specific characteristics are not available for this family.
 
   <mat-card *ngIf="selectedAssembly">
 
-    <h3>Coverage, Conservation, and Inserts <dfam-help-icon [matTooltip]="help.conservation"></dfam-help-icon></h3>
+    <h3>Coverage, Conservation, and Inserts <dfam-help-icon [tooltip]="help.conservation"></dfam-help-icon></h3>
 
     <p><strong>False discovery rate</strong>: {{assemblyData[selectedAssembly].hmm_fdr || "Unknown"}}</p>
 
@@ -63,17 +63,17 @@ Genome-specific characteristics are not available for this family.
     <dfam-family-model-conservation [data]="conservationData">
     </dfam-family-model-conservation>
 
-    <h3>Non-Redundant Coverage <dfam-help-icon [matTooltip]="help.nrph"></dfam-help-icon></h3>
+    <h3>Non-Redundant Coverage <dfam-help-icon [tooltip]="help.nrph"></dfam-help-icon></h3>
     Number of aligned bases per model position, among the {{assemblyData[selectedAssembly].model_coverage?.nrph_hits}} non-redundant hits in dfamseq.
     <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.nrph" colorSet="2">
     </dfam-family-model-coverage>
 
-    <h3>Redundant Coverage <dfam-help-icon [matTooltip]="help.all"></dfam-help-icon></h3>
+    <h3>Redundant Coverage <dfam-help-icon [tooltip]="help.all"></dfam-help-icon></h3>
     Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.all_hits}} hits in dfamseq.
     <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.all" colorSet="2">
     </dfam-family-model-coverage>
 
-    <h3>False Coverage <dfam-help-icon [matTooltip]="help.false"></dfam-help-icon></h3>
+    <h3>False Coverage <dfam-help-icon [tooltip]="help.false"></dfam-help-icon></h3>
     Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.false_hits}} hits from an artificial sequence devoid of TEs.
     <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.false">
     </dfam-family-model-coverage>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'dfam-help-icon',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./help-icon.component.scss']
 })
 export class HelpIconComponent implements OnInit {
+
+  @Input() tooltip: string;
 
   constructor() { }
 

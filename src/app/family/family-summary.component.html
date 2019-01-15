@@ -4,18 +4,18 @@
 <mat-divider></mat-divider>
 <p>{{family.description}}</p>
 
-<h2>Classification and Taxa <dfam-help-icon [matTooltip]="help.classification"></dfam-help-icon></h2>
+<h2>Classification and Taxa <dfam-help-icon [tooltip]="help.classification"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
 <p><strong>Classification:</strong> {{family.display_classification}}</p>
 <p><strong>Taxa:</strong> {{family.display_clades}}</p>
 
-<h2>Curation Details<dfam-help-icon [matTooltip]="help.curation"></dfam-help-icon></h2>
+<h2>Curation Details<dfam-help-icon [tooltip]="help.curation"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
-<p><strong>Status:</strong> {{family.curation_state_name}} <dfam-help-icon [matTooltip]="family.curation_state_description"></dfam-help-icon></p>
+<p><strong>Status:</strong> {{family.curation_state_name}} <dfam-help-icon [tooltip]="family.curation_state_description"></dfam-help-icon></p>
 <p><strong>Length:</strong> {{family.length}}</p>
 <p><strong>Target Site Duplication:</strong> {{family.target_site_cons || "None"}}</p>
 
-<h2>Citations <dfam-help-icon [matTooltip]="help.citations"></dfam-help-icon></h2>
+<h2>Citations <dfam-help-icon [tooltip]="help.citations"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
 <div *ngIf="!family.citations.length">
 No recorded citations for this family.
@@ -41,7 +41,7 @@ No recorded citations for this family.
 <p><strong>Created On:</strong> {{family.date_created | date: 'medium'}}</p>
 <p><strong>Modified On:</strong> {{family.date_modified | date: 'medium'}}</p>
 
-<h2>Aliases and External Links <dfam-help-icon [matTooltip]="help.aliases"></dfam-help-icon></h2>
+<h2>Aliases and External Links <dfam-help-icon [tooltip]="help.aliases"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
 <div *ngIf="!family.aliases.length">
 No recorded aliases for this family.
