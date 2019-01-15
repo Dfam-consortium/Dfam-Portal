@@ -16,8 +16,6 @@ export class FamilySeedComponent implements OnInit {
   @ViewChild('seedContainer')
   private seedContainer: ElementRef;
 
-  length;
-
   loading = true;
   _data: any;
   get data(): any {
@@ -49,13 +47,7 @@ export class FamilySeedComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getLength();
     this.getSeed();
-  }
-
-  getLength() {
-    const accession = this.route.parent.snapshot.params['id'];
-    this.dfamapi.getFamily(accession).subscribe(f => this.length = f.length);
   }
 
   getSeed() {

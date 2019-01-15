@@ -3,14 +3,15 @@
 <h2>Seed Alignment Coverage and Whisker Plot <dfam-help-icon [tooltip]="help"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
 
-<div *ngIf="length !== undefined">
-<strong>Length</strong>: {{length}}
-</div>
-
 <dfam-loader [loading]="loading">
-<div *ngIf="data">
+<div *ngIf="data; else noData">
+<p><strong>Length</strong>: {{data.length}}</p>
 Representation of the <strong>{{data?.alignments?.length}}</strong> seed alignment sequences, indicating the number of aligned bases per model position and the length distribution across the model.
 </div>
+
+<ng-template #noData>
+No seed alignment data is available for this family.
+</ng-template>
 
 <div #seedContainer>
 </div>

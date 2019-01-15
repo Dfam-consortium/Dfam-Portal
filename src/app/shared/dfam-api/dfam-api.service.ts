@@ -368,17 +368,22 @@ export class DfamAPIService {
   }
 
 
-  private handleError<T> (operation = 'operation', result?: T) {
+  private handleError<T> (operation = 'operation', result: T) {
     return (error: any): Observable<T> => {
+      // Short-circuit 404 without any error logging
+      if (error.status === 404) {
+        return of(result);
+      }
+
       let message = `${operation} failed`;
-      if (error.error && error.error.message) {
-        message += ': ' + error.error.message;
+      if (error.statusText) {
+        message += ': ' + error.statusText;
       }
 
       this.errorsService.logError({ message , error });
 
       // Let the app keep running by returning an empty result.
-      return of(result as T);
+      return of(result);
     };
   }
 
