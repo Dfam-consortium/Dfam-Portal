@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
     end: '',
   };
 
-  gotoAccession: string;
+  gotoEntryTarget: string;
 
   searchKeywords: string;
 
@@ -74,8 +74,29 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['browse'], { queryParams: { 'keywords': this.searchKeywords } });
   }
 
-  onGotoAccession() {
-    this.router.navigate(['family', this.gotoAccession]);
+  onGotoEntry() {
+    const LIMIT = 20;
+    const searchTerm = this.gotoEntryTarget;
+
+    this.dfamapi.getFamilies({
+      'name_accession': searchTerm,
+      'limit': LIMIT,
+    }).subscribe((data: any) => {
+      let found = false;
+      if (data.total_count > 0) {
+        // At least one match
+        data.results.forEach(result => {
+          if (result.accession === searchTerm || result.name === searchTerm) {
+            this.router.navigate(['family', result.accession]);
+            found = true;
+          }
+        });
+      }
+
+      if (!found) {
+        this.router.navigate(['browse'], { queryParams: { 'name_accession': searchTerm } });
+      }
+    });
   }
 
   onSubmitSearch() {

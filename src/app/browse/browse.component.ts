@@ -59,12 +59,18 @@ export class BrowseComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getFamilies();
+    const initialNameAccession = this.route.snapshot.queryParamMap.get('name_accession');
+    if (initialNameAccession) {
+      this.search.name_accession = initialNameAccession;
+    }
 
     const initialKeywords = this.route.snapshot.queryParamMap.get('keywords');
     if (initialKeywords) {
       this.search.keywords = initialKeywords;
     }
+
+    this.searchChanged();
+    this.getFamilies();
 
     this.classSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
       this.dfamapi.getClasses(search_term.trim()).subscribe(classes => {

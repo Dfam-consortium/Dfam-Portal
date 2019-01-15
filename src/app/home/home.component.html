@@ -49,16 +49,16 @@
 
           <div fxFlexOffset.gt-sm="32">
             <p>
-            Enter an entry accession (e.g. DF0000001) to see all data for that entry.
+            Enter an accession or name (e.g. DF0000001 or Harlequin) to see all data for that entry.
             </p>
 
             <form fxLayout="row">
               <mat-form-field fxFlex.gt-sm="80">
-                <input matInput type="text" name="accession" placeholder="Accession" [(ngModel)]="gotoAccession">
+                <input matInput type="text" name="accession" placeholder="Accession" [(ngModel)]="gotoEntryTarget">
               </mat-form-field>
               &nbsp;
               <div fxLayoutAlign="space-around center">
-              <button mat-raised-button color="primary" (click)="onGotoAccession()">Go</button>
+              <button mat-raised-button color="primary" (click)="onGotoEntry()">Go</button>
               </div>
             </form>
           </div>
