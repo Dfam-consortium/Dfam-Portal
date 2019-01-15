@@ -17,7 +17,6 @@ export class FamilySeedComponent implements OnInit {
   private seedContainer: ElementRef;
 
   length;
-  seeds_count;
 
   loading = true;
   _data: any;
@@ -31,7 +30,6 @@ export class FamilySeedComponent implements OnInit {
       const container = this.seedContainer.nativeElement;
       const canvas = document.createElement('canvas');
       container.appendChild(canvas);
-      this.seeds_count = this.data.num_alignments;
       this.viewer = new AlignmentSummaryViewer(canvas, container, this.data);
     }
   }

@@ -9,7 +9,7 @@
 
 <dfam-loader [loading]="loading">
 <div *ngIf="data">
-Representation of the <strong>{{seeds_count}}</strong> seed alignment sequences, indicating the number of aligned bases per model position and the length distribution across the model.
+Representation of the <strong>{{data?.alignments?.length}}</strong> seed alignment sequences, indicating the number of aligned bases per model position and the length distribution across the model.
 </div>
 
 <div #seedContainer>
