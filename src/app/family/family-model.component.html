@@ -9,15 +9,7 @@
 <p><strong>Default NC Threshold:</strong> {{family.hmm_general_nc || "N/A"}} </p>
 
 <h3>Consensus</h3>
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>Sequence</mat-panel-title>
-  </mat-expansion-panel-header>
-
-  <samp class="consensus_seq">
-  {{family.consensus_sequence}}
-  </samp>
-</mat-expansion-panel>
+<samp class="consensus_seq">{{family.consensus_sequence}}</samp>
 
 <h2>HMM Logo
   <dfam-help-icon [tooltip]="help.logo"></dfam-help-icon>

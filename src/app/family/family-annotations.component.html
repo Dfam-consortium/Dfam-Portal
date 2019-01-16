@@ -68,10 +68,8 @@ Genome-specific characteristics are not available for this family.
     </dfam-loader>
 
     <dfam-loader [loading]="loadingAnnotationData">
-      <div *ngIf="annotationData">
-        <dfam-search-results-hits [assembly]="selectedAssembly" [data]="annotationData.hits" [search]="annotationData.title" [getAlignCallback]="getAlignment.bind(this)">
-        </dfam-search-results-hits>
-      </div>
+      <dfam-search-results-hits *ngIf="annotationData" [assembly]="selectedAssembly" [data]="annotationData.hits" [search]="annotationData.title" [getAlignCallback]="getAlignment.bind(this)">
+      </dfam-search-results-hits>
     </dfam-loader>
   </mat-card>
 </div>

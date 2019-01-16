@@ -14,6 +14,7 @@ export class SearchAnnotationsComponent implements OnInit {
 
   assemblies: any[] = [];
 
+  submitted: boolean;
   loading: boolean;
   results: any;
 
@@ -69,6 +70,7 @@ export class SearchAnnotationsComponent implements OnInit {
   }
 
   onSubmit() {
+    this.submitted = true;
     this.loading = true;
     this.router.navigate([], { relativeTo: this.route, queryParams: this.search });
 
