@@ -76,7 +76,7 @@ export class DfamAPIService {
     }
 
     options.params = options.params.set('start', (apiOptions.start || 0).toString());
-    options.params = options.params.set('limit', (apiOptions.limit || 20).toString());
+    options.params = options.params.set('limit', (apiOptions.limit !== undefined ? apiOptions.limit : 20).toString());
 
     if (apiOptions.sort) {
       options.params = options.params.set('sort', apiOptions.sort);
