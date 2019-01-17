@@ -336,6 +336,15 @@ export class DfamAPIService {
     );
   }
 
+  getBlogPosts(): Observable<any> {
+    const url = endpoint + 'blogposts';
+
+    return this.http.get(url).pipe(
+      map(this.extractData),
+      catchError(this.handleError('getBlogPosts', [])),
+    );
+  }
+
   login(email, password): Observable<any> {
     const body = new HttpParams()
       .set('email', email)

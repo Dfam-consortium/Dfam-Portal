@@ -41,34 +41,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.dfamapi.getAssemblies().subscribe(data => this.assemblies = data);
     this.dfamapi.getFamilies({ limit: 0 }).subscribe(data => this.totalEntries = data.total_count);
-
-    const blogUrl = 'http://query.yahooapis.com/v1/public/yql?q=select * from xml where url=\'https://xfam.wordpress.com/category/dfam/feed/\' &format=json';
-    this.http
-      .get<any>(blogUrl, { responseType: 'json' })
-      .subscribe(res => {
-        const monthNames = ['January', 'February', 'March', 'April', 'May',
-                          'June', 'July', 'August', 'September',
-                          'October', 'November', 'December' ];
-        if (res && res.query && res.query.results && res.query.results.rss && res.query.results.rss.channel && res.query.results.rss.channel.item) {
-          const articles = res.query.results.rss.channel.item;
-          const articleData = [];
-          articles.forEach(function(article) {
-            const pubDate = new Date(article.pubDate);
-            // Should scrub the description for HTML tags
-            articleData.push({
-              title: article.title,
-              link: article.link,
-              date: '' + monthNames[pubDate.getMonth() + 1] + ', ' +
-                pubDate.getFullYear(),
-              sortDate: pubDate,
-              snippet: article.description.substr(0, 375)
-            });
-          });
-          this.dfamBlogArticles = articleData.sort(function(a, b) {
-              return b.sortDate - a.sortDate;
-          });
-        }
-      });
+    this.dfamapi.getBlogPosts().subscribe(data => this.dfamBlogArticles = data.slice(0, 1));
   }
 
   searchByKeywords() {

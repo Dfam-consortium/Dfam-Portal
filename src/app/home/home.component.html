@@ -139,11 +139,12 @@
 
     <div class="blog clearfix">
         <h2>Recent Dfam <a href="http://xfam.wordpress.com/tag/dfam/" class="ext">blog</a> posts</h2>
-          <div *ngFor="let art of dfamBlogArticles | slice: 0:1">
+        <div *ngFor="let art of dfamBlogArticles">
           <a class="ext blog-article-title" href="{{art.link}}">{{art.title}}</a>
           <br>
           <span class="blog-article-date">{{art.date}}</span>
-          <div>{{art.snippet}}[...]</div>
+          <p>{{art.snippet}}</p>
+        </div>
         <hr>
     </div>
 
