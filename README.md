@@ -1,6 +1,19 @@
 # Dfam
 
-Web portal for the Dfam resource ( www.dfam.org ).  Dfam is a collection of DNA Transposable Element sequence alignments, hidden Markov Models (HMMs), consensus sequences, and genome annotations. The portal is based on Angular 7.x and requires an instance of the REST Dfam-API running on the same machine.
+Web portal for the Dfam resource ( www.dfam.org ).  Dfam is a collection of DNA
+Transposable Element sequence alignments, hidden Markov Models (HMMs),
+consensus sequences, and genome annotations. The portal is based on Angular 7.x
+and requires an instance of the REST Dfam-API running on the same machine.
+
+## Dependencies
+
+All client-side dependencies are specified in `package.json` or shipped in
+`src/assets`.
+
+The app expects a Dfam API server to be deployed or proxied in such a way that
+`/api/` is the root path to the API server. This is specified in
+`src/app/shared/dfam-api/dfam-api.service.ts`. `src/proxy.conf.json` can be
+used to configure this behavior at development time.
 
 ## Development server
 
