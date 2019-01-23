@@ -25,16 +25,18 @@
             <mat-panel-title color="primary">SEQUENCE SEARCH</mat-panel-title>
             <mat-panel-description>Analyze your DNA sequence for Dfam matches</mat-panel-description>
           </mat-expansion-panel-header>
-          <div fxLayout.gt-sm="row">
-            <mat-form-field fxFlex.gt-sm="80" fxFlexOffset.gt-sm="32">
-              <textarea matInput rows="10" cols="60" placeholder="Sequence" [(ngModel)]="searchSequence"></textarea>
-            </mat-form-field>
-            <div fxLayout="row" fxLayoutAlign="start center">
-              <button mat-raised-button class="accordian-button" color="primary" (click)="onSubmitSearch()">Go</button>
-              &nbsp;
-              <button mat-raised-button type="button" (click)="onExampleSearch()">Example</button>
+          <dfam-loader [loading]="searchSubmitting">
+            <div fxLayout.gt-sm="row">
+              <mat-form-field fxFlex.gt-sm="80" fxFlexOffset.gt-sm="32">
+                <textarea matInput rows="10" cols="60" placeholder="Sequence" [(ngModel)]="searchSequence"></textarea>
+              </mat-form-field>
+              <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-raised-button class="accordian-button" color="primary" (click)="onSubmitSearch()">Go</button>
+                &nbsp;
+                <button mat-raised-button type="button" (click)="onExampleSearch()">Example</button>
+              </div>
             </div>
-          </div>
+          </dfam-loader>
           <p>
             This search will be run against all Dfam models (regardless of clade) using the
             trusted cut-off thresholds (stringent). You can set your own search parameters
