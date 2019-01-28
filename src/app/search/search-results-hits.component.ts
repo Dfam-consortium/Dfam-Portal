@@ -37,7 +37,9 @@ export class SearchResultsHitsComponent implements OnInit {
   }
 
   onDownload() {
-    let data = 'sequence name\tmodel accession\tmodel name\tbit score\te-value\tmodel start\tmodel end\tstrand\talignment start\talignment end\tenvelope start\tenvelope end\n';
+    let data = 'sequence name\tmodel accession\tmodel name\t' +
+      'bit score\te-value\tmodel start\tmodel end\tstrand\t' +
+      'alignment start\talignment end\tenvelope start\tenvelope end\n';
     if (this.data) {
       this.data.forEach(function(hit) {
         data += `${hit.sequence}\t${hit.accession}\t${hit.query}\t` +

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 import { SearchSequenceComponent } from '../search/search-sequence.component';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
@@ -14,7 +13,6 @@ export class HomeComponent implements OnInit {
   constructor(
     private dfamapi: DfamAPIService,
     private router: Router,
-    private http: HttpClient,
   ) {}
 
   showMore1 = false;
