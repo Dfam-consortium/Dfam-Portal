@@ -1,7 +1,300 @@
-<h2>Summary</h2>
-<h2>Seed</h2>
-<h2>Features</h2>
-<h2>Model</h2>
-<h2>Annotations</h2>
-<h2>Relationships</h2>
-<h2>Download</h2>
+<div fxFlex.gt-sm="60" fxFlexOffset.gt-sm="20">
+
+<mat-card>
+  Each family in Dfam is represented on the website by a single page. If you
+  wish to stably link to this page, please use the Dfam accession, such that the
+  URL looks like: http://dfam.org/family/DFXXXXXXX. Each entry page is divided
+  into seven tabs, found below the family identifier and accession:
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Summary</mat-card-title>
+  <mat-card-content>
+    <h3>Description</h3>
+    <p>
+    The section includes a brief description of the entry. Where appropriate,
+    references in the section below are cross references.
+    </p>
+    <!-- TODO:
+    External contributors may
+      add to the annotation of an entry by submitting text via the annotation
+      submission form accessed via the pen symbol at the top of this block, or
+      indirectly by editing the Wikipedia article - If a relevant Wikipeida article
+      is missing, please contact us.
+    -->
+
+    <h3>Classification</h3>
+    The Dfam classification of the family. The classification hierarchy can be
+    viewed on the dedicated <a routerLink="/classification">Classification</a> page.
+
+    <h3>Aliases and External Links</h3>
+    Pertinent database cross references.
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Seed</mat-card-title>
+  <mat-card-content>
+    <p>
+    The Seed Alignment Coverage and Whisker Plot shows the number of sequences
+    in the seed alignment representing each position in the model and their alignment
+    quality.
+    </p>
+
+    <p>
+    Alignment quality is coded by colored bars. Each seed alignment is
+    represented by a horizontal line, and each colored segment within the line
+    indicates the alignment quality of the seed sequence to the model.
+    </p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Features</mat-card-title>
+  <mat-card-content>
+  <p>
+  For families with known coding sequences, those are displayed and listed in
+  this section. Other interesting features such as binding sites, target site
+  duplications, and and subfamily-specific structures are shown as well.
+  </p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Model</mat-card-title>
+  <mat-card-content>
+  <h3>Dfam Models</h3>
+  <p>
+  Models in Dfam are provided in two forms: a consensus sequence and a profile
+  HMM (Hidden Markov Model). Both of these models are built from the same set
+  of aligned representative sequences, termed the seed alignment. For each
+  profile HMM, three thresholds are defined per associated species. The
+  gathering threshold is appropriate for masking sequences that match the model
+  specificity; it is is set using knowledge of the approximate copy number to
+  yield high sensitivity with low false discovery rates. This threshold is used
+  when defining the model's expected false discovery rate.  When annotating
+  sequences that fall outside of the model's specificity, the more stringent
+  trusted cutoff threshold should be used. The noise cut-off indicates the
+  score of the highest scoring match that falls below the gathering threshold.
+  </p>
+
+  <h3>Details</h3>
+  <p>
+  This section includes some details of both the profile HMM along with the
+  consensus sequence bases.
+  </p>
+
+  <h3>HMM Logo</h3>
+  <p>
+  A representation of the per-position residue and indel conservation of the
+  profile HMM . Each position in the model is represented by a stack of
+  letters, with stack height indicating the information content of the
+  position. The rate and expected length of insertions after each position are
+  shown in the fields below each stack. The logo can be zoomed using the '-'
+  and '+' on-screen buttons to show more or less of the model as desired. It is
+  also possible to center the logo by entering a column number in the field
+  provided.
+  </p>
+
+  <h3>Coverage, Conservation, and Inserts</h3>
+  <p>
+  The Coverage, Conservation, and Inserts plot shows, for hits above a variety
+  of thresholds, (1) the distribution of hits along the model, (2) the
+  position-specific levels of conservation of those hits, and (3) the
+  position-specific rates of insertion among those hits. For a selected
+  threshold, the purple line shows, for each model position, the fraction of
+  all hits that have a match to that position, considering only RPH-filtered
+  hits (hits for which this model is deemed to fit the sequence better than any
+  other Dfam model). Among RPH-filtered hits, the green line shows, for each
+  position, the average percent identity for the position. The grey line shows
+  the number of insertions among those hits. In the 'Threshold' drop-down,
+  each threshold is accompanied by the number of hits meeting it, in parentheses.
+  </p>
+
+  <p>
+  The figure below shows an example of the plot for the model Kanga1,
+  representing the 214 RPH-filtered matches to the Human genome with
+  E-value better than 1e-4. The purple line indicates that hits tend not to be
+  full-length (the middle section is covered by only a few percent of hits),
+  and that only about 30% of hits are aligned to the 3' end, where coverage is
+  greatest. The green line shows that sequence conservation is on average
+  around 70%, but with some variability. The grey lines show that inserts are
+  generally rare, but at model position 1567, roughly 8 hits have
+  insertions.
+  </p>
+
+  <p>
+  <img src="/assets/images/screenshots/conservation.png" alt="Example Non-Redundant Coverage, Conservation, and Inserts Plot (Kanga)">
+  </p>
+
+  <h3>Non-Redundant Coverage</h3>
+  <p>
+  The Non-Redundant Coverage plot shows the distribution across the model for all
+  above-threshold hits for which this model is deemed to fit the sequence better
+  than any other Dfam model.
+  </p>
+
+  <p>
+  The figure below shows the non-redundant coverage for the model Kanga1. This
+  example plot shows a common signal for DNA transposons, with the interior
+  portion of the model covered by fewer instances than the termini, since
+  non-autonomous TEs can suffer various degrees of internal deletion, yet must
+  retain critical terminal features. Many of the 5' terminal hits fall between
+  the gathering threshold and trusted cutoff threshold,
+  leading to a terminal light green bulge on the sides of the plot.
+  </p>
+
+  <p>
+  <img src="/assets/images/screenshots/cov_nrph.png" alt="Example Non-Redundant Coverage Plot (Kanga1a)">
+  </p>
+
+  <h3>Redundant Coverage</h3>
+  <p>
+  This plot is much like the Non-Redundant Coverage plot, but instead of showing
+  distribution across the model for only those matches that are best hit by this
+  model, it shows the distribution for all hits to the model, even those better
+  hit by some other model.
+  </p>
+
+  <p>
+  The figure below shows the redundant coverage for SVA_A. SVAs carry two
+  reverse-complemented Alu fragments, one from positions 60 to 315 of the SVA
+  model, and another shorter fragment from position 315 to 400. The first of
+  these regions hits most of the Alu instances in the human genome, leading to
+  the very large spike of over 1 million above-threshold hits covering that
+  region, even though there are only a few thousand SVA copies. These Alu
+  instances are better hit by one of the Alu models, and thus do not show up in
+  the non-redundant coverage plot or related hit counts.
+  </p>
+
+  <p>
+  <img src="/assets/images/screenshots/cov_rph.png" alt="Example Redundant Coverage Plot (SVA_A)">
+  </p>
+
+  <h3>False Coverage Plot</h3>
+  <p>
+  This plot shows how matches to an artificial benchmark sequence not containing
+  any TE insertions are distributed across the model. This plot helps identify
+  model regions that may be responsible for generating false positive hits, for
+  example due to low-complexity or simple repeat characteristics.
+
+  The figure below shows an example False Coverage Plot, for MER4-int. It shows a
+  spike of 36 false hits with E-value better than 1, covering a window around
+  position 800 of the model, and a small tail of false hits out to position 1100.
+  Only the few hits signified by the purple part of the graph have E-value better
+  than 1e-4.
+  </p>
+
+  <p>
+  <img src="/assets/images/screenshots/cov_false.png" alt="Example False Coverage Plot (MER4-int)">
+  </p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Annotations</mat-card-title>
+  <mat-card-content>
+
+  <h3>Overview</h3>
+  <p>
+  This table contains the is the number of matches found between the model and
+  each associated genome at the gathering and trusted cut-off thresholds. Note
+  that a particular subsequence matching one model may also match other
+  profiles HMMs in the database, resulting in what we refer to as 'redundant
+  profile hits' (RPHs). This subsequence will impact the redundant counts for
+  those other entries as well. For non-redundant counts, a sequence will only
+  be counted for the model deemed to be the best fit to the sequence (though a
+  small number of cases, more than one model may be counted because of the
+  conservative nature of the RPH filter).
+  </p>
+
+  <p>
+  The number of genomic matches that are found for many TE entries means that
+  it is difficult to provide all matches via a web interface or as a multiple
+  sequence alignment. The karyotype ideogram shows the distribution of hits for
+  the entry against a particular genome as a heat map style representation.
+  Each color represents a binned ranged of counts. Each color band is
+  clickable, with the hits corresponding to that location loaded below the
+  karyotype ideogram. The table contains the match score, E-value, and
+  positions in the respective model and sequence. The alignment between the
+  model and sequence can be obtained by expanding the row using the &gt; symbol
+  found at the beginning of each row. In the alignment, the model line
+  represents the consensus sequence for aligned states in the model, colored
+  according to the match line. The PP line represents the posterior
+  probability, or degree of confidence in each aligned residue (for example,
+  with '*' meaning highest confidence, and low numbers indicating low
+  confidence), with corresponding grey scale coloration of the Query sequence.
+  </p>
+
+  <p>
+  By default, the hits counted here are only those in which this model was
+  determined to better explain the sequence than any other model. To see
+  distribution of all hits to the model (including those preferred by other
+  models), select "All Hits".
+  </p>
+
+  <p>
+  The example below shows the non-uniform distribution of MIRs across the human
+  genome. Large patches of white in the hit distribution ideogram indicate
+  regions with no instances of the model; in this case these are particularly
+  difficult to sequence heterochromatic regions (represented by Ns in the genome
+  sequence) as can be seen by toggling karyotype bands. Below the karyotype
+  ideogram are given the hits from a region on chromosome 21, with one hit
+  expanded to show the alignment of that hit to the MIR model. In the alignment,
+  the model line presents the consensus sequence for aligned states in the model,
+  coloured according to the match line. The PP line represents the posterior
+  probability, or degree of confidence in each aligned residue (for example, with
+  '*' meaning highest confidence, and low numbers indicating low confidence),
+  with corresponding grey scale colouration of the Query sequence.
+  </p>
+
+  <p>
+  <img src="/assets/images/screenshots/karyotype.png" alt="Example Karyotype plot (MIR)">
+  </p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Relationships</mat-card-title>
+  <mat-card-content>
+
+  <p>
+  <!-- TODO: verify methodology -->
+  The Relationship tab provides a representation of the similarities between TE
+  entries. Consensus sequences were produced for all models using the HMMER3 tool
+  hmmemit. These sequences were then searched with all models using nhmmer, with
+  a hit with E-value better than 1e-5 supporting a relationship.
+  </p>
+
+  <p>
+  The image below shows part of the Relationship tab for the Ricksha_c
+  (DF0001061) entry. In this case, Ricksha TE carries part of an ERVL and its
+  LTR, MLT2. Simple glyphs are used to represent these relationships, as well as
+  similarities to other Ricksha Dfam entries. The case of reverse-complement
+  similarity is shown using a purple glyph with inverted orientation. Each glyph
+  is shown with accompanying percent identity between the entry consensus
+  sequences, match e-value, and percent shared coverage (length). The list of
+  related entries can be sorted by any of these fields.
+  </p>
+
+  <p>
+  <img src="/assets/images/screenshots/overlap.png" alt="Example Relationships plot (Ricksha_c)">
+  </p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Download</mat-card-title>
+  <mat-card-content>
+  <p>
+  From this tab, you can download the seed alignment, profile HMM, and
+  EMBL-formatted consensus sequence for the entry. You can also download
+  per-genome files containing tabular hit lists: (1) matches to this model
+  after removing redundant hits to other models ("Non-redundant"), and (2)
+  matches above the gathering threshold, including those with better scoring
+  matches to other models ("All hits").
+  </p>
+  </mat-card-content>
+</mat-card>
+
+</div>

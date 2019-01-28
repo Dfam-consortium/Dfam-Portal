@@ -1,1 +1,143 @@
-<h2>Dfam and RepeatMasker</h2>
+<div fxFlex.gt-sm="60" fxFlexOffset.gt-sm="20">
+
+<mat-card>
+  <mat-card-title>Dfam and RepeatMasker</mat-card-title>
+  <mat-card-content>
+    <p>
+    Dfam (and nhmmer) has been incorporated into RepeatMasker, a widely used
+    tool for annotating interspersed repeats and low complexity DNA sequences.
+    RepeatMasker offers a significantly more sophisticated method for resolving
+    and post-processing of repeat annotations than dfamscan. For details on
+    installing and running, please visit
+    <a class="ext" href="http://www.repeatmasker.org/">the RepeatMasker site</a>.
+    </p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Running Dfam Searches Locally</mat-card-title>
+  <mat-card-content>
+  <p>
+  Dfam can also be downloaded and searches performed locally. To do this you
+  will need to download three items from our web site:
+  </p>
+
+  <ol>
+    <li>The Dfam HMM library, Dfam.hmm</li> <!-- TODO: link -->
+    <li>HMMER source code, [TODO] but please download the "snapshot from Dfam
+    as this is a pre-release version". Follow the installation directions in
+    the INSTALL file, contained within this tar-ball.</li>
+    <li>The Perl code for dfamscan.pl</li>
+  </ol>
+
+  <p>
+  If you want to include Tandem Repeat Finder annotation, please download the
+  TRF binary (trf) from TODO: link "here". dfamscan.pl assumes that nhmmer and trf (if
+  required) are in the executable PATH.
+  </p>
+
+
+  <p>
+  The script dfamscan.pl is designed to manage running nhmmer and the Dfam
+  database of HMMs on a query sequence, including the task of resolving
+  redundant profile hits (RPHs: cases in which multiple profile HMMs match the
+  same region of input sequence). This script is intended to be a first-pass to
+  annotation and not as a replacement for RepeatMasker, which is a more
+  thorough expert system that incorporates Dfam and nhmmer (a version of
+  RepeatMasker that incorporates nhmmer and Dfam will be available soon).
+  </p>
+
+  <p>
+  When searching with dfamscan.pl (or nhmmer), it is important to understand
+  the two different score thresholds stored in the model. The gathering
+  threshold (GA), used when running with the '--cut_ga' flag, is appropriate
+  for masking the human genome, when a moderate false discovery rate (FDR) is
+  acceptable. But when annotating another organism, the empirical FDR may not
+  hold, so the more stringent trusted cutoff (TC) threshold, accessed using the
+  '--cut_tc' flag, should be used.
+  </p>
+
+  <p>To see the full set of command line options, execute the following command:</p>
+
+  <pre>dfamscan.pl --help</pre>
+
+  <p>This should print a help page like this:</p>
+
+<pre>
+Command line options for controlling dfamscan.pl
+-------------------------------------------------------------------------------
+
+   --help       : prints this help message
+
+   Requires either
+    --dfam_infile &lt;s&gt;
+   or both of these
+    -fastafile &lt;s&gt;
+    -hmmfile &lt;s&gt;
+
+   Requires
+    -dfam_outfile &lt;s&gt;
+
+   Optionally, one of these  (only -E and -T allowed with --dfam_infile)
+    -E              (&gt;0, &lt;=10000)
+    -T 
+    --masking_thresh/--cut_ga
+    --annotation_thresh/--cut_tc  (default)
+    --species &lt;i&gt;  (not yet implemented)
+
+   Optionally one of these
+    --sortby_eval
+    --sortby_model
+    --sortby_seq     (default)
+
+   All optional
+    --trf_outfile &lt;s&gt;  (runs trf, put results in &lt;s&gt;; only with --fastafile)
+    --cpu &lt;i&gt;    (default 4)
+    --no_overlap
+    --overlap_trim &lt;i&gt; (default 3, only if not --no_overlap)
+    --log_file &lt;s&gt;
+</pre>
+
+  <p>The recommended usage for masking is:</p>
+
+  <pre>dfamscan.pl -fastafile myHumanSeq.fa -hmmfile Dfam.hmm -dfam_outfile myHumanSeqRegionsToMask.out --masking_thresh</pre>
+
+  <p>And for accurate annotation:</p>
+
+  <pre>dfamscan.pl -fastafile myChickenSeq.fa -hmmfile Dfam.hmm -dfam_outfile myChickenSeq.DfamHits.out </pre>
+
+  <p>
+  If you have already performed a search using nhmmscan and want to adjust the
+  post-processing (the 'sortby' flags or the 'overlap' flags, or set a more
+  stringent threshold with -E or -T), the search need not be run again. You can
+  used the previous outfile as the new input. For example:
+  </p>
+
+  <pre>dfamscan.pl --dfam_infile myChickenSeq.DfamHits.out --overlap_trim 5  -T 60.0 -dfam_outfile myChickenSeq.DfamHits.out2</pre>
+
+  <p>
+  Finally, two other parameters of note. The trf flag turns on the tandem
+  repeat finder search, such that the results are displayed along side the Dfam
+  hits. The other is flag --cpu controls how many CPUs nhmmer will try and use.
+  </p>
+
+  <h3>A note about RPH resolution</h3>
+
+  <p>
+  Redundant Profile Hit (RPH) resolution is tricky business. Clearly redundant
+  hits should be removed, and slightly overlapping hits should be retained, but
+  some such decisions are not obvious. The dfamscan script takes a conservative
+  approach, removing obviously overlapping hits (e.g. in cases where one hit
+  clearly outscores another, even if the first is slightly shorter than the
+  second), but retaining possibly-redundant matches in which two model matches
+  overlap substantially but without a clear "winner". This happens, for
+  example, when when one hit is slightly outscored by another much shorter hit,
+  or when two hits are offset such that the 5' half of one hit overlaps the 3'
+  half of another hit. It is left to downstream tools to make final decisions
+  in these (relatively rare) cases.
+  </p>
+
+  </mat-card-content>
+</mat-card>
+
+</div>

@@ -1,2 +1,112 @@
-<h2>Sequence</h2>
-<h2>Annotations</h2>
+<div fxFlex.gt-sm="60" fxFlexOffset.gt-sm="20">
+
+<mat-card>
+  <mat-card-title>Sequence</mat-card-title>
+  <mat-card-content>
+    <h3>Submission</h3>
+    <p>
+    The site allows searching of up to 50kb DNA sequences against Dfam. The
+    source organism should be specified so that the appropriate cut-offs should
+    be used. At the moment, the search form is implemented such that sequences
+    from a known organism use the less stringent, gathering cut-offs, which are
+    suited more for masking and allow some false positive detection of matches
+    (thresholds are set to allow a false discovery rate of 0.1%). If the source
+    organism is set to 'other', then the more stringent trusted cut-offs will
+    be applied. These are set such that there is an empirical false discovery
+    rate of 0. This threshold provides the most accurate annotation.
+    Alternatively, a user defined E-value threshold can be defined, where 0
+    &lt; E-value ≤ 0.1.
+    </p>
+
+    <h3>Running</h3>
+    <p>
+    The search consists of two parallel phases: tandem repeat identification
+    with TRF and an nhmmer search with all Dfam models. TRF is run using the
+    following parameters: '2 7 7 80 10 70 5'. By default, all nhmmer hits with
+    a score above model-specific gathering thresholds are shown, after removing
+    redundant model hits (RPHs, cases in which multiple models match the same
+    region of the submitted sequence; in such cases, shorter and lower scoring
+    matches are discarded). Overall, this search can take up to approximately 1
+    minute depending on length and composition of the DNA sequence. After
+    submission, a progress page is displayed. The results of the search will be
+    loaded into this holding page, which is unique per job and can be
+    bookmarked for future reference. Results will be held for as long as the
+    release, or until disk usage requires that they are deleted. The search
+    input parameters are available at the top of the page, by clicking on the
+    search details link after the job identifier.
+    </p>
+
+    <h3>Results</h3>
+    <p>
+    The results are presented in two forms: a graphical representation and in a
+    tabular form.
+    </p>
+
+    <p>
+    In the hit graphic, the submitted sequence is represented by a grey bar
+    with dark grey boxes on the sequence bar representing TRF matches. Dfam
+    hits to the plus strand are organized above the sequence bar, and hits to
+    the minus strand are organized below the bar. The color of each Dfam hit
+    bar depends on the entry type (DNA transposon, SINE, RNA, etc). When a Dfam
+    hit bar is clicked, the page is scrolled to the row corresponding to that
+    hit and the row is briefly highlighted.
+    </p>
+
+    <h4>Results table</h4>
+    <p>
+    Each row of the table represents a hit to a Dfam entry. The table contains
+    the match score, E-value and positions in the respective model and
+    sequence. This data can be downloaded as a TSV file using the button found
+    in the top right corner of the table header.
+    </p>
+
+    <p>
+    The alignment between the model and sequence can be obtained by expanding
+    the row using the &gt; symbol found at the beginning of each row. In the
+    alignment, the model line presents the consensus sequence for aligned
+    states in the model, colored according to the match line. The PP line
+    represents the posterior probability, or degree of confidence in each
+    aligned residue (for example, with '*' meaning highest confidence, and low
+    numbers indicating low confidence), with corresponding grey scale
+    coloration of the Query sequence.
+    </p>
+
+    <h4>TRF Results table</h4>
+    <p>
+    Each row in this table indicates the tandem repeat motif and the position
+    of the repeat in the sequence. These results can be downloaded as a TSV
+    file as with the HMMER results.
+    </p>
+
+    <h3>Running searches locally</h3>
+    <p>
+    Due to hardware limitations, it is not possible to submit larger sequences
+    to the web server. However, all of the software for running these searches
+    is freely available for download; see the <a routerLink="/help/tools">Tools</a>
+    page for more details.
+    </p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Annotations</mat-card-title>
+  <mat-card-content>
+    <p>
+    It is possible to get a list of all Dfam hits within a 50kbp range of
+    selected genome assemblies. To do so, select an organism, chromosome, and
+    the desired sequence range in base pairs. It does not matter if the
+    co-ordinates of the range are reversed, as both + and - strand matches will
+    be returned for the range.  Similar to the DNA sequence, it is possible to
+    remove RPH and this is enabled by default. Searches can optionally be
+    restricted to one family by entering a Dfam accession or name. If RPH
+    removal is selected and a Dfam accession is entered, only the hits
+    belonging to that entry after all redundancy is removed will be displayed.
+
+    The results are presented in an identical manner to those in the DNA search
+    results. Again, these results (Dfam hits and TRF) can be downloaded in TSV
+    format via the download button in the top right to the table header.
+    </p>
+  </mat-card-content>
+</mat-card>
+
+</div>
