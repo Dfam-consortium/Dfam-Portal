@@ -11,7 +11,7 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 export class FamilyAnnotationsComponent implements OnInit {
 
   help = {
-    distribution: 'TODO',
+    distribution: 'Interactive heat map of hits to genome assemblies included in Dfam',
   };
 
   stats: {}[] = [];
