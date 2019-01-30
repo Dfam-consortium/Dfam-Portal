@@ -20,9 +20,9 @@ export class FamilyModelCoverageComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    const el = this.graph.nativeElement;
+    el.innerHTML = '';
     if (this.data) {
-      const el = this.graph.nativeElement;
-      el.innerHTML = '';
       new CoveragePlot({ target: el, data: this.data, color_set: this.colorSet }).render();
     }
   }

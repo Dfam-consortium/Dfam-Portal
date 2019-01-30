@@ -44,16 +44,18 @@ Genome-specific characteristics are not available for this family.
 
     <p><strong>False discovery rate</strong>: {{assemblyData[selectedAssembly].hmm_fdr || "Unknown"}}</p>
 
-    <mat-form-field class="threshold-field">
-      <mat-select appearance="standard" placeholder="Threshold" [(value)]="selectedThreshold">
-        <mat-option *ngFor="let th of assemblyData[selectedAssembly]?.thresholds" value="{{th.id}}">
-          {{th.label}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div *ngIf="assemblyData[selectedAssembly]?.thresholds?.length">
+      <mat-form-field class="threshold-field">
+        <mat-select appearance="standard" placeholder="Threshold" [(value)]="selectedThreshold">
+          <mat-option *ngFor="let th of assemblyData[selectedAssembly]?.thresholds" value="{{th.id}}">
+            {{th.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <dfam-family-model-conservation [data]="conservationData">
-    </dfam-family-model-conservation>
+      <dfam-family-model-conservation [data]="conservationData">
+      </dfam-family-model-conservation>
+    </div>
 
     <h3>Non-Redundant Coverage <dfam-help-icon [tooltip]="help.nrph"></dfam-help-icon></h3>
     Number of aligned bases per model position, among the {{assemblyData[selectedAssembly].model_coverage?.nrph_hits}} non-redundant hits in dfamseq.
