@@ -6,8 +6,24 @@
 
 <h2>Classification and Taxa <dfam-help-icon [tooltip]="help.classification"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
-<p><strong>Classification:</strong> {{family.display_classification}}</p>
-<p><strong>Taxa:</strong> {{family.display_clades}}</p>
+<p><strong>Classification:</strong>
+{{family.display_classification.path}}<ng-container *ngIf="family.display_classification.last">;
+  <a routerLink="/classification"
+      [fragment]="family.classification">
+    {{family.display_classification.last}}
+  </a>
+</ng-container>
+</p>
+<p><strong>Taxa:</strong>
+<ng-container *ngFor="let clade of family.display_clades">
+  {{clade.path}}<ng-container *ngIf="clade.last">;
+    <a class="ext"
+        href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?name={{clade.last}}">
+      {{clade.last}}
+    </a>
+  </ng-container>
+</ng-container>
+</p>
 
 <h2>Curation Details<dfam-help-icon [tooltip]="help.curation"></dfam-help-icon></h2>
 <mat-divider></mat-divider>

@@ -104,17 +104,23 @@
         <ng-container matColumnDef="classification">
           <th mat-header-cell *matHeaderCellDef>Classification</th>
           <td mat-cell *matCellDef="let family">
-            <span [matTooltip]="family.classification_tooltip">
+            <a routerLink="/classification"
+                [fragment]="family.classification"
+                [matTooltip]="family.classification_tooltip">
               {{family.classification_display}}
-            </span>
+            </a>
           </td>
         </ng-container>
         <ng-container matColumnDef="clades">
           <th mat-header-cell *matHeaderCellDef>Clades</th>
           <td mat-cell *matCellDef="let family">
-            <span [matTooltip]="family.clades_tooltip">
-              {{family.clades_display}}
-            </span>
+            <ng-container *ngFor="let clade of family.display_clades; last as isLast">
+              <a class="ext"
+                  href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?name={{clade.name}}"
+                  [matTooltip]="clade.tooltip">
+                {{clade.name}}
+              </a><ng-container *ngIf="!isLast">, </ng-container>
+            </ng-container>
           </td>
         </ng-container>
         <ng-container matColumnDef="description">

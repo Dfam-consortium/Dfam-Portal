@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { ClassificationTreeComponent } from './classification-tree.component';
@@ -14,6 +15,7 @@ export class ClassificationComponent implements OnInit {
   @ViewChild('classificationTree') classificationTree: ClassificationTreeComponent;
 
   classes: any;
+  initialClass: any;
   tsv: string;
 
   searchInput: string;
@@ -23,10 +25,17 @@ export class ClassificationComponent implements OnInit {
     this.searchInputUpdates.next(value);
   }
 
-  constructor(private dfamapi: DfamAPIService) { }
+  constructor(
+    private dfamapi: DfamAPIService,
+    private route: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
+    if (this.route.snapshot.fragment) {
+      this.initialClass = this.route.snapshot.fragment;
+    }
     this.getClassificationData();
+
     this.searchInputUpdates.pipe(
       debounceTime(300)
     ).subscribe(input => this.searchInput = input);

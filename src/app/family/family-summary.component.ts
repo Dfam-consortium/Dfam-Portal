@@ -27,12 +27,25 @@ export class FamilySummaryComponent implements OnInit {
     this.getFamily();
   }
 
+  splitSemiPath(semiPath) {
+    const path = semiPath.replace(/^root;/, '').split(';');
+
+    let last = path.splice(path.length - 1, 1);
+    if (last) {
+      last = last[0];
+    } else {
+      last = null;
+    }
+
+    return { path: path.join('; '), last };
+  }
+
   getFamily() {
     const accession = this.route.parent.snapshot.params['id'];
     this.dfamapi.getFamily(accession).subscribe(data => {
       this.family = data;
-      this.family.display_classification = this.family.classification.replace(/;/g, '; ');
-      this.family.display_clades = this.family.clades.map(c => c.replace(/;/g, '; ')).join(',');
+      this.family.display_classification = this.splitSemiPath(this.family.classification);
+      this.family.display_clades = this.family.clades.map(cn => this.splitSemiPath(cn));
     });
   }
 }
