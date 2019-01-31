@@ -1,0 +1,43 @@
+<div fxFlex.gt-sm="60" fxFlexOffset.gt-sm="20">
+
+<h1>Transposable Element Raw Dataset Repository</h1>
+<p>
+The Dfam database contains collections of curated Transposable Element (TE)
+models (consensus or profile hidden markov models), sequence alignments, and
+metadata. There is a strong emphasis on model quality for both of these
+databases which can delay access to the most current datasets. In order to
+facilitate access to un-curated data, we now offer a publicly accessible
+repository in addition to the standard database releases.
+</p>
+
+<p>
+Datasets should be relevant to the Transposable Element community and should be
+generally applicable to the Dfam database. Examples may include the raw output
+of denovo repeat finding tools (RepeatModeler, RECON, RepeatScout, REPET etc),
+seed alignments for new families, or annotation data for new genomes.
+</p>
+
+<p>
+We encourage visitors to consider uploading their own in-process or polished
+datasets for general use by the research community. Beyond providing the public
+with early access to your results this public repository also feeds the
+pipeline of sequences destined for Dfam. Please register for an account using
+the login button in the upper right corner.
+</p>
+
+<p>
+The datasets below have been uploaded by our users and released under the
+Creative Commons CC0 1.0 public domain license (<a
+href="https://creativecommons.org">http://creativecommons.org</a>).
+</p>
+
+<mat-divider></mat-divider>
+
+<div>
+  <dfam-repository-entry
+    *ngFor="let repository of repositories"
+    [data]="repository">
+  </dfam-repository-entry>
+</div>
+
+</div>
