@@ -29,7 +29,10 @@
   </div>
 
   <dfam-loader [loading]="!classes">
-    <dfam-classification-tree #classificationTree [classes]="classes" [search]="searchInput">
+    <dfam-classification-tree #classificationTree
+        [classes]="classes"
+        [initialClass]="initialClass"
+        [search]="searchInput">
     </dfam-classification-tree>
   </dfam-loader>
 

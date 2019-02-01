@@ -209,8 +209,11 @@ export class BrowseComponent implements OnInit {
           family.classification_tooltip = cls.replace(/;/g, '; ');
         }
         if (family.clades) {
-          family.clades_display = family.clades.map(cl => cl.substring(cl.lastIndexOf(';') + 1)).join(', ');
-          family.clades_tooltip = family.clades.map(cl => cl.replace(/;/g, '; ')).join(',');
+          family.display_clades = family.clades.map(cl => {
+            const name = cl.substring(cl.lastIndexOf(';') + 1);
+            const tooltip = cl.replace(/^root;/, '').replace(/;/g, '; ');
+            return { name, tooltip };
+          });
         }
       });
     });

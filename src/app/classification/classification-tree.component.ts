@@ -8,12 +8,17 @@ import * as d3 from 'd3';
 })
 export class ClassificationTreeComponent implements OnInit {
 
-
   private _classes: any;
   get classes(): any { return this._classes; }
   @Input() set classes(value: any) {
     this._classes = value;
     this.onDataChanged();
+  }
+
+  private _initialClass: any;
+  get initialClass(): any { return this._initialClass; }
+  @Input() set initialClass(value: any) {
+    this._initialClass = value;
   }
 
   private _search: string;
@@ -151,6 +156,10 @@ export class ClassificationTreeComponent implements OnInit {
       classes.y0 = 0;
       // Render the tree
       this.update(classes);
+
+      if (this.initialClass) {
+        this.expandPath(this.initialClass);
+      }
     }
   }
 
@@ -236,6 +245,43 @@ export class ClassificationTreeComponent implements OnInit {
       }
     }
   }
+
+  expandPath(path) {
+    this.collapse(this.rootNode);
+    if (!path || typeof path !== "string") {
+      return;
+    }
+
+    path = path.replace(/^root;/, '').split(";");
+
+    let parent = this.rootNode;
+    while (path.length && parent && parent._children) {
+      let segment = path.shift();
+
+      // Find the child with this name
+      let child = parent._children.find(node => node.name == segment);
+      if (child) {
+        // Add to the "visible" array, 'children', and mark as not hidden.
+        if (!parent.children) {
+          parent.children = [];
+        }
+        parent.children.push(child);
+        child._hidden = false;
+
+        // Mark as matched path, or matched if it's the last one.
+        if (path.length) {
+          child._matched_path = true;
+        } else {
+          child._matched = true;
+        }
+      }
+
+      parent = child;
+    }
+
+    this.update(this.rootNode);
+  }
+
 
   update(root, source?) {
     if (!root) {
