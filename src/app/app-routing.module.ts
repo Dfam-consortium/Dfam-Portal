@@ -15,6 +15,7 @@ import { SearchSequenceComponent } from './search/search-sequence.component';
 import { SearchSequenceResultsComponent } from './search/search-sequence-results.component';
 import { SearchAnnotationsComponent } from './search/search-annotations.component';
 import { ClassificationComponent } from './classification/classification.component';
+import { RepositoryComponent } from './repository/repository.component';
 import { HelpComponent } from './help/help.component';
 import { HelpFamilyComponent } from './help/help-family.component';
 import { HelpSearchComponent } from './help/help-search.component';
@@ -47,6 +48,7 @@ export const PUBLIC_ROUTES: Routes = [
     { path: 'download', component: FamilyDownloadComponent },
   ]},
   { path: 'classification', component: ClassificationComponent},
+  { path: 'repository', component: RepositoryComponent},
   { path: 'help', component: HelpComponent, children: [
     { path: '', redirectTo: 'family', pathMatch: 'full' },
     { path: 'family', component: HelpFamilyComponent },

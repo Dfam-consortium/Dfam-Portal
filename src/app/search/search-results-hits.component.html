@@ -48,7 +48,7 @@
     <td *matCellDef="let hit"></td>
   </ng-container>
   <ng-container matColumnDef="alignment">
-    <td colspan="8" *matCellDef="let hit">
+    <td colspan="9" *matCellDef="let hit">
       <dfam-search-results-alignment *ngIf="hit.show_alignment" [hit]="hit" [getAlignCallback]="getAlignCallback">
       </dfam-search-results-alignment>
     </td>

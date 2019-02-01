@@ -28,9 +28,9 @@ export class FamilyModelConservationComponent implements OnInit, OnChanges {
   }
 
   redraw() {
+    const el = this.graph.nativeElement;
+    el.innerHTML = '';
     if (this.data) {
-      const el = this.graph.nativeElement;
-      el.innerHTML = '';
       new ConservationPlot({ target: el, data: this.data }).render();
     }
   }

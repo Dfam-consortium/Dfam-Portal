@@ -76,6 +76,8 @@ import { HelpComponent } from './help/help.component';
 import { HelpSearchComponent } from './help/help-search.component';
 import { HelpFamilyComponent } from './help/help-family.component';
 import { HelpToolsComponent } from './help/help-tools.component';
+import { RepositoryComponent } from './repository/repository.component';
+import { RepositoryEntryComponent } from './repository/repository-entry.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -123,6 +125,8 @@ export function tokenGetter() {
     HelpSearchComponent,
     HelpFamilyComponent,
     HelpToolsComponent,
+    RepositoryComponent,
+    RepositoryEntryComponent,
   ],
   imports: [
     CommonModule,

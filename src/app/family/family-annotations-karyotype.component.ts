@@ -30,9 +30,11 @@ export class FamilyAnnotationsKaryotypeComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    const el = this.karyotype.nativeElement;
+    el.innerHTML = '';
+    this.dfamKaryotype = null;
+
     if (this.data) {
-      const el = this.karyotype.nativeElement;
-      el.innerHTML = '';
       this.dfamKaryotype = new Karyotype(el, this.data);
       this.dfamKaryotype.switchVisualization(this.visualizationType);
     }

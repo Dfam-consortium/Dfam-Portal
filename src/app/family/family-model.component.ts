@@ -60,8 +60,13 @@ export class FamilyModelComponent implements OnInit {
   }
   set selectedThreshold(value: string) {
     this._selectedThreshold = value;
-    const graph_data = this.assemblyData[this.selectedAssembly].thresholds.find(t => t.id === this.selectedThreshold).graph;
-    this.conservationData = graph_data;
+    const asm_data = this.assemblyData[this.selectedAssembly];
+    const threshold = asm_data.thresholds.find(t => t.id === this.selectedThreshold);
+    if (threshold) {
+      this.conservationData = threshold.graph;
+    } else {
+      this.conservationData = null;
+    }
   }
 
   @ViewChild(FamilyModelLogoComponent) logoComponent: FamilyModelLogoComponent;
