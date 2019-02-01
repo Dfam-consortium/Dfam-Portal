@@ -3,8 +3,7 @@
 <div #outlet>
 </div>
 
-<h2>Coding Sequences <dfam-help-icon [tooltip]="help.coding_seqs"></dfam-help-icon></h2>
-<mat-divider></mat-divider>
+<h3 class="underline-span">Coding Sequences <dfam-help-icon [tooltip]="help.coding_seqs"></dfam-help-icon></h3>
 
 <div *ngIf="!family?.coding_seqs?.length">
 No coding sequences recorded for this family.
@@ -32,8 +31,7 @@ No coding sequences recorded for this family.
   </li>
 </ul>
 
-<h2>Features <dfam-help-icon [tooltip]="help.features"></dfam-help-icon></h2>
-<mat-divider></mat-divider>
+<h3 class="underline-span">Features <dfam-help-icon [tooltip]="help.features"></dfam-help-icon></h3>
 
 <div *ngIf="!family?.features?.length">
 No features recorded for this family.

@@ -9,6 +9,8 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 })
 export class FamilySummaryComponent implements OnInit {
 
+  taxa_expand = []
+
   help = {
     classification: 'The Dfam classification for the family, and the specificity of the family',
     curation: '',
@@ -46,6 +48,9 @@ export class FamilySummaryComponent implements OnInit {
       this.family = data;
       this.family.display_classification = this.splitSemiPath(this.family.classification);
       this.family.display_clades = this.family.clades.map(cn => this.splitSemiPath(cn));
+      for (let i = 0; i < this.family.clades.length; i++ ) {
+        this.taxa_expand[i] = false;
+      }
     });
   }
 }

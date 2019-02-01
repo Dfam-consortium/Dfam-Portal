@@ -27,7 +27,21 @@ h2 {
     margin-right: 0px;
     margin-bottom: 1em;
     margin-left: 0px;
-    font-size: 1.2em;
+    font-size: 1.7em;
+}
+
+h3 {
+    margin-top: 1em;
+    margin-right: 0px;
+    margin-bottom: 1em;
+    margin-left: 0px;
+    font-size: 1.3em;
+}
+
+// Create the effect of an underline but extended to span
+// the entire div and much closer to the text.
+.underline-span {
+  border-bottom: 1px solid #ddd; 
 }
 
 img.resizing {

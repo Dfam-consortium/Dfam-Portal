@@ -2,11 +2,11 @@
   <div class="family-content" fxLayout.gt-sm="row" fxLayoutAlign="center start" >
 
     <div fxFlex="100" fxFlex.gt-sm="90">
-      <h1>{{family.accession}}
+      <h2 class="green">{{family.accession}}
         <span *ngIf="family.name">
         [{{family.name}}]
         </span>
-      </h1>
+      </h2>
   
       <nav mat-tab-nav-bar mat-stretch-tabs fxHide fxShow.gt-md='true'>
         <a mat-tab-link

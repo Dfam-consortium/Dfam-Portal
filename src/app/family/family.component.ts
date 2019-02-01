@@ -11,13 +11,13 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 export class FamilyComponent implements OnInit {
 
   navLinks = [
-    { path: './summary', label: 'Summary' },
-    { path: './seed', label: 'Seed' },
-    { path: './features', label: 'Features' },
-    { path: './model', label: 'Model' },
-    { path: './annotations', label: 'Annotations' },
-    { path: './relationships', label: 'Relationships' },
-    { path: './download', label: 'Download' },
+    { path: './summary', label: 'SUMMARY' },
+    { path: './seed', label: 'SEED' },
+    { path: './features', label: 'FEATURES' },
+    { path: './model', label: 'MODEL' },
+    { path: './annotations', label: 'ANNOTATIONS' },
+    { path: './relationships', label: 'RELATIONSHIPS' },
+    { path: './download', label: 'DOWNLOAD' },
   ];
 
   family: Family;
@@ -31,7 +31,7 @@ export class FamilyComponent implements OnInit {
     this.getFamily();
   }
 
-  menuLabel = "Summary";
+  menuLabel = "SUMMARY";
 
   public setMenuLabel(label){
 	this.menuLabel = label;

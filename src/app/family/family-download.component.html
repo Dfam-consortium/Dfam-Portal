@@ -1,5 +1,4 @@
-<h2>Models <dfam-help-icon [tooltip]="help.models"></dfam-help-icon></h2>
-<mat-divider></mat-divider>
+<h3 class="underline-span">Models <dfam-help-icon [tooltip]="help.models"></dfam-help-icon></h3>
 <p></p>
 <div fxFlexLayout="row" fxLayoutAlign="space-evenly none">
    <dfam-family-download-button title='HMM' description='Hidden Markov Model representing this family.' icon="/assets/images/hmm-file.png" alt-description="Download the Hidden Markov Model for this family." [button-url]="hmmUrl"></dfam-family-download-button> 
@@ -9,8 +8,7 @@
    <dfam-family-download-button title='EMBL' description='EMBL-formatted sequence and metadata.' icon="/assets/images/embl-file.png" alt-description="Download the Hidden Markov Model for this family." [button-url]="emblUrl"></dfam-family-download-button> 
 </div>
 
-<h2>Annotations <dfam-help-icon [tooltip]="help.annotations"></dfam-help-icon></h2>
-<mat-divider></mat-divider>
+<h3 class="underline-span">Annotations <dfam-help-icon [tooltip]="help.annotations"></dfam-help-icon></h3>
 
 <div *ngIf="assemblies?.length; else noAssemblies">
   <p>

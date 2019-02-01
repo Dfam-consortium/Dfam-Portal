@@ -2,28 +2,25 @@
 
 <div *ngIf="family">
 
-<h2>Details <dfam-help-icon [tooltip]="help.details"></dfam-help-icon></h2>
-<mat-divider></mat-divider>
-<h3>HMM</h3>
+<h3 class="underline-span">Details <dfam-help-icon [tooltip]="help.details"></dfam-help-icon></h3>
+<h4>HMM</h4>
 <p><strong>Model Mask:</strong> {{family.model_mask || "None"}}</p>
-<p><strong>Default NC Threshold:</strong> {{family.hmm_general_nc || "N/A"}} </p>
+<p><strong>General threshold:</strong> {{family.hmm_general_nc || "N/A"}} </p>
 
-<h3>Consensus</h3>
+<h4>Consensus</h4>
 <samp class="consensus_seq">{{family.consensus_sequence}}</samp>
 
-<h2>HMM Logo
+<h3 class="underline-span">HMM Logo
   <dfam-help-icon [tooltip]="help.logo"></dfam-help-icon>
   <a mat-flat-button [matTooltip]="help.downloadLogo" [href]="logoUrl">
     <mat-icon>arrow_downward</mat-icon>
   </a>
-</h2>
-<mat-divider></mat-divider>
+</h3>
 
 <dfam-family-model-logo [data]="hmmLogo">
 </dfam-family-model-logo>
 
-<h2>HMM Genome Specific Characteristics <dfam-help-icon [tooltip]="help.genome"></dfam-help-icon></h2>
-<mat-divider></mat-divider>
+<h3 class="underline-span">HMM Genome Specific Characteristics <dfam-help-icon [tooltip]="help.genome"></dfam-help-icon></h3>
 <div *ngIf="!assemblies.length">
 Genome-specific characteristics are not available for this family.
 </div>
@@ -40,7 +37,7 @@ Genome-specific characteristics are not available for this family.
 
   <mat-card *ngIf="selectedAssembly">
 
-    <h3>Coverage, Conservation, and Inserts <dfam-help-icon [tooltip]="help.conservation"></dfam-help-icon></h3>
+    <h4>Coverage, Conservation, and Inserts <dfam-help-icon [tooltip]="help.conservation"></dfam-help-icon></h4>
 
     <p><strong>False discovery rate</strong>: {{assemblyData[selectedAssembly].hmm_fdr || "Unknown"}}</p>
 
@@ -57,17 +54,17 @@ Genome-specific characteristics are not available for this family.
       </dfam-family-model-conservation>
     </div>
 
-    <h3>Non-Redundant Coverage <dfam-help-icon [tooltip]="help.nrph"></dfam-help-icon></h3>
+    <h4>Non-Redundant Coverage <dfam-help-icon [tooltip]="help.nrph"></dfam-help-icon></h4>
     Number of aligned bases per model position, among the {{assemblyData[selectedAssembly].model_coverage?.nrph_hits}} non-redundant hits in dfamseq.
     <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.nrph" colorSet="2">
     </dfam-family-model-coverage>
 
-    <h3>Redundant Coverage <dfam-help-icon [tooltip]="help.all"></dfam-help-icon></h3>
+    <h4>Redundant Coverage <dfam-help-icon [tooltip]="help.all"></dfam-help-icon></h4>
     Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.all_hits}} hits in dfamseq.
     <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.all" colorSet="2">
     </dfam-family-model-coverage>
 
-    <h3>False Coverage <dfam-help-icon [tooltip]="help.false"></dfam-help-icon></h3>
+    <h4>False Coverage <dfam-help-icon [tooltip]="help.false"></dfam-help-icon></h4>
     Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.false_hits}} hits from an artificial sequence devoid of TEs.
     <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.false">
     </dfam-family-model-coverage>
