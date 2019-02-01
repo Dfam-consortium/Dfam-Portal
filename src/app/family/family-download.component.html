@@ -1,27 +1,12 @@
 <h2>Models <dfam-help-icon [tooltip]="help.models"></dfam-help-icon></h2>
 <mat-divider></mat-divider>
+<p></p>
+<div fxFlexLayout="row" fxLayoutAlign="space-evenly none">
+   <dfam-family-download-button title='HMM' description='Hidden Markov Model representing this family.' icon="/assets/images/hmm-file.png" alt-description="Download the Hidden Markov Model for this family." [button-url]="hmmUrl"></dfam-family-download-button> 
 
-<div fxFlexLayout="row">
-  <mat-card fxFlex="20">
-    <mat-card-title>HMM</mat-card-title>
-    Hidden Markov Model representing this family.
-    <br>
-    <a mat-raised-button [href]="hmmUrl"><mat-icon>arrow_downward</mat-icon></a>
-  </mat-card>
+   <dfam-family-download-button title='SEED' description='Stockholm formatted seed alignment used to generate the HMM and consensus.' icon="/assets/images/stk-file.png" alt-description="Download the Stockholm seed alignment for this family." [button-url]="seedUrl"></dfam-family-download-button> 
 
-  <mat-card fxFlex="20">
-    <mat-card-title>SEED</mat-card-title>
-    Stockholm formatted seed alignment used to generate the HMM.
-    <br>
-    <a mat-raised-button [href]="seedUrl"><mat-icon>arrow_downward</mat-icon></a>
-  </mat-card>
-
-  <mat-card fxFlex="20">
-    <mat-card-title>EMBL</mat-card-title>
-    EMBL-formatted sequence and metadata.
-    <br>
-    <a mat-raised-button [href]="emblUrl"><mat-icon>arrow_downward</mat-icon></a>
-  </mat-card>
+   <dfam-family-download-button title='EMBL' description='EMBL-formatted sequence and metadata.' icon="/assets/images/embl-file.png" alt-description="Download the Hidden Markov Model for this family." [button-url]="emblUrl"></dfam-family-download-button> 
 </div>
 
 <h2>Annotations <dfam-help-icon [tooltip]="help.annotations"></dfam-help-icon></h2>
@@ -29,32 +14,33 @@
 
 <div *ngIf="assemblies?.length; else noAssemblies">
   <p>
-    Hits for this model found via dfamseq, tab-delimited.
+    Annotations produced by the HMM model for applicable species at, or above, the gathering threshold.  The Non-redundant download is a subset of the annotations for which no other repeat family dominates it ( overlaps with a higher score ).  Both file are in tab-separated format and compressed with gzip.
   </p>
 
+  <div fxLayout="column" fxLayoutAlign=" center">
   <table>
     <thead>
       <tr>
         <th>Species</th>
-        <th>Non-redundant hits</th>
-        <th>All hits</th>
+        <th>Non-redundant</th>
+        <th>All</th>
       </tr>
     </thead>
     <tr *ngFor="let assembly of assemblies">
       <td>{{assembly.name}}</td>
       <td>
-        <a mat-raised-button [href]="annotationsUrl(assembly.id, true)"><mat-icon>arrow_downward</mat-icon></a>
+        <dfam-family-download-button icon="/assets/images/gzipd-file.png" alt-description="Non-redundant hits for this model/organism." [button-url]="annotationsUrl(assembly.id,true)"></dfam-family-download-button> 
       </td>
       <td>
-        <a mat-raised-button [href]="annotationsUrl(assembly.id, false)"><mat-icon>arrow_downward</mat-icon></a>
+        <dfam-family-download-button icon="/assets/images/gzipd-file.png" alt-description="All hits for this model/organism." [button-url]="annotationsUrl(assembly.id,false)"></dfam-family-download-button> 
       </td>
     </tr>
   </table>
+  </div>
 </div>
-
 <ng-template #noAssemblies>
   <p>No assembly-specific annotations available for this family.</p>
 </ng-template>
-
+<br>
 <dfam-loader [loading]="queuedCount > 0">
 </dfam-loader>

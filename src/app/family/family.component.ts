@@ -31,6 +31,12 @@ export class FamilyComponent implements OnInit {
     this.getFamily();
   }
 
+  menuLabel = "Summary";
+
+  public setMenuLabel(label){
+	this.menuLabel = label;
+  }
+
   getFamily() {
     const accession = this.route.snapshot.params['id'];
     this.dfamapi.getFamily(accession).subscribe((data: Family) => {

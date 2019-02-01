@@ -1,21 +1,42 @@
-<div *ngIf="family">
-  <h1>{{family.accession}}
-    <span *ngIf="family.name">
-    [{{family.name}}]
-    </span>
-  </h1>
+<div *ngIf="family" >
+  <div class="family-content" fxLayout.gt-sm="row" fxLayoutAlign="center start" >
 
-  <nav mat-tab-nav-bar>
-    <a mat-tab-link
-      *ngFor="let link of navLinks"
-      [routerLink]="link.path"
-      routerLinkActive #rla="routerLinkActive"
-      [active]="rla.isActive">
-      {{link.label}}
-    </a>
-  </nav>
-
-  <router-outlet></router-outlet>
+    <div fxFlex="100" fxFlex.gt-sm="90">
+      <h1>{{family.accession}}
+        <span *ngIf="family.name">
+        [{{family.name}}]
+        </span>
+      </h1>
+  
+      <nav mat-tab-nav-bar mat-stretch-tabs fxHide fxShow.gt-md='true'>
+        <a mat-tab-link
+          *ngFor="let link of navLinks"
+          [routerLink]="link.path"
+          routerLinkActive #rla="routerLinkActive"
+          [active]="rla.isActive">
+          {{link.label}}
+        </a>
+      </nav>
+  
+      <button mat-icon-button [matMenuTriggerFor]="menu" fxShow fxHide.gt-md='true'>
+          <div fxLayout="row" fxLayoutAlign=" center">
+          <mat-icon>menu</mat-icon> 
+          <div class="menu-gap"></div>
+          <h3><b class="menu-selected-label">{{menuLabel}}</b></h3>
+          </div>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item *ngFor="let link of navLinks"
+            (click)="setMenuLabel(link.label)"
+            [routerLink]="link.path">
+            <span>{{link.label}}</span>
+        </button>
+      </mat-menu>
+      <mat-divider fxShow fxHide.gt-md='true'></mat-divider>
+    
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="!family">

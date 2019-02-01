@@ -33,6 +33,7 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatTableModule} from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatMenuModule} from '@angular/material/menu';
 
 // Application Imports
 import { AppComponent } from './app.component';
@@ -53,6 +54,7 @@ import { FamilyModelComponent } from './family/family-model.component';
 import { FamilyAnnotationsComponent } from './family/family-annotations.component';
 import { FamilyRelationshipsComponent } from './family/family-relationships.component';
 import { FamilyDownloadComponent } from './family/family-download.component';
+import { FamilyDownloadButtonComponent } from './family/family-download-button.component';
 import { FamilyModelCoverageComponent } from './family/family-model-coverage.component';
 import { FamilyModelConservationComponent } from './family/family-model-conservation.component';
 import { FamilyModelLogoComponent } from './family/family-model-logo.component';
@@ -99,6 +101,7 @@ export function tokenGetter() {
     FamilyAnnotationsComponent,
     FamilyRelationshipsComponent,
     FamilyDownloadComponent,
+    FamilyDownloadButtonComponent,
     FamilyModelCoverageComponent,
     FamilyModelConservationComponent,
     FamilyModelLogoComponent,
@@ -143,6 +146,7 @@ export function tokenGetter() {
     MatSelectModule,
     MatSnackBarModule,
     MatSortModule,
+    MatMenuModule,
     MatTableModule,
     MatTabsModule,
     MatTooltipModule,

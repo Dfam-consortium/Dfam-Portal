@@ -1,0 +1,32 @@
+
+
+/*
+ * The material menu is decorated using an 
+ * md-icon and the text of the last selected
+ * menu item.  The class "menu-selected-label"
+ * corresponds to the text part.
+ */
+.menu-selected-label {
+ font-size: 16px;
+ color: #739025;
+ text-decoration: underline;
+ text-decoration-color: #739025;
+}
+/*
+ * It is unfortunate that in this case the material icon is
+ * not big enough.  We want it to be obvious that a menu exists
+ * when the responsive design switches between a tab bar to 
+ * a menu.  Here we fix the size of the menu icon.
+ */
+.mat-icon {
+ font-size: 28px;
+}
+/*
+ * Finally, changing the size of the md-icon using "font-size" 
+ * unfortunately causes problems with spacing. Here we pad using
+ * a div -- there are perhaps better ways.
+ */
+.menu-gap {
+  min-width: 16px;
+}
+
