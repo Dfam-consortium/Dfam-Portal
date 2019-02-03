@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { forkJoin } from 'rxjs';
 import { FamilyModelLogoComponent } from './family-model-logo.component';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
@@ -47,12 +48,12 @@ export class FamilyModelComponent implements OnInit {
     return this._selectedAssembly;
   }
   set selectedAssembly(assembly: string) {
-    this._selectedAssembly = assembly;
     this.getAssemblyData(assembly);
   }
   assemblyData = {};
 
   conservationData;
+  coverageData;
 
   private _selectedThreshold: string;
   get selectedThreshold(): string {
@@ -61,11 +62,13 @@ export class FamilyModelComponent implements OnInit {
   set selectedThreshold(value: string) {
     this._selectedThreshold = value;
     const asm_data = this.assemblyData[this.selectedAssembly];
-    const threshold = asm_data.thresholds.find(t => t.id === this.selectedThreshold);
-    if (threshold) {
-      this.conservationData = threshold.graph;
-    } else {
-      this.conservationData = null;
+    if (asm_data) {
+      const threshold = asm_data.thresholds.find(t => t.id === this.selectedThreshold);
+      if (threshold) {
+        this.conservationData = threshold.graph;
+      } else {
+        this.conservationData = null;
+      }
     }
   }
 
@@ -109,7 +112,11 @@ export class FamilyModelComponent implements OnInit {
         this.selectedAssembly = as[0].id;
       }
     });
-    this.dfamapi.getFamilyHmmLogo(accession).subscribe(l => this.hmmLogo = l);
+    this.downloadingLogo = true;
+    this.dfamapi.getFamilyHmmLogo(accession).subscribe(l => {
+      this.hmmLogo = l;
+      this.downloadingLogo = false;
+    });
   }
 
   getAssemblyData(assembly) {
@@ -120,8 +127,15 @@ export class FamilyModelComponent implements OnInit {
       };
 
       const accession = this.route.parent.snapshot.params['id'];
-      this.dfamapi.getFamilyAssemblyModelConservation(accession, assembly).subscribe(mcons => {
+      const getConservation = this.dfamapi.getFamilyAssemblyModelConservation(accession, assembly);
+      const getCoverage = this.dfamapi.getFamilyAssemblyModelCoverage(accession, assembly);
+
+      return forkJoin(getConservation, getCoverage).subscribe(([mcons, mcov]) => {
         this.assemblyData[assembly].model_conservation = mcons;
+        this.assemblyData[assembly].model_coverage = mcov;
+        this.coverageData = mcov;
+        this._selectedAssembly = assembly;
+
         const thresholds = this.assemblyData[assembly].thresholds = [];
 
         if (mcons) {
@@ -139,10 +153,6 @@ export class FamilyModelComponent implements OnInit {
           });
           this.selectedThreshold = 'TC';
         }
-      });
-
-      this.dfamapi.getFamilyAssemblyModelCoverage(accession, assembly).subscribe(mcov => {
-        this.assemblyData[assembly].model_coverage = mcov;
 
         if (mcov) {
           Object.keys(mcov).forEach(function(key) {

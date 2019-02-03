@@ -17,8 +17,14 @@
   </a>
 </h3>
 
-<dfam-family-model-logo [data]="hmmLogo">
-</dfam-family-model-logo>
+<dfam-loader [loading]="downloadingLogo">
+  <dfam-family-model-logo *ngIf="hmmLogo" [data]="hmmLogo">
+  </dfam-family-model-logo>
+
+  <ng-container *ngIf="!downloadingLogo && !hmmLogo">
+    No logo has been generated for this family.
+  </ng-container>
+</dfam-loader>
 
 <h3 class="underline-span">HMM Genome Specific Characteristics <dfam-help-icon [tooltip]="help.genome"></dfam-help-icon></h3>
 <div *ngIf="!assemblies.length">
@@ -54,20 +60,26 @@ Genome-specific characteristics are not available for this family.
       </dfam-family-model-conservation>
     </div>
 
-    <h4>Non-Redundant Coverage <dfam-help-icon [tooltip]="help.nrph"></dfam-help-icon></h4>
-    Number of aligned bases per model position, among the {{assemblyData[selectedAssembly].model_coverage?.nrph_hits}} non-redundant hits in dfamseq.
-    <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.nrph" colorSet="2">
-    </dfam-family-model-coverage>
+    <ng-container *ngIf="coverageData; else noCoverage">
+      <h4>Non-Redundant Coverage <dfam-help-icon [tooltip]="help.nrph"></dfam-help-icon></h4>
+      Number of aligned bases per model position, among the {{assemblyData[selectedAssembly].model_coverage?.nrph_hits}} non-redundant hits in dfamseq.
+      <dfam-family-model-coverage [data]="coverageData.nrph" colorSet="2">
+      </dfam-family-model-coverage>
 
-    <h4>Redundant Coverage <dfam-help-icon [tooltip]="help.all"></dfam-help-icon></h4>
-    Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.all_hits}} hits in dfamseq.
-    <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.all" colorSet="2">
-    </dfam-family-model-coverage>
+      <h4>Redundant Coverage <dfam-help-icon [tooltip]="help.all"></dfam-help-icon></h4>
+      Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.all_hits}} hits in dfamseq.
+      <dfam-family-model-coverage [data]="coverageData.all" colorSet="2">
+      </dfam-family-model-coverage>
 
-    <h4>False Coverage <dfam-help-icon [tooltip]="help.false"></dfam-help-icon></h4>
-    Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.false_hits}} hits from an artificial sequence devoid of TEs.
-    <dfam-family-model-coverage [data]="assemblyData[selectedAssembly].model_coverage?.false">
-    </dfam-family-model-coverage>
+      <h4>False Coverage <dfam-help-icon [tooltip]="help.false"></dfam-help-icon></h4>
+      Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.false_hits}} hits from an artificial sequence devoid of TEs.
+      <dfam-family-model-coverage [data]="coverageData.false">
+      </dfam-family-model-coverage>
+    </ng-container>
+
+    <ng-template #noCoverage>
+      No coverage data is present for this assembly.
+    </ng-template>
 
   </mat-card>
 
