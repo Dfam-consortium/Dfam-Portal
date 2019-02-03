@@ -1,4 +1,6 @@
-import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { fromEvent, Unsubscribable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -9,7 +11,7 @@ import AlignmentSummaryViewer from 'AlignmentSummaryViewer/dist/AlignmentSummary
   templateUrl: './family-seed.component.html',
   styleUrls: ['./family-seed.component.scss']
 })
-export class FamilySeedComponent implements OnInit {
+export class FamilySeedComponent implements OnInit, OnDestroy {
 
   help = 'Visualization of the coverage of the family\'s seed alignment.';
 
@@ -34,12 +36,7 @@ export class FamilySeedComponent implements OnInit {
 
   viewer;
 
-  @HostListener('window:resize')
-  onResize() {
-    if (this.viewer) {
-      this.viewer.resize();
-    }
-  }
+  resizeSubscription: Unsubscribable;
 
   constructor(
     private dfamapi: DfamAPIService,
@@ -48,6 +45,14 @@ export class FamilySeedComponent implements OnInit {
 
   ngOnInit() {
     this.getSeed();
+
+    this.resizeSubscription = fromEvent(window, 'resize')
+      .pipe(debounceTime(300))
+      .subscribe(e => { if (this.viewer) { this.viewer.resize(); } });
+  }
+
+  ngOnDestroy() {
+    this.resizeSubscription.unsubscribe();
   }
 
   getSeed() {

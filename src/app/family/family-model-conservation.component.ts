@@ -1,4 +1,6 @@
-import { Component, Input, OnChanges, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { fromEvent, Unsubscribable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 import { ConservationPlot } from '../../js/conservation';
 
@@ -7,24 +9,36 @@ import { ConservationPlot } from '../../js/conservation';
   templateUrl: './family-model-conservation.component.html',
   styleUrls: ['./family-model-conservation.component.scss']
 })
-export class FamilyModelConservationComponent implements OnInit, OnChanges {
+export class FamilyModelConservationComponent implements OnInit, OnDestroy {
 
-  @Input() data;
+  _data;
+  get data(): any {
+    return this._data;
+  }
+
+  @Input()
+  set data(data: any) {
+    this._data = data;
+    this.redraw();
+  }
+
 
   @ViewChild('graph') graph: ElementRef;
+
+  resizeSubscription: Unsubscribable;
 
   constructor() { }
 
   ngOnInit() {
+    this.redraw();
+
+    this.resizeSubscription = fromEvent(window, 'resize')
+      .pipe(debounceTime(300))
+      .subscribe(e => this.redraw());
   }
 
-  @HostListener('window:resize')
-  onResize() {
-    this.redraw();
-  }
-
-  ngOnChanges() {
-    this.redraw();
+  ngOnDestroy() {
+    this.resizeSubscription.unsubscribe();
   }
 
   redraw() {
