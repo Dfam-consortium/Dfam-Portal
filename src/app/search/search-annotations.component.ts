@@ -84,6 +84,13 @@ export class SearchAnnotationsComponent implements OnInit {
       this.search.family.trim(),
       this.search.nrph
     ).subscribe(results => {
+      this.loading = false;
+
+      if (!results) {
+        this.results = null;
+        this.results.assembly = null;
+        return;
+      }
 
       // Add 'row_id' values so the visualization can jump to the table rows
       let i = 0;
@@ -96,7 +103,6 @@ export class SearchAnnotationsComponent implements OnInit {
 
       this.results = results;
       this.results.assembly = assembly;
-      this.loading = false;
     });
   }
 
