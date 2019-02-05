@@ -72,6 +72,10 @@ Genome-specific characteristics are not available for this family.
     <dfam-loader [loading]="loadingKaryotype">
       <dfam-family-annotations-karyotype #karyotype [data]="karyotypeData" [visualizationType]="selectedVisualizationType">
       </dfam-family-annotations-karyotype>
+
+      <ng-container *ngIf="!loadingKaryotype && !karyotypeData">
+        No annotation data found for this assembly.
+      </ng-container>
     </dfam-loader>
 
     <dfam-loader [loading]="loadingAnnotationData">

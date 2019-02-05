@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { fromEvent, Unsubscribable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -22,6 +24,8 @@ export class FamilyFeaturesComponent implements OnInit {
 
   visualization: any;
 
+  resizeSubscription: Unsubscribable;
+
   constructor(
     private dfamapi: DfamAPIService,
     private route: ActivatedRoute
@@ -29,6 +33,10 @@ export class FamilyFeaturesComponent implements OnInit {
 
   ngOnInit() {
     this.getFamily();
+
+    this.resizeSubscription = fromEvent(window, 'resize')
+      .pipe(debounceTime(300))
+      .subscribe(e => { if (this.visualization) { this.visualization.render(); } });
   }
 
   getFamily() {
@@ -46,12 +54,4 @@ export class FamilyFeaturesComponent implements OnInit {
       }
     });
   }
-
-  @HostListener('window:resize')
-  onResize() {
-    if (this.visualization) {
-      this.visualization.render();
-    }
-  }
-
 }
