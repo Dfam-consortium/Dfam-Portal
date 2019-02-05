@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { FamilyModelLogoComponent } from './family-model-logo.component';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
+import { SeqViewComponent } from '../shared/seq-view';
 
 @Component({
   selector: 'dfam-family-model',

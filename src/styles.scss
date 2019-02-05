@@ -38,10 +38,17 @@ h3 {
     font-size: 1.3em;
 }
 
+// Used to hold <p></p> elements closer together
+.tight {
+  margin-block-end: .1em;
+}
+
+
 // Create the effect of an underline but extended to span
 // the entire div and much closer to the text.
 .underline-span {
   border-bottom: 1px solid #ddd; 
+  margin-bottom: 0px;
 }
 
 img.resizing {

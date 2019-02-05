@@ -22,6 +22,7 @@ export class SeqViewComponent implements OnInit{
    private seqSearchTerm = new Subject<string>();
 
    constructor(){
+     // Generate a random sequence to test with
      //let DNA = "ACGT";
      //for ( let i = 0; i < 500; i++ ){
      //   this.sequence += DNA.charAt(Math.floor(Math.random()*DNA.length))
@@ -163,6 +164,6 @@ export class SeqViewComponent implements OnInit{
         } while(smats);
         this.decorateText();
       }
-    
    }
+
 }

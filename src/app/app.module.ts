@@ -44,7 +44,8 @@ import { BrowseComponent } from './browse/browse.component';
 import { AboutComponent } from './about/about.component';
 import { PublicFooterComponent,
          PublicHeaderComponent, PublicLayoutComponent,
-         WorkbenchLayoutComponent } from './shared';
+         WorkbenchLayoutComponent,
+         SeqViewComponent } from './shared';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './workbench/user/user.component';
 import { FamilyComponent } from './family/family.component';
@@ -93,6 +94,7 @@ export function tokenGetter() {
     PublicFooterComponent,
     PublicLayoutComponent,
     WorkbenchLayoutComponent,
+    SeqViewComponent,
     PublicHeaderComponent,
     LoginComponent,
     UserComponent,
