@@ -1,20 +1,26 @@
-<div fxFlex.gt-sm="60" fxFlexOffset.gt-sm="20">
+<div fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
 
 <mat-card>
-  Each family in Dfam is represented on the website by a single page. If you
-  wish to stably link to this page, please use the Dfam accession, such that the
-  URL looks like: http://dfam.org/family/DFXXXXXXX. Each entry page is divided
-  into seven tabs, found below the family identifier and accession:
+  <mat-card-title>Family</mat-card-title>
+  <p>A Dfam family represents a distinct tranpososable element from which many interspersed
+  repeat copies trace their origin.  The family is defined by a seed alignment
+  which contains a representative set of the interspersed repeat copies.  The
+  seed alignment is the source of a consensus sequence and a profile hidden markov
+  model for the family.</p>
+  <p>Each family in Dfam is represented on the website by a single page. The URL
+  for the page ( E.g. http://dfam.org/family/DF###### ) is stable 
+  and may be saved or referenced on external websites or publications.
+  Each entry page is divided into seven tabs detailed below.</p>
 </mat-card>
 
 <mat-card id="summary">
-  <mat-card-title>Summary</mat-card-title>
   <mat-card-content>
-    <h3>Description</h3>
+    <h3>Summary</h3>
+    <h4>Description</h4>
     <p>
-    The section includes a brief description of the entry. Where appropriate,
-    references in the section below are cross references.
+    The section includes a detailed description of the family.
     </p>
+
     <!-- TODO:
     External contributors may
       add to the annotation of an entry by submitting text via the annotation
@@ -22,19 +28,45 @@
       indirectly by editing the Wikipedia article - If a relevant Wikipeida article
       is missing, please contact us.
     -->
+    <h4>Classification</h4>
+    <p>The classification of the family ( if known ) using the Dfam classification system.  This system combines concepts from several well-known classification systems (Piégu et al., Jurka et al., Wicker et al., Curcio et al., Smit et al.) with phylogenies based on reverse transcriptase and transposases.  Classification names have been chosen to be as descriptive as possible while honoring the most widely used acronyms whenever possible.  In this new heirarchy class names do not have to be unique, rather the path through the heirarchy uniquely identifies a classification.  Details and a visualization of the classification hierarchy can be viewed on the <a routerLink="/classification">Classification</a> page.</p>
 
-    <h3>Classification</h3>
-    The Dfam classification of the family. The classification hierarchy can be
-    viewed on the dedicated <a routerLink="/classification">Classification</a> page.
+    <h4>Taxa</h4>
+    <p>The clades or species in which this family is known to be present.  In most cases this will be the oldest clade in which copies of the family have been found.  In the case of horizontal transfer several clades/species may be listed.  Clicking on the [..] icon will expand out the full taxonomic lineage for an entry.  Clicking on the final clade/species links to the corresponding record in the NCBI taxonomy database.
 
-    <h3>Aliases and External Links</h3>
-    Pertinent database cross references.
+    <h4>Curation Details - Status</h4>
+    <p></p>
+
+    <h4>Length</h4>
+    <p>The sequence length of the family.  The process by which Dfam creates the consensus and profile HMM ensures that there is a one for one correspondence between the consensus and HMM match states.</p>
+
+    <h4>Target Site Duplication</h4>
+    <p>The preference for target site encoded as a consensus string.  If only a length preference is known, it will be encode by a run of 'N's of the correct length.</p>
+
+    <h4>Citations</h4>
+    A list of publications pertinent to this family with links to pubmed.
+    <p></p>
+ 
+    <h4>Aliases and External Links</h4>
+    <p>Pertinent database cross references.</p>
+
+    <h4>Submitter</h4>
+    <p>The Dfam user who transferred the family into the database.</p>
+
+    <h4>Author</h4>
+    <p>The list of author's who created and/or curated this family in Dfam.  For Dfam 2.x this was used to designate the individuals who generated the profile HMM and curated the Dfam entry and does not include the original creator's of the family itself.  For those entries details on the source of the family may be obtained from the citation list and/or through metadata stored at RepBase.</p>
+
+    <h4>Created On</h4>
+    <p>The date the Dfam family was created.</p>
+
+    <h4>Modified On</h4>
+    <p>The last date/time the family was modified.</p>
   </mat-card-content>
 </mat-card>
 
 <mat-card id="seed">
-  <mat-card-title>Seed</mat-card-title>
   <mat-card-content>
+    <h3>Seed</h3>
     <p>
     The Seed Alignment Coverage and Whisker Plot shows the number of sequences
     in the seed alignment representing each position in the model and their alignment
@@ -50,8 +82,8 @@
 </mat-card>
 
 <mat-card id="features">
-  <mat-card-title>Features</mat-card-title>
   <mat-card-content>
+  <h3>Features</h3>
   <p>
   For families with known coding sequences, those are displayed and listed in
   this section. Other interesting features such as binding sites, target site
@@ -61,9 +93,9 @@
 </mat-card>
 
 <mat-card id="model">
-  <mat-card-title>Model</mat-card-title>
   <mat-card-content>
-  <h3>Dfam Models</h3>
+  <h3>Model</h3>
+  <h4>Dfam Models</h4>
   <p>
   Models in Dfam are provided in two forms: a consensus sequence and a profile
   HMM (Hidden Markov Model). Both of these models are built from the same set
@@ -78,13 +110,13 @@
   score of the highest scoring match that falls below the gathering threshold.
   </p>
 
-  <h3>Details</h3>
+  <h4>Details</h4>
   <p>
   This section includes some details of both the profile HMM along with the
   consensus sequence bases.
   </p>
 
-  <h3>HMM Logo</h3>
+  <h4>HMM Logo</h4>
   <p>
   A representation of the per-position residue and indel conservation of the
   profile HMM . Each position in the model is represented by a stack of
@@ -96,7 +128,7 @@
   provided.
   </p>
 
-  <h3>Coverage, Conservation, and Inserts</h3>
+  <h4>Coverage, Conservation, and Inserts</h4>
   <p>
   The Coverage, Conservation, and Inserts plot shows, for hits above a variety
   of thresholds, (1) the distribution of hits along the model, (2) the
@@ -127,7 +159,7 @@
   <img class="resizing" src="/assets/images/screenshots/conservation.png" alt="Example Non-Redundant Coverage, Conservation, and Inserts Plot (Kanga)">
   </p>
 
-  <h3>Non-Redundant Coverage</h3>
+  <h4>Non-Redundant Coverage</h4>
   <p>
   The Non-Redundant Coverage plot shows the distribution across the model for all
   above-threshold hits for which this model is deemed to fit the sequence better
@@ -148,7 +180,7 @@
   <img class="resizing" src="/assets/images/screenshots/cov_nrph.png" alt="Example Non-Redundant Coverage Plot (Kanga1a)">
   </p>
 
-  <h3>Redundant Coverage</h3>
+  <h4>Redundant Coverage</h4>
   <p>
   This plot is much like the Non-Redundant Coverage plot, but instead of showing
   distribution across the model for only those matches that are best hit by this
@@ -171,7 +203,7 @@
   <img class="resizing" src="/assets/images/screenshots/cov_rph.png" alt="Example Redundant Coverage Plot (SVA_A)">
   </p>
 
-  <h3>False Coverage Plot</h3>
+  <h4>False Coverage Plot</h4>
   <p>
   This plot shows how matches to an artificial benchmark sequence not containing
   any TE insertions are distributed across the model. This plot helps identify
@@ -192,10 +224,10 @@
 </mat-card>
 
 <mat-card id="annotations">
-  <mat-card-title>Annotations</mat-card-title>
   <mat-card-content>
+  <h3>Annotations</h3>
 
-  <h3>Overview</h3>
+  <h4>Overview</h4>
   <p>
   This table contains the is the number of matches found between the model and
   each associated genome at the gathering and trusted cut-off thresholds. Note
@@ -255,8 +287,8 @@
 </mat-card>
 
 <mat-card id="relationships">
-  <mat-card-title>Relationships</mat-card-title>
   <mat-card-content>
+  <h3>Relationships</h3>
 
   <p>
   <!-- TODO: verify methodology -->
@@ -284,8 +316,8 @@
 </mat-card>
 
 <mat-card id="download">
-  <mat-card-title>Download</mat-card-title>
   <mat-card-content>
+  <h3>Download</h3>
   <p>
   From this tab, you can download the seed alignment, profile HMM, and
   EMBL-formatted consensus sequence for the entry. You can also download
