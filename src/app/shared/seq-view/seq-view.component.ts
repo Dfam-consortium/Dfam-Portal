@@ -119,19 +119,20 @@ export class SeqViewComponent implements OnInit{
 
 
   onKeyPress( value: any){
-    if ( value ) {
-      this.seqSearchTerm.next(value);
-    }else {
-      this.highlight_regions = [];
-    }
+    this.seqSearchTerm.next(value);
   }
 
 
   processSearchTerm( value: any ) {
+
       var num_range_re = /(\d+)-(\d+)/;
       var base_search_re = /([ACGTRYKMSWBDHVNX]+)/;
       var num_re = /(\d+)/;
       var mats = num_range_re.exec(value);
+      
+      // Clear previous highlighting
+      this.highlight_regions = [];
+
       // Range match ( e.g 1-30 )
       if ( mats ) {
         let r_start = parseInt(mats[1]);
@@ -142,6 +143,7 @@ export class SeqViewComponent implements OnInit{
         }
         return;
       }
+
       // Single position match ( e.g 10 )
       var mats = num_re.exec(value);
       if ( mats ) {
@@ -149,6 +151,7 @@ export class SeqViewComponent implements OnInit{
         this.decorateText();
         return;
       }
+
       // IUB Substring Match
       value = value.toUpperCase();
       var mats = base_search_re.exec(value);
@@ -162,8 +165,8 @@ export class SeqViewComponent implements OnInit{
             this.highlight_regions.push( [smats.index, smats.index + mats[1].length] );
           }
         } while(smats);
-        this.decorateText();
       }
+      this.decorateText();
    }
 
 }

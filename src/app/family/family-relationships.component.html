@@ -2,16 +2,20 @@
 
 <dfam-loader [loading]="!relationships">
 
-  <div *ngIf="relationships?.length; else noData">
-    <div class="key">
-      <img src="/assets/images/relation_key.png">
-      <p>Similarity to Forward Strand</p>
-      <p>Similarity to Reverse Complement Strand</p>
+<div fxLayout="row">
+  <div fxLayout="column" fxFlexOffset="2">
+    <div *ngIf="relationships?.length; else noData">
+      <div class="key">
+        <img src="/assets/images/relation_key.png">
+        <p>Similarity to Forward Strand</p>
+        <p>Similarity to Reverse Complement Strand</p>
+      </div>
+    </div>
+  
+    <div #outlet>
     </div>
   </div>
-
-  <div #outlet>
-  </div>
+</div>
 
   <ng-template #noData>
     No relationships recorded.

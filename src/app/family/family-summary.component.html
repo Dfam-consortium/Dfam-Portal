@@ -19,28 +19,30 @@
       <div>
         <strong>Taxa:</strong>
       </div>
-      <ng-container *ngFor="let clade of family.display_clades; let i = index;">
-        <div fxLayout="row">
-          <a (click)="taxa_expand[i] = !taxa_expand[i];">{{taxa_expand[i]==false ? '[...]' : ''}}</a>
-          <div [hidden]="!taxa_expand[i]">
-            {{clade.path}}
-            <ng-container *ngIf="clade.last">;
-              <a class="ext"
+      <div fxLayout="column" fxLayoutAlign="space-between none" fxLayoutGap="10px" >
+        <ng-container *ngFor="let clade of family.display_clades; let i = index;">
+          <div fxLayout="row">
+            <a (click)="taxa_expand[i] = !taxa_expand[i];">{{taxa_expand[i]==false ? '[...]' : ''}}</a>
+            <div [hidden]="!taxa_expand[i]">
+              {{clade.path}}
+              <ng-container *ngIf="clade.last">;
+                <a class="ext"
+                    href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?name={{clade.last}}">
+                  {{clade.last}}
+                </a>
+              </ng-container>
+            </div>
+            <div [hidden]="taxa_expand[i]">
+              <ng-container *ngIf="clade.last">;
+                <a class="ext"
                   href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?name={{clade.last}}">
-                {{clade.last}}
-              </a>
-            </ng-container>
+                  {{clade.last}}
+                </a>
+              </ng-container>
+            </div>
           </div>
-          <div [hidden]="taxa_expand[i]">
-            <ng-container *ngIf="clade.last">;
-              <a class="ext"
-                href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?name={{clade.last}}">
-                {{clade.last}}
-              </a>
-            </ng-container>
-          </div>
-        </div>
-      </ng-container>
+        </ng-container>
+      </div>
     </div>
   </div>
 </div>

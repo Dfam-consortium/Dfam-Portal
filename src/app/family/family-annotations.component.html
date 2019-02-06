@@ -1,44 +1,48 @@
 <h3 class="underline-span">Overview</h3>
 
-For each annotated genome within this family's taxa we calculate
-the number, length, and divergence of annotations above the model
-score thresholds.
+<div fxLayout="row">
+  <div fxLayout="column" fxFlexOffset="2">
+    For each annotated genome within this family's taxa we calculate
+    the number, length, and divergence of annotations above the model
+    score thresholds.
 
-<table *ngIf="stats?.length">
-<thead>
-<tr>
-  <th rowspan="3">Species</th>
-  <th colspan="5">Non-Redundant Hits</th>
-  <th colspan="2">All Hits</th>
-</tr>
-<tr>
-  <th rowspan="2">Avg. Hit Length</th>
-  <th colspan="2">Gathering Threshold</th>
-  <th colspan="2">Trusted Threshold</th>
-  <th rowspan="2" style="word-break: break-word; max-width: 100px;">Gathering Threshold Count</th>
-  <th rowspan="2" style="word-break: break-word; max-width: 100px;">Trusted Threshold Count</th>
-</tr>
-<tr>
-  <th>Count</th>
-  <th>Kimura Div.</th>
-  <th>Count</th>
-  <th>Kimura Div.</th>
+    <table *ngIf="stats?.length">
 
-</tr>
-</thead>
+    <thead>
+      <tr>
+        <th rowspan="3">Species</th>
+        <th colspan="5">Non-Redundant Hits</th>
+        <th colspan="2">All Hits</th>
+      </tr>
+      <tr>
+        <th rowspan="2">Avg. Hit Length</th>
+        <th colspan="2">Gathering Threshold</th>
+        <th colspan="2">Trusted Threshold</th>
+        <th rowspan="2" style="word-break: break-word; max-width: 100px;">Gathering Threshold Count</th>
+        <th rowspan="2" style="word-break: break-word; max-width: 100px;">Trusted Threshold Count</th>
+      </tr>
+      <tr>
+        <th>Count</th>
+        <th>Kimura Div.</th>
+        <th>Count</th>
+        <th>Kimura Div.</th>
+      </tr>
+    </thead>
 
-<tr *ngFor="let stat of stats">
-<td style="text-align: right;">{{stat.species}}</td>
-<td style="text-align: right;">{{stat.avg_hit_length}}</td>
-<td style="text-align: right;">{{stat.gathering_nonredundant}}</td>
-<td style="text-align: right;">{{stat.gathering_divergence|number:'1.1-1'}}%</td>
-<td style="text-align: right;">{{stat.trusted_nonredundant}}</td>
-<td style="text-align: right;">{{stat.trusted_divergence|number:'1.1-1'}}%</td>
-<td style="text-align: right;">{{stat.gathering_all}}</td>
-<td style="text-align: right;">{{stat.trusted_all}}</td>
-</tr>
+    <tr *ngFor="let stat of stats">
+      <td style="text-align: right;">{{stat.species}}</td>
+      <td style="text-align: right;">{{stat.avg_hit_length}}</td>
+      <td style="text-align: right;">{{stat.gathering_nonredundant}}</td>
+      <td style="text-align: right;">{{stat.gathering_divergence|number:'1.1-1'}}%</td>
+      <td style="text-align: right;">{{stat.trusted_nonredundant}}</td>
+      <td style="text-align: right;">{{stat.trusted_divergence|number:'1.1-1'}}%</td>
+      <td style="text-align: right;">{{stat.gathering_all}}</td>
+      <td style="text-align: right;">{{stat.trusted_all}}</td>
+    </tr>
 
-</table>
+    </table>
+  </div>
+</div>
 
 <dfam-loader [loading]="!stats">
 
@@ -48,41 +52,46 @@ No statistics are available for this family.
 
 <h3 class="underline-span">Genome Annotation Distribution <dfam-help-icon link="/help/family#annotations" [tooltip]="help.distribution"></dfam-help-icon></h3>
 
-<div *ngIf="!assemblies.length">
-Genome-specific characteristics are not available for this family.
-</div>
+<div fxLayout="row">
+  <div fxLayout="column" fxFlexOffset="2">
 
-<div *ngIf="assemblies.length">
-  <mat-form-field>
-    <mat-select appearance="standard" placeholder="Genome" [(value)]="selectedAssembly">
-      <mat-option *ngFor="let assembly of assemblies" value="{{assembly.id}}">
-        {{assembly.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <div *ngIf="!assemblies.length">
+      Genome-specific characteristics are not available for this family.
+    </div>
 
-  <mat-card *ngIf="selectedAssembly">
-    <mat-radio-group [(ngModel)]="selectedVisualizationType">
-      <mat-radio-button name="image_type" value="nrph">Non-Redundant Hits</mat-radio-button>
-      &nbsp;
-      <mat-radio-button name="image_type" value="all">All Hits</mat-radio-button>
-      &nbsp;
-      <mat-radio-button *ngIf="hasGiemsa" name="image_type" value="giemsa">Giemsa Staining</mat-radio-button>
-    </mat-radio-group>
-    <dfam-loader [loading]="loadingKaryotype">
-      <dfam-family-annotations-karyotype #karyotype [data]="karyotypeData" [visualizationType]="selectedVisualizationType">
-      </dfam-family-annotations-karyotype>
+    <div *ngIf="assemblies.length">
+      <mat-form-field>
+        <mat-select appearance="standard" placeholder="Genome" [(value)]="selectedAssembly">
+          <mat-option *ngFor="let assembly of assemblies" value="{{assembly.id}}">
+            {{assembly.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    
+      <mat-card *ngIf="selectedAssembly">
+        <mat-radio-group [(ngModel)]="selectedVisualizationType">
+          <mat-radio-button name="image_type" value="nrph">Non-Redundant Hits</mat-radio-button>
+          &nbsp;
+          <mat-radio-button name="image_type" value="all">All Hits</mat-radio-button>
+          &nbsp;
+          <mat-radio-button *ngIf="hasGiemsa" name="image_type" value="giemsa">Giemsa Staining</mat-radio-button>
+        </mat-radio-group>
+        <dfam-loader [loading]="loadingKaryotype">
+          <dfam-family-annotations-karyotype #karyotype [data]="karyotypeData" [visualizationType]="selectedVisualizationType">
+          </dfam-family-annotations-karyotype>
 
-      <ng-container *ngIf="!loadingKaryotype && !karyotypeData">
-        No annotation data found for this assembly.
-      </ng-container>
-    </dfam-loader>
+          <ng-container *ngIf="!loadingKaryotype && !karyotypeData">
+            No annotation data found for this assembly.
+          </ng-container>
+        </dfam-loader>
 
-    <dfam-loader [loading]="loadingAnnotationData">
-      <dfam-search-results-hits *ngIf="annotationData" [assembly]="selectedAssembly" [data]="annotationData.hits" [search]="annotationData.title" [getAlignCallback]="getAlignment.bind(this)">
-      </dfam-search-results-hits>
-    </dfam-loader>
-  </mat-card>
+        <dfam-loader [loading]="loadingAnnotationData">
+          <dfam-search-results-hits *ngIf="annotationData" [assembly]="selectedAssembly" [data]="annotationData.hits" [search]="annotationData.title" [getAlignCallback]="getAlignment.bind(this)">
+          </dfam-search-results-hits>
+        </dfam-loader>
+      </mat-card>
+    </div>
+  </div>
 </div>
 
 </dfam-loader>
