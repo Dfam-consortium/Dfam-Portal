@@ -272,7 +272,7 @@ export class DfamAPIService {
 
     return this.http.get(url, options).pipe(
       map(this.extractData),
-      catchError(this.handleError('getAnnotations', {})),
+      catchError(this.handleError('getAnnotations', null)),
     );
   }
 
@@ -385,7 +385,12 @@ export class DfamAPIService {
       }
 
       let message = `${operation} failed`;
-      if (error.statusText) {
+
+      // API responses that are JSON objects are
+      // available as the helpfully named 'error.error'
+      if (error.error && error.error.message) {
+        message += ': ' + error.error.message;
+      } else if (error.statusText) {
         message += ': ' + error.statusText;
       }
 

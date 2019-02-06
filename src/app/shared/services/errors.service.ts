@@ -16,7 +16,6 @@ export class ErrorsService {
 
   logError(error: any) {
 
-    // TODO: better user-friendly message handling
     const message = error.message || error.toString();
     this.errorSubject$.next(message);
 

@@ -22,8 +22,6 @@ export class FamilyDownloadComponent implements OnInit {
 
   assemblies: [];
 
-  queuedCount = 0;
-
   get hmmUrl() {
     const accession = this.route.parent.snapshot.params['id'];
     return this.dfamapi.getFamilyHmmDownloadUrl(accession);
