@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit {
     this.searchSubmitting = true;
     this.dfamapi.postSearch(this.searchSequence, 'other', 'curated', 0).subscribe(result => {
       this.searchSubmitting = false;
-      if (result) {
+      if (result && result.id) {
         this.router.navigate(['search', 'results', result.id]);
       } else {
         // TODO: Report an error status
