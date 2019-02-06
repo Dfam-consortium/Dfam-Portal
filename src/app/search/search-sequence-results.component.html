@@ -1,3 +1,11 @@
+<div>
+Job submitted: {{serverResponse.submittedAt}}
+<br>
+Duration: {{serverResponse.duration}}
+<br>
+Parameters: {{serverResponse.searchParameters}}
+</div>
+
 <dfam-loader [loading]="loading">
   <p>{{message}}</p>
 
@@ -7,6 +15,12 @@
     </mat-select>
   </mat-form-field>
 
+  <p *ngIf="selectedResult?.hits?.length === 0">
+    No matches were found for this sequence in the chosen organism. If you
+    expected to find hits, try changing the search cutoff.
+  </p>
+
   <dfam-search-results [data]="selectedResult" [getAlignCallback]="getAlignment.bind(this)">
   </dfam-search-results>
+
 </dfam-loader>

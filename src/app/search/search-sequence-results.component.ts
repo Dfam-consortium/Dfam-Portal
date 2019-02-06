@@ -10,7 +10,12 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 export class SearchSequenceResultsComponent implements OnInit {
 
   loading = true;
+
+  submittedAt: string;
+  duration: string;
+  parameters: string;
   message: string;
+  serverResponse: any;
   results: any;
   selectedResult: any;
 
@@ -25,19 +30,21 @@ export class SearchSequenceResultsComponent implements OnInit {
 
   getResults() {
     const id = this.route.snapshot.params.id;
-    this.dfamapi.getSearchResults(id).subscribe(results => {
-      if (results) {
-        if (results.status === 'ERROR') {
+    this.dfamapi.getSearchResults(id).subscribe(res => {
+      this.serverResponse = res;
+
+      if (res) {
+        if (res.status === 'ERROR') {
           this.loading = false;
-          this.message = results.message;
-        } else if (results.message) {
-          this.message = results.message;
+          this.message = res.message;
+        } else if (res.message) {
+          this.message = res.message;
           setTimeout(this.getResults.bind(this), 2000);
-        } else {
+        } else if (res.results) {
           this.loading = false;
           this.message = null;
 
-          results.forEach(function(result) {
+          res.results.forEach(function(result) {
             // Add 'row_id' values so the visualization can jump to the table rows
             let i = 0;
             result.hits.forEach(function(hit) {
@@ -48,8 +55,8 @@ export class SearchSequenceResultsComponent implements OnInit {
             });
           });
 
-          this.results = results;
-          this.selectedResult = results[0];
+          this.results = res.results;
+          this.selectedResult = res.results[0];
         }
       }
     });

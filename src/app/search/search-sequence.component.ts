@@ -294,7 +294,7 @@ TCGGCTCACTTCGACCTCTGCCTCCCCAGTTCAAGTGATTCTCCTGCCTCAGTCTCCTGA`,
 
   onReset() {
     this.search.sequence = '';
-    this.search.organism = '';
+    this.search.organism = 'Homo sapiens';
     this.search.cutoff = 'curated';
     this.search.evalue = 0.001;
   }
