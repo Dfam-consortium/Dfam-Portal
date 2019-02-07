@@ -283,7 +283,7 @@ TCGGCTCACTTCGACCTCTGCCTCCCCAGTTCAAGTGATTCTCCTGCCTCAGTCTCCTGA`,
       this.search.cutoff,
       this.search.evalue,
     ).subscribe(result => {
-      if (result) {
+      if (result && result.id) {
         this.router.navigate(['search', 'results', result.id]);
       } else {
         this.loading = false;
