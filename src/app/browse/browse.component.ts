@@ -49,7 +49,7 @@ export class BrowseComponent implements OnInit {
   private classSearchTerm = new Subject<string>();
   private cladeSearchTerm = new Subject<string>();
 
-  displayColumns = [ 'accession', 'name', 'classification', 'clades', 'description', 'length' ];
+  displayColumns = [ 'accession', 'name', 'classification', 'clades', 'title', 'length' ];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 

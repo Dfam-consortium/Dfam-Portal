@@ -1,6 +1,7 @@
 export class Family {
   accession: string;
   name: string;
+  title: string;
   description: string;
   length: number;
   classification: string;
@@ -14,7 +15,7 @@ export class Family {
   refineable: boolean;
   disabled: boolean;
   model_mask: string;
-  hmm_general_nc: number;
+  hmm_general_threshold: number;
 
   aliases: {database: string; alias: string}[];
   search_stages: {name: string}[];
