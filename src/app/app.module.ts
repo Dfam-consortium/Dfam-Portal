@@ -77,6 +77,7 @@ import { SearchSequenceResultsComponent } from './search/search-sequence-results
 import { HelpComponent } from './help/help.component';
 import { HelpSearchComponent } from './help/help-search.component';
 import { HelpFamilyComponent } from './help/help-family.component';
+import { HelpBrowseComponent } from './help/help-browse.component';
 import { HelpToolsComponent } from './help/help-tools.component';
 import { RepositoryComponent } from './repository/repository.component';
 import { RepositoryEntryComponent } from './repository/repository-entry.component';
@@ -127,6 +128,7 @@ export function tokenGetter() {
     HelpComponent,
     HelpSearchComponent,
     HelpFamilyComponent,
+    HelpBrowseComponent,
     HelpToolsComponent,
     RepositoryComponent,
     RepositoryEntryComponent,

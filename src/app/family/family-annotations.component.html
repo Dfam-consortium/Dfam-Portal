@@ -33,9 +33,9 @@
       <td style="text-align: right;">{{stat.species}}</td>
       <td style="text-align: right;">{{stat.avg_hit_length}}</td>
       <td style="text-align: right;">{{stat.gathering_nonredundant}}</td>
-      <td style="text-align: right;">{{stat.gathering_divergence|number:'1.1-1'}}%</td>
+      <td style="text-align: right;">{{stat.gathering_divergence|number:'1.1-1'}}<span *ngIf="stat.gathering_divergence">%</span></td>
       <td style="text-align: right;">{{stat.trusted_nonredundant}}</td>
-      <td style="text-align: right;">{{stat.trusted_divergence|number:'1.1-1'}}%</td>
+      <td style="text-align: right;">{{stat.trusted_divergence|number:'1.1-1'}}<span *ngIf="stat.trusted_divergence">%</span></td>
       <td style="text-align: right;">{{stat.gathering_all}}</td>
       <td style="text-align: right;">{{stat.trusted_all}}</td>
     </tr>

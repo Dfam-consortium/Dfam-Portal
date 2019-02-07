@@ -18,6 +18,7 @@ import { ClassificationComponent } from './classification/classification.compone
 import { RepositoryComponent } from './repository/repository.component';
 import { HelpComponent } from './help/help.component';
 import { HelpFamilyComponent } from './help/help-family.component';
+import { HelpBrowseComponent } from './help/help-browse.component';
 import { HelpSearchComponent } from './help/help-search.component';
 import { HelpToolsComponent } from './help/help-tools.component';
 import { AboutComponent } from './about/about.component';
@@ -52,6 +53,7 @@ export const PUBLIC_ROUTES: Routes = [
   { path: 'help', component: HelpComponent, children: [
     { path: '', redirectTo: 'family', pathMatch: 'full' },
     { path: 'family', component: HelpFamilyComponent },
+    { path: 'browse', component: HelpBrowseComponent },
     { path: 'search', component: HelpSearchComponent },
     { path: 'tools', component: HelpToolsComponent },
   ] },

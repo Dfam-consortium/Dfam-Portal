@@ -9,6 +9,7 @@ export class HelpComponent implements OnInit {
 
   navLinks = [
     { path: './family', label: 'Family' },
+    { path: './browse', label: 'Browse' },
     { path: './search', label: 'Search' },
     { path: './tools', label: 'Tools' },
   ];
