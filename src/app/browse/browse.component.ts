@@ -206,7 +206,8 @@ export class BrowseComponent implements OnInit {
         if (family.classification) {
           const cls = family.classification;
           family.classification_display = cls.substring(cls.lastIndexOf(';') + 1);
-          family.classification_tooltip = cls.replace(/;/g, '; ');
+          family.classification_tooltip = cls.replace('root;', '');
+          family.classification_tooltip = family.classification_tooltip.replace(/;/g, '; ');
         }
         if (family.clades) {
           family.display_clades = family.clades.map(cl => {
