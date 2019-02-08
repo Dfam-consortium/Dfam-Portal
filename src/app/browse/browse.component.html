@@ -1,6 +1,6 @@
 <div class='dfam-browse' fxFlex.gt-sm="60" fxFlexOffset.gt-sm="20">
   <div>
-    <h3>Browse Entries</h3>
+    <h3>Browse Entries <dfam-help-icon link="/help/browse" [tooltip]="help.browse"></dfam-help-icon></h3>
     <mat-divider></mat-divider>
 
     <mat-expansion-panel [expanded]="true">
@@ -51,7 +51,7 @@
         <div>
           <mat-form-field>
             <input matInput type="text"
-                placeholder="Clade"
+                placeholder="Taxon"
                 [(ngModel)]="search.clade"
                 [matAutocomplete]="cladeAutocomplete"
                 (input)="updateClades()">

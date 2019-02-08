@@ -46,6 +46,10 @@ export class BrowseComponent implements OnInit {
   classOptions: any[] = [];
   cladeOptions: any[] = [];
 
+  help = {
+    browse: 'Quickly browse/filter families in Dfam.'
+  };
+
   private classSearchTerm = new Subject<string>();
   private cladeSearchTerm = new Subject<string>();
 
