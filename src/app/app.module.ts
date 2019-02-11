@@ -81,6 +81,7 @@ import { HelpBrowseComponent } from './help/help-browse.component';
 import { HelpToolsComponent } from './help/help-tools.component';
 import { RepositoryComponent } from './repository/repository.component';
 import { RepositoryEntryComponent } from './repository/repository-entry.component';
+import { HelpApiComponent } from './help/help-api.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -132,6 +133,7 @@ export function tokenGetter() {
     HelpToolsComponent,
     RepositoryComponent,
     RepositoryEntryComponent,
+    HelpApiComponent,
   ],
   imports: [
     CommonModule,

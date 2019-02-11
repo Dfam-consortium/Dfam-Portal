@@ -47,7 +47,7 @@ export class FamilyFeaturesComponent implements OnInit {
       const el = this.outlet.nativeElement;
       el.innerHTML = '';
       if (data) {
-        if (data.features.length > 0 || data.coding_seqs.length > 0) {
+        if (data.features.length > 0 || data.coding_seqs.length > 0 || data.target_site_cons) {
           this.visualization = new FeaturesVisualization({ target: el, data });
           this.visualization.render();
         }
