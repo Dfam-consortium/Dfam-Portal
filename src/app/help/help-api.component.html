@@ -1,0 +1,84 @@
+<div fxFlex.gt-sm="70" fxFlexOffset.gt-sm="15">
+
+<mat-card>
+  <mat-card-title>Using the Dfam API</mat-card-title>
+  <p>
+  Beginning with the 3.0 release, the data in Dfam is accessible via a RESTful
+  API; dfam.org is itself built using this API. This API is publicly accessible
+  so that data can be retrieved for scripts or other workflows in a documented,
+  efficient manner.
+  </p>
+
+  <p>
+  For most endpoints, inputs are specified with query strings and output is in
+  JSON format. A few endpoints return data in special formats (e.g. PNG, HMM,
+  EMBL).
+  </p>
+
+  <h3>Examples</h3>
+
+  <h4>Retrieve family details (curl, <a href="https://stedolan.github.io/jq/">jq</a>)</h4>
+  <pre>$ curl -s https://dfam.org/api/families/DF0000001 | jq '.classification, .consensus_sequence'
+
+"root;Interspersed_Repeat;Transposable_Element;Retrotransposed_Element;LINE-depe
+ndent_Retroposon;SINE;tRNA_Promoter;MIR-core;L2-end"
+"ACAGTATAGCATAGTGGTTAAGAGCACGGGCTCTGGAGCCAGACTGCCTGGGTTCGAATCCCGGCTCTGCCACTTACTA
+GCTGTGTGACCTTGGGCAAGTTACTTAACCTCTCTGTGCCTCAGTTTCCTCATCTGTAAAATGGGGATAATAATAGTACC
+TACCTCATAGGGTTGTTGTGAGGATTAAATGAGTTAATACATGTAAAGCGCTTAGAACAGTGCCTGGCACATAGTAAGCG
+CTCAATAAATGTTAGCTATTATT"
+</pre>
+
+  <h4>List families present in a species (python; <a href="https://pypi.org/project/requests/">requests</a>)</h4>
+  <pre>import requests
+
+url = "https://dfam.org/api/families"
+params = {{ '{' }}
+    # The summary format is metadata-only and does not include
+    # full details such as the consensus sequence and citations
+    "format": "summary",
+
+    # Only retrieve the first 10 results in this query
+    "limit": "10",
+
+    # Search in Caenorhabditis elegans (worm)
+    "clade": "Caenorhabditis elegans",
+
+    # Include families from ancestor and descendant taxa in the results
+    "clade_relatives": "both",
+}
+
+response = requests.get(url, params=params)
+results = response.json()["results"]
+
+# Prints "Vingi-2_CE" at the time of this writing
+print(results[2]["name"])</pre>
+
+<h4>List annotations for a specific family (perl; <a href="https://metacpan.org/pod/LWP::UserAgent">LWP::UserAgent</a>, URI, JSON)</h4>
+<pre>use LWP::UserAgent;
+use URI;
+use JSON;
+
+my $ua = LWP::UserAgent-&gt;new;
+
+my $uri = URI-&gt;new('https://dfam.org/api/annotations');
+$uri-&gt;query_form(
+  # Chromosome 3 in the human genome (hg38)
+  assembly =&gt; 'hg38', chrom =&gt; 'chr3',
+
+  # Base pairs 147733000-147766820
+  start =&gt; 147733000, end =&gt; 147766820,
+
+  # Non-redundant hits for HAL1ME only
+  family =&gt; 'HAL1ME', nrph =&gt; 'true');
+
+my $response = $ua-&gt;get($uri);
+
+$response-&gt;is_success or die $response-&gt;status_line;
+
+my $json = decode_json $response-&gt;decoded_content;
+# Prints '24.5' at the time of this writing
+print "${{ '{' }}$json}{{ '{' }}'hits'}[0]{{ '{' }}'bit_score'}\n";
+</pre>
+</mat-card>
+
+</div>

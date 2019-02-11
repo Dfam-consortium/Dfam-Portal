@@ -12,6 +12,7 @@ export class HelpComponent implements OnInit {
     { path: './browse', label: 'Browse' },
     { path: './search', label: 'Search' },
     { path: './tools', label: 'Tools' },
+    { path: './api', label: 'API' },
   ];
 
   constructor() { }

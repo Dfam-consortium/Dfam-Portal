@@ -21,6 +21,7 @@ import { HelpFamilyComponent } from './help/help-family.component';
 import { HelpBrowseComponent } from './help/help-browse.component';
 import { HelpSearchComponent } from './help/help-search.component';
 import { HelpToolsComponent } from './help/help-tools.component';
+import { HelpApiComponent } from './help/help-api.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './login/login.component';
 import { WorkbenchLayoutComponent } from './shared';
@@ -56,6 +57,7 @@ export const PUBLIC_ROUTES: Routes = [
     { path: 'browse', component: HelpBrowseComponent },
     { path: 'search', component: HelpSearchComponent },
     { path: 'tools', component: HelpToolsComponent },
+    { path: 'api', component: HelpApiComponent },
   ] },
   { path: 'about', component: AboutComponent},
 
