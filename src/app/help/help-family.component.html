@@ -8,7 +8,7 @@
   seed alignment is the source of a consensus sequence and a profile hidden markov
   model for the family.</p>
   <p>Each family in Dfam is represented on the website by a single page. The URL
-  for the page ( E.g. http://dfam.org/family/DF###### ) is stable 
+  for the page ( e.g. http://dfam.org/family/DF###### ) is stable 
   and may be saved or referenced on external websites or publications.
   Each entry page is divided into seven tabs detailed below.</p>
 </mat-card>
@@ -22,7 +22,7 @@
     </p>
 
     <h4>Classification</h4>
-    <p>The classification of the family ( if known ) using the Dfam classification system.  This system combines concepts from several well-known classification systems (Piégu et al., Jurka et al., Wicker et al., Curcio et al., Smit et al.) with phylogenies based on reverse transcriptase and transposases.  Classification names have been chosen to be as descriptive as possible while honoring the most widely used acronyms whenever possible.  In this new heirarchy class names do not have to be unique, rather the path through the heirarchy uniquely identifies a classification.  Details and a visualization of the classification hierarchy can be viewed on the <a routerLink="/classification">Classification</a> page.</p>
+    <p>The classification of the family using the Dfam classification system.  This system combines concepts from several well-known classification systems (Piégu et al., Jurka et al., Wicker et al., Curcio et al., Smit et al.) with phylogenies based on reverse transcriptase and transposases.  Classification names have been chosen to be as descriptive as possible while honoring the most widely used acronyms whenever possible.  In this new heirarchy class names do not have to be unique, rather the path through the heirarchy uniquely identifies a classification.  Details and a visualization of the classification hierarchy can be viewed on the <a routerLink="/classification">Classification</a> page.</p>
 
     <h4>Taxa</h4>
     <p>The clades or species in which this family is known to be present.  In most cases this will be the oldest clade in which copies of the family have been found.  In the case of horizontal transfer several clades/species may be listed.  Clicking on the [..] icon will expand out the full taxonomic lineage for an entry.  Clicking on the final clade/species links to the corresponding record in the NCBI taxonomy database.
@@ -103,7 +103,7 @@ is a non-redundant set, therefore many families may not have a coding sequence d
 <li>pro	-
 <li>hel	- Helicase
 <li>eg - Exapted gene	
-<li>p# - Unknown function.  The # makes the product name unique and indicates the order of the protein within the family.
+<li>p# - Used when a family contains more than one protein of unknown function.  This is used to make the product name unique and indicate the order in which the coding region is found within the family ( e.g. IS3EU-5_DR_p1 and IS3EU-5_DR_p2 ).
 </ul>
 </div>
 
@@ -360,8 +360,8 @@ is a non-redundant set, therefore many families may not have a coding sequence d
   <h3>Download</h3>
   <p>
   From this tab, you can download the seed alignment, profile HMM, and
-  EMBL-formatted consensus sequence for the entry. You can also download
-  per-genome files containing tabular hit lists: (1) matches to this model
+  EMBL-formatted consensus sequence for the family. You can also download
+  the annotations for each genome: (1) matches to this family's profile HMM
   after removing redundant hits to other models ("Non-redundant"), and (2)
   matches above the gathering threshold, including those with better scoring
   matches to other models ("All hits").

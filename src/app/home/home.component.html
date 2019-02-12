@@ -3,7 +3,7 @@
     <h2>Dfam release 3.0 (February 2019<span *ngIf="totalEntries !== undefined">,
       {{totalEntries}} entries</span>)
     </h2>
-    <div>The Dfam database is a collection of <b>DNA Transposable Element</b> sequence alignments, <b>hidden Markov Models (HMMs)</b>, <b>consensus sequences</b>, and genome annotations. 
+    <div>The Dfam database is a open collection of <b>DNA Transposable Element</b> sequence alignments, <b>hidden Markov Models (HMMs)</b>, <b>consensus sequences</b>, and genome annotations. 
     <a  (click)="showMore1=!showMore1">{{showMore1==false ? 'More...' : 'Less...'}}</a>
     </div>
     <br>
@@ -11,11 +11,6 @@
         Transposable elements (or interspersed repeats) account for a substantial portion of eukaryotic genomes. Accurate annotation of TEs enables research into their biology and can shed light on the evolutionary processes that shape genomes. Dfam represents a collection of multiple sequence alignments, each containing a set of representative members of a specific transposable element family. These alignments (seed alignments) are used to generate HMMs and consensus sequences for each family. The Dfam website gives information about each family, and provides genome annotations for a collection of core genomes. The HMM models, and consensus sequences may also be downloaded from the ftp site, for example to mask repeats in new genomes.
         <p></p>
     </div>
-    <div>
-      This site also hosts the <a href="#/public/repository">Transposable Element Raw Dataset Repository</a>, which is a place to find community provided datasets in various stages of curation. Examples may include the raw output of denovo repeat finding tools ( RepeatModeler, RECON, RepeatScout, REPET etc ), seed alignments for new families, or annotation data for new genomes.
-      <hr>
-    </div>
-
     <div>
       <h3>Quick Links</h3>
       <p>You can find data in Dfam in various ways...</p>
