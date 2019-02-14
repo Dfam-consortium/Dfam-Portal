@@ -25,7 +25,7 @@
     <p>The classification of the family using the Dfam classification system.  This system combines concepts from several well-known classification systems (Piégu et al., Jurka et al., Wicker et al., Curcio et al., Smit et al.) with phylogenies based on reverse transcriptase and transposases.  Classification names have been chosen to be as descriptive as possible while honoring the most widely used acronyms whenever possible.  In this new heirarchy class names do not have to be unique, rather the path through the heirarchy uniquely identifies a classification.  Details and a visualization of the classification hierarchy can be viewed on the <a routerLink="/classification">Classification</a> page.</p>
 
     <h4>Taxa</h4>
-    <p>The clades or species in which this family is known to be present.  In most cases this will be the oldest clade in which copies of the family have been found.  In the case of horizontal transfer several clades/species may be listed.  Clicking on the [..] icon will expand out the full taxonomic lineage for an entry.  Clicking on the final clade/species links to the corresponding record in the NCBI taxonomy database.
+    <p>The clades or species in which this family is known to be present.  In most cases this will be the oldest clade in which copies of the family have been found at orthologous positions, meaning that the transposable element was active before the first speciation of extant species in this clade.  In the case of horizontal transfer several clades/species may be listed.  Clicking on the [..] icon will expand out the full taxonomic lineage for an entry.  Clicking on the final clade/species links to the corresponding record in the NCBI taxonomy database.
 
     <h4>Curation Details - Status</h4>
     <p></p>
@@ -267,14 +267,19 @@ is a non-redundant set, therefore many families may not have a coding sequence d
 
   <h4>Overview</h4>
   <p>
-  This table contains the count of matches, the Kimura divergence and average hit length between 
+  This table contains the count of matches, the Kimura divergence and average (fragment) hit length between 
   the model and each associated genome.  The table is first divided by Non-Redundant vs All hits. 
   Non-Redundant (aka. NRPH hits) are the subset of all hits which are not covered by a higher scoring
   hit from another (probably related) Dfam family.  This subset represents the most likely set of 
   members of this family within a given genome.  The All hits category is provided to give a broader
-  view of how specific the model is within the Dfam library.
-  The hit stats are further subdivided into those that score above the gathering and trusted cut-off 
-  thresholds.</p>
+  view of how specific the model is within the Dfam library. The hit stats are further subdivided into 
+  those that score above the gathering and trusted cut-off thresholds.</p>
+  <p>
+  The average hit length does not represent the average length of an insertion, rather it's the average
+  length of an alignable portion of an insertion.  In the near future Dfam's annotation adjudication 
+  pipeline will be refactored to use a RepeatMasker-like algorithm.  This will enable joining of 
+  interrupted insertion fragments and generating a true average insertion length statistic.
+  </p>
 
   <h4>Genome Annotation Distribution</h4>
   <p>
