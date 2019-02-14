@@ -94,12 +94,13 @@ export class BrowseComponent implements OnInit {
         let depth = 1;
         while (depth < 5 && (depth < 2 || has_duplicates(classes.map(c => c.name_markup)))) {
           depth += 1;
-          classes.forEach(c => {
+          for(let i = 0; i < classes.length; i++) {
+            const c = classes[i];
             let start = c.names.length - depth;
-            if (start < 0) { start = 0; }
-            const parent_names = c.names.slice(start, c.names.length - 1);
-            c.name_markup = parent_names.join(';') + ';' + c.name_markup;
-          });
+            if (start < 0) { continue; }
+            const parent_name = c.names[start];
+            c.name_markup = parent_name + ';' + c.name_markup;
+          }
         }
 
         const exact = [], starts = [], contains = [];
