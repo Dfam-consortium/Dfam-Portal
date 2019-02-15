@@ -27,6 +27,10 @@ export class SearchResultsAlignmentComponent implements OnInit {
   }
 
   processAlignmentData(data) {
+    if (!data) {
+      return;
+    }
+
     this.chunks = [];
     let mod_start = data.hmm.start;
     let seq_start = data.seq.start;

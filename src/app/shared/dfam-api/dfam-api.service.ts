@@ -289,7 +289,7 @@ export class DfamAPIService {
 
     return this.http.get(url, options).pipe(
       map(this.extractData),
-      catchError(this.handleError('getAlignment', {})),
+      catchError(this.handleError('getAlignment', null)),
     );
   }
 
@@ -332,7 +332,7 @@ export class DfamAPIService {
 
     return this.http.get(url, options).pipe(
       map(this.extractData),
-      catchError(this.handleError('getSearchResultAlignment', {})),
+      catchError(this.handleError('getSearchResultAlignment', null)),
     );
   }
 
