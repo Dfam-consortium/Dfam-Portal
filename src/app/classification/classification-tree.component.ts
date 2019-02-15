@@ -116,12 +116,13 @@ export class ClassificationTreeComponent implements OnInit {
       node._matched = false;
       node._matched_path = false;
       node._hidden = false;
-      if (node.children) {
-        node.children.forEach(this.collapse.bind(this));
+      if (node._children) {
+        node._children.forEach(this.collapse.bind(this));
         node.children = null;
       }
     }
   }
+
 
   onDataChanged() {
     function initTree(d) {
@@ -221,7 +222,6 @@ export class ClassificationTreeComponent implements OnInit {
             }
 
             parent.children.push(thisNode);
-
             // Mark this as part of the path to a matched node
             thisNode._matched_path = true;
             thisNode._hidden = false;
