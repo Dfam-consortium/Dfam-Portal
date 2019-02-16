@@ -33,10 +33,8 @@
                 class="classification-option"
                 *ngFor="let class of classOptions"
                 [value]="class">
-              <span [ngClass]="{'nomatch': !class.count}">
               <span [innerHTML]="class.name_markup"></span>
               <span class="right" *ngIf="class.count"> [{{class.count}}]</span>
-              </span>
             </mat-option>
           </mat-autocomplete>
 
