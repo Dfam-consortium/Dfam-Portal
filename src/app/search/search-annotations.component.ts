@@ -70,6 +70,13 @@ export class SearchAnnotationsComponent implements OnInit {
   }
 
   onSubmit() {
+    const parts = this.search.chromosome.trim().match(/^(\S+)[: ](\d+)[- ](\d+)$/);
+    if (parts) {
+      this.search.chromosome = parts[1];
+      this.search.start = parts[2];
+      this.search.end = parts[3];
+    }
+
     this.submitted = true;
     this.loading = true;
     this.router.navigate([], { relativeTo: this.route, queryParams: this.search });
