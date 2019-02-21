@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DfamAPIService } from './dfam-rest.service';
+import { DfamAPIService } from './dfam-api.service';
 
 describe('DfamAPIService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
