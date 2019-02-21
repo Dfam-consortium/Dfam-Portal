@@ -17,7 +17,7 @@
 
   <h3>Examples</h3>
 
-  <h4>Retrieve family details (curl, <a href="https://stedolan.github.io/jq/">jq</a>)</h4>
+  <h4>Retrieve family details (curl, <a class="ext" href="https://stedolan.github.io/jq/">jq</a>)</h4>
   <pre>$ curl -s https://dfam.org/api/families/DF0000001 | jq '.classification, .consensus_sequence'
 
 "root;Interspersed_Repeat;Transposable_Element;Retrotransposed_Element;LINE-depe
@@ -28,7 +28,7 @@ TACCTCATAGGGTTGTTGTGAGGATTAAATGAGTTAATACATGTAAAGCGCTTAGAACAGTGCCTGGCACATAGTAAGCG
 CTCAATAAATGTTAGCTATTATT"
 </pre>
 
-  <h4>List families present in a species (python; <a href="https://pypi.org/project/requests/">requests</a>)</h4>
+  <h4>List families present in a species (python; <a class="ext" href="https://pypi.org/project/requests/">requests</a>)</h4>
   <pre>import requests
 
 url = "https://dfam.org/api/families"
@@ -53,7 +53,7 @@ results = response.json()["results"]
 # Prints "Vingi-2_CE" at the time of this writing
 print(results[2]["name"])</pre>
 
-<h4>List annotations for a specific family (perl; <a href="https://metacpan.org/pod/LWP::UserAgent">LWP::UserAgent</a>, URI, JSON)</h4>
+<h4>List annotations for a specific family (perl; <a class="ext" href="https://metacpan.org/pod/LWP::UserAgent">LWP::UserAgent</a>, URI, JSON)</h4>
 <pre>use LWP::UserAgent;
 use URI;
 use JSON;
