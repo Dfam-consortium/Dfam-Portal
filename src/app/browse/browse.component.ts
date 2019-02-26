@@ -87,6 +87,9 @@ export class BrowseComponent implements OnInit {
           c.sort_name = c.name.toLowerCase();
 
           c.name_markup = c.name;
+          if (c.aliases) {
+            c.name_markup += ' (' + c.aliases + ')';
+          }
           c.name_markup = c.name_markup.replace(new RegExp(preg_quote(search_term), 'gi'), '<strong>$&</strong>');
         });
 
