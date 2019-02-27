@@ -1,6 +1,6 @@
 {
   "name": "dfam",
-  "version": "0.0.0",
+  "version": "3.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -24,8 +24,8 @@
     "@angular/platform-browser-dynamic": "^7.2.6",
     "@angular/router": "^7.2.6",
     "@auth0/angular-jwt": "^2.1.0",
-    "AlignmentSummaryViewer": "git+https://github.com/Dfam-consortium/AlignmentSummaryViewer.git",
-    "Karyotype": "git+https://github.com/Dfam-consortium/Karyotype.git",
+    "AlignmentSummaryViewer": "git+https://github.com/Dfam-consortium/AlignmentSummaryViewer.git#0.1.2",
+    "Karyotype": "git+https://github.com/Dfam-consortium/Karyotype.git#0.1.0",
     "core-js": "^2.6.5",
     "custom-event-polyfill": "^1.0.6",
     "d3": "^3.5.17",
