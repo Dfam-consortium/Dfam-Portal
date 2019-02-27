@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   totalEntries: number;
 
   searchSequence: string;
+  searchSequenceAssembly: string = 'Homo sapiens';
   searchSubmitting: boolean;
 
 
@@ -73,7 +74,7 @@ export class HomeComponent implements OnInit {
 
   onSubmitSearch() {
     this.searchSubmitting = true;
-    this.dfamapi.postSearch(this.searchSequence, 'other', 'curated', 0).subscribe(result => {
+    this.dfamapi.postSearch(this.searchSequence, this.searchSequenceAssembly, 'curated', 0).subscribe(result => {
       this.searchSubmitting = false;
       if (result && result.id) {
         this.router.navigate(['search', 'results', result.id]);
