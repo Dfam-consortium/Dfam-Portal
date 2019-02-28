@@ -1,6 +1,7 @@
 {
   "name": "dfam",
   "version": "3.0.0",
+  "license": "CC0-1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
