@@ -11,6 +11,7 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 export class FamilyAnnotationsComponent implements OnInit {
 
   help = {
+    overview: 'Count, hit length, and Kimura divergence statistics for this family.',
     distribution: 'Interactive heat map of hits to genome assemblies included in Dfam',
   };
 

@@ -13,7 +13,7 @@ import AlignmentSummaryViewer from 'AlignmentSummaryViewer/dist/AlignmentSummary
 })
 export class FamilySeedComponent implements OnInit, OnDestroy {
 
-  help = 'Visualization of the coverage of the family\'s seed alignment.';
+  help = 'Coverage, and quality visualization for this family\'s seed alignment.';
 
   @ViewChild('seedContainer')
   private seedContainer: ElementRef;

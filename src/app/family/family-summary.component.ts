@@ -12,10 +12,10 @@ export class FamilySummaryComponent implements OnInit {
   taxa_expand = []
 
   help = {
-    classification: 'The Dfam classification for the family, and the specificity of the family',
-    curation: '',
+    classification: 'The Dfam classification and the taxonomic specificity of the family',
+    curation: 'Current curation status, length, and TSD preference',
     citations: 'List of known citations for this family',
-    aliases: 'Names for this family in other databases',
+    aliases: 'Identifiers for this family in other databases',
   };
 
   family;

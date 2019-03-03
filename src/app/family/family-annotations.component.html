@@ -1,9 +1,9 @@
-<h3 class="underline-span">Overview</h3>
+<h3 class="underline-span">Overview <dfam-help-icon link="/help/family#annotations" [tooltip]="help.overview"></dfam-help-icon></h3>
 
 <div fxLayout="row">
   <div fxLayout="column" fxFlexOffset="2">
     For each annotated genome within this family's taxa we calculate
-    the number, length, and divergence of annotations above the model
+    the count, length, and Kimura divergence of HMM-produced annotations above the 
     score thresholds.
 
     <table *ngIf="stats?.length">

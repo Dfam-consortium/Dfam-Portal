@@ -11,7 +11,7 @@ import { Overlap } from '../../js/overlap';
 })
 export class FamilyRelationshipsComponent implements OnInit {
 
-  help = 'An interactive representation of the relationships between TE entries.';
+  help = 'An interactive representation of the relationships between TE families.';
 
   @ViewChild('outlet') outlet: ElementRef;
 

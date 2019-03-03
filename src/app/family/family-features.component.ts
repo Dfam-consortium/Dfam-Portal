@@ -14,7 +14,7 @@ import { FeaturesVisualization } from '../../js/features';
 export class FamilyFeaturesComponent implements OnInit {
 
   help = {
-    coding_seqs: 'Coding regions found in this family',
+    coding_seqs: 'Curated coding regions found in this family',
     features: 'Other features associated with this family',
   };
 

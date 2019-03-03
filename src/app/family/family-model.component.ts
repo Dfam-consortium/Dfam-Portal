@@ -13,7 +13,7 @@ import { SeqViewComponent } from '../shared/seq-view';
 export class FamilyModelComponent implements OnInit {
 
   help = {
-    consensus: 'The consensus sequence model called from the family seed alignment.',
+    consensus: 'The consensus sequence called from the family\'s seed alignment.',
     hmm: 'Hidden Markov Model (HMM) built from the family seed alignment.',
     logo: 'Representation of the per-position residue and indel conservation of the HMM.',
     downloadLogo: 'Download the HMM logo as an image file.',
