@@ -176,14 +176,17 @@ FeaturesVisualization.prototype.render = function() {
     featuresG.appendChild(featG);
     setSVGAttrs(featG, { "transform": "translate(0 " + this.height + ")" });
 
-    // -1 because positions are 1-based
-    var left = feat.model_start_pos - 1;
-    var right = feat.model_end_pos - 1;
+    var left = feat.model_start_pos;
+    var right = feat.model_end_pos;
     if (left > right) {
       var tmp = left;
       left = right;
       right = tmp;
     }
+
+    // Subtract 1 from left to convert from 1-based to 0-based drawing coordinates
+    // Do not change right (1-based to 0-based is -1, left edge to right edge of 'cell' is +1)
+    left -= 1;
 
     left = scale(left, this.data.length, this.inWidth);
     right = scale(right, this.data.length, this.inWidth);
@@ -223,35 +226,39 @@ FeaturesVisualization.prototype.render = function() {
     // Build list of exons in screen position order
     var exons = [];
     for (var i = 0; i < cs.exon_count; i++) {
-      // -1 because positions are 1-based
-      var start = cs.exon_starts[i] - 1;
-      var end = cs.exon_ends[i] - 1;
-      var left, right;
+      var left = cs.exon_starts[i];
+      var right = cs.exon_ends[i];
 
-      if (start < end) {
-        left = start;
-        right = end;
-      } else {
-        left = end;
-        right = start;
+      if (left > right) {
+        var tmp = left;
+        left = right;
+        right = tmp;
       }
 
-      exons.push({ start: start, end: end, left: left, right: right, length: right - left });
+      // Subtract 1 from left to convert from 1-based to 0-based drawing coordinates
+      // Do not change right (1-based to 0-based is -1, left edge to right edge of 'cell' is +1)
+      left -= 1;
+
+      exons.push({ left: left, right: right, length: right - left });
     }
-    exons.sort(function(a, b) { return a.start - b.start; });
+    exons.sort(function(a, b) { return a.left - b.left; });
 
     var csG = createSVGElement("g");
     cdsG.appendChild(csG);
     setSVGAttrs(csG, { "transform": "translate(0 " + this.height + ")" });
 
     // -1 because positions are 1-based
-    var left = cs.start - 1;
-    var right = cs.end - 1;
+    var left = cs.start;
+    var right = cs.end;
     if (left > right) {
       var tmp = left;
       left = right;
       right = tmp;
     }
+
+    // Subtract 1 from left to convert from 1-based to 0-based drawing coordinates
+    // Do not change right (1-based to 0-based is -1, left edge to right edge of 'cell' is +1)
+    left -= 1;
 
     left = scale(left, this.data.length, this.inWidth);
     right = scale(right, this.data.length, this.inWidth);
