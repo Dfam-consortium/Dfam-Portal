@@ -122,6 +122,22 @@ export class FamilyModelComponent implements OnInit {
   }
 
   getAssemblyData(assembly) {
+    const setCurrentData = () => {
+        this.coverageData = this.assemblyData[assembly].model_coverage;
+        this._selectedAssembly = assembly;
+
+        const tryThresholds = ['TC', '16', '8', '4', '2', 'GA'];
+        this.selectedThreshold = 'TC';
+
+        for (let i = 0; i < tryThresholds.length; i++) {
+          let th = this.assemblyData[assembly].thresholds.find(t => t.id === tryThresholds[i]);
+          if (th && th.num_seqs > 0) {
+            this.selectedThreshold = tryThresholds[i];
+            break;
+          }
+        }
+    }
+
     if (!this.assemblyData[assembly]) {
       const assembly_info = this.assemblies.find(a => a.id === assembly);
       this.assemblyData[assembly] = {
@@ -135,8 +151,6 @@ export class FamilyModelComponent implements OnInit {
       return forkJoin(getConservation, getCoverage).subscribe(([mcons, mcov]) => {
         this.assemblyData[assembly].model_conservation = mcons;
         this.assemblyData[assembly].model_coverage = mcov;
-        this.coverageData = mcov;
-        this._selectedAssembly = assembly;
 
         const thresholds = this.assemblyData[assembly].thresholds = [];
 
@@ -146,6 +160,7 @@ export class FamilyModelComponent implements OnInit {
 
             thresholds.push({
               id: mcon.threshold,
+              num_seqs: mcon.num_seqs,
               label,
               graph: {
                 points: JSON.parse(mcon.graph),
@@ -153,7 +168,6 @@ export class FamilyModelComponent implements OnInit {
               }
             });
           });
-          this.selectedThreshold = 'TC';
         }
 
         if (mcov) {
@@ -161,9 +175,11 @@ export class FamilyModelComponent implements OnInit {
             mcov[key] = JSON.parse(mcov[key]);
           });
         }
+
+        setCurrentData();
       });
     } else {
-      this.selectedThreshold = 'TC';
+      setCurrentData();
     }
   }
 }
