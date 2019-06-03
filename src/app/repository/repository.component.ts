@@ -9,6 +9,17 @@ export class RepositoryComponent implements OnInit {
 
   repositories = [
     {
+      name: "Blue-capped cordon-bleu TE Library",
+      uploadDate: "Tue May 28 2019 10:27 AM",
+      description: "TE Library developed by Alexander Suh for the" +
+                   " Blue-capped cordon-bleu (Uraeginthus cyanocephalus).",
+      files: [
+        { name: "uraCya_rm2.45.fasta", path: "141/2019/5/uraCya_rm2.45.fasta", size: 54778 },
+        { name: "uraCya_rm2.45_info.xlsx", path: "141/2019/5/uraCya_rm2.45_info.xlsx", size: 16196 },
+        { name: "uraCya_rm2.45_Seeds.tar.gz", path: "141/2019/5/uraCya_rm2.45_Seeds.tar.gz", size: 2096086 },
+      ],
+    },
+    {
       name: "Collared Flycatcher TE Library",
       uploadDate: "Wed Nov 8 2017 9:26 AM",
       description: "TE Library developed by Alexander Suh for the" +
