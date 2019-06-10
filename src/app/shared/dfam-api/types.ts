@@ -2,6 +2,7 @@ export class Family {
   accession: string;
   name: string;
   title: string;
+  version: number;
   description: string;
   length: number;
   classification: string;
