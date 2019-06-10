@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
-import { Sort } from '@angular/material/sort';
+import { Subject, forkJoin, pipe } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatSort, Sort, SortDirection } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -56,25 +56,16 @@ export class BrowseComponent implements OnInit {
   displayColumns = [ 'accession', 'name', 'classification', 'clades', 'title', 'length' ];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private dfamapi: DfamAPIService,
   ) { }
 
   ngOnInit() {
-    const initialNameAccession = this.route.snapshot.queryParamMap.get('name_accession');
-    if (initialNameAccession) {
-      this.search.name_accession = initialNameAccession;
-    }
-
-    const initialKeywords = this.route.snapshot.queryParamMap.get('keywords');
-    if (initialKeywords) {
-      this.search.keywords = initialKeywords;
-    }
-
-    this.searchChanged();
-    this.getFamilies();
+    this.restoreSearch();
 
     this.classSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
       this.dfamapi.getClasses(search_term.trim()).subscribe(classes => {
@@ -159,6 +150,70 @@ export class BrowseComponent implements OnInit {
     return clade ? clade.name : '';
   }
 
+  restoreSearch() {
+    const queryParamMap = this.route.snapshot.queryParamMap;
+
+    const pending = [];
+
+    const initialNA = queryParamMap.get('name_accession');
+    if (initialNA) {
+      this.search.name_accession = initialNA;
+      this.searchApiOptions.name_accession = initialNA;
+    }
+    const initialClass = queryParamMap.get('classification');
+    if (initialClass) {
+      const lastSemi = initialClass.lastIndexOf(';');
+      if (lastSemi != -1) {
+        const lastSegment = initialClass.substring(lastSemi + 1);
+        this.search.classification = { name: lastSegment, full_name: initialClass };
+        this.searchApiOptions.classification = initialClass;
+      }
+    }
+    const initialClade = parseInt(queryParamMap.get('clade'));
+    if (initialClade) {
+      pending.push(this.dfamapi.getTaxonById(initialClade).pipe(map(taxon => {
+        if (taxon) {
+          this.search.clade = taxon;
+        }
+      })));
+      this.searchApiOptions.clade = initialClade;
+    }
+    const initialCladeA = queryParamMap.get('clade_ancestors') === 'true';
+    if (initialCladeA) {
+      this.search.clade_ancestors = initialCladeA;
+      this.searchApiOptions.clade_ancestors = initialCladeA;
+    }
+    const initialCladeD = queryParamMap.get('clade_descendants') === 'true';
+    if (initialCladeD) {
+      this.search.clade_descendants = initialCladeD;
+      this.searchApiOptions.clade_descendants = initialCladeD;
+    }
+    const initialK = this.route.snapshot.queryParamMap.get('keywords');
+    if (initialK) {
+      this.search.keywords = initialK;
+      this.searchApiOptions.keywords = initialK;
+    }
+    const initialP = parseInt(this.route.snapshot.queryParamMap.get('page'));
+    if (initialP) {
+      const initialPS = parseInt(this.route.snapshot.queryParamMap.get('pageSize'));
+      this.paginator.pageIndex = initialP;
+      this.paginator.pageSize = initialPS;
+    }
+    const initialSort = this.route.snapshot.queryParamMap.get('sort');
+    if (initialSort) {
+      const parts = initialSort.split(':');
+      if (parts.length == 2) {
+        this.sort.active = parts[0];
+        this.sort.direction = parts[1] as SortDirection;
+        this.searchApiOptions.sort = initialSort;
+      }
+    }
+
+    forkJoin(pending).subscribe({
+      complete: () => { this.getFamilies(); }
+    });
+  }
+
   searchChanged() {
     this.searchApiOptions.name_accession = this.search.name_accession;
     this.searchApiOptions.classification = this.search.classification ? this.search.classification.full_name : null;
@@ -166,8 +221,42 @@ export class BrowseComponent implements OnInit {
     this.searchApiOptions.clade_ancestors = this.search.clade_ancestors;
     this.searchApiOptions.clade_descendants = this.search.clade_descendants;
     this.searchApiOptions.keywords = this.search.keywords;
+
     this.paginator.pageIndex = 0;
+    this.updateUrl();
     this.getFamilies();
+  }
+
+  updateUrl() {
+    const queryParams: any = {};
+
+    if (this.searchApiOptions.name_accession) {
+      queryParams.name_accession = this.searchApiOptions.name_accession;
+    }
+    if (this.searchApiOptions.classification) {
+      queryParams.classification = this.searchApiOptions.classification;
+    }
+    if (this.searchApiOptions.clade) {
+      queryParams.clade = this.searchApiOptions.clade;
+    }
+    if (this.searchApiOptions.clade_ancestors) {
+      queryParams.clade_ancestors = this.searchApiOptions.clade_ancestors;
+    }
+    if (this.searchApiOptions.clade_descendants) {
+      queryParams.clade_descendants = this.searchApiOptions.clade_descendants;
+    }
+    if (this.searchApiOptions.keywords) {
+      queryParams.keywords = this.searchApiOptions.keywords;
+    }
+    if (this.paginator.pageIndex) {
+      queryParams.pageSize = this.paginator.pageSize;
+      queryParams.page = this.paginator.pageIndex;
+    }
+    if (this.searchApiOptions.sort) {
+      queryParams.sort = this.searchApiOptions.sort;
+    }
+
+    this.router.navigate([], { queryParams, replaceUrl: true });
   }
 
   updateClasses() {
@@ -192,16 +281,17 @@ export class BrowseComponent implements OnInit {
   }
 
   sortChanged(sort: Sort) {
-    console.log(sort);
     if (sort.direction) {
       this.searchApiOptions.sort = sort.active + ':' + sort.direction;
     } else {
       delete this.searchApiOptions.sort;
     }
+    this.updateUrl();
     this.getFamilies();
   }
 
   pageChanged(event: PageEvent) {
+    this.updateUrl();
     this.getFamilies();
   }
 

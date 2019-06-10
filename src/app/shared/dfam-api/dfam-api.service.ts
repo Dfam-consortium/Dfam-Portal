@@ -252,6 +252,15 @@ export class DfamAPIService {
     );
   }
 
+  getTaxonById(id: number): Observable<any> {
+    const url = endpoint + 'taxa/' + encodeURIComponent(id.toString());
+
+    return this.http.get(url).pipe(
+      map(this.extractData),
+      catchError(this.handleError('getTaxonById', [])),
+    );
+  }
+
   getAnnotations(assembly: string, chrom: string, start: number, end: number, family?: string, nrph?: boolean): Observable<any> {
     const url = endpoint + 'annotations';
     const options = {
