@@ -52,6 +52,7 @@ export class BrowseComponent implements OnInit {
 
   private classSearchTerm = new Subject<string>();
   private cladeSearchTerm = new Subject<string>();
+  private updateUrlTask = new Subject<void>();
 
   displayColumns = [ 'accession', 'name', 'classification', 'clades', 'title', 'length' ];
 
@@ -140,6 +141,10 @@ export class BrowseComponent implements OnInit {
         });
       });
     });
+
+    this.updateUrlTask.pipe(debounceTime(300)).subscribe(() => {
+      this.updateUrl();
+    });
   }
 
   displayClass(classification: any) {
@@ -223,7 +228,7 @@ export class BrowseComponent implements OnInit {
     this.searchApiOptions.keywords = this.search.keywords;
 
     this.paginator.pageIndex = 0;
-    this.updateUrl();
+    this.updateUrlTask.next();
     this.getFamilies();
   }
 
@@ -286,12 +291,12 @@ export class BrowseComponent implements OnInit {
     } else {
       delete this.searchApiOptions.sort;
     }
-    this.updateUrl();
+    this.updateUrlTask.next();
     this.getFamilies();
   }
 
   pageChanged(event: PageEvent) {
-    this.updateUrl();
+    this.updateUrlTask.next();
     this.getFamilies();
   }
 
