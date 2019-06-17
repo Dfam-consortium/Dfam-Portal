@@ -63,7 +63,7 @@ No statistics are available for this family.
       <mat-form-field>
         <mat-select appearance="standard" placeholder="Genome" [(value)]="selectedAssembly">
           <mat-option *ngFor="let assembly of assemblies" value="{{assembly.id}}">
-            {{assembly.name}}
+            {{assembly.name}} [{{assembly.id}}]
           </mat-option>
         </mat-select>
       </mat-form-field>

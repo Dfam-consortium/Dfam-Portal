@@ -12,8 +12,8 @@
 
       <p>
       Pre-calculated matches are from Dfam + nhmmer searches against dfamseq, which
-      contains reference assemblies for human [hg38], mouse [mm10], zebrafish
-      [danRer10], worm [ce10], and fly [dm6]
+      contains reference assemblies for selected genomes covered by families
+      in Dfam.
       </p>
 
       <p>
@@ -32,7 +32,7 @@
     <form>
       <mat-form-field>
         <mat-select placeholder="Organism" name="organism" [(ngModel)]="search.assembly">
-          <mat-option *ngFor="let assembly of assemblies" [value]="assembly.id">{{assembly.name}}</mat-option>
+          <mat-option *ngFor="let assembly of assemblies" [value]="assembly.id">{{assembly.name}} [{{assembly.id}}]</mat-option>
         </mat-select>
       </mat-form-field>
 
