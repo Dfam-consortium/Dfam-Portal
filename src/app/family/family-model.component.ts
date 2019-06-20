@@ -74,7 +74,7 @@ export class FamilyModelComponent implements OnInit {
     }
   }
 
-  @ViewChild(FamilyModelLogoComponent) logoComponent: FamilyModelLogoComponent;
+  @ViewChild(FamilyModelLogoComponent, { static: false }) logoComponent: FamilyModelLogoComponent;
 
   ngOnInit() {
     this.getFamily();

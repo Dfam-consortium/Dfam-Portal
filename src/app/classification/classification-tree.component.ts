@@ -29,7 +29,7 @@ export class ClassificationTreeComponent implements OnInit {
     this.update(this.rootNode);
   }
 
-  @ViewChild('outlet') outlet: ElementRef;
+  @ViewChild('outlet', { static: true }) outlet: ElementRef;
 
   private tooltipTag: any;
   private svgTag: any;

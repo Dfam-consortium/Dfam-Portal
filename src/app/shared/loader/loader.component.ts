@@ -10,7 +10,7 @@ export class LoaderComponent implements OnInit, OnChanges {
   @Input() loading: boolean;
   @Input() diameter = 80;
 
-  @ViewChild('container') container: ElementRef;
+  @ViewChild('container', { static: true }) container: ElementRef;
 
   constructor() { }
 

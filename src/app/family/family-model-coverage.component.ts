@@ -12,7 +12,7 @@ export class FamilyModelCoverageComponent implements OnInit, OnChanges {
   @Input() data;
   @Input() colorSet: number;
 
-  @ViewChild('graph') graph: ElementRef;
+  @ViewChild('graph', { static: true }) graph: ElementRef;
 
   constructor() { }
 

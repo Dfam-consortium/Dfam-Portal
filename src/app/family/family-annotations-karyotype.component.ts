@@ -22,7 +22,7 @@ export class FamilyAnnotationsKaryotypeComponent implements OnInit, OnChanges {
     }
   }
 
-  @ViewChild('karyotype') karyotype: ElementRef;
+  @ViewChild('karyotype', { static: true }) karyotype: ElementRef;
 
   constructor() { }
 

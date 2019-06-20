@@ -12,7 +12,7 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 })
 export class ClassificationComponent implements OnInit {
 
-  @ViewChild('classificationTree') classificationTree: ClassificationTreeComponent;
+  @ViewChild('classificationTree', { static: true }) classificationTree: ClassificationTreeComponent;
 
   classes: any;
   initialClass: any;

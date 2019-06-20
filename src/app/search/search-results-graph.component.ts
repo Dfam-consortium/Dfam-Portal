@@ -21,7 +21,7 @@ export class SearchResultsGraphComponent implements OnInit {
     this.redraw();
   };
 
-  @ViewChild('graph') graph: ElementRef;
+  @ViewChild('graph', { static: true }) graph: ElementRef;
 
   graphic;
   resizeSubscription: Unsubscribable;

@@ -15,7 +15,7 @@ export class FamilyModelLogoComponent implements OnInit, OnChanges {
 
   @Input() data;
 
-  @ViewChild('logo') logo: ElementRef;
+  @ViewChild('logo', { static: true }) logo: ElementRef;
 
   logoObject: any;
 

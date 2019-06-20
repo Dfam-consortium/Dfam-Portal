@@ -23,7 +23,7 @@ export class FamilyModelConservationComponent implements OnInit, OnDestroy {
   }
 
 
-  @ViewChild('graph') graph: ElementRef;
+  @ViewChild('graph', { static: true }) graph: ElementRef;
 
   resizeSubscription: Unsubscribable;
 
