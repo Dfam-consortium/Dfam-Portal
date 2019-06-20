@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, ViewChild } from '@angular/core';
+import { Component, Input, AfterViewInit, OnChanges, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -7,19 +7,19 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss']
 })
-export class SearchResultsComponent implements OnInit, OnChanges {
+export class SearchResultsComponent implements AfterViewInit, OnChanges {
 
   @Input() data: any;
   @Input() showSequence: boolean;
   @Input() getAlignCallback;
 
-  @ViewChild('tandemResultsSort', { static: true }) tandemResultsSort: MatSort;
+  @ViewChild('tandemResultsSort', { static: false }) tandemResultsSort: MatSort;
   tandemColumns = ['sequence', 'type', 'start', 'end', 'repeat_length'];
   tandemResultsSource = new MatTableDataSource();
 
   constructor() { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.tandemResultsSource.sort = this.tandemResultsSort;
   }
 

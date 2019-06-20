@@ -260,7 +260,7 @@ TCGGCTCACTTCGACCTCTGCCTCCCCAGTTCAAGTGATTCTCCTGCCTCAGTCTCCTGA`,
 
   loading: boolean;
 
-  @ViewChild('sequenceInput', { static: true }) sequenceInput;
+  @ViewChild('sequenceInput', { static: false }) sequenceInput;
 
   ngOnInit() {
     this.getAssemblies();

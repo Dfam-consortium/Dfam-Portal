@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 
 import Karyotype from 'Karyotype/src/Karyotype';
 
@@ -7,9 +7,16 @@ import Karyotype from 'Karyotype/src/Karyotype';
   templateUrl: './family-annotations-karyotype.component.html',
   styleUrls: ['./family-annotations-karyotype.component.scss']
 })
-export class FamilyAnnotationsKaryotypeComponent implements OnInit, OnChanges {
+export class FamilyAnnotationsKaryotypeComponent implements AfterViewChecked {
 
-  @Input() data;
+  private needsRedraw;
+
+  private _data: any;
+  get data(): any { return this._data; }
+  @Input() set data(data: any) {
+    this._data = data;
+    this.needsRedraw = true;
+  }
 
   private dfamKaryotype;
 
@@ -20,23 +27,24 @@ export class FamilyAnnotationsKaryotypeComponent implements OnInit, OnChanges {
     if (this.dfamKaryotype) {
       this.dfamKaryotype.switchVisualization(kind);
     }
+    this.needsRedraw = true;
   }
 
-  @ViewChild('karyotype', { static: true }) karyotype: ElementRef;
+  @ViewChild('karyotype', { static: false }) karyotype: ElementRef;
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngAfterViewChecked() {
+    if (this.needsRedraw) {
+      this.needsRedraw = false;
+      const el = this.karyotype.nativeElement;
+      el.innerHTML = '';
+      this.dfamKaryotype = null;
 
-  ngOnChanges() {
-    const el = this.karyotype.nativeElement;
-    el.innerHTML = '';
-    this.dfamKaryotype = null;
-
-    if (this.data) {
-      this.dfamKaryotype = new Karyotype(el, this.data);
-      this.dfamKaryotype.switchVisualization(this.visualizationType);
+      if (this.data) {
+        this.dfamKaryotype = new Karyotype(el, this.data);
+        this.dfamKaryotype.switchVisualization(this.visualizationType);
+      }
     }
   }
 

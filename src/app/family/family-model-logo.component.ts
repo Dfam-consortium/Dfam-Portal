@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 
 declare global {
   interface Window {
@@ -11,24 +11,33 @@ declare global {
   templateUrl: './family-model-logo.component.html',
   styleUrls: ['./family-model-logo.component.scss']
 })
-export class FamilyModelLogoComponent implements OnInit, OnChanges {
+export class FamilyModelLogoComponent implements AfterViewChecked {
+  private needsRedraw;
 
-  @Input() data;
+  _data;
+  get data(): any {
+    return this._data;
+  }
+  @Input()
+  set data(data: any) {
+    this._data = data;
+    this.needsRedraw = true;
+  };
 
-  @ViewChild('logo', { static: true }) logo: ElementRef;
+  @ViewChild('logo', { static: false }) logo: ElementRef;
 
   logoObject: any;
 
   constructor() { }
 
-  ngOnInit() {
-  }
-
-  ngOnChanges() {
-    if (this.data) {
-      const el = this.logo.nativeElement;
-      el.innerHTML = '';
-      this.logoObject = window.$(el).hmm_logo( { data: this.data });
+  ngAfterViewChecked() {
+    if (this.needsRedraw) {
+      this.needsRedraw = false;
+      if (this.data) {
+        const el = this.logo.nativeElement;
+        el.innerHTML = '';
+        this.logoObject = window.$(el).hmm_logo( { data: this.data });
+      }
     }
   }
 

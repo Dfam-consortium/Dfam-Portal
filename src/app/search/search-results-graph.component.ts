@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, Input, ElementRef, ViewChild } from '@angular/core';
 import { fromEvent, Unsubscribable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -9,7 +9,9 @@ import { AnnotationsGraphic } from '../../js/annotations';
   templateUrl: './search-results-graph.component.html',
   styleUrls: ['./search-results-graph.component.scss']
 })
-export class SearchResultsGraphComponent implements OnInit {
+export class SearchResultsGraphComponent implements OnInit, AfterViewChecked {
+
+  private needsRedraw;
 
   _data;
   get data(): any {
@@ -18,10 +20,10 @@ export class SearchResultsGraphComponent implements OnInit {
 
   @Input() set data(data: any) {
     this._data = data;
-    this.redraw();
+    this.needsRedraw = true;
   };
 
-  @ViewChild('graph', { static: true }) graph: ElementRef;
+  @ViewChild('graph', { static: false }) graph: ElementRef;
 
   graphic;
   resizeSubscription: Unsubscribable;
@@ -29,11 +31,16 @@ export class SearchResultsGraphComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.redraw();
-
     this.resizeSubscription = fromEvent(window, 'resize')
       .pipe(debounceTime(300))
       .subscribe(e => this.redraw());
+  }
+
+  ngAfterViewChecked() {
+    if (this.needsRedraw) {
+      this.needsRedraw = false;
+      this.redraw();
+    }
   }
 
   ngOnDestroy() {

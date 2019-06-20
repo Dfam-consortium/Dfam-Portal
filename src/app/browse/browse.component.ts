@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Subject, forkJoin, pipe } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -36,7 +36,7 @@ function has_duplicates(array: any[]) {
   templateUrl: './browse.component.html',
   styleUrls: ['./browse.component.scss']
 })
-export class BrowseComponent implements OnInit {
+export class BrowseComponent implements OnInit, AfterViewInit {
 
   families: any = {};
 
@@ -56,8 +56,8 @@ export class BrowseComponent implements OnInit {
 
   displayColumns = [ 'accession', 'name', 'classification', 'clades', 'title', 'length' ];
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   constructor(
     private route: ActivatedRoute,
@@ -66,8 +66,6 @@ export class BrowseComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.restoreSearch();
-
     this.classSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
       this.dfamapi.getClasses(search_term.trim()).subscribe(classes => {
         classes = classes.filter(f => f.name !== 'root');
@@ -145,6 +143,10 @@ export class BrowseComponent implements OnInit {
     this.updateUrlTask.pipe(debounceTime(300)).subscribe(() => {
       this.updateUrl();
     });
+  }
+
+  ngAfterViewInit() {
+    this.restoreSearch();
   }
 
   displayClass(classification: any) {

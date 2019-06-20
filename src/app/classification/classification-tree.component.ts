@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, Input, ElementRef, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
@@ -6,7 +6,7 @@ import * as d3 from 'd3';
   templateUrl: './classification-tree.component.html',
   styleUrls: ['./classification-tree.component.scss']
 })
-export class ClassificationTreeComponent implements OnInit {
+export class ClassificationTreeComponent implements AfterViewInit {
 
   private _classes: any;
   get classes(): any { return this._classes; }
@@ -29,7 +29,7 @@ export class ClassificationTreeComponent implements OnInit {
     this.update(this.rootNode);
   }
 
-  @ViewChild('outlet', { static: true }) outlet: ElementRef;
+  @ViewChild('outlet', { static: false }) outlet: ElementRef;
 
   private tooltipTag: any;
   private svgTag: any;
@@ -50,7 +50,7 @@ export class ClassificationTreeComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     const element = this.outlet.nativeElement;
 
     this.tooltipTag = d3.select(element).append('div')

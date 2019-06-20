@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, Input, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './search-results-hits.component.html',
   styleUrls: ['./search-results-hits.component.scss']
 })
-export class SearchResultsHitsComponent implements OnInit {
+export class SearchResultsHitsComponent implements AfterViewInit {
 
   @Input() search: string;
   @Input() getAlignCallback;
@@ -25,14 +25,14 @@ export class SearchResultsHitsComponent implements OnInit {
 
   @Input() assembly: string;
 
-  @ViewChild('sort', { static: true }) sort: MatSort;
+  @ViewChild('sort', { static: false }) sort: MatSort;
   columns = ['expander', 'sequence', 'accession', 'bit_score', 'e_value',
     'model_start', 'model_end', 'ali_start', 'ali_end', 'strand'];
   dataSource = new MatTableDataSource();
 
   constructor() { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
 
