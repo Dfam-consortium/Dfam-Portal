@@ -18,7 +18,7 @@
  * BROWSER POLYFILLS
  */
 
-import 'core-js/es7/string';
+import 'core-js/es/string';
 
 import 'custom-event-polyfill';
 
