@@ -157,6 +157,10 @@ export class DfamAPIService {
     return this.familyPath(accession) + '/sequence?format=embl&download=true';
   }
 
+  getFamilyFastaDownloadUrl(accession: string): string {
+    return this.familyPath(accession) + '/sequence?format=fasta&download=true';
+  }
+
   getFamilyRelationships(accession: string): Observable<any> {
     const url = this.familyPath(accession) + '/relationships';
     return this.http.get(url).pipe(

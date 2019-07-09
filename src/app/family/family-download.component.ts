@@ -37,6 +37,11 @@ export class FamilyDownloadComponent implements OnInit {
     return this.dfamapi.getFamilyEmblDownloadUrl(accession);
   }
 
+  get fastaUrl() {
+    const accession = this.route.parent.snapshot.params['id'];
+    return this.dfamapi.getFamilyFastaDownloadUrl(accession);
+  }
+
   annotationsUrl(assembly, nrph) {
     const accession = this.route.parent.snapshot.params['id'];
     return this.dfamapi.getFamilyAssemblyAnnotationsDownloadUrl(accession, assembly, nrph);
