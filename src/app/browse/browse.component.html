@@ -137,7 +137,23 @@
         <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
         <tr mat-row *matRowDef="let families; columns: displayColumns"></tr>
       </table>
-      <mat-paginator [pageSize]="20" [pageSizeOptions]="[20,50,100]" [length]="families?.total_count" (page)="pageChanged($event)"></mat-paginator>
+
+      <div fxLayout="row">
+        <div fxLayout="row" fxLayoutAlign="left center">
+          <div fxLayoutGap="15px" [class.hidden]="disableDownload">
+            <span>Download these results:</span>
+            <a [href]="downloadUrls['hmm']">HMM</a>
+            <a [href]="downloadUrls['embl']">EMBL</a>
+            <a [href]="downloadUrls['fasta']">FASTA</a>
+          </div>
+        </div>
+
+        <mat-paginator
+          [pageSize]="20" [pageSizeOptions]="[20,50,100]"
+          [length]="families?.total_count" (page)="pageChanged($event)">
+        </mat-paginator>
+      </div>
     </div>
+
   </div>
 </div>

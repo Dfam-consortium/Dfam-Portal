@@ -45,10 +45,12 @@ export class DfamAPIService {
       .pipe(catchError(this.handleError('getFamily', null)));
   }
 
-  getFamilies(apiOptions: any): Observable<any> {
+  // NB: If download is true, apiOptions.start and apiOptions.limit are ignored.
+  // This corresponds most closely to the usual usage within Dfam-Portal.
+  getFamiliesUrlOptions(apiOptions: any, format?: string, download?: boolean): [string, {params: HttpParams}] {
     const url = endpoint + 'families';
     const options = {
-      params: new HttpParams().set('format', 'summary')
+      params: new HttpParams().set('format', format || 'summary')
     };
 
     if ( apiOptions.name_accession ) {
@@ -75,13 +77,27 @@ export class DfamAPIService {
       options.params = options.params.set('keywords', apiOptions.keywords);
     }
 
-    options.params = options.params.set('start', (apiOptions.start || 0).toString());
-    options.params = options.params.set('limit', (apiOptions.limit !== undefined ? apiOptions.limit : 20).toString());
+    if (download) {
+      options.params = options.params.set('download', 'true');
+    } else {
+      options.params = options.params.set('start', (apiOptions.start || 0).toString());
+      options.params = options.params.set('limit', (apiOptions.limit !== undefined ? apiOptions.limit : 20).toString());
+    }
 
     if (apiOptions.sort) {
       options.params = options.params.set('sort', apiOptions.sort);
     }
 
+    return [url, options];
+  }
+
+  getFamiliesDownloadUrl(apiOptions: any, format: string): string {
+    let [url, options] = this.getFamiliesUrlOptions(apiOptions, format, true);
+    return url + '?' + options.params.toString();
+  }
+
+  getFamilies(apiOptions: any): Observable<any> {
+    let [url, options] = this.getFamiliesUrlOptions(apiOptions);
     return this.http.get<any>(url, options)
       .pipe(catchError(this.handleError('getFamilies', {})));
   }

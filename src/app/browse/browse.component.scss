@@ -2,6 +2,10 @@
   display: inline-block;
 }
 
+.browse mat-paginator {
+  margin-left: auto;
+}
+
 mat-form-field, mat-checkbox {
   margin: 0 0.5em;
 }
@@ -19,4 +23,8 @@ mat-form-field, mat-checkbox {
 .browse table {
   margin-top: 1em;
   width: 100%;
+}
+
+.hidden {
+  display: none;
 }
