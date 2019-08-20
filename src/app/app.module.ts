@@ -43,13 +43,13 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { BrowseComponent } from './browse/browse.component';
+import { BrowsePanelComponent } from './browse/browse-panel.component';
 import { AboutComponent } from './about/about.component';
 import { PublicFooterComponent,
          PublicHeaderComponent, PublicLayoutComponent,
          WorkbenchLayoutComponent,
          SeqViewComponent } from './shared';
 import { LoginComponent } from './login/login.component';
-import { UserComponent } from './workbench/user/user.component';
 import { FamilyComponent } from './family/family.component';
 import { FamilySummaryComponent } from './family/family-summary.component';
 import { FamilySeedComponent } from './family/family-seed.component';
@@ -86,6 +86,9 @@ import { RepositoryEntryComponent } from './repository/repository-entry.componen
 import { HelpApiComponent } from './help/help-api.component';
 import { AssemblyPickerComponent } from './shared/assembly-picker/assembly-picker.component';
 
+import { WorkbenchBrowseComponent } from './workbench/browse/browse.component';
+import { UserComponent } from './workbench/user/user.component';
+
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
@@ -95,6 +98,7 @@ export function tokenGetter() {
     AppComponent,
     HomeComponent,
     BrowseComponent,
+    BrowsePanelComponent,
     AboutComponent,
     PublicFooterComponent,
     PublicLayoutComponent,
@@ -138,6 +142,7 @@ export function tokenGetter() {
     RepositoryEntryComponent,
     HelpApiComponent,
     AssemblyPickerComponent,
+    WorkbenchBrowseComponent,
   ],
   imports: [
     CommonModule,

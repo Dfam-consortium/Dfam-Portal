@@ -73,7 +73,7 @@ export class ClassificationComponent implements OnInit {
         }
       }
 
-      data.children.forEach(appendWithChildren);
+      this.classes.children.forEach(appendWithChildren);
 
       this.tsv = tsv;
     });

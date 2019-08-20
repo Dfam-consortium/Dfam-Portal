@@ -1,0 +1,30 @@
+.filters > div {
+  display: inline-block;
+}
+
+.browse mat-paginator {
+  margin-left: auto;
+}
+
+mat-form-field, mat-checkbox {
+  margin: 0 0.5em;
+}
+
+.classification-option, .clade-option {
+  font-size: 14px;
+  line-height: 1.5;
+  height: 30px;
+}
+
+.classification-option .right {
+  float: right;
+}
+
+.browse table {
+  margin-top: 1em;
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}

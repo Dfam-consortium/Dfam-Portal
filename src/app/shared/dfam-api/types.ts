@@ -37,3 +37,22 @@ export class FamilySummary {
 
   clades: string[];
 }
+
+export class Classification {
+  name: string;
+  full_name: string;
+  children: Classification[];
+
+  tooltip?: string;
+  description?: string;
+  hyperlink?: string;
+  repeatmasker_type?: string;
+  repeatmakser_subtype?: string;
+  count?: string;
+  aliases?: string;
+}
+
+export class Taxon {
+  id: number;
+  name: string;
+}
