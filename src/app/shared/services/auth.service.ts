@@ -46,9 +46,9 @@ export class AuthService implements CanActivate {
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot ): Observable<boolean> {
-     // return this.isAuthenticated.pipe(take(1), map(isAuth => !isAuth));
-     return this.isAuthenticated;
+    state: RouterStateSnapshot): Observable<boolean>
+  {
+    return this.isAuthenticated;
   }
 
   // Verify JWT in localstorage with server and load user's info.

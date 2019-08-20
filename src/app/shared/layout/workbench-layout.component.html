@@ -1,1 +1,13 @@
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+  <mat-sidenav mode="side" [opened]="true">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/workbench/user">Me</a>
+      <a mat-list-item routerLink="/workbench/browse">Families</a>
+      <a mat-list-item (click)="logout()">Logout</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

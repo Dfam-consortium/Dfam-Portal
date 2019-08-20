@@ -35,6 +35,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
 
 // Application Imports
 import { AppComponent } from './app.component';
@@ -164,6 +166,8 @@ export function tokenGetter() {
     MatTabsModule,
     MatTooltipModule,
     MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
     BrowserModule,
     // Angular-Jwt for decoding tokens and sending it along through HTTP request auto-magically
     JwtModule.forRoot({
