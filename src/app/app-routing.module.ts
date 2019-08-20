@@ -73,14 +73,10 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: LoginComponent},
-  { path: '', component: PublicLayoutComponent, data: { title: 'Public Views' }, children: PUBLIC_ROUTES },
   { path: 'workbench', component: WorkbenchLayoutComponent, canActivate: [AuthService],
-    data: { title: 'Workbench Views' }, children: SECURE_ROUTES }
+    data: { title: 'Workbench Views' }, children: SECURE_ROUTES },
+  { path: '', component: PublicLayoutComponent, data: { title: 'Public Views' }, children: PUBLIC_ROUTES },
 ];
-
-//  { path: 'workbench', component: WorkbenchLayoutComponent, canActivate: [Guard],
-//    data: { title: 'Workbench Views' }, children: SECURE_ROUTES }
-
 
 // TO enable tracing:
 //  imports: [RouterModule.forRoot(routes, { enableTracing: true })],

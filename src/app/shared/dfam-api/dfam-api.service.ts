@@ -374,38 +374,6 @@ export class DfamAPIService {
     );
   }
 
-  login(email, password): Observable<any> {
-    const body = new HttpParams()
-      .set('email', email)
-      .set('password', password);
-
-    const options = {
-        headers: new HttpHeaders().set('Content-Type',
-                      'application/x-www-form-urlencoded')
-    };
-    return this.http.post(endpoint + 'authenticate',
-                          body.toString(), options).pipe(
-                                catchError(this.handleError('login', {})))
-                            .pipe(map(this.extractData));
-  }
-
-  register(fullname, email, password): Observable<any> {
-    const body = new HttpParams()
-      .set('email', email)
-      .set('name', fullname)
-      .set('password', password);
-
-    const options = {
-        headers: new HttpHeaders().set('Content-Type',
-                      'application/x-www-form-urlencoded')
-    };
-    return this.http.post(endpoint + 'register',
-                          body.toString(), options).pipe(
-        catchError(this.handleError('register', {})),
-        map(this.extractData));
-  }
-
-
   private handleError<T> (operation = 'operation', result: T) {
     return (error: any): Observable<T> => {
       // Short-circuit 404 without any error logging

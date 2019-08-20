@@ -2,20 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../shared/services';
 
-export interface Errors {
-  errors: {[key: string]: string};
-}
-
 @Component({
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 
 })
 export class LoginComponent implements OnInit {
-  loginType: String = '';
-  title: String = '';
-  errors: Errors = {errors: {}};
-  isSubmitting = false;
+  loginType: string = '';
+  title: string = '';
+  error: string;
+  isSubmitting: boolean = false;
 
   fullName: string;
   email: string;
@@ -37,7 +33,7 @@ export class LoginComponent implements OnInit {
 
   submitForm() {
     this.isSubmitting = true;
-    this.errors = {errors: {}};
+    this.error = null;
 
     const credentials = { email: this.email,
                           fullname: this.fullName,
@@ -48,7 +44,15 @@ export class LoginComponent implements OnInit {
         .subscribe(
           data => this.router.navigateByUrl('/workbench/user'),
           err => {
-            this.errors = err;
+            console.log(err);
+            if (err.error && err.error.message) {
+              this.error = err.error.message;
+            } else if (err.statusText) {
+              this.error = "Error: " + err.statusText;
+            } else {
+              this.error = err.toString();
+            }
+
             this.isSubmitting = false;
           }
         );

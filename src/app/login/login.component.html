@@ -21,7 +21,7 @@
               <input matInput
                   type="text"
                   name="fullName"
-                  [attr.disabled]="isSubmitting"
+                  [disabled]="isSubmitting"
                   placeholder="Full Name"
                   [(ngModel)]="fullName">
             </mat-form-field>
@@ -29,7 +29,7 @@
               <input matInput
                   type="text"
                   name="email"
-                  [attr.disabled]="isSubmitting"
+                  [disabled]="isSubmitting"
                   placeholder="Email"
                   [(ngModel)]="email">
             </mat-form-field>
@@ -37,13 +37,14 @@
               <input matInput
                   type="password"
                   name="password"
-                  [attr.disabled]="isSubmitting"
+                  [disabled]="isSubmitting"
                   placeholder="Password"
                   [(ngModel)]="password">
             </mat-form-field>
-            <button type="submit" mat-raised-button color="primary" (click)="submitForm()">
+            <button type="submit" [disabled]="isSubmitting" mat-raised-button color="primary" (click)="submitForm()">
              {{ title }}
             </button>
+            <p>{{ error }}</p>
           </form>
         </mat-card-content>
       </mat-card>
