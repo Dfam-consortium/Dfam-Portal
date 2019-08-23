@@ -50,7 +50,8 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
 
   getAssemblies(): Observable<any> {
     const url = endpoint + 'assemblies';
-    return this.http.get(url).pipe(
+    const opts = this.optsWithAuth();
+    return this.http.get(url, opts).pipe(
       map(this.extractData),
       catchError(this.handleError('getAssemblies', [])),
     );
@@ -58,16 +59,19 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
 
   getFamily(accession: string): Observable<Family> {
     const url = this.familyPath(accession);
-    return this.http.get<Family>(url)
+    const opts = this.optsWithAuth();
+    return this.http.get<Family>(url, opts)
       .pipe(catchError(this.handleError('getFamily', null)));
   }
 
   // NB: If download is true, criteria.start and criteria.limit are ignored.
   // This corresponds most closely to the usual usage within Dfam-Portal.
-  getFamiliesUrlOptions(criteria: FamilyCriteria, format?: string, download?: boolean): [string, {params: HttpParams}] {
+  getFamiliesUrlOptions(criteria: FamilyCriteria, format?: string, download?: boolean): [string, { params: HttpParams, headers: HttpHeaders }] {
     const url = endpoint + 'families';
+    const opts = this.optsWithAuth();
     const options = {
-      params: new HttpParams().set('format', format || 'summary')
+      headers: opts.headers,
+      params: new HttpParams().set('format', format || 'summary'),
     };
 
     if ( criteria.name_accession ) {
@@ -121,10 +125,13 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
 
   getClasses(name?: string): Observable<Classification | Classification[]> {
     const url = endpoint + 'classes';
+    const opts = this.optsWithAuth();
     const options = {
+      headers: opts.headers,
       params: new HttpParams(),
       responseType: 'json' as 'json',
     };
+
     if (name) {
       options.params = options.params.set('name', name);
     }
@@ -136,7 +143,9 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
   // TODO: handling of name, limit
   getTaxa(name: string): Observable<TaxaResults> {
     const url = endpoint + 'taxa';
+    const opts = this.optsWithAuth();
     const options = {
+      headers: opts.headers,
       params: new HttpParams(),
     };
 
@@ -151,8 +160,9 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
 
   getTaxonById(id: number): Observable<Taxon> {
     const url = endpoint + 'taxa/' + encodeURIComponent(id.toString());
+    const opts = this.optsWithAuth();
 
-    return this.http.get<Taxon>(url).pipe(
+    return this.http.get<Taxon>(url, opts).pipe(
       catchError(this.handleError('getTaxonById', {} as Taxon)),
     );
   }
