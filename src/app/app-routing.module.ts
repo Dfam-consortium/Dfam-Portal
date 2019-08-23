@@ -68,6 +68,7 @@ export const PUBLIC_ROUTES: Routes = [
 ];
 
 export const SECURE_ROUTES: Routes = [
+  { path: '', redirectTo: 'user', pathMatch: 'full' },
   { path: 'user', component: UserComponent },
   { path: 'browse', component: WorkbenchBrowseComponent },
   { path: 'family/:id', component: WorkbenchFamilyComponent },
