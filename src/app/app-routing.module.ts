@@ -27,6 +27,7 @@ import { LoginComponent } from './login/login.component';
 import { WorkbenchLayoutComponent } from './shared';
 import { UserComponent } from './workbench/user/user.component';
 import { WorkbenchBrowseComponent } from './workbench/browse/browse.component';
+import { WorkbenchFamilyComponent } from './workbench/family/family.component';
 import { PublicLayoutComponent } from './shared';
 import { AuthService } from './shared';
 
@@ -69,6 +70,7 @@ export const PUBLIC_ROUTES: Routes = [
 export const SECURE_ROUTES: Routes = [
   { path: 'user', component: UserComponent },
   { path: 'browse', component: WorkbenchBrowseComponent },
+  { path: 'family/:id', component: WorkbenchFamilyComponent },
 ];
 
 const routes: Routes = [

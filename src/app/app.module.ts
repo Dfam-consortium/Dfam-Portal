@@ -87,6 +87,7 @@ import { HelpApiComponent } from './help/help-api.component';
 import { AssemblyPickerComponent } from './shared/assembly-picker/assembly-picker.component';
 
 import { WorkbenchBrowseComponent } from './workbench/browse/browse.component';
+import { WorkbenchFamilyComponent } from './workbench/family/family.component';
 import { UserComponent } from './workbench/user/user.component';
 
 export function tokenGetter() {
@@ -143,6 +144,7 @@ export function tokenGetter() {
     HelpApiComponent,
     AssemblyPickerComponent,
     WorkbenchBrowseComponent,
+    WorkbenchFamilyComponent,
   ],
   imports: [
     CommonModule,

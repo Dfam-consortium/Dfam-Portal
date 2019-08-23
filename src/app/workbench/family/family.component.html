@@ -1,0 +1,89 @@
+<div *ngIf="family">
+
+<h2 class="green">{{family.accession}}.{{family.version}}
+  <span *ngIf="family.name">[{{family.name}}]</span>
+</h2>
+
+<h3 class="underline-span">Info</h3>
+
+<p>
+  <mat-form-field class="wide">
+    <input matInput type="text"
+      placeholder="Title"
+      [formControl]="familyForm.controls.title">
+  </mat-form-field>
+</p>
+
+<p>
+  <mat-form-field class="wide">
+    <textarea matInput placeholder="Description" [formControl]="familyForm.controls.description"></textarea>
+  </mat-form-field>
+</p>
+
+<h3 class="underline-span">Classification and Taxa</h3>
+
+<p><strong>Classification:</strong> {{family.classification}}</p>
+<p><strong>Taxa:</strong></p>
+<ul>
+  <li *ngFor="let clade of family.clades">
+    {{clade}}
+  </li>
+</ul>
+
+<h3 class="underline-span">Curation Details</h3>
+
+<p><strong>Status:</strong> {{family.curation_state_name}}</p>
+<p><strong>Length:</strong> {{family.length}} </p>
+
+<p>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Target Site Duplication" [formControl]="familyForm.controls.target_site_cons">
+  </mat-form-field>
+</p>
+
+<mat-form-field class="wide">
+<textarea matInput placeholder="Curation Notes" [formControl]="familyForm.controls.curation_notes"></textarea>
+</mat-form-field>
+
+<h3 class="underline-span">Citations</h3>
+<ol>
+  <li *ngFor="let group of this.familyForm.controls.citations.controls; let index;">
+    <mat-form-field>
+      <input matInput type="number" placeholder="PubMed ID"
+        [formControl]="group.controls.pmid">
+    </mat-form-field>
+    <button matButton (click)="this.familyForm.controls.citations.removeAt(index)">-</button>
+  </li>
+</ol>
+<button matButton (click)="addCitation()">+</button>
+
+<h3 class="underline-span">Aliases</h3>
+<ul>
+  <li *ngFor="let group of this.familyForm.controls.aliases.controls; let index;">
+    <mat-form-field>
+      <input matInput type="text" placeholder="Database"
+        [formControl]="group.controls.database">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" placeholder="Alias"
+        [formControl]="group.controls.alias">
+    </mat-form-field>
+    <button matButton (click)="this.familyForm.controls.aliases.removeAt(index)">-</button>
+  </li>
+  <li><button matButton (click)="addAlias()">+</button></li>
+</ul>
+
+<h3 class="underline-span">Source</h3>
+<p><strong>Submitter:</strong> {{family.submitter || "Unknown"}}</p>
+<p>
+  <mat-form-field class="wide">
+    <input matInput type="text" placeholder="Author(s)" [formControl]="familyForm.controls.author">
+  </mat-form-field>
+</p>
+<p><strong>Created On:</strong> {{family.date_created | date: 'medium'}}</p>
+<p><strong>Modified On:</strong> {{family.date_modified | date: 'medium'}}</p>
+</div>
+
+<div *ngIf="!family">
+Loading data...
+</div>
