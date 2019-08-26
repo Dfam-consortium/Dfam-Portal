@@ -1,0 +1,5 @@
+<mat-form-field>
+  <mat-select placeholder="Assembly" name="assembly" [(ngModel)]="value">
+    <mat-option *ngFor="let assembly of assemblies" [value]="assembly.id">{{assembly.name}} [{{assembly.id}}]</mat-option>
+  </mat-select>
+</mat-form-field>

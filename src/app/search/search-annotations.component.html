@@ -30,11 +30,8 @@
     </div>
 
     <form>
-      <mat-form-field>
-        <mat-select placeholder="Organism" name="organism" [(ngModel)]="search.assembly">
-          <mat-option *ngFor="let assembly of assemblies" [value]="assembly.id">{{assembly.name}} [{{assembly.id}}]</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <dfam-assembly-picker [(value)]="search.assembly" [assemblies]="assemblies">
+      </dfam-assembly-picker>
 
       <mat-form-field>
         <input matInput placeholder="Chromosome" name="chromosome" [(ngModel)]="search.chromosome">

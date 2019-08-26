@@ -31,7 +31,8 @@
             <div fxLayout="row" fxLayoutAlign="start center">
               <mat-form-field>
                 <mat-select placeholder="Organism" name="organism" [(ngModel)]="searchSequenceAssembly">
-                  <mat-option *ngFor="let assembly of assemblies" [value]="assembly.name">{{assembly.name}} [{{assembly.id}}]</mat-option>
+                  <mat-option *ngFor="let assembly of assemblies" [value]="assembly.name">{{assembly.name}}</mat-option>
+                  <mat-option value="other">Other</mat-option>
                 </mat-select>
               </mat-form-field>
               &nbsp;
@@ -81,7 +82,7 @@
 
               <div>
                 <mat-form-field>
-                  <mat-select placeholder="Organism" name="organism" [(ngModel)]="annotations.assembly">
+                  <mat-select placeholder="Assembly" name="assembly" [(ngModel)]="annotations.assembly">
                     <mat-option *ngFor="let assembly of assemblies" [value]="assembly.id">{{assembly.name}} [{{assembly.id}}]</mat-option>
                   </mat-select>
                 </mat-form-field>

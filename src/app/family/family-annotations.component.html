@@ -60,14 +60,9 @@ No statistics are available for this family.
     </div>
 
     <div *ngIf="assemblies.length">
-      <mat-form-field>
-        <mat-select appearance="standard" placeholder="Genome" [(value)]="selectedAssembly">
-          <mat-option *ngFor="let assembly of assemblies" value="{{assembly.id}}">
-            {{assembly.name}} [{{assembly.id}}]
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    
+      <dfam-assembly-picker [(value)]="selectedAssembly" [assemblies]="assemblies">
+      </dfam-assembly-picker>
+
       <mat-card *ngIf="selectedAssembly">
         <mat-radio-group [(ngModel)]="selectedVisualizationType">
           <mat-radio-button name="image_type" value="nrph">Non-Redundant Hits</mat-radio-button>

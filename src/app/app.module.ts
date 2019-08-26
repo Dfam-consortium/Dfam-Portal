@@ -82,6 +82,7 @@ import { HelpToolsComponent } from './help/help-tools.component';
 import { RepositoryComponent } from './repository/repository.component';
 import { RepositoryEntryComponent } from './repository/repository-entry.component';
 import { HelpApiComponent } from './help/help-api.component';
+import { AssemblyPickerComponent } from './shared/assembly-picker/assembly-picker.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -134,6 +135,7 @@ export function tokenGetter() {
     RepositoryComponent,
     RepositoryEntryComponent,
     HelpApiComponent,
+    AssemblyPickerComponent,
   ],
   imports: [
     CommonModule,
