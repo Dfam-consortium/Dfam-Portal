@@ -38,10 +38,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
 
   getUser(): Observable<any> {
     const opts = this.optsWithAuth();
-    return this.http.get(endpoint + 'user', opts).pipe(
-      map(this.extractData),
-      catchError(this.handleError('getUser', {})),
-    );
+    return this.http.get(endpoint + 'user', opts);
   }
 
   private familyPath(accession: string): string {

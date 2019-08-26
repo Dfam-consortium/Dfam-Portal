@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { DfamBackendAPIService } from '../dfam-api/dfam-backend-api.service';
 import { map, concatAll, distinctUntilChanged } from 'rxjs/operators';
@@ -24,6 +24,7 @@ export class AuthService implements CanActivate {
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
   constructor (
+    private router: Router,
     private dfamBackendAPIService: DfamBackendAPIService,
     private jwtHelper: JwtHelperService
   ) {
@@ -48,7 +49,13 @@ export class AuthService implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean>
   {
-    return this.isAuthenticated;
+    return this.isAuthenticated.pipe(map(isAuth => {
+      if (!isAuth) {
+        this.router.navigate(['/login']);
+      }
+
+      return isAuth;
+    }));
   }
 
   // Verify JWT in localstorage with server and load user's info.
@@ -83,6 +90,15 @@ export class AuthService implements CanActivate {
   loadUserData(): Observable<User> {
     this.dfamBackendAPIService.getUser().subscribe(user => {
       this.setAuth(user);
+    }, err => {
+      // getUser is allowed for any authenticated user. A 403 means
+      // the token is invalid, possibly due to expiration. So we
+      // will just purge the token. Any other error is probably
+      // temporary, so will leave the token in case waiting or
+      // refreshing the page will resolve the issue.
+      if (err.status === 403) {
+        this.purgeAuth();
+      }
     });
 
     return this.currentUser;
