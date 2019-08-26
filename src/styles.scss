@@ -22,50 +22,6 @@ body {
   line-height: 1.231;
 }
 
-// Positioning based on example from https://stackoverflow.com/a/30505151
-.hiring-ribbon {
-  overflow: hidden;
-  height: 10em;
-  width: 10em;
-  margin: auto;
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  .ribbon {
-    padding: 1em 0;
-    position: absolute;
-    background-color: #66CCFF;
-    transform: translateX(5%) translateY(30%) rotate(45deg);
-    right: 0;
-    top: 0;
-    font-size: 1.2em;
-    text-align: center;
-  }
-
-  .ribbon:before, .ribbon:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    margin: 0 -1px;
-    width: 100%;
-    height: 100%;
-    background-color: #66CCFF;
-  }
-
-  .ribbon:before {
-    right: 100%;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  a:link, a:visited, a:focus, a:hover, a:active {
-    color: black;
-  }
-}
-
 h2 {
     margin-top: 1em;
     margin-right: 0px;
