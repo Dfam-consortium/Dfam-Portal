@@ -6,3 +6,11 @@
   float: right;
   margin-left: 1em;
 }
+
+mat-tree li {
+  list-style-type: none;
+}
+
+.collapsed {
+  display: none;
+}

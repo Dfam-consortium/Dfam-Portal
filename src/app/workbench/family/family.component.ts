@@ -1,9 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
 
+import { Observable, ReplaySubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { Classification } from '../../shared/dfam-api/types';
 import { DfamBackendAPIService } from '../../shared/dfam-api/dfam-backend-api.service';
+
+
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
 
 @Component({
   selector: 'dfam-workbench-family',
@@ -12,7 +19,8 @@ import { DfamBackendAPIService } from '../../shared/dfam-api/dfam-backend-api.se
 })
 export class WorkbenchFamilyComponent implements OnInit {
   family;
-  classifications;
+
+  allClassificationsSubject = new ReplaySubject<Classification[]>(1);
 
   saving = false;
 
@@ -104,10 +112,9 @@ export class WorkbenchFamilyComponent implements OnInit {
       };
 
       const flattened = flatten(root);
-      // Remove root classification
-      flattened.shift();
+      this.allClassificationsSubject.next(flattened);
 
-      this.classifications = flattened;
+      this.classificationTreeDataSource.data = (<Classification>root).children;
     });
   }
 
@@ -244,5 +251,35 @@ export class WorkbenchFamilyComponent implements OnInit {
     this.dfambackendapi.patchFamily(this.family.accession, changeset).subscribe(r => {
       this.saving = false;
     });
+  }
+
+  displayClassById(id: number): Observable<string> {
+    return this.allClassificationsSubject.pipe(map(clss => {
+      const cls = clss.find(c => c.id == id);
+      if (cls) {
+        return cls.full_name;
+      } else {
+        return "<Unknown>";
+      }
+    }));
+  }
+
+
+  isPickingClassification = false;
+
+  pickClassification() {
+    this.isPickingClassification = true;
+  }
+
+  chooseClassification(id: number) {
+    this.familyForm.controls.classification_id.setValue(id);
+    this.isPickingClassification = false;
+  }
+
+  classificationTreeDataSource = new MatTreeNestedDataSource<Classification>();
+  classificationTreeControl = new NestedTreeControl<Classification>(node => node.children);
+
+  classificationNodeHasChild(index, node: Classification) {
+    return !!node.children && node.children.length > 0;
   }
 }

@@ -39,6 +39,7 @@ export class FamilySummary {
 }
 
 export class Classification {
+  id: number;
   name: string;
   full_name: string;
   children: Classification[];
