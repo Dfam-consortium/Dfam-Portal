@@ -75,7 +75,16 @@
   <li *ngFor="let control of this.familyForm.controls.clades.controls; index as i;">
     <mat-form-field>
       <input matInput type="text" placeholder="Clade"
-        [formControl]="control">
+          [matAutocomplete]="clade_autocomplete"
+          [formControl]="control"
+          (input)="this.cladeSearchTerm.next($event.target.value)">
+      <mat-autocomplete #clade_autocomplete="matAutocomplete"
+          [displayWith]="displayClade" panelWidth="40em"
+          (optionSelected)="this.cladeSearchTerm.next('')">
+        <mat-option *ngFor="let clade of cladeOptions" class="clade-option" [value]="clade">
+          <span [innerHTML]="clade.name_markup"></span>
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
     <button matButton (click)="this.familyForm.controls.clades.removeAt(i)">-</button>
   </li>

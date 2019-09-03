@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
 
-import { Observable, ReplaySubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject, ReplaySubject } from 'rxjs';
+import { map, debounceTime } from 'rxjs/operators';
 
 import { Classification } from '../../shared/dfam-api/types';
 import { DfamBackendAPIService } from '../../shared/dfam-api/dfam-backend-api.service';
@@ -11,6 +11,23 @@ import { DfamBackendAPIService } from '../../shared/dfam-api/dfam-backend-api.se
 
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
+
+function preg_quote( str ) {
+    // http://kevin.vanzonneveld.net
+    // +   original by: booeyOH
+    // +   improved by: Ates Goral (http://magnetiq.com)
+    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   bugfixed by: Onno Marsman
+    // *     example 1: preg_quote("$40");
+    // *     returns 1: '\$40'
+    // *     example 2: preg_quote("*RRRING* Hello?");
+    // *     returns 2: '\*RRRING\* Hello\?'
+    // *     example 3: preg_quote("\\.+*?[^]$(){}=!<>|:");
+    // *     returns 3: '\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:'
+
+    return (str + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, '\\$1');
+}
+
 
 @Component({
   selector: 'dfam-workbench-family',
@@ -21,6 +38,9 @@ export class WorkbenchFamilyComponent implements OnInit {
   family;
 
   allClassificationsSubject = new ReplaySubject<Classification[]>(1);
+
+  cladeSearchTerm = new Subject<string>();
+  cladeOptions: any[];
 
   saving = false;
 
@@ -47,6 +67,27 @@ export class WorkbenchFamilyComponent implements OnInit {
   ngOnInit() {
     this.getFamily();
     this.getClassifications();
+
+    this.cladeSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
+      if (!search_term) {
+        return;
+      }
+
+      // escape search_term so it will be found in the escaped markup
+      const escaped_search_term = search_term.replace(/&/, '&amp;').replace(/</, '&lt;').replace(/>/, '&gt;');
+
+      this.dfambackendapi.getTaxa(search_term.trim()).subscribe(clades => {
+        this.cladeOptions = clades.taxa.filter(f => f.name !== 'root');
+        this.cladeOptions.forEach(c => {
+          c.name_markup = c.name;
+          // escape HTML special chars
+          c.name_markup = c.name_markup.replace(/&/, '&amp;').replace(/</, '&lt;').replace(/>/, '&gt;');
+
+          c.name_markup = c.name_markup.replace(new RegExp(preg_quote(escaped_search_term), 'gi'), '<strong>$&</strong>');
+        });
+      });
+    });
+
   }
 
   addAlias() {
@@ -95,9 +136,14 @@ export class WorkbenchFamilyComponent implements OnInit {
 
       const cladesArray = controls.clades as FormArray;
       cladesArray.clear();
-      this.family.clade_ids.forEach(id => {
-        cladesArray.push(this.fb.control(id));
-      });
+      for (let i = 0; i < this.family.clades.length; i++) {
+        const full_name = this.family.clades[i];
+        const semi_at = full_name.lastIndexOf(';');
+        cladesArray.push(this.fb.control({
+          id: this.family.clade_ids[i],
+          name: full_name.substring(semi_at + 1),
+        }));
+      }
     });
   }
 
@@ -228,7 +274,7 @@ export class WorkbenchFamilyComponent implements OnInit {
     // it's just the one field.
 
     const cladesArray = controls.clades as FormArray;
-    const cladeVals = (<FormGroup[]>cladesArray.controls).map(c => parseInt(c.value));
+    const cladeVals = (<FormGroup[]>cladesArray.controls).map(c => parseInt(c.value.id));
 
     let cladesChanged = false;
     if (cladeVals.length === old.clade_ids.length) {
@@ -262,6 +308,10 @@ export class WorkbenchFamilyComponent implements OnInit {
         return "<Unknown>";
       }
     }));
+  }
+
+  displayClade(clade: any): string {
+    return clade ? clade.name : '';
   }
 
 
