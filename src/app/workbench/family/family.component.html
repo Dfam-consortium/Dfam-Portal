@@ -1,5 +1,16 @@
 <div *ngIf="family">
 
+<button mat-fab color="primary" id="save-button"
+    [disabled]="saving" (click)="saveFamily()">
+  <mat-icon aria-hidden="false" aria-label="Save">save</mat-icon>
+</button>
+
+<button mat-fab color="secondary" id="refresh-button"
+    [disabled]="saving" (click)="getFamily()">
+  <mat-icon aria-hidden="false" aria-label="Refresh">refresh</mat-icon>
+</button>
+
+
 <h2 class="green">{{family.accession}}.{{family.version}}
   <span *ngIf="family.name">[{{family.name}}]</span>
 </h2>
@@ -22,17 +33,44 @@
 
 <h3 class="underline-span">Classification and Taxa</h3>
 
-<p><strong>Classification:</strong> {{family.classification}}</p>
+<p>
+  <mat-form-field class="wide">
+    <mat-select placeholder="Classification"
+      [formControl]="familyForm.controls.classification_id">
+      <mat-option *ngFor="let cls of classifications" [value]="cls.id">
+        {{cls.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</p>
 <p><strong>Taxa:</strong></p>
 <ul>
-  <li *ngFor="let clade of family.clades">
-    {{clade}}
+  <li *ngFor="let control of this.familyForm.controls.clades.controls; index as i;">
+    <mat-form-field>
+      <input matInput type="text" placeholder="Clade"
+        [formControl]="control">
+    </mat-form-field>
+    <button matButton (click)="this.familyForm.controls.clades.removeAt(i)">-</button>
   </li>
+  <li><button matButton (click)="addClade()">+</button></li>
 </ul>
 
 <h3 class="underline-span">Curation Details</h3>
 
-<p><strong>Status:</strong> {{family.curation_state_name}}</p>
+<p>
+  <mat-form-field>
+    <mat-select placeholder="Curation Status"
+      [formControl]="familyForm.controls.curation_state_name">
+      <mat-option value="Submitted">Submitted</mat-option>
+      <mat-option value="Accepted">Accepted</mat-option>
+      <mat-option value="Rejected">Rejected</mat-option>
+      <mat-option value="Released">Released</mat-option>
+    </mat-select>
+  </mat-form-field>
+</p>
+<p>
+  <mat-checkbox [formControl]="familyForm.controls.disabled">Disabled</mat-checkbox>
+</p>
 <p><strong>Length:</strong> {{family.length}} </p>
 
 <p>
@@ -47,19 +85,23 @@
 
 <h3 class="underline-span">Citations</h3>
 <ol>
-  <li *ngFor="let group of this.familyForm.controls.citations.controls; let index;">
+  <li *ngFor="let group of this.familyForm.controls.citations.controls; index as i;">
     <mat-form-field>
       <input matInput type="number" placeholder="PubMed ID"
         [formControl]="group.controls.pmid">
     </mat-form-field>
-    <button matButton (click)="this.familyForm.controls.citations.removeAt(index)">-</button>
+    <mat-form-field>
+      <input matInput type="text" placeholder="Comment"
+        [formControl]="group.controls.comment">
+    </mat-form-field>
+    <button matButton (click)="this.familyForm.controls.citations.removeAt(i)">-</button>
   </li>
 </ol>
 <button matButton (click)="addCitation()">+</button>
 
 <h3 class="underline-span">Aliases</h3>
 <ul>
-  <li *ngFor="let group of this.familyForm.controls.aliases.controls; let index;">
+  <li *ngFor="let group of this.familyForm.controls.aliases.controls; index as i;">
     <mat-form-field>
       <input matInput type="text" placeholder="Database"
         [formControl]="group.controls.database">
@@ -68,7 +110,12 @@
       <input matInput type="text" placeholder="Alias"
         [formControl]="group.controls.alias">
     </mat-form-field>
-    <button matButton (click)="this.familyForm.controls.aliases.removeAt(index)">-</button>
+    <mat-form-field>
+      <input matInput type="text" placeholder="Comment"
+        [formControl]="group.controls.comment">
+    </mat-form-field>
+    <mat-checkbox [formControl]="group.controls.deprecated">Deprecated</mat-checkbox>
+    <button matButton (click)="this.familyForm.controls.aliases.removeAt(i)">-</button>
   </li>
   <li><button matButton (click)="addAlias()">+</button></li>
 </ul>

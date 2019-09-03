@@ -61,6 +61,13 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
       .pipe(catchError(this.handleError('getFamily', null)));
   }
 
+  patchFamily(accession: string, changeset: any): Observable<{}> {
+    const url = this.familyPath(accession);
+    const opts = this.optsWithAuth();
+    return this.http.patch<any>(url, changeset, opts)
+      .pipe(catchError(this.handleError('patchFamily', null)));
+  }
+
   // NB: If download is true, criteria.start and criteria.limit are ignored.
   // This corresponds most closely to the usual usage within Dfam-Portal.
   getFamiliesUrlOptions(criteria: FamilyCriteria, format?: string, download?: boolean): [string, { params: HttpParams, headers: HttpHeaders }] {
