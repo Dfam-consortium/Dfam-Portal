@@ -93,12 +93,12 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
   }
 
   getFamiliesDownloadUrl(criteria: FamilyCriteria, format: string): string {
-    let [url, options] = this.getFamiliesUrlOptions(criteria, format, true);
+    const [url, options] = this.getFamiliesUrlOptions(criteria, format, true);
     return url + '?' + options.params.toString();
   }
 
   getFamilies(criteria: FamilyCriteria): Observable<FamilyResults> {
-    let [url, options] = this.getFamiliesUrlOptions(criteria);
+    const [url, options] = this.getFamiliesUrlOptions(criteria);
     return this.http.get<FamilyResults>(url, options)
       .pipe(catchError(this.handleError('getFamilies', { results: [], total_count: 0 })));
   }

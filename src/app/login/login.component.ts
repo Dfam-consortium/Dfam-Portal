@@ -8,10 +8,10 @@ import { AuthService } from '../shared/services';
 
 })
 export class LoginComponent implements OnInit {
-  loginType: string = '';
-  title: string = '';
+  loginType = '';
+  title = '';
   error: string;
-  isSubmitting: boolean = false;
+  isSubmitting = false;
 
   fullName: string;
   email: string;
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
             if (err.error && err.error.message) {
               this.error = err.error.message;
             } else if (err.statusText) {
-              this.error = "Error: " + err.statusText;
+              this.error = 'Error: ' + err.statusText;
             } else {
               this.error = err.toString();
             }

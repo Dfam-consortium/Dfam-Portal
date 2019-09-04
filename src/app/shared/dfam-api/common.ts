@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Family, FamilySummary, Classification, Taxon } from './types';
+import { Family, Classification, Taxon } from './types';
 
 export interface FamilyCriteria {
   name_accession?: string;

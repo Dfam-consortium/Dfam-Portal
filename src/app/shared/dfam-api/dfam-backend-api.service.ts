@@ -17,6 +17,8 @@ const endpoint = '/api/backend/';
 })
 export class DfamBackendAPIService implements FamilyRepository, ClassesRepository, TaxaRepository {
 
+  apiToken: string;
+
   constructor(private http: HttpClient, private errorsService: ErrorsService) { }
 
   private extractData(res: Response) {
@@ -24,12 +26,10 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     return body || { };
   }
 
-  apiToken: string;
-
   private optsWithAuth(): { headers: HttpHeaders } {
     const opts = {
       headers: new HttpHeaders({
-        "Authorization": "Bearer " + this.apiToken,
+        'Authorization': 'Bearer ' + this.apiToken,
       }),
     };
 
@@ -70,7 +70,9 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
 
   // NB: If download is true, criteria.start and criteria.limit are ignored.
   // This corresponds most closely to the usual usage within Dfam-Portal.
-  getFamiliesUrlOptions(criteria: FamilyCriteria, format?: string, download?: boolean): [string, { params: HttpParams, headers: HttpHeaders }] {
+  getFamiliesUrlOptions(
+    criteria: FamilyCriteria, format?: string, download?: boolean
+  ): [string, { params: HttpParams, headers: HttpHeaders }] {
     const url = endpoint + 'families';
     const opts = this.optsWithAuth();
     const options = {
@@ -117,12 +119,12 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
   }
 
   getFamiliesDownloadUrl(criteria: FamilyCriteria, format: string): string {
-    let [url, options] = this.getFamiliesUrlOptions(criteria, format, true);
+    const [url, options] = this.getFamiliesUrlOptions(criteria, format, true);
     return url + '?' + options.params.toString();
   }
 
   getFamilies(criteria: FamilyCriteria): Observable<FamilyResults> {
-    let [url, options] = this.getFamiliesUrlOptions(criteria);
+    const [url, options] = this.getFamiliesUrlOptions(criteria);
     return this.http.get<FamilyResults>(url, options)
       .pipe(catchError(this.handleError('getFamilies', { results: [], total_count: 0 })));
   }

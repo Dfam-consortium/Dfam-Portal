@@ -1,12 +1,10 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
-import { Subject, forkJoin, pipe } from 'rxjs';
+import { Subject, forkJoin } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { FamilyRepository, ClassesRepository, TaxaRepository } from '../shared/dfam-api/common';
-import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
-import { Classification } from '../shared/dfam-api/types';
 
 function preg_quote( str ) {
     // http://kevin.vanzonneveld.net
@@ -51,7 +49,7 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
   classOptions: any[] = [];
   cladeOptions: any[] = [];
 
-  disableDownload: boolean = false;
+  disableDownload = false;
   downloadUrls = {};
 
   private classSearchTerm = new Subject<string>();
@@ -92,9 +90,9 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
         let depth = 1;
         while (depth < 5 && (depth < 2 || has_duplicates(classes.map(c => c.name_markup)))) {
           depth += 1;
-          for(let i = 0; i < classes.length; i++) {
+          for (let i = 0; i < classes.length; i++) {
             const c = classes[i];
-            let start = c.names.length - depth;
+            const start = c.names.length - depth;
             if (start < 0) { continue; }
             const parent_name = c.names[start];
             c.name_markup = parent_name + ';' + c.name_markup;
@@ -175,13 +173,13 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     const initialClass = queryParamMap.get('classification');
     if (initialClass) {
       const lastSemi = initialClass.lastIndexOf(';');
-      if (lastSemi != -1) {
+      if (lastSemi !== -1) {
         const lastSegment = initialClass.substring(lastSemi + 1);
         this.search.classification = { name: lastSegment, full_name: initialClass };
         this.searchApiOptions.classification = initialClass;
       }
     }
-    const initialClade = parseInt(queryParamMap.get('clade'));
+    const initialClade = parseInt(queryParamMap.get('clade'), 10);
     if (initialClade) {
       pending.push(this.repository.getTaxonById(initialClade).pipe(map(taxon => {
         if (taxon) {
@@ -205,16 +203,16 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
       this.search.keywords = initialK;
       this.searchApiOptions.keywords = initialK;
     }
-    const initialP = parseInt(this.route.snapshot.queryParamMap.get('page'));
+    const initialP = parseInt(this.route.snapshot.queryParamMap.get('page'), 10);
     if (initialP) {
-      const initialPS = parseInt(this.route.snapshot.queryParamMap.get('pageSize'));
+      const initialPS = parseInt(this.route.snapshot.queryParamMap.get('pageSize'), 10);
       this.paginator.pageIndex = initialP;
       this.paginator.pageSize = initialPS;
     }
     const initialSort = this.route.snapshot.queryParamMap.get('sort');
     if (initialSort) {
       const parts = initialSort.split(':');
-      if (parts.length == 2) {
+      if (parts.length === 2) {
         this.sort.active = parts[0];
         this.sort.direction = parts[1] as SortDirection;
         this.searchApiOptions.sort = initialSort;
@@ -312,7 +310,7 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     this.searchApiOptions.start = this.paginator.pageSize * this.paginator.pageIndex;
     this.repository.getFamilies(this.searchApiOptions).subscribe(data => {
       this.disableDownload = (data.total_count <= 0 || data.total_count > 2000);
-      for (const format of ["hmm", "embl", "fasta"]) {
+      for (const format of ['hmm', 'embl', 'fasta']) {
         this.downloadUrls[format] = this.repository.getFamiliesDownloadUrl(this.searchApiOptions, format);
       }
 

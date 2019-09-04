@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { DfamBackendAPIService } from '../dfam-api/dfam-backend-api.service';
@@ -26,7 +25,6 @@ export class AuthService implements CanActivate {
   constructor (
     private router: Router,
     private dfamBackendAPIService: DfamBackendAPIService,
-    private jwtHelper: JwtHelperService
   ) {
     this.restore();
   }
@@ -47,8 +45,8 @@ export class AuthService implements CanActivate {
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean>
-  {
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
     return this.isAuthenticated.pipe(map(isAuth => {
       if (!isAuth) {
         this.router.navigate(['/login']);
@@ -61,7 +59,7 @@ export class AuthService implements CanActivate {
   // Verify JWT in localstorage with server and load user's info.
   // This runs once on application startup.
   restore() {
-    let storedToken = this.getStoredToken();
+    const storedToken = this.getStoredToken();
     if (storedToken) {
       this.dfamBackendAPIService.apiToken = storedToken;
       this.loadUserData();

@@ -59,6 +59,21 @@ export class WorkbenchFamilyComponent implements OnInit {
     clades: this.fb.array([]),
   });
 
+  static validateClade(control: AbstractControl): { [key: string]: any } | null {
+    if (!control.value) {
+      return { 'required': { } };
+    }
+
+    // This is a somewhat roundabout way to check if a clade was actually
+    // clicked - which results in value being a { id: ..., name: ... } object -
+    // or just typed, which results in a string with no 'id' property.
+    if (!control.value.hasOwnProperty('id')) {
+      return { 'cladeNotConfirmed': { } };
+    }
+
+    return null;
+  }
+
   constructor(
     private fb: FormBuilder,
     private dfambackendapi: DfamBackendAPIService,
@@ -119,21 +134,6 @@ export class WorkbenchFamilyComponent implements OnInit {
     cladesArray.push(this.fb.control(data, [WorkbenchFamilyComponent.validateClade]));
   }
 
-  static validateClade(control: AbstractControl): { [key: string]: any } | null {
-    if (!control.value) {
-      return { 'required': { } };
-    }
-
-    // This is a somewhat roundabout way to check if a clade was actually
-    // clicked - which results in value being a { id: ..., name: ... } object -
-    // or just typed, which results in a string with no 'id' property.
-    if (!control.value.hasOwnProperty('id')) {
-      return { 'cladeNotConfirmed': { } };
-    }
-
-    return null;
-  }
-
   getFamily() {
     const accession = this.route.snapshot.params['id'];
     this.dfambackendapi.getFamily(accession).subscribe(data => {
@@ -186,8 +186,8 @@ export class WorkbenchFamilyComponent implements OnInit {
         return flattened;
       };
 
-      const flattened = flatten(root);
-      this.allClassificationsSubject.next(flattened);
+      const flattened_all = flatten(root);
+      this.allClassificationsSubject.next(flattened_all);
       this.rootClassificationSubject.next(<Classification>root);
     });
   }
@@ -197,7 +197,7 @@ export class WorkbenchFamilyComponent implements OnInit {
     if (!this.familyForm.valid) {
       // Mark all as touched, so that any untouched controls can now properly appear as invalid
       this.familyForm.markAllAsTouched();
-      this.errorsService.logError("Form is incomplete or invalid.");
+      this.errorsService.logError('Form is incomplete or invalid.');
       return;
     }
 
@@ -221,14 +221,14 @@ export class WorkbenchFamilyComponent implements OnInit {
       }
     }
 
-    copyIfChanged("title");
-    copyIfChanged("description");
-    copyIfChanged("classification_id");
-    copyIfChanged("curation_state_name");
-    copyIfChanged("disabled");
-    copyIfChanged("target_site_cons");
-    copyIfChanged("curation_notes");
-    copyIfChanged("author");
+    copyIfChanged('title');
+    copyIfChanged('description');
+    copyIfChanged('classification_id');
+    copyIfChanged('curation_state_name');
+    copyIfChanged('disabled');
+    copyIfChanged('target_site_cons');
+    copyIfChanged('curation_notes');
+    copyIfChanged('author');
 
     // Change checking aliases is a bit tricky. First, we convert
     // the form values back to objects. Then, we check the number
@@ -238,27 +238,27 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     const aliasesArray = controls.aliases as FormArray;
     const aliasObjs = (<FormGroup[]>aliasesArray.controls).map(a => {
-      const controls = < { [key: string]: FormControl }>(a.controls);
+      const alias_controls = < { [key: string]: FormControl }>(a.controls);
       return {
-        database: controls['database'].value,
-        alias: controls['alias'].value,
-        comment: controls['comment'].value || '',
-        deprecated: controls['deprecated'].value,
+        database: alias_controls['database'].value,
+        alias: alias_controls['alias'].value,
+        comment: alias_controls['comment'].value || '',
+        deprecated: alias_controls['deprecated'].value,
       };
     });
 
     let aliasesChanged = false;
     if (aliasObjs.length === old.aliases.length) {
       const aliasFieldChanged = function(i, field) {
-        return aliasObjs[i][field] != old.aliases[i][field];
+        return aliasObjs[i][field] !== old.aliases[i][field];
       };
 
       for (let i = 0; i < aliasObjs.length; i++) {
         if (
-            aliasFieldChanged(i, "database") ||
-            aliasFieldChanged(i, "alias") ||
-            aliasFieldChanged(i, "comment") ||
-            aliasFieldChanged(i, "deprecated")
+            aliasFieldChanged(i, 'database') ||
+            aliasFieldChanged(i, 'alias') ||
+            aliasFieldChanged(i, 'comment') ||
+            aliasFieldChanged(i, 'deprecated')
         ) {
           aliasesChanged = true;
           break;
@@ -276,23 +276,23 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     const citationsArray = controls.citations as FormArray;
     const citationObjs = (<FormGroup[]>citationsArray.controls).map(c => {
-      const controls = < { [key: string]: FormControl }>(c.controls);
+      const cit_controls = < { [key: string]: FormControl }>(c.controls);
       return {
-        pmid: controls['pmid'].value,
-        comment: controls['comment'].value || '',
+        pmid: cit_controls['pmid'].value,
+        comment: cit_controls['comment'].value || '',
       };
     });
 
     let citationsChanged = false;
     if (citationObjs.length === old.citations.length) {
       const citationFieldChanged = function(i, field) {
-        return citationObjs[i][field] != old.citations[i][field];
+        return citationObjs[i][field] !== old.citations[i][field];
       };
 
       for (let i = 0; i < citationObjs.length; i++) {
         if (
-            citationFieldChanged(i, "pmid") ||
-            citationFieldChanged(i, "comment")
+            citationFieldChanged(i, 'pmid') ||
+            citationFieldChanged(i, 'comment')
         ) {
           citationsChanged = true;
           break;
@@ -311,13 +311,13 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     const cladesArray = controls.clades as FormArray;
     const cladeVals = (<FormGroup[]>cladesArray.controls)
-      .map(c => c.value ? parseInt(c.value.id) : NaN)
+      .map(c => c.value ? parseInt(c.value.id, 10) : NaN)
       .filter(c => !isNaN(c));
 
     let cladesChanged = false;
     if (cladeVals.length === old.clade_ids.length) {
       for (let i = 0; i < cladeVals.length; i++) {
-        if (cladeVals[i] != old.clade_ids[i]) {
+        if (cladeVals[i] !== old.clade_ids[i]) {
           cladesChanged = true;
           break;
         }
@@ -339,11 +339,11 @@ export class WorkbenchFamilyComponent implements OnInit {
 
   displayClassById(id: number): Observable<string> {
     return this.allClassificationsSubject.pipe(map(clss => {
-      const cls = clss.find(c => c.id == id);
+      const cls = clss.find(c => c.id === id);
       if (cls) {
         return cls.full_name;
       } else {
-        return "<Unknown>";
+        return '<Unknown>';
       }
     }));
   }
@@ -356,10 +356,10 @@ export class WorkbenchFamilyComponent implements OnInit {
     this.rootClassificationSubject.subscribe(root => {
       const dialogRef = this.dialog.open(FamilyClassificationDialogComponent, {
         data: { rootNode: root },
-        width: "50vw",
+        width: '50vw',
       });
       dialogRef.afterClosed().subscribe(result => {
-        const id = parseInt(result);
+        const id = parseInt(result, 10);
         if (!isNaN(id)) {
           this.familyForm.controls.classification_id.setValue(id);
         }
