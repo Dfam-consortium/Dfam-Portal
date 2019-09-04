@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { Observable, Subject, ReplaySubject } from 'rxjs';
 import { map, debounceTime } from 'rxjs/operators';
 
 import { Classification } from '../../shared/dfam-api/types';
 import { DfamBackendAPIService } from '../../shared/dfam-api/dfam-backend-api.service';
-
+import { ErrorsService } from '../../shared/services/errors.service';
 
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
@@ -47,9 +47,9 @@ export class WorkbenchFamilyComponent implements OnInit {
   familyForm = this.fb.group({
     title: [''],
     description: [''],
-    classification_id: 0,
-    curation_state_name: '',
-    disabled: false,
+    classification_id: [0],
+    curation_state_name: [''],
+    disabled: [false],
     target_site_cons: [''],
     curation_notes: [''],
     author: [''],
@@ -61,6 +61,7 @@ export class WorkbenchFamilyComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dfambackendapi: DfamBackendAPIService,
+    private errorsService: ErrorsService,
     private route: ActivatedRoute,
   ) { }
 
@@ -90,19 +91,45 @@ export class WorkbenchFamilyComponent implements OnInit {
 
   }
 
-  addAlias() {
+  addAlias(data?) {
     const aliasesArray = this.familyForm.controls.aliases as FormArray;
-    aliasesArray.push(this.fb.group({ database: '', alias: '', comment: '', deprecated: false }));
+    data = data || { database: '', alias: '', comment: '', deprecated: false };
+    aliasesArray.push(this.fb.group({
+      database: [data.database, Validators.required],
+      alias: [data.alias, Validators.required],
+      comment: [data.comment],
+      deprecated: [data.deprecated],
+    }));
   }
 
-  addCitation() {
+  addCitation(data?) {
     const citationsArray = this.familyForm.controls.citations as FormArray;
-    citationsArray.push(this.fb.group({ pmid: null, comment: '' }));
+    data = data || { pmid: null, comment: '' };
+    citationsArray.push(this.fb.group({
+      pmid: [data.pmid, Validators.required],
+      comment: [data.comment],
+    }));
   }
 
-  addClade() {
+  addClade(data?) {
     const cladesArray = this.familyForm.controls.clades as FormArray;
-    cladesArray.push(this.fb.control(null));
+    data = data || null;
+    cladesArray.push(this.fb.control(data, [WorkbenchFamilyComponent.validateClade]));
+  }
+
+  static validateClade(control: AbstractControl): { [key: string]: any } | null {
+    if (!control.value) {
+      return { 'required': { } };
+    }
+
+    // This is a somewhat roundabout way to check if a clade was actually
+    // clicked - which results in value being a { id: ..., name: ... } object -
+    // or just typed, which results in a string with no 'id' property.
+    if (!control.value.hasOwnProperty('id')) {
+      return { 'cladeNotConfirmed': { } };
+    }
+
+    return null;
   }
 
   getFamily() {
@@ -125,13 +152,13 @@ export class WorkbenchFamilyComponent implements OnInit {
       const aliasesArray = controls.aliases as FormArray;
       aliasesArray.clear();
       this.family.aliases.forEach(a => {
-        aliasesArray.push(this.fb.group({ database: a.database, alias: a.alias, comment: a.comment, deprecated: a.deprecated }));
+        this.addAlias(a);
       });
 
       const citationsArray = controls.citations as FormArray;
       citationsArray.clear();
       this.family.citations.forEach(c => {
-        citationsArray.push(this.fb.group({ pmid: c.pmid, comment: c.comment }));
+        this.addCitation(c);
       });
 
       const cladesArray = controls.clades as FormArray;
@@ -139,10 +166,10 @@ export class WorkbenchFamilyComponent implements OnInit {
       for (let i = 0; i < this.family.clades.length; i++) {
         const full_name = this.family.clades[i];
         const semi_at = full_name.lastIndexOf(';');
-        cladesArray.push(this.fb.control({
+        this.addClade({
           id: this.family.clade_ids[i],
           name: full_name.substring(semi_at + 1),
-        }));
+        });
       }
     });
   }
@@ -165,6 +192,14 @@ export class WorkbenchFamilyComponent implements OnInit {
   }
 
   saveFamily() {
+    // Ensure the form is valid.
+    if (!this.familyForm.valid) {
+      // Mark all as touched, so that any untouched controls can now properly appear as invalid
+      this.familyForm.markAllAsTouched();
+      this.errorsService.logError("Form is incomplete or invalid.");
+      return;
+    }
+
     if (this.saving) {
       return;
     }
@@ -274,7 +309,9 @@ export class WorkbenchFamilyComponent implements OnInit {
     // it's just the one field.
 
     const cladesArray = controls.clades as FormArray;
-    const cladeVals = (<FormGroup[]>cladesArray.controls).map(c => parseInt(c.value.id));
+    const cladeVals = (<FormGroup[]>cladesArray.controls)
+      .map(c => c.value ? parseInt(c.value.id) : NaN)
+      .filter(c => !isNaN(c));
 
     let cladesChanged = false;
     if (cladeVals.length === old.clade_ids.length) {
