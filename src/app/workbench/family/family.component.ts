@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AbstractControl, FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 
+import { MatDialog } from '@angular/material/dialog';
+
 import { Observable, Subject, ReplaySubject } from 'rxjs';
 import { map, debounceTime } from 'rxjs/operators';
 
+import { FamilyClassificationDialogComponent } from './family-classification-dialog.component';
 import { Classification } from '../../shared/dfam-api/types';
 import { DfamBackendAPIService } from '../../shared/dfam-api/dfam-backend-api.service';
 import { ErrorsService } from '../../shared/services/errors.service';
-
-import { NestedTreeControl } from '@angular/cdk/tree';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
 
 function preg_quote( str ) {
     // http://kevin.vanzonneveld.net
@@ -37,6 +37,7 @@ function preg_quote( str ) {
 export class WorkbenchFamilyComponent implements OnInit {
   family;
 
+  rootClassificationSubject = new ReplaySubject<Classification>(1);
   allClassificationsSubject = new ReplaySubject<Classification[]>(1);
 
   cladeSearchTerm = new Subject<string>();
@@ -61,6 +62,7 @@ export class WorkbenchFamilyComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dfambackendapi: DfamBackendAPIService,
+    private dialog: MatDialog,
     private errorsService: ErrorsService,
     private route: ActivatedRoute,
   ) { }
@@ -186,8 +188,7 @@ export class WorkbenchFamilyComponent implements OnInit {
 
       const flattened = flatten(root);
       this.allClassificationsSubject.next(flattened);
-
-      this.classificationTreeDataSource.data = (<Classification>root).children;
+      this.rootClassificationSubject.next(<Classification>root);
     });
   }
 
@@ -351,22 +352,18 @@ export class WorkbenchFamilyComponent implements OnInit {
     return clade ? clade.name : '';
   }
 
-
-  isPickingClassification = false;
-
   pickClassification() {
-    this.isPickingClassification = true;
-  }
-
-  chooseClassification(id: number) {
-    this.familyForm.controls.classification_id.setValue(id);
-    this.isPickingClassification = false;
-  }
-
-  classificationTreeDataSource = new MatTreeNestedDataSource<Classification>();
-  classificationTreeControl = new NestedTreeControl<Classification>(node => node.children);
-
-  classificationNodeHasChild(index, node: Classification) {
-    return !!node.children && node.children.length > 0;
+    this.rootClassificationSubject.subscribe(root => {
+      const dialogRef = this.dialog.open(FamilyClassificationDialogComponent, {
+        data: { rootNode: root },
+        width: "50vw",
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        const id = parseInt(result);
+        if (!isNaN(id)) {
+          this.familyForm.controls.classification_id.setValue(id);
+        }
+      });
+    });
   }
 }

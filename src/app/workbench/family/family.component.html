@@ -37,37 +37,6 @@
   <strong>Classification: </strong>
   <button mat-raised-button (click)="pickClassification()"><mat-icon>list</mat-icon></button>
   {{ displayClassById(familyForm.controls.classification_id.value) | async }}
-
-  <mat-tree *ngIf="isPickingClassification"
-      [dataSource]="classificationTreeDataSource"
-      [treeControl]="classificationTreeControl">
-    <mat-tree-node *matTreeNodeDef="let node">
-      <li>
-        <button mat-icon-button (click)="chooseClassification(node.id)"><mat-icon>link</mat-icon></button>
-        <span>
-          <button mat-icon-button disabled><!-- spacer --></button>
-          {{node.name}}
-        </span>
-      </li>
-    </mat-tree-node>
-
-    <mat-nested-tree-node *matTreeNodeDef="let node; when: classificationNodeHasChild">
-      <li>
-        <button mat-icon-button (click)="chooseClassification(node.id)"><mat-icon>link</mat-icon></button>
-        <span matTreeNodeToggle>
-          <button mat-icon-button [attr.aria-label]="'toggle ' + node.name">
-            <mat-icon>
-              {{ classificationTreeControl.isExpanded(node) ? 'arrow_drop_down' : 'arrow_right' }}
-            </mat-icon>
-          </button>
-          {{node.name}}
-        </span>
-      </li>
-      <ul [class.collapsed]="!classificationTreeControl.isExpanded(node)">
-        <ng-container matTreeNodeOutlet></ng-container>
-      </ul>
-    </mat-nested-tree-node>
-  </mat-tree>
 </p>
 
 <p><strong>Taxa:</strong></p>

@@ -38,6 +38,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatTreeModule} from '@angular/material/tree';
+import {MatDialogModule} from '@angular/material/dialog';
 
 // Application Imports
 import { AppComponent } from './app.component';
@@ -90,6 +91,7 @@ import { AssemblyPickerComponent } from './shared/assembly-picker/assembly-picke
 import { WorkbenchBrowseComponent } from './workbench/browse/browse.component';
 import { WorkbenchFamilyComponent } from './workbench/family/family.component';
 import { UserComponent } from './workbench/user/user.component';
+import { FamilyClassificationDialogComponent } from './workbench/family/family-classification-dialog.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -146,6 +148,7 @@ export function tokenGetter() {
     AssemblyPickerComponent,
     WorkbenchBrowseComponent,
     WorkbenchFamilyComponent,
+    FamilyClassificationDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -177,6 +180,7 @@ export function tokenGetter() {
     MatSidenavModule,
     MatListModule,
     MatTreeModule,
+    MatDialogModule,
     BrowserModule,
     // Angular-Jwt for decoding tokens and sending it along through HTTP request auto-magically
     JwtModule.forRoot({
@@ -187,6 +191,9 @@ export function tokenGetter() {
       }
     }),
     AppRoutingModule,
+  ],
+  entryComponents: [
+    FamilyClassificationDialogComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
