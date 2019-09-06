@@ -337,6 +337,9 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     this.dfambackendapi.patchFamily(this.family.accession, changeset).subscribe(r => {
       this.saving = false;
+      this.getFamily();
+    }, e => {
+      this.saving = false;
     });
   }
 

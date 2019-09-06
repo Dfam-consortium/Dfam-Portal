@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, tap, catchError } from 'rxjs/operators';
 
 import { ErrorsService } from '../services/errors.service';
 import { FamilyCriteria, FamilyRepository, FamilyResults, ClassesRepository, TaxaResults, TaxaRepository } from './common';
@@ -65,7 +65,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     const url = this.familyPath(accession);
     const opts = this.optsWithAuth();
     return this.http.patch<any>(url, changeset, opts)
-      .pipe(catchError(this.handleError('patchFamily', null)));
+      .pipe(tap(null, this.handleError("patchFamily", null)));
   }
 
   // NB: If download is true, criteria.start and criteria.limit are ignored.
