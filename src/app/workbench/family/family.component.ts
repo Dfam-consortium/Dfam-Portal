@@ -46,6 +46,7 @@ export class WorkbenchFamilyComponent implements OnInit {
   saving = false;
 
   familyForm = this.fb.group({
+    name: [''],
     title: [''],
     description: [''],
     classification_id: [0],
@@ -141,6 +142,7 @@ export class WorkbenchFamilyComponent implements OnInit {
 
       const controls = this.familyForm.controls;
 
+      controls.name.setValue(this.family.name);
       controls.title.setValue(this.family.title);
       controls.description.setValue(this.family.description);
 
@@ -221,6 +223,7 @@ export class WorkbenchFamilyComponent implements OnInit {
       }
     }
 
+    copyIfChanged('name');
     copyIfChanged('title');
     copyIfChanged('description');
     copyIfChanged('classification_id');

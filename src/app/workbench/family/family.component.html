@@ -11,19 +11,17 @@
 </button>
 
 
-<h2 class="green">{{family.accession}}.{{family.version}}
-  <span *ngIf="family.name">[{{family.name}}]</span>
-</h2>
-
-<h3 class="underline-span">Info</h3>
+<h2 class="green">{{family.accession}}.{{family.version}}</h2>
 
 <p>
   <mat-form-field class="wide">
-    <input matInput type="text"
-      placeholder="Title"
-      [formControl]="familyForm.controls.title">
+    <input matInput type="text" placeholder="Name"
+      size="30"
+      [formControl]="familyForm.controls.name">
   </mat-form-field>
 </p>
+
+<h3 class="underline-span">Info</h3>
 
 <p>
   <mat-form-field class="wide">
