@@ -4,7 +4,7 @@ import { debounceTime, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { FamilyRepository, ClassesRepository, TaxaRepository } from '../shared/dfam-api/common';
+import { FamilyRepository, ClassesRepository, TaxaRepository } from '../dfam-api/common';
 
 function preg_quote( str ) {
     // http://kevin.vanzonneveld.net

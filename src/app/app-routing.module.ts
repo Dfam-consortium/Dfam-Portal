@@ -24,12 +24,7 @@ import { HelpToolsComponent } from './help/help-tools.component';
 import { HelpApiComponent } from './help/help-api.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './login/login.component';
-import { WorkbenchLayoutComponent } from './shared';
-import { UserComponent } from './workbench/user/user.component';
-import { WorkbenchBrowseComponent } from './workbench/browse/browse.component';
-import { WorkbenchFamilyComponent } from './workbench/family/family.component';
 import { PublicLayoutComponent } from './shared';
-import { AuthService } from './shared';
 
 export const PUBLIC_ROUTES: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -67,19 +62,11 @@ export const PUBLIC_ROUTES: Routes = [
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 
-export const SECURE_ROUTES: Routes = [
-  { path: '', redirectTo: 'user', pathMatch: 'full' },
-  { path: 'user', component: UserComponent },
-  { path: 'browse', component: WorkbenchBrowseComponent },
-  { path: 'family/:id', component: WorkbenchFamilyComponent },
-];
-
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: LoginComponent},
-  { path: 'workbench', component: WorkbenchLayoutComponent, canActivate: [AuthService],
-    data: { title: 'Workbench Views' }, children: SECURE_ROUTES },
+  { path: 'workbench', loadChildren: () => import('./workbench/workbench.module').then(mod => mod.WorkbenchModule) },
   { path: '', component: PublicLayoutComponent, data: { title: 'Public Views' }, children: PUBLIC_ROUTES },
 ];
 

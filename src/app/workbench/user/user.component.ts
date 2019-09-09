@@ -5,7 +5,7 @@ import { AuthService, User } from '../../shared/services/auth.service';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit {
+export class WorkbenchUserComponent implements OnInit {
   title = 'Dfam';
 
   user: User;
