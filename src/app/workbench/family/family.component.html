@@ -16,7 +16,6 @@
 <p>
   <mat-form-field class="wide">
     <input matInput type="text" placeholder="Name"
-      size="30"
       [formControl]="familyForm.controls.name">
   </mat-form-field>
 </p>
@@ -24,6 +23,11 @@
 <h3 class="underline-span">Info</h3>
 
 <p>
+  <mat-form-field class="wide">
+    <input matInput type="text" placeholder="Title"
+      [formControl]="familyForm.controls.title">
+  </mat-form-field>
+
   <mat-form-field class="wide">
     <textarea matInput placeholder="Description" [formControl]="familyForm.controls.description"></textarea>
   </mat-form-field>
