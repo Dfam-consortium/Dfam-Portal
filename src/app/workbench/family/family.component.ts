@@ -216,6 +216,10 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     const changeset: any = {};
 
+    // This is used to ensure simultaneous users do not step on each others
+    // toes while editing the same family
+    changeset.verify_date_modified = old.date_modified;
+
     function copyIfChanged(field: string, controlField?: string) {
       controlField = controlField || field;
       if (old[field] !== controls[controlField].value) {
