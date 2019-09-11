@@ -2,6 +2,13 @@
 
 <mat-dialog-content>
 
+<mat-form-field>
+  <input matInput type="text"
+    placeholder="Search"
+    [formControl]="classificationSearch"
+    (input)="filterTree()">
+</mat-form-field>
+
 <mat-tree
     [dataSource]="classificationTreeDataSource"
     [treeControl]="classificationTreeControl">
@@ -10,7 +17,7 @@
       <button mat-icon-button (click)="chooseClassification(node.id)"><mat-icon>link</mat-icon></button>
       <span>
         <button mat-icon-button disabled><!-- spacer --></button>
-        {{node.name}}
+        <span [innerHTML]="displayNameWithHighlight(node)"></span>
       </span>
     </li>
   </mat-tree-node>
@@ -24,7 +31,7 @@
             {{ classificationTreeControl.isExpanded(node) ? 'arrow_drop_down' : 'arrow_right' }}
           </mat-icon>
         </button>
-        {{node.name}}
+        <span [innerHTML]="displayNameWithHighlight(node)"></span>
       </span>
     </li>
     <ul [class.collapsed]="!classificationTreeControl.isExpanded(node)">
