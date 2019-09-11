@@ -48,7 +48,7 @@
 </mat-card>
 
 <mat-card>
-<mat-card-title>Taxa</mat-card-title>
+<mat-card-title>Taxa <workbench-warning-icon></workbench-warning-icon></mat-card-title>
 
 <mat-list>
   <mat-list-item *ngFor="let control of this.familyForm.controls.clades.controls; index as i;">
@@ -89,9 +89,13 @@
       <mat-option value="Rejected">Rejected</mat-option>
       <mat-option value="Released">Released</mat-option>
     </mat-select>
+    <workbench-warning-icon matSuffix></workbench-warning-icon>
   </mat-form-field>
 
-  <p><mat-checkbox [formControl]="familyForm.controls.disabled">Disabled</mat-checkbox></p>
+  <p>
+    <mat-checkbox [formControl]="familyForm.controls.disabled">Disabled</mat-checkbox>
+    <workbench-warning-icon></workbench-warning-icon>
+  </p>
 
   <p><strong>Length:</strong> {{family.length}} </p>
 

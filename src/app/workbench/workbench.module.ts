@@ -17,6 +17,7 @@ import { WorkbenchUserComponent } from './user/user.component';
 import { WorkbenchBrowseComponent } from './browse/browse.component';
 import { WorkbenchFamilyComponent } from './family/family.component';
 import { FamilyClassificationDialogComponent } from './family/family-classification-dialog.component';
+import { WarningIconComponent } from './warning-icon/warning-icon.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { FamilyClassificationDialogComponent } from './family/family-classificat
     WorkbenchBrowseComponent,
     WorkbenchFamilyComponent,
     FamilyClassificationDialogComponent,
+    WarningIconComponent,
   ],
   imports: [
     CommonModule,
