@@ -11,7 +11,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
 
 // Material Imports
-import {MatCardModule} from '@angular/material/card';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
@@ -115,7 +114,6 @@ export function tokenGetter() {
     CommonModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatCardModule,
     MatRadioModule,
     MatMenuModule,
     MatTabsModule,

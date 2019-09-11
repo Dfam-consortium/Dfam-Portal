@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 // Material Imports
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -61,6 +62,7 @@ import { LoaderComponent } from './loader/loader.component';
 
     MatAutocompleteModule,
     MatButtonModule,
+    MatCardModule,
     MatCheckboxModule,
     MatDividerModule,
     MatExpansionModule,
