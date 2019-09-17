@@ -43,6 +43,9 @@ export class WorkbenchFamilyComponent implements OnInit {
   cladeSearchTerm = new Subject<string>();
   cladeOptions: any[];
 
+  curationStateOptions: any[];
+  rmStageOptions: any[];
+
   saving = false;
 
   familyForm = this.fb.group({
@@ -50,7 +53,7 @@ export class WorkbenchFamilyComponent implements OnInit {
     title: [''],
     description: [''],
     classification_id: [0],
-    curation_state_name: [''],
+    curation_state_id: [''],
     disabled: [false],
     target_site_cons: [''],
     curation_notes: [''],
@@ -58,6 +61,8 @@ export class WorkbenchFamilyComponent implements OnInit {
     aliases: this.fb.array([]),
     citations: this.fb.array([]),
     clades: this.fb.array([]),
+    search_stages: this.fb.array([]),
+    buffer_stages: this.fb.array([]),
   });
 
   static validateClade(control: AbstractControl): { [key: string]: any } | null {
@@ -85,6 +90,7 @@ export class WorkbenchFamilyComponent implements OnInit {
 
   ngOnInit() {
     this.getFamily();
+    this.getMetadata();
     this.getClassifications();
 
     this.cladeSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
@@ -135,6 +141,22 @@ export class WorkbenchFamilyComponent implements OnInit {
     cladesArray.push(this.fb.control(data, [WorkbenchFamilyComponent.validateClade]));
   }
 
+  addSearchStage(data?) {
+    const searchStagesArray = this.familyForm.controls.search_stages as FormArray;
+    data = data || null;
+    searchStagesArray.push(this.fb.control(data, Validators.required));
+  }
+
+  addBufferStage(data?) {
+    const bufferStagesArray = this.familyForm.controls.buffer_stages as FormArray;
+    data = data || { stage: null, start: 0, end: 0 };
+    bufferStagesArray.push(this.fb.group({
+      stage: [data.stage, Validators.required],
+      start: [data.start],
+      end: [data.end],
+    }));
+  }
+
   getFamily() {
     const accession = this.route.snapshot.params['id'];
     this.dfambackendapi.getFamily(accession).subscribe(data => {
@@ -147,7 +169,7 @@ export class WorkbenchFamilyComponent implements OnInit {
       controls.description.setValue(this.family.description);
 
       controls.classification_id.setValue(this.family.classification_id);
-      controls.curation_state_name.setValue(this.family.curation_state_name);
+      controls.curation_state_id.setValue(this.family.curation_state_id);
       controls.disabled.setValue(this.family.disabled);
       controls.target_site_cons.setValue(this.family.target_site_cons);
       controls.curation_notes.setValue(this.family.curation_notes);
@@ -175,6 +197,25 @@ export class WorkbenchFamilyComponent implements OnInit {
           name: full_name.substring(semi_at + 1),
         });
       }
+
+      const sStagesArray = controls.search_stages as FormArray;
+      sStagesArray.clear();
+      this.family.search_stages.forEach(ss => {
+        this.addSearchStage(ss.id);
+      });
+
+      const bStagesArray = controls.buffer_stages as FormArray;
+      bStagesArray.clear();
+      this.family.buffer_stages.forEach(bs => {
+        this.addBufferStage({ stage: bs.id, start: bs.start, end: bs.end });
+      });
+    });
+  }
+
+  getMetadata() {
+    this.dfambackendapi.getMetadata().subscribe(meta => {
+      this.curationStateOptions = meta.curation_states;
+      this.rmStageOptions = meta.repeatmasker_stages;
     });
   }
 
@@ -231,7 +272,7 @@ export class WorkbenchFamilyComponent implements OnInit {
     copyIfChanged('title');
     copyIfChanged('description');
     copyIfChanged('classification_id');
-    copyIfChanged('curation_state_name');
+    copyIfChanged('curation_state_id');
     copyIfChanged('disabled');
     copyIfChanged('target_site_cons');
     copyIfChanged('curation_notes');
@@ -313,8 +354,7 @@ export class WorkbenchFamilyComponent implements OnInit {
       changeset.citations = citationObjs;
     }
 
-    // And the same with clades, which is a bit easier because
-    // it's just the one field.
+    // Clades is a bit easier because it's just the one field.
 
     const cladesArray = controls.clades as FormArray;
     const cladeVals = (<FormGroup[]>cladesArray.controls)
@@ -335,6 +375,57 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     if (cladesChanged) {
       changeset.clade_ids = cladeVals;
+    }
+
+    // Search stages
+
+    const searchStagesArray = controls.search_stages as FormArray;
+    const searchStageVals = (<FormGroup[]>searchStagesArray.controls).map(c => c.value);
+
+    let searchStagesChanged = false;
+    if (searchStageVals.length === old.search_stages.length) {
+      for (let i = 0; i < searchStageVals.length; i++) {
+        if (searchStageVals[i] !== old.search_stages[i].id) {
+          searchStagesChanged = true;
+          break;
+        }
+      }
+    } else {
+      searchStagesChanged = true;
+    }
+
+    if (searchStagesChanged) {
+      changeset.search_stages = searchStageVals;
+    }
+
+    // Buffer stages
+
+    const bufferStagesArray = controls.buffer_stages as FormArray;
+    const bufferStageObjs = bufferStagesArray.value;
+
+    let bufferStagesChanged = false;
+    if (bufferStageObjs.length === old.buffer_stages.length) {
+
+      const bufferStageFieldChanged = function(i, field) {
+        return bufferStageObjs[i][field] !== old.buffer_stages[i][field];
+      };
+
+      for (let i = 0; i < bufferStageObjs.length; i++) {
+        if (
+            bufferStageObjs[i].stage !== old.buffer_stages[i].id ||
+            bufferStageFieldChanged(i, 'start') ||
+            bufferStageFieldChanged(i, 'end')
+        ) {
+          bufferStagesChanged = true;
+          break;
+        }
+      }
+    } else {
+      bufferStagesChanged = true;
+    }
+
+    if (bufferStagesChanged) {
+      changeset.buffer_stages = bufferStageObjs;
     }
 
     // Finally, send the patch request.

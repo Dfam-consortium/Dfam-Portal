@@ -78,24 +78,80 @@
 </mat-card>
 
 <mat-card>
+<mat-card-title>Search Options</mat-card-title>
+
+<mat-card-content>
+  <p>
+    <mat-checkbox [formControl]="familyForm.controls.disabled">Disabled</mat-checkbox>
+    <workbench-warning-icon></workbench-warning-icon>
+  </p>
+
+  <div fxLayout.gt-sm="row">
+    <div fxFlex.gt-sm="50%">
+      <h3>Search Stages</h3>
+      <mat-list>
+        <mat-list-item *ngFor="let control of this.familyForm.controls.search_stages.controls; index as i;">
+          <mat-form-field class="wide">
+            <mat-select placeholder="Search Stage" [formControl]="control">
+              <mat-option *ngFor="let option of this.rmStageOptions" [value]="option.id">
+                {{option.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-icon-button fxFlexOffset="2em"
+              (click)="this.familyForm.controls.search_stages.removeAt(i)">
+            <mat-icon>remove_circle_outline</mat-icon>
+          </button>
+        </mat-list-item>
+        <mat-list-item>
+          <button mat-raised-button (click)="addSearchStage()"><mat-icon>add</mat-icon> Add</button>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div fxFlex.gt-sm="50%">
+      <h3>Buffer Stages</h3>
+      <mat-list>
+        <mat-list-item *ngFor="let group of this.familyForm.controls.buffer_stages.controls; index as i;">
+          <mat-form-field fxFlex="auto">
+            <mat-select placeholder="Buffer Stage" [formControl]="group.controls.stage">
+              <mat-option *ngFor="let option of this.rmStageOptions" [value]="option.id">
+                {{option.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field fxFlexOffset="1em">
+            <input matInput type="number" placeholder="Start" [formControl]="group.controls.start">
+          </mat-form-field>
+          <mat-form-field fxFlexOffset="1em">
+            <input matInput type="number" placeholder="End" [formControl]="group.controls.end">
+          </mat-form-field>
+          <button mat-icon-button fxFlexOffset="2em"
+              (click)="this.familyForm.controls.buffer_stages.removeAt(i)">
+            <mat-icon>remove_circle_outline</mat-icon>
+          </button>
+        </mat-list-item>
+        <mat-list-item>
+          <button mat-raised-button (click)="addBufferStage()"><mat-icon>add</mat-icon> Add</button>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+</mat-card-content>
+</mat-card>
+
+<mat-card>
 <mat-card-title>Curation Details</mat-card-title>
 
 <mat-card-content>
   <mat-form-field class="wide">
     <mat-select placeholder="Curation Status"
-      [formControl]="familyForm.controls.curation_state_name">
-      <mat-option value="Submitted">Submitted</mat-option>
-      <mat-option value="Accepted">Accepted</mat-option>
-      <mat-option value="Rejected">Rejected</mat-option>
-      <mat-option value="Released">Released</mat-option>
+      [formControl]="familyForm.controls.curation_state_id">
+      <mat-option *ngFor="let option of curationStateOptions" [value]="option.id">
+        {{option.name}}
+      </mat-option>
     </mat-select>
     <workbench-warning-icon matSuffix></workbench-warning-icon>
   </mat-form-field>
-
-  <p>
-    <mat-checkbox [formControl]="familyForm.controls.disabled">Disabled</mat-checkbox>
-    <workbench-warning-icon></workbench-warning-icon>
-  </p>
 
   <p><strong>Length:</strong> {{family.length}} </p>
 

@@ -54,6 +54,13 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     );
   }
 
+  getMetadata(): Observable<any> {
+    const url = endpoint + 'metadata';
+    const opts = this.optsWithAuth();
+    return this.http.get<any>(url, opts)
+      .pipe(catchError(this.handleError('getMetadata', null)));
+  }
+
   getFamily(accession: string): Observable<Family> {
     const url = this.familyPath(accession);
     const opts = this.optsWithAuth();
