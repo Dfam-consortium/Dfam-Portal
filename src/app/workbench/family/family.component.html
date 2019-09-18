@@ -13,68 +13,75 @@
 
 <h2>{{family.accession}}.{{family.version}}</h2>
 
-<div style="clear: both"></div>
+<div style="clear: both; margin-bottom: 1em;"></div>
 
 <mat-card>
 <mat-card-title>Info</mat-card-title>
 
 <mat-card-content>
-  <mat-form-field class="wide">
-    <input matInput type="text" placeholder="Name"
-      [formControl]="familyForm.controls.name">
-  </mat-form-field>
 
-  <mat-form-field class="wide">
-    <input matInput type="text" placeholder="Title"
-      [formControl]="familyForm.controls.title">
-  </mat-form-field>
+  <div fxLayout.gt-sm="row" fxLayoutGap.gt-sm="1em">
 
-  <mat-form-field class="wide">
-    <textarea matInput placeholder="Description" [formControl]="familyForm.controls.description"></textarea>
-  </mat-form-field>
+    <div fxFlex.gt-sm="50%">
+      <mat-form-field class="wide">
+        <input matInput type="text" placeholder="Name"
+          [formControl]="familyForm.controls.name">
+      </mat-form-field>
+
+      <mat-form-field class="wide">
+        <input matInput type="text" placeholder="Title"
+          [formControl]="familyForm.controls.title">
+      </mat-form-field>
+
+      <mat-form-field class="wide">
+        <textarea matInput placeholder="Description" [formControl]="familyForm.controls.description"></textarea>
+      </mat-form-field>
+
+      <div
+          fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center"
+          fxLayout.lt-md="column">
+        <span fxFlex.gt-sm="0 0 auto"><strong>Classification:</strong>&nbsp;</span>
+        <span>
+        {{ displayClassById(familyForm.controls.classification_id.value) | async }}
+        </span>
+        <button fxFlex.gt-sm="0 0 auto" mat-raised-button (click)="pickClassification()"><mat-icon>list</mat-icon> Choose</button>
+      </div>
+    </div>
+
+    <mat-divider fxShow.gt-sm [vertical]="true"></mat-divider>
+
+    <div fxFlex.gt-sm="50%">
+      <h3>Taxa <workbench-warning-icon></workbench-warning-icon></h3>
+      <mat-list>
+        <mat-list-item *ngFor="let control of this.familyForm.controls.clades.controls; index as i;">
+          <mat-form-field class="wide">
+            <mat-label></mat-label>
+            <input matInput type="text" placeholder="Clade"
+                [matAutocomplete]="clade_autocomplete"
+                [formControl]="control"
+                (input)="this.cladeSearchTerm.next($event.target.value)">
+            <mat-autocomplete #clade_autocomplete="matAutocomplete"
+                [displayWith]="displayClade" panelWidth="40em"
+                (optionSelected)="this.cladeSearchTerm.next('')">
+              <mat-option *ngFor="let clade of cladeOptions" class="clade-option" [value]="clade">
+                <span [innerHTML]="clade.name_markup"></span>
+              </mat-option>
+            </mat-autocomplete>
+            <button mat-icon-button matSuffix (click)="this.familyForm.controls.clades.removeAt(i)">
+              <mat-icon>remove_circle_outline</mat-icon>
+            </button>
+          </mat-form-field>
+        </mat-list-item>
+      </mat-list>
+      <div fxLayout="row">
+        <span fxFlex="auto"></span>
+        <button mat-raised-button (click)="addClade()"><mat-icon>add</mat-icon> Add</button>
+        <span fxFlex="auto"></span>
+      </div>
+    </div>
+
+  </div>
 </mat-card-content>
-</mat-card>
-
-<mat-card>
-<mat-card-title>Classification</mat-card-title>
-
-<mat-card-content>
-  {{ displayClassById(familyForm.controls.classification_id.value) | async }}
-</mat-card-content>
-
-<mat-card-actions align="end">
-  <button mat-raised-button (click)="pickClassification()"><mat-icon>list</mat-icon> Choose</button>
-</mat-card-actions>
-</mat-card>
-
-<mat-card>
-<mat-card-title>Taxa <workbench-warning-icon></workbench-warning-icon></mat-card-title>
-
-<mat-list>
-  <mat-list-item *ngFor="let control of this.familyForm.controls.clades.controls; index as i;">
-    <mat-form-field class="wide">
-      <mat-label></mat-label>
-      <input matInput type="text" placeholder="Clade"
-          [matAutocomplete]="clade_autocomplete"
-          [formControl]="control"
-          (input)="this.cladeSearchTerm.next($event.target.value)">
-      <mat-autocomplete #clade_autocomplete="matAutocomplete"
-          [displayWith]="displayClade" panelWidth="40em"
-          (optionSelected)="this.cladeSearchTerm.next('')">
-        <mat-option *ngFor="let clade of cladeOptions" class="clade-option" [value]="clade">
-          <span [innerHTML]="clade.name_markup"></span>
-        </mat-option>
-      </mat-autocomplete>
-      <button mat-icon-button matSuffix (click)="this.familyForm.controls.clades.removeAt(i)">
-        <mat-icon>remove_circle_outline</mat-icon>
-      </button>
-    </mat-form-field>
-  </mat-list-item>
-</mat-list>
-
-<mat-card-actions align="end">
-  <button mat-raised-button (click)="addClade()"><mat-icon>add</mat-icon> Add</button>
-</mat-card-actions>
 </mat-card>
 
 <mat-card>
@@ -86,7 +93,7 @@
     <workbench-warning-icon></workbench-warning-icon>
   </p>
 
-  <div fxLayout.gt-sm="row">
+  <div fxLayout.gt-sm="row" fxLayoutGap.gt-sm="1em">
     <div fxFlex.gt-sm="50%">
       <h3>Search Stages</h3>
       <mat-list>
@@ -98,41 +105,50 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <button mat-icon-button fxFlexOffset="2em"
+          <button mat-icon-button fxFlexOffset="1em"
               (click)="this.familyForm.controls.search_stages.removeAt(i)">
             <mat-icon>remove_circle_outline</mat-icon>
           </button>
         </mat-list-item>
-        <mat-list-item>
+        <div fxLayout="row">
+          <span fxFlex="auto"></span>
           <button mat-raised-button (click)="addSearchStage()"><mat-icon>add</mat-icon> Add</button>
-        </mat-list-item>
+          <span fxFlex="auto"></span>
+        </div>
       </mat-list>
     </div>
+
+    <mat-divider fxShow.gt-sm [vertical]="true"></mat-divider>
+
     <div fxFlex.gt-sm="50%">
       <h3>Buffer Stages</h3>
       <mat-list>
         <mat-list-item *ngFor="let group of this.familyForm.controls.buffer_stages.controls; index as i;">
-          <mat-form-field fxFlex="auto">
-            <mat-select placeholder="Buffer Stage" [formControl]="group.controls.stage">
-              <mat-option *ngFor="let option of this.rmStageOptions" [value]="option.id">
-                {{option.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field fxFlexOffset="1em">
-            <input matInput type="number" placeholder="Start" [formControl]="group.controls.start">
-          </mat-form-field>
-          <mat-form-field fxFlexOffset="1em">
-            <input matInput type="number" placeholder="End" [formControl]="group.controls.end">
-          </mat-form-field>
-          <button mat-icon-button fxFlexOffset="2em"
-              (click)="this.familyForm.controls.buffer_stages.removeAt(i)">
-            <mat-icon>remove_circle_outline</mat-icon>
-          </button>
+          <div fxLayout="row" class="wide">
+            <mat-form-field fxFlex="calc(50px)">
+              <mat-select placeholder="Buffer Stage" [formControl]="group.controls.stage">
+                <mat-option *ngFor="let option of this.rmStageOptions" [value]="option.id">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="calc(50px)" fxFlexOffset="1em">
+              <input matInput type="number" placeholder="Start" [formControl]="group.controls.start">
+            </mat-form-field>
+            <mat-form-field fxFlex="calc(50px)" fxFlexOffset="1em">
+              <input matInput type="number" placeholder="End" [formControl]="group.controls.end">
+            </mat-form-field>
+            <button mat-icon-button fxFlex="0 0 auto" fxFlexOffset="1em"
+                (click)="this.familyForm.controls.buffer_stages.removeAt(i)">
+              <mat-icon>remove_circle_outline</mat-icon>
+            </button>
+          </div>
         </mat-list-item>
-        <mat-list-item>
+        <div fxLayout="row">
+          <span fxFlex="auto"></span>
           <button mat-raised-button (click)="addBufferStage()"><mat-icon>add</mat-icon> Add</button>
-        </mat-list-item>
+          <span fxFlex="auto"></span>
+        </div>
       </mat-list>
     </div>
   </div>
@@ -167,63 +183,74 @@
 </mat-card>
 
 <mat-card>
-<mat-card-title>Citations</mat-card-title>
+<mat-card-title>References</mat-card-title>
 
-<mat-list>
-  <mat-list-item *ngFor="let group of this.familyForm.controls.citations.controls; index as i;">
-    <mat-form-field fxFlex="auto">
-      <input matInput type="number" placeholder="PubMed ID"
-        [formControl]="group.controls.pmid">
-    </mat-form-field>
-    <mat-form-field fxFlex="auto" fxFlexOffset="1em">
-      <input matInput type="text" placeholder="Comment"
-        [formControl]="group.controls.comment">
-    </mat-form-field>
-    <button mat-icon-button fxFlexOffset="2em"
-        (click)="this.familyForm.controls.citations.removeAt(i)">
-      <mat-icon>remove_circle_outline</mat-icon>
-    </button>
-  </mat-list-item>
-</mat-list>
+<mat-card-content>
+  <div fxLayout.gt-sm="row" fxLayoutGap.gt-sm="1em">
+    <div fxFlex.gt-sm="50%">
+      <h3>Citations</h3>
+      <mat-list>
+        <mat-list-item *ngFor="let group of this.familyForm.controls.citations.controls; index as i;">
+          <mat-form-field fxFlex="calc(50px)">
+            <input matInput type="number" placeholder="PubMed ID"
+              [formControl]="group.controls.pmid">
+          </mat-form-field>
+          <mat-form-field fxFlex="calc(50px)" fxFlexOffset="1em">
+            <input matInput type="text" placeholder="Comment"
+              [formControl]="group.controls.comment">
+          </mat-form-field>
+          <button mat-icon-button fxFlex="0 0 auto" fxFlexOffset="1em"
+              (click)="this.familyForm.controls.citations.removeAt(i)">
+            <mat-icon>remove_circle_outline</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
 
-<mat-card-actions align="end">
-  <button mat-raised-button (click)="addCitation()"><mat-icon>add</mat-icon> Add</button>
-</mat-card-actions>
+      <div fxFlexLayout="row">
+        <span fxFlex="auto"></span>
+        <button mat-raised-button (click)="addCitation()"><mat-icon>add</mat-icon> Add</button>
+        <span fxFlex="auto"></span>
+      </div>
+    </div>
 
-</mat-card>
+    <mat-divider fxShow.gt-sm [vertical]="true"></mat-divider>
 
-<mat-card>
-<mat-card-title>Aliases</mat-card-title>
+    <div fxFlex.gt-sm="50%">
+      <h3>Aliases</h3>
+      <mat-list>
+        <mat-list-item
+            *ngFor="let group of this.familyForm.controls.aliases.controls; index as i;">
+          <mat-form-field fxFlex="calc(50px)">
+            <input matInput type="text" placeholder="Database"
+              [formControl]="group.controls.database">
+          </mat-form-field>
+          <mat-form-field fxFlex="calc(50px)" fxFlexOffset="1em">
+            <input matInput type="text" placeholder="Alias"
+              [formControl]="group.controls.alias">
+          </mat-form-field>
+          <mat-form-field fxFlex="calc(50px)" fxFlexOffset="1em">
+            <input matInput type="text" placeholder="Comment"
+              [formControl]="group.controls.comment">
+          </mat-form-field>
+          <mat-checkbox fxFlex="0 0 auto" fxFlexOffset="1em"
+              [formControl]="group.controls.deprecated">
+            Deprecated
+          </mat-checkbox>
+          <button mat-icon-button fxFlex="0 0 auto" fxFlexOffset="1em"
+              (click)="this.familyForm.controls.aliases.removeAt(i)">
+            <mat-icon>remove_circle_outline</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
 
-<mat-list>
-  <mat-list-item
-      *ngFor="let group of this.familyForm.controls.aliases.controls; index as i;">
-    <mat-form-field fxFlex="auto">
-      <input matInput type="text" placeholder="Database"
-        [formControl]="group.controls.database">
-    </mat-form-field>
-    <mat-form-field fxFlex="auto" fxFlexOffset="1em">
-      <input matInput type="text" placeholder="Alias"
-        [formControl]="group.controls.alias">
-    </mat-form-field>
-    <mat-form-field fxFlex="auto" fxFlexOffset="1em">
-      <input matInput type="text" placeholder="Comment"
-        [formControl]="group.controls.comment">
-    </mat-form-field>
-    <mat-checkbox fxFlexOffset="1em"
-        [formControl]="group.controls.deprecated">
-      Deprecated
-    </mat-checkbox>
-    <button mat-icon-button fxFlexOffset="2em"
-        (click)="this.familyForm.controls.aliases.removeAt(i)">
-      <mat-icon>remove_circle_outline</mat-icon>
-    </button>
-  </mat-list-item>
-</mat-list>
-
-<mat-card-actions align="end">
-  <button mat-raised-button (click)="addAlias()"><mat-icon>add</mat-icon> Add</button>
-</mat-card-actions>
+      <div fxFlexLayout="row">
+        <span fxFlex="auto"></span>
+        <button mat-raised-button (click)="addAlias()"><mat-icon>add</mat-icon> Add</button>
+        <span fxFlex="auto"></span>
+      </div>
+    </div>
+  </div>
+</mat-card-content>
 </mat-card>
 
 <mat-card>

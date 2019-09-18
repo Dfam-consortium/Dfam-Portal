@@ -442,7 +442,7 @@ export class WorkbenchFamilyComponent implements OnInit {
     return this.allClassificationsSubject.pipe(map(clss => {
       const cls = clss.find(c => c.id === id);
       if (cls) {
-        return cls.full_name;
+        return cls.full_name.replace(/;/g, '; ');
       } else {
         return '<Unknown>';
       }
