@@ -1,19 +1,24 @@
-<div *ngIf="family">
+<div *ngIf="family; else noFamily">
 
-<button mat-fab color="primary" id="save-button"
-    [disabled]="saving" (click)="saveFamily()">
-  <mat-icon aria-hidden="false" aria-label="Save">save</mat-icon>
-</button>
+<mat-toolbar color="primary">
+<mat-toolbar-row>
+  <h2 fxFlex="1 1 auto">
+    {{family.accession}}.{{family.version}}
+  </h2>
 
-<button mat-fab color="secondary" id="refresh-button"
-    [disabled]="saving" (click)="getFamily()">
-  <mat-icon aria-hidden="false" aria-label="Refresh">refresh</mat-icon>
-</button>
+  <button mat-icon-button
+      [disabled]="saving" (click)="getFamily()">
+    <mat-icon aria-hidden="false" aria-label="Refresh">refresh</mat-icon>
+  </button>
 
+  <button mat-icon-button
+      [disabled]="saving" (click)="saveFamily()">
+    <mat-icon aria-hidden="false" aria-label="Save">save</mat-icon>
+  </button>
+</mat-toolbar-row>
+</mat-toolbar>
 
-<h2>{{family.accession}}.{{family.version}}</h2>
-
-<div style="clear: both; margin-bottom: 1em;"></div>
+<div class="editor-region">
 
 <mat-card>
 <mat-card-title>Info</mat-card-title>
@@ -267,6 +272,10 @@
 
 </mat-card>
 
-<div *ngIf="!family">
+</div>
+
+<ng-template #noFamily>
+<div>
 Loading data...
 </div>
+</ng-template>

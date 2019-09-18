@@ -160,6 +160,10 @@ export class WorkbenchFamilyComponent implements OnInit {
   getFamily() {
     const accession = this.route.snapshot.params['id'];
     this.dfambackendapi.getFamily(accession).subscribe(data => {
+      if (!data) {
+        return;
+      }
+
       this.family = data;
 
       const controls = this.familyForm.controls;
@@ -214,13 +218,19 @@ export class WorkbenchFamilyComponent implements OnInit {
 
   getMetadata() {
     this.dfambackendapi.getMetadata().subscribe(meta => {
-      this.curationStateOptions = meta.curation_states;
-      this.rmStageOptions = meta.repeatmasker_stages;
+      if (meta) {
+        this.curationStateOptions = meta.curation_states;
+        this.rmStageOptions = meta.repeatmasker_stages;
+      }
     });
   }
 
   getClassifications() {
     this.dfambackendapi.getClasses().subscribe(root => {
+      if (!root) {
+        return;
+      }
+
       const flatten = function(node) {
         let flattened = [node];
         if (node.children) {

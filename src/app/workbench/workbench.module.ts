@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 // Material Imports
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -38,6 +39,7 @@ import { WarningIconComponent } from './warning-icon/warning-icon.component';
     MatDialogModule,
     MatSidenavModule,
     MatListModule,
+    MatToolbarModule,
     MatTreeModule,
 
     WorkbenchRoutingModule,
