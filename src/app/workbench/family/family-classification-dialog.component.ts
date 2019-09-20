@@ -21,6 +21,7 @@ export class FamilyClassificationDialogComponent implements OnInit {
 
   classificationTreeDataSource = new MatTreeNestedDataSource<Classification>();
   classificationTreeControl = new NestedTreeControl<Classification>(node => node.children);
+  hiddenNodes: { [index: number]: boolean } = {};
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data: any,
@@ -37,16 +38,31 @@ export class FamilyClassificationDialogComponent implements OnInit {
     return !!node.children && node.children.length > 0;
   }
 
+  isHidden(node: Classification) {
+    return this.hiddenNodes[node.id] || false;
+  }
+
   filterTree() {
     const search = this.classificationSearch.value.toLowerCase();
 
     const control = this.classificationTreeControl;
-    function recurse(node: Classification) {
+
+    function recurse_unhide(node: Classification, self: any) {
+      if (node.children) {
+        for (let i = 0; i < node.children.length; i++) {
+          recurse_unhide(node.children[i], self);
+        }
+      }
+
+      self.hiddenNodes[node.id] = false;
+    }
+
+    function recurse(node: Classification, self: any) {
       let found = false;
 
       if (node.children) {
         for (let i = 0; i < node.children.length; i++) {
-          if (recurse(node.children[i])) {
+          if (recurse(node.children[i], self)) {
             control.expand(node);
             found = true;
           }
@@ -55,18 +71,25 @@ export class FamilyClassificationDialogComponent implements OnInit {
 
       if (node.name.toLowerCase().indexOf(search) !== -1) {
         found = true;
+        recurse_unhide(node, self);
       }
 
       if (node.aliases && node.aliases.toLowerCase().indexOf(search) !== -1) {
         found = true;
+        recurse_unhide(node, self);
+      }
+
+      if (!found) {
+        self.hiddenNodes[node.id] = true;
       }
 
       return found;
     }
 
+    this.classificationTreeControl.collapseAll();
+    this.hiddenNodes = {};
     if (search) {
-      this.classificationTreeControl.collapseAll();
-      recurse(this.rootNode);
+      recurse(this.rootNode, this);
     }
   }
 
