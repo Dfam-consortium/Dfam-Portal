@@ -46,6 +46,8 @@ export class WorkbenchFamilyComponent implements OnInit {
   curationStateOptions: any[];
   rmStageOptions: any[];
 
+  knownCitations: { [index: number]: string } = {};
+
   saving = false;
 
   familyForm = this.fb.group({
@@ -187,8 +189,10 @@ export class WorkbenchFamilyComponent implements OnInit {
 
       const citationsArray = controls.citations as FormArray;
       citationsArray.clear();
+      this.knownCitations = {};
       this.family.citations.forEach(c => {
         this.addCitation(c);
+        this.knownCitations[c.pmid] = c.title;
       });
 
       const cladesArray = controls.clades as FormArray;
@@ -461,6 +465,10 @@ export class WorkbenchFamilyComponent implements OnInit {
 
   displayClade(clade: any): string {
     return clade ? clade.name : '';
+  }
+
+  displayCitationById(id: number): string {
+    return this.knownCitations[id] || '';
   }
 
   pickClassification() {

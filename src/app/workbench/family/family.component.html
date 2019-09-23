@@ -191,11 +191,15 @@
       <h3>Citations</h3>
       <mat-list>
         <mat-list-item *ngFor="let group of this.familyForm.controls.citations.controls; index as i;">
-          <mat-form-field fxFlex="calc(50px)">
+          <span class="clipped" fxFlex="auto"
+              [matTooltip]="displayCitationById(group.controls.pmid.value)">
+            {{displayCitationById(group.controls.pmid.value)}}
+          </span>
+          <mat-form-field fxFlex="0 0 calc(100px)" fxFlexOffset="1em">
             <input matInput type="number" placeholder="PubMed ID"
               [formControl]="group.controls.pmid">
           </mat-form-field>
-          <mat-form-field fxFlex="calc(50px)" fxFlexOffset="1em">
+          <mat-form-field fxFlex="0 0 calc(300px)" fxFlexOffset="1em">
             <input matInput type="text" placeholder="Comment"
               [formControl]="group.controls.comment">
           </mat-form-field>
