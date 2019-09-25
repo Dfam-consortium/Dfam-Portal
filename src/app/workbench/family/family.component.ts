@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Injectable, HostListener } from '@angular/core';
+import { ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate } from '@angular/router';
 import { AbstractControl, FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -8,6 +8,7 @@ import { Observable, Subject, ReplaySubject } from 'rxjs';
 import { map, debounceTime } from 'rxjs/operators';
 
 import { FamilyClassificationDialogComponent } from './family-classification-dialog.component';
+import { FamilyCloseDialogComponent } from './family-close-dialog.component';
 import { Classification } from '../../shared/dfam-api/types';
 import { DfamBackendAPIService } from '../../shared/dfam-api/dfam-backend-api.service';
 import { ErrorsService } from '../../shared/services/errors.service';
@@ -115,6 +116,19 @@ export class WorkbenchFamilyComponent implements OnInit {
       });
     });
 
+  }
+
+  // Warn on unsaved changes when attempting to leave the page
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(e) {
+    if (this.getChangeset()) {
+      e.preventDefault();
+      e.returnValue = '';
+      return '';
+    } else {
+      delete e['returnValue'];
+      return undefined;
+    }
   }
 
   addAlias(data?) {
@@ -249,20 +263,7 @@ export class WorkbenchFamilyComponent implements OnInit {
     });
   }
 
-  saveFamily() {
-    // Ensure the form is valid.
-    if (!this.familyForm.valid) {
-      // Mark all as touched, so that any untouched controls can now properly appear as invalid
-      this.familyForm.markAllAsTouched();
-      this.errorsService.logError('Form is incomplete or invalid.');
-      return;
-    }
-
-    if (this.saving) {
-      return;
-    }
-    this.saving = true;
-
+  getChangeset(): any {
     // NB: We do a manul diff here instead of checking control.dirty: That
     // approach will give false updates if edits are undone before submitting.
 
@@ -270,6 +271,7 @@ export class WorkbenchFamilyComponent implements OnInit {
     const controls = this.familyForm.controls;
 
     const changeset: any = {};
+    let hasChanges = false;
 
     // This is used to ensure simultaneous users do not step on each others
     // toes while editing the same family
@@ -279,6 +281,7 @@ export class WorkbenchFamilyComponent implements OnInit {
       controlField = controlField || field;
       if (old[field] !== controls[controlField].value) {
         changeset[field] = controls[controlField].value;
+        hasChanges = true;
       }
     }
 
@@ -332,6 +335,7 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     if (aliasesChanged) {
       changeset.aliases = aliasObjs;
+      hasChanges = true;
     }
 
     // Same with citations as with aliases
@@ -366,6 +370,7 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     if (citationsChanged) {
       changeset.citations = citationObjs;
+      hasChanges = true;
     }
 
     // Clades is a bit easier because it's just the one field.
@@ -389,6 +394,7 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     if (cladesChanged) {
       changeset.clade_ids = cladeVals;
+      hasChanges = true;
     }
 
     // Search stages
@@ -410,6 +416,7 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     if (searchStagesChanged) {
       changeset.search_stages = searchStageVals;
+      hasChanges = true;
     }
 
     // Buffer stages
@@ -440,16 +447,41 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     if (bufferStagesChanged) {
       changeset.buffer_stages = bufferStageObjs;
+      hasChanges = true;
     }
 
-    // Finally, send the patch request.
+    return hasChanges ? changeset : null;
+  }
 
-    this.dfambackendapi.patchFamily(this.family.accession, changeset).subscribe(r => {
+  saveFamily() {
+    // Ensure the form is valid.
+    if (!this.familyForm.valid) {
+      // Mark all as touched, so that any untouched controls can now properly appear as invalid
+      this.familyForm.markAllAsTouched();
+      this.errorsService.logError('Form is incomplete or invalid.');
+      return;
+    }
+
+    if (this.saving) {
+      return;
+    }
+    this.saving = true;
+
+    // Calculate changeset
+    const changeset = this.getChangeset();
+
+    // Send the patch request.
+
+    if (changeset) {
+      this.dfambackendapi.patchFamily(this.family.accession, changeset).subscribe(r => {
+        this.saving = false;
+        this.getFamily();
+      }, e => {
+        this.saving = false;
+      });
+    } else {
       this.saving = false;
-      this.getFamily();
-    }, e => {
-      this.saving = false;
-    });
+    }
   }
 
   displayClassById(id: number): Observable<string> {
@@ -484,5 +516,26 @@ export class WorkbenchFamilyComponent implements OnInit {
         }
       });
     });
+  }
+}
+
+// Warn on unsaved changes when attempting to leave the component.
+// This is made active in workbench-routing.module.ts
+@Injectable()
+export class CanDeactivateWorkbenchFamilyComponent implements CanDeactivate<WorkbenchFamilyComponent> {
+  constructor(private dialog: MatDialog) { }
+
+  canDeactivate(
+    component: WorkbenchFamilyComponent,
+    currentRoute: ActivatedRouteSnapshot,
+    currentState: RouterStateSnapshot,
+    nextState: RouterStateSnapshot,
+  ): Observable<boolean> | boolean {
+    if (component.getChangeset()) {
+      const dialogRef = this.dialog.open(FamilyCloseDialogComponent);
+      return dialogRef.afterClosed();
+    } else {
+      return true;
+    }
   }
 }

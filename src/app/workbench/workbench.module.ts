@@ -19,6 +19,7 @@ import { WorkbenchBrowseComponent } from './browse/browse.component';
 import { WorkbenchFamilyComponent } from './family/family.component';
 import { FamilyClassificationDialogComponent } from './family/family-classification-dialog.component';
 import { WarningIconComponent } from './warning-icon/warning-icon.component';
+import { FamilyCloseDialogComponent } from './family/family-close-dialog.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { WarningIconComponent } from './warning-icon/warning-icon.component';
     WorkbenchFamilyComponent,
     FamilyClassificationDialogComponent,
     WarningIconComponent,
+    FamilyCloseDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,7 @@ import { WarningIconComponent } from './warning-icon/warning-icon.component';
   ],
   entryComponents: [
     FamilyClassificationDialogComponent,
+    FamilyCloseDialogComponent,
   ],
 })
 export class WorkbenchModule { }
