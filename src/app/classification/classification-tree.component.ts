@@ -26,7 +26,7 @@ export class ClassificationTreeComponent implements AfterViewInit {
   @Input() set search(value: string) {
     this._search = value;
     this.searchForText(this.search);
-    this.update(this.rootNode);
+    this.render();
   }
 
   @ViewChild('outlet', { static: false }) outlet: ElementRef;
@@ -34,7 +34,6 @@ export class ClassificationTreeComponent implements AfterViewInit {
   private tooltipTag: any;
   private svgTag: any;
   private svgGTag: any;
-  private d3tree: any;
   private rootNode: any;
 
   private duration = 750;
@@ -55,40 +54,34 @@ export class ClassificationTreeComponent implements AfterViewInit {
 
     this.tooltipTag = d3.select(element).append('div')
       .attr('class', 'tooltip')
-      .style({
-        'position': 'absolute',
-        'display': 'block',
-        'width': '200px',
-        'padding': '5px',
-        'font': '12px sans-serif',
-        'background': 'white',
-        'border-style': 'solid',
-        'border-width': '2px',
-        'border-color': 'lightsteelblue',
-        'border-radius': '8px',
-        'pointer-events': 'none',
-        'opacity': '0',
-      });
+      .style('position', 'absolute')
+      .style('display', 'block')
+      .style('width', '200px')
+      .style('padding', '5px')
+      .style('font', '12px sans-serif')
+      .style('background', 'white')
+      .style('border-style', 'solid')
+      .style('border-width', '2px')
+      .style('border-color', 'lightsteelblue')
+      .style('border-radius', '8px')
+      .style('pointer-events', 'none')
+      .style('opacity', '0');
 
     // Initially we do not have a size
-    this.svgTag = d3.select(element)
-      .append('svg');
+    this.svgTag = d3.select(element).append('svg');
 
     // Add the translation tag
     this.svgGTag = this.svgTag.append('g');
-
-    this.d3tree = d3.layout.tree()
-      .nodeSize([20, 20]);
   }
 
   expandAll() {
     this.expand(this.rootNode);
-    this.update(this.rootNode);
+    this.render();
   }
 
   collapseAll() {
     this.collapse(this.rootNode);
-    this.update(this.rootNode);
+    this.render();
   }
 
   expand(node) {
@@ -152,11 +145,8 @@ export class ClassificationTreeComponent implements AfterViewInit {
       const treeNodeDepth = this.treeDepth(classes, 1);
       const width = (treeNodeDepth * (this.ySpacing)) - this.margin.right - this.margin.left;
       this.svgTag.attr('width', width + this.margin.right + this.margin.left);
-      // Origin for root node transition
-      classes.x0 = 0;
-      classes.y0 = 0;
       // Render the tree
-      this.update(classes);
+      this.render({ x: 0, y: 0 });
 
       if (this.initialClass) {
         this.expandPath(this.initialClass);
@@ -279,82 +269,90 @@ export class ClassificationTreeComponent implements AfterViewInit {
       parent = child;
     }
 
-    this.update(this.rootNode);
+    this.render();
   }
 
 
-  update(root, source?) {
-    if (!root) {
+  render(fromPos?) {
+    if (!this.rootNode) {
       return;
     }
 
-    if (!source) {
-      source = root;
+    if (!fromPos) {
+      fromPos = { x: 0, y: 0 };
     }
 
     // Compute the new tree layout.
-    const nodes = this.d3tree.nodes(root).filter(function(d) {
-      return !d._hidden;
-    }).reverse();
+    const d3Root = d3.hierarchy(this.rootNode, function(d) {
+      if (d.children) {
+        return d.children.filter(function(c) {
+          return !c._hidden;
+        });
+      } else {
+        return null;
+      }
+    });
 
-    const links = this.d3tree.links(nodes);
+    d3Root.sort(function(a, b) {
+      return a.data.full_name.localeCompare(b.data.full_name);
+    });
+
+    d3.tree().nodeSize([20, 20])(d3Root);
 
     // Normalize for fixed-depth and calculate max d.x
     let maxDx = 0;
-    let minDx = -1;
+    let minDx = 99999;
     const ySpacing = this.ySpacing;
-    nodes.forEach(function(d) {
+    d3Root.descendants().forEach(function(d: any) {
       if (d.x > maxDx) {
         maxDx = d.x;
       }
-      if (minDx === -1 || d.x < minDx) {
+      if (d.x < minDx) {
         minDx = d.x;
       }
       d.y = d.depth * ySpacing;
     });
-    const height = maxDx + Math.abs(minDx);
+    const height = maxDx - minDx;
     this.svgTag.attr('height', (height + this.margin.top + this.margin.bottom));
 
     this.svgGTag.transition()
       .duration(this.duration)
-      .attr('transform', 'translate(' + this.margin.left + ',' + (this.margin.top + (Math.abs(minDx))) + ')');
+      .attr('transform', 'translate(' + this.margin.left + ',' + (this.margin.top - minDx) + ')');
 
-    // Update the nodes?
+    // Update nodes
     const self = this;
-    const node = this.svgGTag.selectAll('g.node')
-      .data(nodes, function(d) {
-        return d.id || (d.id = ++self.nextID);
-      });
-
-    // Toggle children on click.
-    function click(d) {
-      if (d.children) {
-        d.children = null;
-      } else {
-        d.children = d._children;
-      }
-      self.update(self.rootNode, d);
-    }
+    const nodes = this.svgGTag.selectAll('g.node')
+      .data(d3Root.descendants(), d => d.data.full_name);
 
     // Enter any new nodes at the parent's previous position.
-    const nodeEnter = node.enter().append('g')
+    const nodeEnter = nodes.enter().append('g')
       .attr('class', 'node')
       .style('cursor', 'pointer')
       .attr('transform', function(d) {
-        return 'translate(' + source.y0 + ',' + source.x0 + ')';
+        return 'translate(' + fromPos.y + ',' + fromPos.x + ')';
       })
-      .on('click', click);
+      .on('click', function(d) {
+        // Toggle children on click.
+        if (d.data.children) {
+          d.data.children = null;
+        } else {
+          d.data.children = d.data._children;
+        }
+        self.render(d);
+      });
 
     const tooltipTag = this.tooltipTag;
     nodeEnter.append('circle')
-      .attr('r', 1e-6)
-      .style({ fill: '#ffffff', stroke: 'steelblue', 'stroke-width': '1.5px' })
+      .attr('r', 6)
+      .style('fill', '#ffffff')
+      .style('stroke', 'steelblue')
+      .style('stroke-width', '1.5px')
       .on('mouseover', function(d) {
-        if (d.tooltip) {
+        if (d.data.tooltip) {
           tooltipTag.transition()
             .duration(200)
             .style('opacity', .9);
-          tooltipTag.html(d.tooltip);
+          tooltipTag.html(d.data.tooltip);
 
           const d3event = d3.event as MouseEvent;
           tooltipTag.style('left', (d3event.pageX + 10) + 'px')
@@ -367,9 +365,9 @@ export class ClassificationTreeComponent implements AfterViewInit {
           .style('opacity', 0);
       })
       .style('fill', function(d) {
-        if (d._matched) {
+        if (d.data._matched) {
           return '#f00';
-        } else if (d._children && d._children.length > 0) {
+        } else if (d.data._children && d.data._children.length > 0) {
           return 'lightsteelblue';
         } else {
           return '#fff';
@@ -378,46 +376,45 @@ export class ClassificationTreeComponent implements AfterViewInit {
 
     nodeEnter.append('a')
       .attr('xlink:href', function(d) {
-        return d.hyperlink ? d.hyperlink : 'javascript:void(0)';
+        return d.data.hyperlink ? d.data.hyperlink : 'javascript:void(0)';
       })
       .append('text')
       .style('font', '11px sans-serif')
-      .attr('x', -10)
+      .attr('x', '-10')
       .attr('dy', '.35em')
       .attr('text-anchor', 'end')
       .text(function(d) {
-        return d.name;
+        return d.data.name;
       })
-      .style('fill-opacity', 1e-6);
+      .style('fill-opacity', 1e-6)
+      .transition()
+      .duration(this.duration)
+      .style('fill-opacity', 1);
 
     // Transition nodes to their new position.
-    const nodeUpdate = node.transition()
+    nodeEnter.merge(nodes).transition()
       .duration(this.duration)
       .attr('transform', function(d) {
         return 'translate(' + d.y + ',' + d.x + ')';
       });
 
-    nodeUpdate.select('circle')
+    nodes.select('circle')
       .attr('r', 6)
       .style('fill', function(d) {
-        if (d._matched) {
+        if (d.data._matched) {
           return '#f00';
-        } else if (d._children && d._children.length > 0) {
+        } else if (d.data._children && d.data._children.length > 0) {
           return 'lightsteelblue';
         } else {
           return '#fff';
         }
       });
 
-
-    nodeUpdate.select('text')
-      .style('fill-opacity', 1);
-
     // Transition exiting nodes to the parent's new position.
-    const nodeExit = node.exit().transition()
+    const nodeExit = nodes.exit().transition()
       .duration(this.duration)
       .attr('transform', function(d) {
-        return 'translate(' + source.y + ',' + source.x + ')';
+        return 'translate(' + d.parent.y + ',' + d.parent.x + ')';
       })
       .remove();
 
@@ -428,54 +425,40 @@ export class ClassificationTreeComponent implements AfterViewInit {
       .style('fill-opacity', 1e-6);
 
     // Update the links
-    const link = this.svgGTag.selectAll('path.link')
-      .data(links, function(d) {
-        return d.target.id;
-      });
+    const links = this.svgGTag.selectAll('path.link')
+      .data(d3Root.links(), d => d.target.data.full_name);
 
-    const diagonal = d3.svg.diagonal()
-      .projection(function(d) { return [d.y, d.x]; });
+    const diagonal = function(from, to) {
+      const p = d3.path();
+      p.moveTo(from.y, from.x)
+      p.bezierCurveTo(from.y + 100, from.x, to.y - 100, to.x, to.y, to.x);
+      return p.toString();
+    };
 
     // Enter any new links at the parent's previous position.
-    link.enter().insert('path', 'g')
+    const linksEnter = links.enter().insert('path', 'g')
       .attr('class', 'link')
-      .style({ 'fill': 'none', 'stroke': '#cccccc', 'stroke-width': '1.5px' })
+      .style('fill', 'none')
+      .style('stroke', '#cccccc')
+      .style('stroke-width', '1.5px')
       .attr('d', function(d) {
-        const o = {
-          x: source.x0,
-          y: source.y0
-        };
-        return diagonal({
-          source: o,
-          target: o
-        });
+        return diagonal(fromPos, fromPos);
       });
 
-    // Transition links to their new position.
-    link.transition()
-      .duration(this.duration)
-      .attr('d', diagonal);
-
-    // Transition exiting nodes to the parent's new position.
-    link.exit().transition()
+    // Transition links to the new position
+    linksEnter.merge(links)
+      .transition()
       .duration(this.duration)
       .attr('d', function(d) {
-        const o = {
-          x: source.x,
-          y: source.y
-        };
-        return diagonal({
-          source: o,
-          target: o
-        });
+        return diagonal(d.source, d.target);
+      });
+
+    // Transition exiting links to the parent's new position.
+    links.exit().transition()
+      .duration(this.duration)
+      .attr('d', function(d) {
+        return diagonal(d.source, d.source);
       })
       .remove();
-
-    // Stash the old positions for transition.
-    nodes.forEach(function(d) {
-      d.x0 = d.x;
-      d.y0 = d.y;
-    });
-
   }
 }
