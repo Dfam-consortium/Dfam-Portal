@@ -89,9 +89,7 @@ export class ClassificationTreeComponent implements AfterViewInit {
       node._matched = false;
       node._matched_path = false;
       node._hidden = false;
-      if (node._children) {
-        node.children = node._children;
-      }
+      node._collapsed = false;
       if (node.children) {
         node.children.forEach(this.expand.bind(this));
       }
@@ -99,23 +97,27 @@ export class ClassificationTreeComponent implements AfterViewInit {
   }
 
   // Collapse all nodes under the given node.
-  // As D3 uses the "children" property to layout
-  // the tree we can collapse a node by storing the
-  // children under a different property.  Here
-  // we simply set the .children to null and hope
-  // that somewhere else the links were copied.
   collapse(node) {
     if (node) {
       node._matched = false;
       node._matched_path = false;
       node._hidden = false;
-      if (node._children) {
-        node._children.forEach(this.collapse.bind(this));
-        node.children = null;
+      node._collapsed = true;
+      if (node.children) {
+        node.children.forEach(this.collapse.bind(this));
       }
     }
   }
 
+  // Hide all nodes under the given node
+  hide(node) {
+    if (node) {
+      node._hidden = true;
+      if (node.children) {
+        node.children.forEach(this.hide.bind(this));
+      }
+    }
+  }
 
   onDataChanged() {
     function initTree(d) {
@@ -125,24 +127,23 @@ export class ClassificationTreeComponent implements AfterViewInit {
       d._matched_path = false;
       // All nodes are visible
       d._hidden = false;
+      // Initially collapse all nodes
+      d._collapsed = true;
       if (d.children) {
-        // Initially collapse all nodes
-        d._children = d.children;
-        d._children.forEach(initTree);
-        d.children = null;
+        d.children.forEach(initTree);
       }
     }
 
     if (this.classes != null) {
       const classes = this.classes;
       this.rootNode = classes;
+
       // Always init to include the root and first generation
-      if (classes.children) {
-        classes._children = classes.children;
-        classes._children.forEach(initTree);
-      }
+      initTree(classes);
+      classes._collapsed = false;
+
       // Fixed width depends on tree depth
-      const treeNodeDepth = this.treeDepth(classes, 1);
+      const treeNodeDepth = this.treeDepth(classes);
       const width = (treeNodeDepth * (this.ySpacing)) - this.margin.right - this.margin.left;
       this.svgTag.attr('width', width + this.margin.right + this.margin.left);
       // Render the tree
@@ -157,7 +158,7 @@ export class ClassificationTreeComponent implements AfterViewInit {
   // The depth of the tree starting from a given node
   // using either the visible or the complete set of
   // nodes.
-  treeDepth(root, useCollapsed) {
+  treeDepth(root) {
     let treeDepth = 0;
     const queue = [];
     let next = {
@@ -168,9 +169,6 @@ export class ClassificationTreeComponent implements AfterViewInit {
       const node = next.node;
       let depth = next.depth;
       let children = node.children;
-      if (useCollapsed) {
-        children = node._children;
-      }
       if (children && children.length > 0) {
         depth += 1;
         if (depth > treeDepth) {
@@ -194,6 +192,8 @@ export class ClassificationTreeComponent implements AfterViewInit {
       return;
     }
 
+    this.hide(this.rootNode);
+
     const stack = [];
     stack.push(this.rootNode);
     const textRE = new RegExp(text, 'i');
@@ -211,10 +211,10 @@ export class ClassificationTreeComponent implements AfterViewInit {
               parent.children = [];
             }
 
-            parent.children.push(thisNode);
             // Mark this as part of the path to a matched node
             thisNode._matched_path = true;
             thisNode._hidden = false;
+            parent._collapsed = false;
           }
           thisNode = parent;
         }
@@ -224,11 +224,10 @@ export class ClassificationTreeComponent implements AfterViewInit {
 
         // Reset any _hidden flags on this node so it will be drawn
         tmp._hidden = false;
-
       }
 
-      if (tmp._children && tmp._children.length > 0) {
-        tmp._children.forEach(function(child) {
+      if (tmp.children && tmp.children.length > 0) {
+        tmp.children.forEach(function(child) {
           child._parent = tmp;
           stack.push(child);
         });
@@ -245,11 +244,11 @@ export class ClassificationTreeComponent implements AfterViewInit {
     path = path.replace(/^root;/, '').split(";");
 
     let parent = this.rootNode;
-    while (path.length && parent && parent._children) {
+    while (path.length && parent && parent.children) {
       let segment = path.shift();
 
       // Find the child with this name
-      let child = parent._children.find(node => node.name == segment);
+      let child = parent.children.find(node => node.name == segment);
       if (child) {
         // Add to the "visible" array, 'children', and mark as not hidden.
         if (!parent.children) {
@@ -284,13 +283,13 @@ export class ClassificationTreeComponent implements AfterViewInit {
 
     // Compute the new tree layout.
     const d3Root = d3.hierarchy(this.rootNode, function(d) {
-      if (d.children) {
-        return d.children.filter(function(c) {
-          return !c._hidden;
-        });
-      } else {
+      if (d._collapsed || !d.children || !d.children.length) {
         return null;
       }
+
+      return d.children.filter(function(c) {
+        return !c._hidden;
+      });
     });
 
     d3Root.sort(function(a, b) {
@@ -333,11 +332,7 @@ export class ClassificationTreeComponent implements AfterViewInit {
       })
       .on('click', function(d) {
         // Toggle children on click.
-        if (d.data.children) {
-          d.data.children = null;
-        } else {
-          d.data.children = d.data._children;
-        }
+        d.data._collapsed = !d.data._collapsed;
         self.render(d);
       });
 
@@ -367,7 +362,7 @@ export class ClassificationTreeComponent implements AfterViewInit {
       .style('fill', function(d) {
         if (d.data._matched) {
           return '#f00';
-        } else if (d.data._children && d.data._children.length > 0) {
+        } else if (d.data.children && d.data.children.length > 0) {
           return 'lightsteelblue';
         } else {
           return '#fff';
@@ -403,7 +398,7 @@ export class ClassificationTreeComponent implements AfterViewInit {
       .style('fill', function(d) {
         if (d.data._matched) {
           return '#f00';
-        } else if (d.data._children && d.data._children.length > 0) {
+        } else if (d.data.children && d.data.children.length > 0) {
           return 'lightsteelblue';
         } else {
           return '#fff';
