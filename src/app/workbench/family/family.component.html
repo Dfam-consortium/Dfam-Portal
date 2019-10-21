@@ -5,7 +5,9 @@
   <h2 fxFlex="1 1 auto">
     {{family.accession}}.{{family.version}}
   </h2>
-
+  <button mat-icon-button (click)="openHelp()">
+    <mat-icon aria-hidden="false" aria-label="Help">help</mat-icon>
+  </button>
   <button mat-icon-button
       [disabled]="saving" (click)="saveFamily()">
     <mat-icon aria-hidden="false" aria-label="Save">save</mat-icon>

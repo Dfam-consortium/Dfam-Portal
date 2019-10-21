@@ -9,6 +9,7 @@ import { map, debounceTime } from 'rxjs/operators';
 
 import { FamilyClassificationDialogComponent } from './family-classification-dialog.component';
 import { FamilyCloseDialogComponent } from './family-close-dialog.component';
+import { FamilyHelpDialogComponent } from './family-help-dialog.component';
 import { Classification } from '../../shared/dfam-api/types';
 import { DfamBackendAPIService } from '../../shared/dfam-api/dfam-backend-api.service';
 import { ErrorsService } from '../../shared/services/errors.service';
@@ -501,6 +502,12 @@ export class WorkbenchFamilyComponent implements OnInit {
 
   displayCitationById(id: number): string {
     return this.knownCitations[id] || '';
+  }
+
+  openHelp() {
+    this.dialog.open(FamilyHelpDialogComponent, {
+      width: '80vw',
+    });
   }
 
   pickClassification() {
