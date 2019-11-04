@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { fromEvent, Unsubscribable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -11,7 +11,7 @@ import { FeaturesVisualization } from '../../js/features';
   templateUrl: './family-features.component.html',
   styleUrls: ['./family-features.component.scss']
 })
-export class FamilyFeaturesComponent implements OnInit {
+export class FamilyFeaturesComponent implements OnInit, AfterViewInit {
 
   help = {
     coding_seqs: 'Curated coding regions found in this family',
@@ -20,7 +20,7 @@ export class FamilyFeaturesComponent implements OnInit {
 
   family;
 
-  @ViewChild('outlet') outlet: ElementRef;
+  @ViewChild('outlet', { static: false }) outlet: ElementRef;
 
   visualization: any;
 
@@ -32,11 +32,13 @@ export class FamilyFeaturesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getFamily();
-
     this.resizeSubscription = fromEvent(window, 'resize')
       .pipe(debounceTime(300))
       .subscribe(e => { if (this.visualization) { this.visualization.render(); } });
+  }
+
+  ngAfterViewInit() {
+    this.getFamily();
   }
 
   getFamily() {

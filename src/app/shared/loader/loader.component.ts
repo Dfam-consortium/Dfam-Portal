@@ -1,23 +1,20 @@
-import { Component, OnInit, OnChanges, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewChecked, Input, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'dfam-loader',
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss']
 })
-export class LoaderComponent implements OnInit, OnChanges {
+export class LoaderComponent implements AfterViewChecked {
 
   @Input() loading: boolean;
   @Input() diameter = 80;
 
-  @ViewChild('container') container: ElementRef;
+  @ViewChild('container', { static: false }) container: ElementRef;
 
   constructor() { }
 
-  ngOnInit() {
-  }
-
-  ngOnChanges() {
+  ngAfterViewChecked() {
     let size = this.diameter;
     if (!this.loading) {
       size = 0;

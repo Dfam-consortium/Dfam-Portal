@@ -4,7 +4,8 @@ import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { ErrorsService } from '../services/errors.service';
-import { Family } from './types';
+import { FamilyCriteria, FamilyRepository, FamilyResults, ClassesRepository, TaxaResults, TaxaRepository } from './common';
+import { Family, Classification, Taxon } from './types';
 
 //
 // TODO: Can this constant come from the app.json file so that it's easy to redirect?
@@ -14,7 +15,7 @@ const endpoint = '/api/';
 @Injectable({
   providedIn: 'root'
 })
-export class DfamAPIService {
+export class DfamAPIService implements FamilyRepository, ClassesRepository, TaxaRepository {
 
   constructor(private http: HttpClient, private errorsService: ErrorsService) { }
 
@@ -45,45 +46,61 @@ export class DfamAPIService {
       .pipe(catchError(this.handleError('getFamily', null)));
   }
 
-  getFamilies(apiOptions: any): Observable<any> {
+  // NB: If download is true, criteria.start and criteria.limit are ignored.
+  // This corresponds most closely to the usual usage within Dfam-Portal.
+  private getFamiliesUrlOptions(criteria: FamilyCriteria, format?: string, download?: boolean): [string, {params: HttpParams}] {
     const url = endpoint + 'families';
     const options = {
-      params: new HttpParams().set('format', 'summary')
+      params: new HttpParams().set('format', format || 'summary')
     };
 
-    if ( apiOptions.name_accession ) {
-      options.params = options.params.set('name_accession', apiOptions.name_accession);
+    if ( criteria.name_accession ) {
+      options.params = options.params.set('name_accession', criteria.name_accession);
     }
 
-    if ( apiOptions.classification ) {
-      options.params = options.params.set('classification', apiOptions.classification);
+    if ( criteria.classification ) {
+      options.params = options.params.set('classification', criteria.classification);
     }
 
-    if ( apiOptions.clade ) {
-      options.params = options.params.set('clade', apiOptions.clade);
+    if ( criteria.clade ) {
+      options.params = options.params.set('clade', criteria.clade);
     }
 
-    if ( apiOptions.clade_ancestors && apiOptions.clade_descendants ) {
+    if ( criteria.clade_ancestors && criteria.clade_descendants ) {
       options.params = options.params.set('clade_relatives', 'both');
-    } else if ( apiOptions.clade_ancestors ) {
+    } else if ( criteria.clade_ancestors ) {
       options.params = options.params.set('clade_relatives', 'ancestors');
-    } else if ( apiOptions.clade_descendants ) {
+    } else if ( criteria.clade_descendants ) {
       options.params = options.params.set('clade_relatives', 'descendants');
     }
 
-    if ( apiOptions.keywords ) {
-      options.params = options.params.set('keywords', apiOptions.keywords);
+    if ( criteria.keywords ) {
+      options.params = options.params.set('keywords', criteria.keywords);
     }
 
-    options.params = options.params.set('start', (apiOptions.start || 0).toString());
-    options.params = options.params.set('limit', (apiOptions.limit !== undefined ? apiOptions.limit : 20).toString());
-
-    if (apiOptions.sort) {
-      options.params = options.params.set('sort', apiOptions.sort);
+    if (download) {
+      options.params = options.params.set('download', 'true');
+    } else {
+      options.params = options.params.set('start', (criteria.start || 0).toString());
+      options.params = options.params.set('limit', (criteria.limit !== undefined ? criteria.limit : 20).toString());
     }
 
-    return this.http.get<any>(url, options)
-      .pipe(catchError(this.handleError('getFamilies', {})));
+    if (criteria.sort) {
+      options.params = options.params.set('sort', criteria.sort);
+    }
+
+    return [url, options];
+  }
+
+  getFamiliesDownloadUrl(criteria: FamilyCriteria, format: string): string {
+    const [url, options] = this.getFamiliesUrlOptions(criteria, format, true);
+    return url + '?' + options.params.toString();
+  }
+
+  getFamilies(criteria: FamilyCriteria): Observable<FamilyResults> {
+    const [url, options] = this.getFamiliesUrlOptions(criteria);
+    return this.http.get<FamilyResults>(url, options)
+      .pipe(catchError(this.handleError('getFamilies', { results: [], total_count: 0 })));
   }
 
   getFamilyHmm(accession: string): Observable<string> {
@@ -157,6 +174,10 @@ export class DfamAPIService {
     return this.familyPath(accession) + '/sequence?format=embl&download=true';
   }
 
+  getFamilyFastaDownloadUrl(accession: string): string {
+    return this.familyPath(accession) + '/sequence?format=fasta&download=true';
+  }
+
   getFamilyRelationships(accession: string): Observable<any> {
     const url = this.familyPath(accession) + '/relationships';
     return this.http.get(url).pipe(
@@ -220,7 +241,7 @@ export class DfamAPIService {
     );
   }
 
-  getClasses(name?: string): Observable<any> {
+  getClasses(name?: string): Observable<Classification | Classification[]> {
     const url = endpoint + 'classes';
     const options = {
       params: new HttpParams(),
@@ -229,14 +250,13 @@ export class DfamAPIService {
     if (name) {
       options.params = options.params.set('name', name);
     }
-    return this.http.get(url, options).pipe(
-      map(this.extractData),
-      catchError(this.handleError('getClasses', {})),
+    return this.http.get<Classification | Classification[]>(url, options).pipe(
+      catchError(this.handleError('getClasses', [])),
     );
   }
 
   // TODO: handling of name, limit
-  getTaxa(name: string): Observable<any> {
+  getTaxa(name: string): Observable<TaxaResults> {
     const url = endpoint + 'taxa';
     const options = {
       params: new HttpParams(),
@@ -246,18 +266,16 @@ export class DfamAPIService {
       options.params = options.params.set('name', name);
     }
 
-    return this.http.get(url, options).pipe(
-      map(this.extractData),
-      catchError(this.handleError('getTaxa', [])),
+    return this.http.get<TaxaResults>(url, options).pipe(
+      catchError(this.handleError('getTaxa', { taxa: [] })),
     );
   }
 
-  getTaxonById(id: number): Observable<any> {
+  getTaxonById(id: number): Observable<Taxon> {
     const url = endpoint + 'taxa/' + encodeURIComponent(id.toString());
 
-    return this.http.get(url).pipe(
-      map(this.extractData),
-      catchError(this.handleError('getTaxonById', [])),
+    return this.http.get<Taxon>(url).pipe(
+      catchError(this.handleError('getTaxonById', {} as Taxon)),
     );
   }
 
@@ -353,38 +371,6 @@ export class DfamAPIService {
       catchError(this.handleError('getBlogPosts', [])),
     );
   }
-
-  login(email, password): Observable<any> {
-    const body = new HttpParams()
-      .set('email', email)
-      .set('password', password);
-
-    const options = {
-        headers: new HttpHeaders().set('Content-Type',
-                      'application/x-www-form-urlencoded')
-    };
-    return this.http.post(endpoint + 'authenticate',
-                          body.toString(), options).pipe(
-                                catchError(this.handleError('login', {})))
-                            .pipe(map(this.extractData));
-  }
-
-  register(fullname, email, password): Observable<any> {
-    const body = new HttpParams()
-      .set('email', email)
-      .set('name', fullname)
-      .set('password', password);
-
-    const options = {
-        headers: new HttpHeaders().set('Content-Type',
-                      'application/x-www-form-urlencoded')
-    };
-    return this.http.post(endpoint + 'register',
-                          body.toString(), options).pipe(
-        catchError(this.handleError('register', {})),
-        map(this.extractData));
-  }
-
 
   private handleError<T> (operation = 'operation', result: T) {
     return (error: any): Observable<T> => {

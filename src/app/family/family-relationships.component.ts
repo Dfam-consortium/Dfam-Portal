@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
@@ -9,11 +9,11 @@ import { Overlap } from '../../js/overlap';
   templateUrl: './family-relationships.component.html',
   styleUrls: ['./family-relationships.component.scss']
 })
-export class FamilyRelationshipsComponent implements OnInit {
+export class FamilyRelationshipsComponent implements AfterViewInit {
 
   help = 'An interactive representation of the relationships between TE families.';
 
-  @ViewChild('outlet') outlet: ElementRef;
+  @ViewChild('outlet', { static: false }) outlet: ElementRef;
 
   constructor(
     private dfamapi: DfamAPIService,
@@ -31,7 +31,7 @@ export class FamilyRelationshipsComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.getRelationships();
   }
 

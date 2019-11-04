@@ -1,0 +1,96 @@
+<h1 mat-dialog-title>Help</h1>
+
+<mat-dialog-content>
+
+<h2>Info</h2>
+
+<p>General information about the repat family.</p>
+
+<dl>
+  <dt>Name</dt><dd>(optional) A short, name of the family.
+  <p><em>Examples: MIR, AluJ, Charlie2b.</em></p></dd>
+
+  <dt>Title</dt><dd>A short title or description for the family. Shown on the
+  Browse page as the family Description. Shown on the family page as a subtitle
+  under the Name.
+  <p><em>Example: "Non-autonomous Internal region of HERV52, LTR52-int
+  subfamily."</em></p></dd>
+
+  <dt>Description</dt><dd>A longer, publicly visible description of the family.
+  Appropriate for details such as similarities to other families, explanations
+  of function or structure, and other interesting facts.</dd>
+
+  <dt>Classification</dt><dd>The hierarchical classification of the family.
+  Both generic ("LINE", "LTR", "SINE") and specific ("Zenon", "Helitron-1",
+  "tRNA_Promoter;Deu-core;L2-end") classifications are available.</dd>
+
+  <dt>Taxa</dt><dd>Clade(s) the family belongs to. This is usually a single
+  clade at which the repeat was introduced into the genome, except in the case
+  of horizontal transfer between lineages. Dfam searches and visualizations
+  assume the repeat family might be present in all descendants of the specified
+  clade(s). Adding or removing clades from this list will lead to corresponding
+  species being removed from graphs and statistics in the next full database
+  release.</dd>
+</dl>
+
+<h2>Search Options</h2>
+
+<p>Metadata that changes how the family is searched by Dfam and RepeatMasker.</p>
+
+<dl>
+  <dt>Disabled</dt><dd>Disabled families are not visible on the website, not
+  exported in data formats such as HMM or EMBL, nor are they counted in
+  statistics or adjudication. However they are not deleted: they are still
+  accessible via public database releases and can be un-disabled easily.</dd>
+
+  <dt>Search Stages</dt><dd><em>Used by RepeatMasker.</em> This affects when
+  the repeat family is cut or masked in relation to other repeat families.</dd>
+
+  <dt>Buffer Stages</dt><dd><em>Used by RepeatMasker.</em> See the RepeatMasker
+  paper for more details.</dd>
+</dl>
+
+<h2>Curation Details</h2>
+
+<p>Dfam-specific details about the family's curation status and history.</p>
+
+<dl>
+  <dt>Curation Status</dt><dd>The state of the family record in Dfam. Families
+  usually move from Submitted to either Accepted or Rejected, and from Accepted
+  to Released.</dd>
+
+  <dt>Length</dt><dd>The length in nucleotides of the family's seed alignment,
+  consensus sequence, and HMM.</dd>
+
+  <dt>Target Site Duplication</dt><dd>The target site duplication for this
+  family, if it is known. Expressed as nucleotide bases.
+
+  <p><em>Examples: 'NNNNNNNN', 'TATGC'</em></p></dd>
+
+  <dt>Curation Notes</dt><dd>Additional context for the family. These notes are
+  not displayed on the website on in exported data formats such as HMM or EMBL,
+  but they are accessible via public database releases.</dd>
+</dl>
+
+<h2>References</h2>
+
+<p>References to external sources with additional or alternative information
+about the same family.</p>
+
+<dl>
+  <dt>Citations</dt><dd>References to articles where the family has been
+  published, discussed, or described. Currently only accepts PubMed IDs.</dd>
+
+  <dt>Aliases</dt><dd>References to the same family in other databases.</dd>
+</dl>
+
+<h2>Source</h2>
+
+<p>The origination and provenance of the family.</p>
+
+<dl>
+  <dt>Submitter</dt><dd>The original uploader of the family to Dfam.</dd>
+  <dt>Author(s)</dt><dd>The authors of the family.</dd>
+</dl>
+
+</mat-dialog-content>

@@ -1,0 +1,48 @@
+<h1 mat-dialog-title>Choose a Classification</h1>
+
+<mat-dialog-content>
+
+<mat-form-field>
+  <input matInput type="text"
+    placeholder="Search"
+    [formControl]="classificationSearch"
+    (input)="filterTree()">
+</mat-form-field>
+
+<mat-tree
+    [dataSource]="classificationTreeDataSource"
+    [treeControl]="classificationTreeControl">
+  <mat-tree-node *matTreeNodeDef="let node" [class.collapsed]="isHidden(node)">
+    <li>
+      <button mat-icon-button (click)="chooseClassification(node.id)"><mat-icon>link</mat-icon></button>
+      <span>
+        <button mat-icon-button disabled><!-- spacer --></button>
+        <span [innerHTML]="displayNameWithHighlight(node)"></span>
+      </span>
+    </li>
+  </mat-tree-node>
+
+  <mat-nested-tree-node *matTreeNodeDef="let node; when: classificationNodeHasChild"
+      [class.collapsed]="isHidden(node)">
+    <li>
+      <button mat-icon-button (click)="chooseClassification(node.id)"><mat-icon>link</mat-icon></button>
+      <span matTreeNodeToggle>
+        <button mat-icon-button [attr.aria-label]="'toggle ' + node.name">
+          <mat-icon>
+            {{ classificationTreeControl.isExpanded(node) ? 'arrow_drop_down' : 'arrow_right' }}
+          </mat-icon>
+        </button>
+        <span [innerHTML]="displayNameWithHighlight(node)"></span>
+      </span>
+    </li>
+    <ul [class.collapsed]="!classificationTreeControl.isExpanded(node)">
+      <ng-container matTreeNodeOutlet></ng-container>
+    </ul>
+  </mat-nested-tree-node>
+</mat-tree>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="undefined">Cancel</button>
+</mat-dialog-actions>

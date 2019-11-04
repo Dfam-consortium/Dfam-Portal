@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -11,8 +11,6 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
   styleUrls: ['./classification.component.scss']
 })
 export class ClassificationComponent implements OnInit {
-
-  @ViewChild('classificationTree') classificationTree: ClassificationTreeComponent;
 
   classes: any;
   initialClass: any;
@@ -75,7 +73,7 @@ export class ClassificationComponent implements OnInit {
         }
       }
 
-      data.children.forEach(appendWithChildren);
+      this.classes.children.forEach(appendWithChildren);
 
       this.tsv = tsv;
     });

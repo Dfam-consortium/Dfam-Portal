@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { fromEvent, Unsubscribable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -11,11 +11,11 @@ import AlignmentSummaryViewer from 'AlignmentSummaryViewer/dist/AlignmentSummary
   templateUrl: './family-seed.component.html',
   styleUrls: ['./family-seed.component.scss']
 })
-export class FamilySeedComponent implements OnInit, OnDestroy {
+export class FamilySeedComponent implements OnInit, AfterViewInit, OnDestroy {
 
   help = 'Coverage, and quality visualization for this family\'s seed alignment.';
 
-  @ViewChild('seedContainer')
+  @ViewChild('seedContainer', { static: false })
   private seedContainer: ElementRef;
 
   loading = true;
@@ -44,11 +44,13 @@ export class FamilySeedComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.getSeed();
-
     this.resizeSubscription = fromEvent(window, 'resize')
       .pipe(debounceTime(300))
       .subscribe(e => { if (this.viewer) { this.viewer.resize(); } });
+  }
+
+  ngAfterViewInit() {
+    this.getSeed();
   }
 
   ngOnDestroy() {

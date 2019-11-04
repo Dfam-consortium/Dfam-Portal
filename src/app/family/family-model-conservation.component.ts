@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, AfterViewChecked, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { fromEvent, Unsubscribable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -9,7 +9,9 @@ import { ConservationPlot } from '../../js/conservation';
   templateUrl: './family-model-conservation.component.html',
   styleUrls: ['./family-model-conservation.component.scss']
 })
-export class FamilyModelConservationComponent implements OnInit, OnDestroy {
+export class FamilyModelConservationComponent implements OnInit, AfterViewChecked, OnDestroy {
+
+  private needsRedraw;
 
   _data;
   get data(): any {
@@ -19,22 +21,27 @@ export class FamilyModelConservationComponent implements OnInit, OnDestroy {
   @Input()
   set data(data: any) {
     this._data = data;
-    this.redraw();
+    this.needsRedraw = true;
   }
 
 
-  @ViewChild('graph') graph: ElementRef;
+  @ViewChild('graph', { static: false }) graph: ElementRef;
 
   resizeSubscription: Unsubscribable;
 
   constructor() { }
 
   ngOnInit() {
-    this.redraw();
-
     this.resizeSubscription = fromEvent(window, 'resize')
       .pipe(debounceTime(300))
       .subscribe(e => this.redraw());
+  }
+
+  ngAfterViewChecked() {
+    if (this.needsRedraw) {
+      this.needsRedraw = false;
+      this.redraw();
+    }
   }
 
   ngOnDestroy() {

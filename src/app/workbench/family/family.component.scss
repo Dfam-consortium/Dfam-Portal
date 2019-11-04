@@ -1,0 +1,22 @@
+.wide {
+  width: 100%;
+}
+
+.clipped {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+mat-card {
+  margin: 0.5em;
+}
+
+h3 {
+  margin-bottom: 0.5em;
+}
+
+mat-icon.help {
+  font-size: 80%;
+  height: 100%;
+}

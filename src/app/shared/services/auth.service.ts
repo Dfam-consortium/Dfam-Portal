@@ -1,20 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Router } from '@angular/router';
 
-import { DfamAPIService } from '../dfam-api/dfam-api.service';
-import { JwtService } from './jwt.service';
-import { map, distinctUntilChanged } from 'rxjs/operators';
+import { DfamBackendAPIService } from '../dfam-api/dfam-backend-api.service';
+import { map, concatAll, distinctUntilChanged } from 'rxjs/operators';
 
 // RMH: I like typescript but I would like to reuse code
 //      in plain-old-ES5/ES6...so maybe less explicit typing??
 export interface User {
   email: string;
-  token: string;
-  username: string;
-  bio: string;
-  image: string;
+  name: string;
 }
 
 @Injectable({
@@ -28,24 +23,46 @@ export class AuthService implements CanActivate {
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
   constructor (
-    private dfamAPIService: DfamAPIService,
-    private jwtService: JwtService,
-    private jwtHelper: JwtHelperService
-  ) {}
+    private router: Router,
+    private dfamBackendAPIService: DfamBackendAPIService,
+  ) {
+    this.restore();
+  }
+
+
+  getStoredToken(): string {
+    return window.localStorage['jwtToken'];
+  }
+
+  storeToken(token: string) {
+    window.localStorage['jwtToken'] = token;
+  }
+
+  destroyToken() {
+    window.localStorage.removeItem('jwtToken');
+  }
+
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot ): Observable<boolean> {
-     // return this.isAuthenticated.pipe(take(1), map(isAuth => !isAuth));
-     console.log('I am checking ' + this.isAuthenticated );
-     return this.isAuthenticated;
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    return this.isAuthenticated.pipe(map(isAuth => {
+      if (!isAuth) {
+        this.router.navigate(['/login']);
+      }
+
+      return isAuth;
+    }));
   }
 
   // Verify JWT in localstorage with server and load user's info.
   // This runs once on application startup.
-  populate() {
-    if (this.jwtService.getToken()) {
-       // Use token to get details about who I am for the application use
+  restore() {
+    const storedToken = this.getStoredToken();
+    if (storedToken) {
+      this.dfamBackendAPIService.apiToken = storedToken;
+      this.loadUserData();
     } else {
       // Remove any potential remnants of previous auth states
       this.purgeAuth();
@@ -53,8 +70,6 @@ export class AuthService implements CanActivate {
   }
 
   setAuth(user: User) {
-    // Save JWT sent from server in localstorage
-    this.jwtService.saveToken(user.token);
     // Set current user data into observable
     this.currentUserSubject.next(user);
     // Set isAuthenticated to true
@@ -63,40 +78,42 @@ export class AuthService implements CanActivate {
 
   purgeAuth() {
     // Remove JWT from localstorage
-    this.jwtService.destroyToken();
+    this.destroyToken();
     // Set current user to an empty object
     this.currentUserSubject.next({} as User);
     // Set auth status to false
     this.isAuthenticatedSubject.next(false);
   }
 
+  loadUserData(): Observable<User> {
+    this.dfamBackendAPIService.getUser().subscribe(user => {
+      this.setAuth(user);
+    }, err => {
+      // getUser is allowed for any authenticated user. A 403 means
+      // the token is invalid, possibly due to expiration. So we
+      // will just purge the token. Any other error is probably
+      // temporary, so will leave the token in case waiting or
+      // refreshing the page will resolve the issue.
+      if (err.status === 403) {
+        this.purgeAuth();
+      }
+    });
+
+    return this.currentUser;
+  }
+
   attemptAuth(type, credentials): Observable<User> {
     if (type === 'login') {
-      return this.dfamAPIService.login( credentials.email, credentials.password )
-        .pipe(map(
-        data => {
-          const decodedToken = this.jwtHelper.decodeToken(data.token);
-          const expirationDate = this.jwtHelper.getTokenExpirationDate(data.token);
-          const isExpired = this.jwtHelper.isTokenExpired(data.token);
-     // TODO: Remove
-     console.log('user.service: JWT Details - ');
-     console.log('raw data: ' + JSON.stringify(data));
-     console.log('decoded token: ' + JSON.stringify(decodedToken));
-     console.log('experiation date: ' + expirationDate);
-     console.log('isExpired: ' + isExpired);
-          // TODO: finish auth
-          this.setAuth({
-            email: null,
-            token: data.token,
-            username: null,
-            bio: null,
-            image: null,
-          });
-          return data;
-        }
-      ));
+      return this.dfamBackendAPIService.login( credentials.email, credentials.password )
+        .pipe(map(data => {
+          // Save JWT sent from server in localstorage
+          this.storeToken(data.token);
+          this.dfamBackendAPIService.apiToken = data.token;
+
+          return this.loadUserData();
+        }), concatAll());
     } else if (type === 'register') {
-      return this.dfamAPIService.register( credentials.fullname, credentials.email, credentials.password )
+      return this.dfamBackendAPIService.register( credentials.fullname, credentials.email, credentials.password )
         .pipe(map(data => {
           return data;
         }));

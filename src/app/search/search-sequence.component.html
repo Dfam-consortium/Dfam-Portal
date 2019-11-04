@@ -47,7 +47,7 @@
 
   <mat-form-field>
     <mat-select placeholder="Query Organism" name="organism" [(ngModel)]="search.organism">
-      <mat-option *ngFor="let organism of organisms" [value]="organism.name">{{organism.name}} [{{organism.id}}]</mat-option>
+      <mat-option *ngFor="let organism of organisms" [value]="organism.name">{{organism.name}}</mat-option>
       <mat-option value="other">Other</mat-option>
     </mat-select>
   </mat-form-field>

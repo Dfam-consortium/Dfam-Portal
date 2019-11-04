@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, Input, ElementRef, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
@@ -6,7 +6,7 @@ import * as d3 from 'd3';
   templateUrl: './classification-tree.component.html',
   styleUrls: ['./classification-tree.component.scss']
 })
-export class ClassificationTreeComponent implements OnInit {
+export class ClassificationTreeComponent implements AfterViewInit {
 
   private _classes: any;
   get classes(): any { return this._classes; }
@@ -26,15 +26,14 @@ export class ClassificationTreeComponent implements OnInit {
   @Input() set search(value: string) {
     this._search = value;
     this.searchForText(this.search);
-    this.update(this.rootNode);
+    this.render();
   }
 
-  @ViewChild('outlet') outlet: ElementRef;
+  @ViewChild('outlet', { static: false }) outlet: ElementRef;
 
   private tooltipTag: any;
   private svgTag: any;
   private svgGTag: any;
-  private d3tree: any;
   private rootNode: any;
 
   private duration = 750;
@@ -50,45 +49,39 @@ export class ClassificationTreeComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     const element = this.outlet.nativeElement;
 
     this.tooltipTag = d3.select(element).append('div')
       .attr('class', 'tooltip')
-      .style({
-        'position': 'absolute',
-        'display': 'block',
-        'width': '200px',
-        'padding': '5px',
-        'font': '12px sans-serif',
-        'background': 'white',
-        'border-style': 'solid',
-        'border-width': '2px',
-        'border-color': 'lightsteelblue',
-        'border-radius': '8px',
-        'pointer-events': 'none',
-        'opacity': '0',
-      });
+      .style('position', 'absolute')
+      .style('display', 'block')
+      .style('width', '200px')
+      .style('padding', '5px')
+      .style('font', '12px sans-serif')
+      .style('background', 'white')
+      .style('border-style', 'solid')
+      .style('border-width', '2px')
+      .style('border-color', 'lightsteelblue')
+      .style('border-radius', '8px')
+      .style('pointer-events', 'none')
+      .style('opacity', '0');
 
     // Initially we do not have a size
-    this.svgTag = d3.select(element)
-      .append('svg');
+    this.svgTag = d3.select(element).append('svg');
 
     // Add the translation tag
     this.svgGTag = this.svgTag.append('g');
-
-    this.d3tree = d3.layout.tree()
-      .nodeSize([20, 20]);
   }
 
   expandAll() {
     this.expand(this.rootNode);
-    this.update(this.rootNode);
+    this.render();
   }
 
   collapseAll() {
     this.collapse(this.rootNode);
-    this.update(this.rootNode);
+    this.render();
   }
 
   expand(node) {
@@ -96,9 +89,7 @@ export class ClassificationTreeComponent implements OnInit {
       node._matched = false;
       node._matched_path = false;
       node._hidden = false;
-      if (node._children) {
-        node.children = node._children;
-      }
+      node._collapsed = false;
       if (node.children) {
         node.children.forEach(this.expand.bind(this));
       }
@@ -106,23 +97,27 @@ export class ClassificationTreeComponent implements OnInit {
   }
 
   // Collapse all nodes under the given node.
-  // As D3 uses the "children" property to layout
-  // the tree we can collapse a node by storing the
-  // children under a different property.  Here
-  // we simply set the .children to null and hope
-  // that somewhere else the links were copied.
   collapse(node) {
     if (node) {
       node._matched = false;
       node._matched_path = false;
       node._hidden = false;
-      if (node._children) {
-        node._children.forEach(this.collapse.bind(this));
-        node.children = null;
+      node._collapsed = true;
+      if (node.children) {
+        node.children.forEach(this.collapse.bind(this));
       }
     }
   }
 
+  // Hide all nodes under the given node
+  hide(node) {
+    if (node) {
+      node._hidden = true;
+      if (node.children) {
+        node.children.forEach(this.hide.bind(this));
+      }
+    }
+  }
 
   onDataChanged() {
     function initTree(d) {
@@ -132,31 +127,27 @@ export class ClassificationTreeComponent implements OnInit {
       d._matched_path = false;
       // All nodes are visible
       d._hidden = false;
+      // Initially collapse all nodes
+      d._collapsed = true;
       if (d.children) {
-        // Initially collapse all nodes
-        d._children = d.children;
-        d._children.forEach(initTree);
-        d.children = null;
+        d.children.forEach(initTree);
       }
     }
 
     if (this.classes != null) {
       const classes = this.classes;
       this.rootNode = classes;
+
       // Always init to include the root and first generation
-      if (classes.children) {
-        classes._children = classes.children;
-        classes._children.forEach(initTree);
-      }
+      initTree(classes);
+      classes._collapsed = false;
+
       // Fixed width depends on tree depth
-      const treeNodeDepth = this.treeDepth(classes, 1);
+      const treeNodeDepth = this.treeDepth(classes);
       const width = (treeNodeDepth * (this.ySpacing)) - this.margin.right - this.margin.left;
       this.svgTag.attr('width', width + this.margin.right + this.margin.left);
-      // Origin for root node transition
-      classes.x0 = 0;
-      classes.y0 = 0;
       // Render the tree
-      this.update(classes);
+      this.render({ x: 0, y: 0 });
 
       if (this.initialClass) {
         this.expandPath(this.initialClass);
@@ -167,7 +158,7 @@ export class ClassificationTreeComponent implements OnInit {
   // The depth of the tree starting from a given node
   // using either the visible or the complete set of
   // nodes.
-  treeDepth(root, useCollapsed) {
+  treeDepth(root) {
     let treeDepth = 0;
     const queue = [];
     let next = {
@@ -178,9 +169,6 @@ export class ClassificationTreeComponent implements OnInit {
       const node = next.node;
       let depth = next.depth;
       let children = node.children;
-      if (useCollapsed) {
-        children = node._children;
-      }
       if (children && children.length > 0) {
         depth += 1;
         if (depth > treeDepth) {
@@ -204,6 +192,8 @@ export class ClassificationTreeComponent implements OnInit {
       return;
     }
 
+    this.hide(this.rootNode);
+
     const stack = [];
     stack.push(this.rootNode);
     const textRE = new RegExp(text, 'i');
@@ -221,10 +211,10 @@ export class ClassificationTreeComponent implements OnInit {
               parent.children = [];
             }
 
-            parent.children.push(thisNode);
             // Mark this as part of the path to a matched node
             thisNode._matched_path = true;
             thisNode._hidden = false;
+            parent._collapsed = false;
           }
           thisNode = parent;
         }
@@ -234,11 +224,10 @@ export class ClassificationTreeComponent implements OnInit {
 
         // Reset any _hidden flags on this node so it will be drawn
         tmp._hidden = false;
-
       }
 
-      if (tmp._children && tmp._children.length > 0) {
-        tmp._children.forEach(function(child) {
+      if (tmp.children && tmp.children.length > 0) {
+        tmp.children.forEach(function(child) {
           child._parent = tmp;
           stack.push(child);
         });
@@ -255,11 +244,11 @@ export class ClassificationTreeComponent implements OnInit {
     path = path.replace(/^root;/, '').split(";");
 
     let parent = this.rootNode;
-    while (path.length && parent && parent._children) {
+    while (path.length && parent && parent.children) {
       let segment = path.shift();
 
       // Find the child with this name
-      let child = parent._children.find(node => node.name == segment);
+      let child = parent.children.find(node => node.name == segment);
       if (child) {
         // Add to the "visible" array, 'children', and mark as not hidden.
         if (!parent.children) {
@@ -279,82 +268,86 @@ export class ClassificationTreeComponent implements OnInit {
       parent = child;
     }
 
-    this.update(this.rootNode);
+    this.render();
   }
 
 
-  update(root, source?) {
-    if (!root) {
+  render(fromPos?) {
+    if (!this.rootNode) {
       return;
     }
 
-    if (!source) {
-      source = root;
+    if (!fromPos) {
+      fromPos = { x: 0, y: 0 };
     }
 
     // Compute the new tree layout.
-    const nodes = this.d3tree.nodes(root).filter(function(d) {
-      return !d._hidden;
-    }).reverse();
+    const d3Root = d3.hierarchy(this.rootNode, function(d) {
+      if (d._collapsed || !d.children || !d.children.length) {
+        return null;
+      }
 
-    const links = this.d3tree.links(nodes);
+      return d.children.filter(function(c) {
+        return !c._hidden;
+      });
+    });
+
+    d3Root.sort(function(a, b) {
+      return a.data.full_name.localeCompare(b.data.full_name);
+    });
+
+    d3.tree().nodeSize([20, 20])(d3Root);
 
     // Normalize for fixed-depth and calculate max d.x
     let maxDx = 0;
-    let minDx = -1;
+    let minDx = 99999;
     const ySpacing = this.ySpacing;
-    nodes.forEach(function(d) {
+    d3Root.descendants().forEach(function(d: any) {
       if (d.x > maxDx) {
         maxDx = d.x;
       }
-      if (minDx === -1 || d.x < minDx) {
+      if (d.x < minDx) {
         minDx = d.x;
       }
       d.y = d.depth * ySpacing;
     });
-    const height = maxDx + Math.abs(minDx);
+    const height = maxDx - minDx;
     this.svgTag.attr('height', (height + this.margin.top + this.margin.bottom));
 
     this.svgGTag.transition()
       .duration(this.duration)
-      .attr('transform', 'translate(' + this.margin.left + ',' + (this.margin.top + (Math.abs(minDx))) + ')');
+      .attr('transform', 'translate(' + this.margin.left + ',' + (this.margin.top - minDx) + ')');
 
-    // Update the nodes?
+    // Update nodes
     const self = this;
-    const node = this.svgGTag.selectAll('g.node')
-      .data(nodes, function(d) {
-        return d.id || (d.id = ++self.nextID);
-      });
-
-    // Toggle children on click.
-    function click(d) {
-      if (d.children) {
-        d.children = null;
-      } else {
-        d.children = d._children;
-      }
-      self.update(self.rootNode, d);
-    }
+    const nodes = this.svgGTag.selectAll('g.node')
+      .data(d3Root.descendants(), d => d.data.full_name);
 
     // Enter any new nodes at the parent's previous position.
-    const nodeEnter = node.enter().append('g')
+    const nodeEnter = nodes.enter().append('g')
       .attr('class', 'node')
       .style('cursor', 'pointer')
       .attr('transform', function(d) {
-        return 'translate(' + source.y0 + ',' + source.x0 + ')';
+        return 'translate(' + fromPos.y + ',' + fromPos.x + ')';
       })
-      .on('click', click);
+      .on('click', function(d) {
+        // Toggle children on click.
+        d.data._collapsed = !d.data._collapsed;
+        self.render(d);
+      });
 
     const tooltipTag = this.tooltipTag;
     nodeEnter.append('circle')
-      .attr('r', 1e-6)
-      .style({ fill: '#ffffff', stroke: 'steelblue', 'stroke-width': '1.5px' })
+      .attr('r', 6)
+      .style('fill', '#ffffff')
+      .style('stroke', 'steelblue')
+      .style('stroke-width', '1.5px')
       .on('mouseover', function(d) {
-        if (d.tooltip) {
+        if (d.data.tooltip) {
           tooltipTag.transition()
             .duration(200)
             .style('opacity', .9);
-          tooltipTag.html(d.tooltip);
+          tooltipTag.html(d.data.tooltip);
 
           const d3event = d3.event as MouseEvent;
           tooltipTag.style('left', (d3event.pageX + 10) + 'px')
@@ -367,9 +360,9 @@ export class ClassificationTreeComponent implements OnInit {
           .style('opacity', 0);
       })
       .style('fill', function(d) {
-        if (d._matched) {
+        if (d.data._matched) {
           return '#f00';
-        } else if (d._children && d._children.length > 0) {
+        } else if (d.data.children && d.data.children.length > 0) {
           return 'lightsteelblue';
         } else {
           return '#fff';
@@ -378,46 +371,45 @@ export class ClassificationTreeComponent implements OnInit {
 
     nodeEnter.append('a')
       .attr('xlink:href', function(d) {
-        return d.hyperlink ? d.hyperlink : 'javascript:void(0)';
+        return d.data.hyperlink ? d.data.hyperlink : 'javascript:void(0)';
       })
       .append('text')
       .style('font', '11px sans-serif')
-      .attr('x', -10)
+      .attr('x', '-10')
       .attr('dy', '.35em')
       .attr('text-anchor', 'end')
       .text(function(d) {
-        return d.name;
+        return d.data.name;
       })
-      .style('fill-opacity', 1e-6);
+      .style('fill-opacity', 1e-6)
+      .transition()
+      .duration(this.duration)
+      .style('fill-opacity', 1);
 
     // Transition nodes to their new position.
-    const nodeUpdate = node.transition()
+    nodeEnter.merge(nodes).transition()
       .duration(this.duration)
       .attr('transform', function(d) {
         return 'translate(' + d.y + ',' + d.x + ')';
       });
 
-    nodeUpdate.select('circle')
+    nodes.select('circle')
       .attr('r', 6)
       .style('fill', function(d) {
-        if (d._matched) {
+        if (d.data._matched) {
           return '#f00';
-        } else if (d._children && d._children.length > 0) {
+        } else if (d.data.children && d.data.children.length > 0) {
           return 'lightsteelblue';
         } else {
           return '#fff';
         }
       });
 
-
-    nodeUpdate.select('text')
-      .style('fill-opacity', 1);
-
     // Transition exiting nodes to the parent's new position.
-    const nodeExit = node.exit().transition()
+    const nodeExit = nodes.exit().transition()
       .duration(this.duration)
       .attr('transform', function(d) {
-        return 'translate(' + source.y + ',' + source.x + ')';
+        return 'translate(' + d.parent.y + ',' + d.parent.x + ')';
       })
       .remove();
 
@@ -428,54 +420,40 @@ export class ClassificationTreeComponent implements OnInit {
       .style('fill-opacity', 1e-6);
 
     // Update the links
-    const link = this.svgGTag.selectAll('path.link')
-      .data(links, function(d) {
-        return d.target.id;
-      });
+    const links = this.svgGTag.selectAll('path.link')
+      .data(d3Root.links(), d => d.target.data.full_name);
 
-    const diagonal = d3.svg.diagonal()
-      .projection(function(d) { return [d.y, d.x]; });
+    const diagonal = function(from, to) {
+      const p = d3.path();
+      p.moveTo(from.y, from.x)
+      p.bezierCurveTo(from.y + 100, from.x, to.y - 100, to.x, to.y, to.x);
+      return p.toString();
+    };
 
     // Enter any new links at the parent's previous position.
-    link.enter().insert('path', 'g')
+    const linksEnter = links.enter().insert('path', 'g')
       .attr('class', 'link')
-      .style({ 'fill': 'none', 'stroke': '#cccccc', 'stroke-width': '1.5px' })
+      .style('fill', 'none')
+      .style('stroke', '#cccccc')
+      .style('stroke-width', '1.5px')
       .attr('d', function(d) {
-        const o = {
-          x: source.x0,
-          y: source.y0
-        };
-        return diagonal({
-          source: o,
-          target: o
-        });
+        return diagonal(fromPos, fromPos);
       });
 
-    // Transition links to their new position.
-    link.transition()
-      .duration(this.duration)
-      .attr('d', diagonal);
-
-    // Transition exiting nodes to the parent's new position.
-    link.exit().transition()
+    // Transition links to the new position
+    linksEnter.merge(links)
+      .transition()
       .duration(this.duration)
       .attr('d', function(d) {
-        const o = {
-          x: source.x,
-          y: source.y
-        };
-        return diagonal({
-          source: o,
-          target: o
-        });
+        return diagonal(d.source, d.target);
+      });
+
+    // Transition exiting links to the parent's new position.
+    links.exit().transition()
+      .duration(this.duration)
+      .attr('d', function(d) {
+        return diagonal(d.source, d.source);
       })
       .remove();
-
-    // Stash the old positions for transition.
-    nodes.forEach(function(d) {
-      d.x0 = d.x;
-      d.y0 = d.y;
-    });
-
   }
 }
