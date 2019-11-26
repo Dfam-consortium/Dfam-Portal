@@ -1,4 +1,12 @@
 <div>
   <p><b>Email:</b> {{ user.email }}</p>
   <p><b>Name:</b> {{ user.name }}</p>
+  <p><b>Access Level:</b> {{ role }}</p>
+</div>
+
+<div *ngIf="isNewUser">
+<hr>
+Thank you for registering an account at dfam.org! At this time we are
+performing manual activation of new user accounts. You will receive an email
+when your account has been enabled for data submission.
 </div>

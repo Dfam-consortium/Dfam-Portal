@@ -10,6 +10,7 @@ import { map, concatAll, distinctUntilChanged } from 'rxjs/operators';
 export interface User {
   email: string;
   name: string;
+  role: string;
 }
 
 @Injectable({
