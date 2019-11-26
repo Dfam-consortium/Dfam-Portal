@@ -24,6 +24,7 @@ import { HelpToolsComponent } from './help/help-tools.component';
 import { HelpApiComponent } from './help/help-api.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './login/login.component';
+import { VerifyComponent } from './login/verify.component';
 import { PublicLayoutComponent } from './shared';
 
 export const PUBLIC_ROUTES: Routes = [
@@ -66,6 +67,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: LoginComponent},
+  { path: 'verify', component: VerifyComponent },
   { path: 'workbench', loadChildren: () => import('./workbench/workbench.module').then(mod => mod.WorkbenchModule) },
   { path: '', component: PublicLayoutComponent, data: { title: 'Public Views' }, children: PUBLIC_ROUTES },
 ];

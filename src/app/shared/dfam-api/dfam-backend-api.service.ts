@@ -212,6 +212,10 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     ).pipe(map(this.extractData));
   }
 
+  verify(token): Observable<any> {
+    const params = new HttpParams().set('token', token);
+    return this.http.get(endpoint + 'verify', { params, observe: 'response' });
+  }
 
   private handleError<T> (operation = 'operation', result: T) {
     return (error: any): Observable<T> => {

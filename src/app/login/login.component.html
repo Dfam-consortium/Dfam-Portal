@@ -16,7 +16,7 @@
           <form fxLayout="column" fxLayoutAlign="space-around center">
             <p></p>
             <a [routerLink]="['/login']" *ngIf="loginType == 'register'">Have an account?</a>
-            <!--<a [routerLink]="['/register']" *ngIf="loginType == 'login'">Need an account?</a>-->
+            <a [routerLink]="['/register']" *ngIf="loginType == 'login'">Need an account?</a>
             <mat-form-field *ngIf="loginType == 'register'">
               <input matInput
                   type="text"
@@ -44,7 +44,7 @@
             <button type="submit" [disabled]="isSubmitting" mat-raised-button color="primary" (click)="submitForm()">
              {{ title }}
             </button>
-            <p>{{ error }}</p>
+            <p>{{ message }}</p>
           </form>
         </mat-card-content>
       </mat-card>
