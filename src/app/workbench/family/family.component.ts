@@ -451,6 +451,8 @@ export class WorkbenchFamilyComponent implements OnInit {
       hasChanges = true;
     }
 
+    console.log(hasChanges, changeset);
+
     return hasChanges ? changeset : null;
   }
 

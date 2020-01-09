@@ -1,4 +1,11 @@
 {
+  "/api/backend": {
+    "target": "http://localhost:10012",
+    "secure": false,
+    "pathRewrite": {
+      "^/api/backend": ""
+    }
+  },
   "/api": {
     "target": "http://localhost:11111",
     "secure": false,

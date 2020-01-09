@@ -244,18 +244,17 @@ export class ClassificationTreeComponent implements AfterViewInit {
     path = path.replace(/^root;/, '').split(";");
 
     let parent = this.rootNode;
+    parent._collapsed = false;
+
     while (path.length && parent && parent.children) {
       let segment = path.shift();
 
       // Find the child with this name
       let child = parent.children.find(node => node.name == segment);
       if (child) {
-        // Add to the "visible" array, 'children', and mark as not hidden.
-        if (!parent.children) {
-          parent.children = [];
-        }
-        parent.children.push(child);
+        // Mark this child as not-hidden and not-collapsed
         child._hidden = false;
+        child._collapsed = false;
 
         // Mark as matched path, or matched if it's the last one.
         if (path.length) {
