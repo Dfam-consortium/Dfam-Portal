@@ -1,7 +1,9 @@
 <div class="content" *ngIf="family">
 
-<h3 class="underline-span">Description</h3>
-<p>{{family.description || "No description has been provided for this family."}}</p>
+<ng-container *ngIf="family.description">
+  <h3 class="underline-span">Description</h3>
+  <p>{{family.description}}</p>
+</ng-container>
 
 <h3 class="underline-span">Classification and Taxa <dfam-help-icon link="/help/family#summary" [tooltip]="help.classification"></dfam-help-icon></h3>
 <div fxLayout="row">
