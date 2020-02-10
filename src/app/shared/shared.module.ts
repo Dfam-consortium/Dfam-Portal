@@ -45,6 +45,7 @@ import { LoaderComponent } from './loader/loader.component';
     MatAutocompleteModule,
     MatButtonModule,
     MatCheckboxModule,
+    MatDialogModule,
     MatDividerModule,
     MatDialogModule,
     MatExpansionModule,

@@ -47,8 +47,10 @@ import { SearchResultsAlignmentComponent } from './search/search-results-alignme
 import { HelpIconComponent } from './shared/help-icon/help-icon.component';
 import { FamilyAnnotationsKaryotypeComponent } from './family/family-annotations-karyotype.component';
 import { SearchResultsHitsComponent } from './search/search-results-hits.component';
+import { ClassificationLayoutComponent } from './classification/classification-layout.component';
 import { ClassificationComponent } from './classification/classification.component';
 import { ClassificationTreeComponent } from './classification/classification-tree.component';
+import { DnaTerminiComponent } from './classification/dna-termini.component';
 import { SearchAnnotationsComponent } from './search/search-annotations.component';
 import { SearchSequenceResultsComponent } from './search/search-sequence-results.component';
 import { HelpComponent } from './help/help.component';
@@ -111,6 +113,8 @@ export function tokenGetter() {
     HelpApiComponent,
     AssemblyPickerComponent,
     VerifyComponent,
+    DnaTerminiComponent,
+    ClassificationLayoutComponent,
   ],
   imports: [
     CommonModule,

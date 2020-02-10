@@ -1,0 +1,153 @@
+<div fxFlex.gt-md="80" fxFlexOffset.gt-md="10">
+
+<h2>DNA Transposon Termini Signatures (version 1.1)</h2>
+
+<div fxLayout="column" fxLayoutAlign="center center">
+
+<p>
+The termini of most Class II DNA transposons, in particular those with terminal
+inverted repeat sequences (TIRs), are critical to the process of transposition
+and often show signs of conservation between families within a single class.
+These conserved patterns may be used to classify de-novo identified elements.
+Non-coding DNA transposons often can only be classified by recognition of these
+patterns along with not-always-available target site duplication
+characteristics. As many transposons have (fragments) of other elements
+embedded, even those with apparent coding sequence should generally be
+classified by their terminal patterns if there is a conflict.
+</p>
+
+<figure fxLayout="column" fxLayoutAlign="center center">
+  <div class="figuresizer">
+    <img src="/assets/images/dna-transposon-subgroups.png" width="500" height="300">
+  </div>
+  <figcaption><strong>Figure 1:</strong> Major subgroups of Class II DNA transposons</figcaption>
+</figure>
+
+<p>
+DNA transposons found in eukaryotic genomes fall into four broad
+groups<sup>1,2,3</sup> (Figure 1) each with their own set of autonomous and
+non-autonomous forms (typically non-coding deletion products retaining the end
+recognition sites).  Here we provide logos and HMMs for the terminal 26 bp of
+most currently recognized subclasses. The strongest signals are carried by TIR
+DNA transposons, but even Helitrons and some Crypton elements lacking TIRs
+contain signs of base conservation.  HMMs for the 5’ and 3’ ends were generated
+from an ungapped alignment of the first/last 60bp of all known members with
+clearly defined termini (Figure 2).  Minor modifications were made to some
+consensus sequences to have each line up from the true end, most commonly
+involving removal of target site duplications.  The 3’ ends were
+reverse-complemented to match the 5’ end (in case of TIRs).  HMMs were
+developed using HMMER (hmmbuild) for the 5’ ends, the 3’ ends, and the combined
+termini. The logos below are a representation of the information content at
+each position within the HMM.  The full set may be downloaded from <a
+href="https://www.dfam.org/releases/dna_termini_1.1">https://www.dfam.org/releases/dna_termini_1.1</a>
+and will be updated as new families are added to each class.
+</p>
+
+<figure fxLayout="column" fxLayoutAlign="center center">
+  <div class="figuresizer">
+    <img src="/assets/images/dna-termini-hmm-generation.png" width="300" height="238">
+  </div>
+  <figcaption>
+    <strong>Figure 2:</strong> Generation of 5’/3’ and combined (termini) HMMs
+    from a single subclass of DNA transposons consensus sequences.
+  </figcaption>
+</figure>
+
+<ol>
+  <li>
+    Piégu, Benoît, et al. "A survey of transposable element classification
+    systems–a call for a fundamental update to meet the challenge of their
+    diversity and complexity." Molecular phylogenetics and evolution 86 (2015):
+    90-109.
+  </li>
+  <li>
+    Feschotte, Cédric, and Ellen J. Pritham. "DNA transposons and
+    the evolution of eukaryotic genomes." Annu. Rev. Genet. 41 (2007):
+    331-368.
+  </li>
+  <li>
+    Wicker, Thomas, et al. "A unified classification system for
+    eukaryotic transposable elements." Nature Reviews Genetics 8.12 (2007):
+    973-982.
+  </li>
+</ol>
+
+</div>
+
+<!-- This ng-template makes it easier to adjust the width, height, <a> wrapper,
+     or other attributes of the image display across all columns -->
+
+<ng-template #image let-path="path">
+  <img class="termini-logo" src="{{path}}" height="100" width="311"
+    (click)="openBigLogo(path)">
+</ng-template>
+
+<ng-template #popup let-data>
+  <mat-dialog-content>
+    <img src="{{data.path}}" height="300" width="932">
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<table class="wide" mat-table [dataSource]="SUBCLASSES">
+
+  <ng-container matColumnDef="section_heading">
+    <th mat-cell colspan="6" *matCellDef="let section">{{section.section}}</th>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Subclass</th>
+    <td mat-cell *matCellDef="let subclass">{{subclass.name}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="count">
+    <th mat-header-cell *matHeaderCellDef>Families</th>
+    <td mat-cell *matCellDef="let subclass">{{subclass.count}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="termini">
+    <th mat-header-cell *matHeaderCellDef>Termini</th>
+    <td mat-cell *matCellDef="let subclass">
+      <ng-container *ngIf="subclass.termini">
+        <ng-container *ngTemplateOutlet="image; context: { 'path': getImagePath(subclass.name, '_termini') }">
+        </ng-container>
+      </ng-container>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="begins">
+    <th mat-header-cell *matHeaderCellDef>5' end</th>
+    <td mat-cell *matCellDef="let subclass">
+      <ng-container *ngIf="subclass.begins">
+        <ng-container *ngTemplateOutlet="image; context: { 'path': getImagePath(subclass.name, '_begins') }">
+        </ng-container>
+      </ng-container>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="ends">
+    <th mat-header-cell *matHeaderCellDef>3' end</th>
+    <td mat-cell *matCellDef="let subclass">
+      <ng-container *ngIf="subclass.ends">
+        <ng-container *ngTemplateOutlet="image; context: { 'path': getImagePath(subclass.name, '_ends') }">
+        </ng-container>
+      </ng-container>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="notes">
+    <th mat-header-cell *matHeaderCellDef>Notes</th>
+    <td mat-cell *matCellDef="let subclass">
+      {{subclass.notes}}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayColumns; sticky: true"></tr>
+  <tr mat-row *matRowDef="let subclass; columns: ['section_heading']; when: isSectionHeading"></tr>
+  <tr mat-row *matRowDef="let subclass; columns: displayColumns"></tr>
+
+</table>
+
+</div>
