@@ -40,6 +40,7 @@ function has_duplicates(array: any[]) {
 export class BrowsePanelComponent implements OnInit, AfterViewInit {
 
   @Input() repository: FamilyRepository & ClassesRepository & TaxaRepository;
+  @Input() isEditing: boolean;
 
   families: any = {};
 
