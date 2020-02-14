@@ -46,6 +46,7 @@ import { LoaderComponent } from './loader/loader.component';
     MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
