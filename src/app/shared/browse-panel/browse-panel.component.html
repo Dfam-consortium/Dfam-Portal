@@ -74,6 +74,10 @@
         Descendants
       </mat-checkbox>
     </div>
+
+    <div>
+      <button mat-raised-button (click)="clearSearch()">Clear Filters</button>
+    </div>
   </div>
   <mat-divider></mat-divider>
   <p>Total results: {{families.total_count}}</p>

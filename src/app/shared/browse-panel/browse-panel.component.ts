@@ -270,6 +270,16 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     this.router.navigate([], { queryParams, replaceUrl: true });
   }
 
+  clearSearch() {
+    this.search.name_accession = null;
+    this.search.classification = null;
+    this.search.clade = null;
+    this.search.clade_ancestors = false;
+    this.search.clade_descendants = false;
+    this.search.keywords = null;
+    this.searchChanged();
+  }
+
   updateClasses() {
     const search_term = this.search.classification;
 
