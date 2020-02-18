@@ -73,6 +73,10 @@
                   "maximumWarning": "6kb"
                 }
               ]
+            },
+            "es5": {
+              "optimization": true,
+              "tsConfig": "src/tsconfig-es5.app.json"
             }
           }
         },
@@ -88,6 +92,9 @@
           "configurations": {
             "production": {
               "browserTarget": "Dfam:build:production"
+            },
+            "es5": {
+              "browserTarget": "Dfam:build:es5"
             }
           }
         },
