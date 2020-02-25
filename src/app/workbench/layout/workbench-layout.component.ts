@@ -9,12 +9,14 @@ import { AuthService } from '../../shared/services/auth.service';
 export class WorkbenchLayoutComponent {
   title = 'Dfam';
 
+  showUploads = false;
   showBrowse = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.authService.currentUser.subscribe(user => {
+      this.showUploads = (user.role === 'curator' || user.role === 'submitter');
       this.showBrowse = (user.role === 'curator');
     });
   }

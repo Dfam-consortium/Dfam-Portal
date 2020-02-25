@@ -1,0 +1,22 @@
+.wide {
+  width: 100%;
+}
+
+// Set a fixed size for the expander column instead
+// of letting it automatically adjust
+.uploads-area th:first-child {
+  width: 3em;
+}
+
+.hidden {
+  display: none;
+}
+
+.upload-notes {
+  background: #eeeeee;
+  padding: 1em;
+}
+
+.upload-card {
+  margin-top: 1em;
+}

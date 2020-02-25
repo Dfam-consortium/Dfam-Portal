@@ -1,0 +1,106 @@
+<div fxFlex="100" fxFlex.gt-sm="60" fxFlexOffset.gt-sm="20">
+
+<h2>Uploads</h2>
+
+<p>
+  The Dfam database primarily consists of curated Transposable Element (TE)
+  families derived from seed alignments.  In addition, Dfam now supports
+  submission of raw output from <em>de novo</em> pipelines such as
+  RepeatModeler, which may include fragments, redundancies, and non-TE
+  repetitive DNA such as gene families or segmental duplications. Such entries
+  will be made available through Dfam but will not go through the full
+  species-specific threshold calculation and annotation processes. Raw families
+  can later be replaced by curated equivalents.
+</p>
+
+<p>
+  Submissions should be in the form of <em>seed alignments</em>: multiple
+  alignments of (putative) repetitive element families. The preferred format is
+  Stockholm, as produced by the RepeatModeler tool, however other formats may
+  be submitted.  We do not want format issues to be a barrier to submission,
+  and have resources to assist in this process.  If available, each library
+  should include additional metadata such as family classifications,
+  organism/assembly details, citations, and/or additional project background.
+  We recommend that each dataset be compressed before upload.
+</p>
+
+<p>
+  Data submitted through this portal may be included in future Dfam releases
+  after review by the Dfam team. By submitting data for inclusion in Dfam, you
+  agree to release it under the Creative Commons CC0 1.0 public domain license.
+  More information about this license is available at <a
+  href="https://creativecommons.org/publicdomain/zero/1.0/">
+  https://creativecommons.org/publicdomain/zero/1.0/</a>
+</p>
+
+<p>
+  Any comments, questions, or requests can be directed to
+  <a href="mailto:help@dfam.org">help@dfam.org</a>.
+</p>
+
+<dfam-loader [loading]="loading">
+
+<div class="uploads-area">
+
+<table mat-table multiTemplateDataRows class="wide" [dataSource]="uploads">
+  <ng-container matColumnDef="expander">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let upload"><button (click)="upload.show_notes = !upload.show_notes">{{upload.show_notes ? 'v' : '&gt;'}}</button></td>
+  </ng-container>
+  <ng-container matColumnDef="file_name">
+    <th mat-header-cell *matHeaderCellDef>File Name</th>
+    <td mat-cell *matCellDef="let upload">
+      {{upload.file_name}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="upload_date">
+    <th mat-header-cell *matHeaderCellDef>Date</th>
+    <td mat-cell *matCellDef="let upload">
+      {{upload.upload_date}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Status</th>
+    <td mat-cell *matCellDef="let upload">
+      <ng-container *ngIf="editableStatus; else readonlyStatus">
+        <input type="text" class="wide"
+          [value]="upload.status"
+          (change)="changeUploadStatus(upload, $event)">
+      </ng-container>
+      <ng-template #readonlyStatus>
+        {{upload.status}}
+      </ng-template>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="uploaded_by">
+    <th mat-header-cell *matHeaderCellDef>Uploaded By</th>
+    <td mat-cell *matCellDef="let upload">
+      {{upload.uploaded_by}}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="notes_expander">
+    <td *matCellDef="let upload"></td>
+  </ng-container>
+  <ng-container matColumnDef="notes">
+    <td [colSpan]="displayColumns.length - 1" *matCellDef="let upload">
+      <div *ngIf="upload.show_notes" class="upload-notes">
+        {{upload.notes}}
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+  <tr mat-row *matRowDef="let upload; columns: displayColumns"></tr>
+  <tr mat-row [ngClass]="{'hidden': !upload.show_notes}" *matRowDef="let upload; columns: ['notes_expander', 'notes']"></tr>
+</table>
+
+<p *ngIf="!loading && !uploads.length">
+  You have not submitted any files to Dfam.
+</p>
+
+</div>
+
+</dfam-loader>
+
+</div>

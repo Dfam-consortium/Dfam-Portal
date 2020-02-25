@@ -15,6 +15,7 @@ import { WorkbenchRoutingModule } from './workbench-routing.module';
 
 import { WorkbenchLayoutComponent } from './layout/workbench-layout.component';
 import { WorkbenchUserComponent } from './user/user.component';
+import { WorkbenchUploadsComponent } from './uploads/uploads.component';
 import { WorkbenchBrowseComponent } from './browse/browse.component';
 import { WorkbenchFamilyComponent } from './family/family.component';
 import { FamilyClassificationDialogComponent } from './family/family-classification-dialog.component';
@@ -27,6 +28,7 @@ import { FamilyHelpDialogComponent } from './family/family-help-dialog.component
   declarations: [
     WorkbenchLayoutComponent,
     WorkbenchUserComponent,
+    WorkbenchUploadsComponent,
     WorkbenchBrowseComponent,
     WorkbenchFamilyComponent,
     FamilyClassificationDialogComponent,

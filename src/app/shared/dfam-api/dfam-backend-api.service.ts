@@ -41,6 +41,18 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     return this.http.get(endpoint + 'user', opts);
   }
 
+  getUploads(): Observable<any> {
+    const opts = this.optsWithAuth();
+    return this.http.get(endpoint + 'uploads', opts);
+  }
+
+  patchUpload(id: number, changeset: any): Observable<{}> {
+    const url = endpoint + 'uploads/' + encodeURIComponent(id);
+    const opts = this.optsWithAuth();
+    return this.http.patch<any>(url, changeset, opts)
+      .pipe(tap(null, this.handleError("patchUpload", null)));
+  }
+
   private familyPath(accession: string): string {
     return endpoint + 'families/' + encodeURIComponent(accession);
   }
