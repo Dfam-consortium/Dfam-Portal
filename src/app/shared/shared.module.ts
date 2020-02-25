@@ -42,6 +42,7 @@ import { LoaderComponent } from './loader/loader.component';
     FlexLayoutModule,
 
     MatAutocompleteModule,
+    MatButtonModule,
     MatCheckboxModule,
     MatDividerModule,
     MatExpansionModule,
