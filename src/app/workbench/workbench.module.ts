@@ -10,6 +10,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
+import { NgxFlowModule, FlowInjectionToken } from '@flowjs/ngx-flow';
+import Flow from '@flowjs/flow.js';
 
 import { WorkbenchRoutingModule } from './workbench-routing.module';
 
@@ -22,6 +26,7 @@ import { FamilyClassificationDialogComponent } from './family/family-classificat
 import { WarningIconComponent } from './warning-icon/warning-icon.component';
 import { FamilyCloseDialogComponent } from './family/family-close-dialog.component';
 import { FamilyHelpDialogComponent } from './family/family-help-dialog.component';
+import { UploadCloseDialogComponent } from './uploads/upload-close-dialog.component';
 
 
 @NgModule({
@@ -35,6 +40,7 @@ import { FamilyHelpDialogComponent } from './family/family-help-dialog.component
     WarningIconComponent,
     FamilyCloseDialogComponent,
     FamilyHelpDialogComponent,
+    UploadCloseDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -42,13 +48,19 @@ import { FamilyHelpDialogComponent } from './family/family-help-dialog.component
 
     SharedModule,
 
+    NgxFlowModule,
+
     MatDialogModule,
     MatSidenavModule,
     MatListModule,
     MatToolbarModule,
     MatTreeModule,
+    MatProgressBarModule,
 
     WorkbenchRoutingModule,
+  ],
+  providers: [
+    { provide: FlowInjectionToken, useValue: Flow },
   ],
 })
 export class WorkbenchModule { }

@@ -38,6 +38,44 @@
   <a href="mailto:help@dfam.org">help@dfam.org</a>.
 </p>
 
+<mat-card class="upload-card">
+  <mat-card-title>Upload a File</mat-card-title>
+
+  <ng-container #flow="flow" [flowConfig]="flowConfig"></ng-container>
+
+  <div fxLayout="column" fxLayoutGap="1em" fxLayoutAlign="center stretch">
+    <input #fileInput type="file" class="hidden" flowButton [flow]="flow.flowJs" [disabled]="!canSelectFile">
+    <div class="drop-area" flowDrop [flow]="flow.flowJs"
+        fxLayout="row" fxLayoutAlign="center center">
+      Drop a file here
+    </div>
+    <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">
+      Browse
+    </button>
+  </div>
+
+  <p *ngIf="selectedFile">Selected file: {{selectedFile.name}}</p>
+
+  <mat-form-field class="wide">
+    <textarea matInput placeholder="Enter additional notes here" [(ngModel)]="uploadNotes"></textarea>
+  </mat-form-field>
+
+  <div>
+    <mat-checkbox [(ngModel)]="uploadTermsAgreed">
+      I agree to allow the Dfam Consortium to release this dataset under the
+      CC0 Public Domain license.
+    </mat-checkbox>
+    <br>
+    <button type="button" mat-raised-button color="primary"
+        (click)="flow.upload()" [disabled]="!canStartUpload">
+      Upload
+    </button>
+    <p>{{statusText}}</p>
+    <mat-progress-bar *ngIf="uploaderState == UploaderState.InProgress" mode="determinate" [value]="100 * uploadProgress">
+    </mat-progress-bar>
+  </div>
+</mat-card>
+
 <dfam-loader [loading]="loading">
 
 <div class="uploads-area">

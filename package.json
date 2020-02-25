@@ -24,6 +24,8 @@
     "@angular/platform-browser-dynamic": "^9.0.3",
     "@angular/router": "^9.0.3",
     "@auth0/angular-jwt": "^3.0.1",
+    "@flowjs/flow.js": "^2.13.2",
+    "@flowjs/ngx-flow": "^0.4.3",
     "AlignmentSummaryViewer": "git+https://github.com/Dfam-consortium/AlignmentSummaryViewer.git#0.1.2",
     "Karyotype": "git+https://github.com/Dfam-consortium/Karyotype.git#0.1.0",
     "core-js": "^3.4.0",

@@ -53,6 +53,17 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
       .pipe(tap(null, this.handleError("patchUpload", null)));
   }
 
+  getFlowConfig() {
+    return {
+      target: endpoint + 'upload',
+      singleFile: true,
+      headers: {
+        'Authorization': 'Bearer ' + this.apiToken,
+      },
+      permanentErrors: [400, 403, 415, 500, 501],
+    };
+  }
+
   private familyPath(accession: string): string {
     return endpoint + 'families/' + encodeURIComponent(accession);
   }
