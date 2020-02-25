@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../shared/services';
+
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   templateUrl: './login.component.html',
@@ -21,10 +23,13 @@ export class LoginComponent implements OnInit {
   email: string;
   password: string;
 
+  @ViewChild('registerDone', { static: false }) registerDoneTemplate: TemplateRef<any>;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -48,8 +53,13 @@ export class LoginComponent implements OnInit {
           if (this.loginType === 'login') {
             this.router.navigateByUrl('/workbench/user');
           } else if (this.loginType === 'register') {
-            this.message = 'If you are a new user, an email has been sent to activate your account.';
+            this.message = '';
             this.isSubmitting = false;
+
+            const dialog = this.dialog.open(this.registerDoneTemplate);
+            dialog.afterClosed().subscribe(() => {
+              this.router.navigateByUrl('/login');
+            });
           }
         },
         err => {
