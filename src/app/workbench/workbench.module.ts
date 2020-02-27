@@ -48,10 +48,5 @@ import { FamilyHelpDialogComponent } from './family/family-help-dialog.component
 
     WorkbenchRoutingModule,
   ],
-  entryComponents: [
-    FamilyClassificationDialogComponent,
-    FamilyCloseDialogComponent,
-    FamilyHelpDialogComponent,
-  ],
 })
 export class WorkbenchModule { }
