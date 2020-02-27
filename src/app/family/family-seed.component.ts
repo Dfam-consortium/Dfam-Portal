@@ -15,7 +15,7 @@ export class FamilySeedComponent implements OnInit, AfterViewInit, OnDestroy {
 
   help = 'Coverage, and quality visualization for this family\'s seed alignment.';
 
-  @ViewChild('seedContainer', { static: false })
+  @ViewChild('seedContainer')
   private seedContainer: ElementRef;
 
   loading = true;

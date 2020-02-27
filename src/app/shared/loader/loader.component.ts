@@ -10,7 +10,7 @@ export class LoaderComponent implements AfterViewChecked {
   @Input() loading: boolean;
   @Input() diameter = 80;
 
-  @ViewChild('container', { static: false }) container: ElementRef;
+  @ViewChild('container') container: ElementRef;
 
   constructor() { }
 

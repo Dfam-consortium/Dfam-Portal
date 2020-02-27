@@ -13,7 +13,7 @@ export class FamilyRelationshipsComponent implements AfterViewInit {
 
   help = 'An interactive representation of the relationships between TE families.';
 
-  @ViewChild('outlet', { static: false }) outlet: ElementRef;
+  @ViewChild('outlet') outlet: ElementRef;
 
   constructor(
     private dfamapi: DfamAPIService,

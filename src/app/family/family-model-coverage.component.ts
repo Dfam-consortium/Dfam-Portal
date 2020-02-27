@@ -23,7 +23,7 @@ export class FamilyModelCoverageComponent implements AfterViewChecked {
 
   @Input() colorSet: number;
 
-  @ViewChild('graph', { static: false }) graph: ElementRef;
+  @ViewChild('graph') graph: ElementRef;
 
   constructor() { }
 

@@ -23,7 +23,7 @@ export class SearchResultsGraphComponent implements OnInit, AfterViewChecked {
     this.needsRedraw = true;
   };
 
-  @ViewChild('graph', { static: false }) graph: ElementRef;
+  @ViewChild('graph') graph: ElementRef;
 
   graphic;
   resizeSubscription: Unsubscribable;

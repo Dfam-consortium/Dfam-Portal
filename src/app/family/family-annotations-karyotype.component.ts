@@ -30,7 +30,7 @@ export class FamilyAnnotationsKaryotypeComponent implements AfterViewChecked {
     this.needsRedraw = true;
   }
 
-  @ViewChild('karyotype', { static: false }) karyotype: ElementRef;
+  @ViewChild('karyotype') karyotype: ElementRef;
 
   constructor() { }
 
