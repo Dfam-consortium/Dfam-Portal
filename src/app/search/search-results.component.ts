@@ -13,7 +13,7 @@ export class SearchResultsComponent implements AfterViewInit, OnChanges {
   @Input() showSequence: boolean;
   @Input() getAlignCallback;
 
-  @ViewChild('tandemResultsSort', { static: false }) tandemResultsSort: MatSort;
+  @ViewChild('tandemResultsSort') tandemResultsSort: MatSort;
   tandemColumns = ['sequence', 'type', 'start', 'end', 'repeat_length'];
   tandemResultsSource = new MatTableDataSource();
 

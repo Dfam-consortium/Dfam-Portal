@@ -29,7 +29,7 @@ export class ClassificationTreeComponent implements AfterViewInit {
     this.render();
   }
 
-  @ViewChild('outlet', { static: false }) outlet: ElementRef;
+  @ViewChild('outlet') outlet: ElementRef;
 
   private tooltipTag: any;
   private svgTag: any;

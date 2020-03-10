@@ -25,7 +25,7 @@ export class SearchResultsHitsComponent implements AfterViewInit {
 
   @Input() assembly: string;
 
-  @ViewChild('sort', { static: false }) sort: MatSort;
+  @ViewChild('sort') sort: MatSort;
   columns = ['expander', 'sequence', 'accession', 'bit_score', 'e_value',
     'model_start', 'model_end', 'ali_start', 'ali_end', 'strand'];
   dataSource = new MatTableDataSource();

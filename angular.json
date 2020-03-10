@@ -10,13 +10,14 @@
       "prefix": "dfam",
       "schematics": {
         "@schematics/angular:component": {
-          "styleext": "scss"
+          "style": "scss"
         }
       },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/Dfam",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -66,8 +67,16 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
+            },
+            "es5": {
+              "optimization": true,
+              "tsConfig": "src/tsconfig-es5.app.json"
             }
           }
         },
@@ -83,6 +92,9 @@
           "configurations": {
             "production": {
               "browserTarget": "Dfam:build:production"
+            },
+            "es5": {
+              "browserTarget": "Dfam:build:es5"
             }
           }
         },

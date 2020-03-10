@@ -40,6 +40,7 @@ function has_duplicates(array: any[]) {
 export class BrowsePanelComponent implements OnInit, AfterViewInit {
 
   @Input() repository: FamilyRepository & ClassesRepository & TaxaRepository;
+  @Input() isEditing: boolean;
 
   families: any = {};
 
@@ -58,8 +59,8 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
 
   displayColumns = [ 'accession', 'name', 'classification', 'clades', 'title', 'length' ];
 
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private route: ActivatedRoute,
@@ -267,6 +268,16 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     }
 
     this.router.navigate([], { queryParams, replaceUrl: true });
+  }
+
+  clearSearch() {
+    this.search.name_accession = null;
+    this.search.classification = null;
+    this.search.clade = null;
+    this.search.clade_ancestors = false;
+    this.search.clade_descendants = false;
+    this.search.keywords = null;
+    this.searchChanged();
   }
 
   updateClasses() {

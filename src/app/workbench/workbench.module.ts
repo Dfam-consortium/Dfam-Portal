@@ -10,29 +10,37 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
+import { NgxFlowModule, FlowInjectionToken } from '@flowjs/ngx-flow';
+import Flow from '@flowjs/flow.js';
 
 import { WorkbenchRoutingModule } from './workbench-routing.module';
 
 import { WorkbenchLayoutComponent } from './layout/workbench-layout.component';
 import { WorkbenchUserComponent } from './user/user.component';
+import { WorkbenchUploadsComponent } from './uploads/uploads.component';
 import { WorkbenchBrowseComponent } from './browse/browse.component';
 import { WorkbenchFamilyComponent } from './family/family.component';
 import { FamilyClassificationDialogComponent } from './family/family-classification-dialog.component';
 import { WarningIconComponent } from './warning-icon/warning-icon.component';
 import { FamilyCloseDialogComponent } from './family/family-close-dialog.component';
 import { FamilyHelpDialogComponent } from './family/family-help-dialog.component';
+import { UploadCloseDialogComponent } from './uploads/upload-close-dialog.component';
 
 
 @NgModule({
   declarations: [
     WorkbenchLayoutComponent,
     WorkbenchUserComponent,
+    WorkbenchUploadsComponent,
     WorkbenchBrowseComponent,
     WorkbenchFamilyComponent,
     FamilyClassificationDialogComponent,
     WarningIconComponent,
     FamilyCloseDialogComponent,
     FamilyHelpDialogComponent,
+    UploadCloseDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -40,18 +48,19 @@ import { FamilyHelpDialogComponent } from './family/family-help-dialog.component
 
     SharedModule,
 
+    NgxFlowModule,
+
     MatDialogModule,
     MatSidenavModule,
     MatListModule,
     MatToolbarModule,
     MatTreeModule,
+    MatProgressBarModule,
 
     WorkbenchRoutingModule,
   ],
-  entryComponents: [
-    FamilyClassificationDialogComponent,
-    FamilyCloseDialogComponent,
-    FamilyHelpDialogComponent,
+  providers: [
+    { provide: FlowInjectionToken, useValue: Flow },
   ],
 })
 export class WorkbenchModule { }

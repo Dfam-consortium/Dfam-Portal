@@ -16,7 +16,8 @@ declare global {
 export class FamilyDownloadComponent implements OnInit {
 
   help = {
-    models: 'Download model files (HMM, Consensus[embl], or seed alignments[Stockholm])',
+    seed: 'Download seed alignments[Stockholm]',
+    models: 'Download model files (HMM, Consensus[embl], or consensus[fasta])',
     annotations: 'Download per-genome HMM annotation results',
   };
 

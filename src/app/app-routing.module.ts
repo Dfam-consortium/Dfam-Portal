@@ -15,7 +15,9 @@ import { SearchSequenceComponent } from './search/search-sequence.component';
 import { SearchSequenceResultsComponent } from './search/search-sequence-results.component';
 import { SearchAnnotationsComponent } from './search/search-annotations.component';
 import { ClassificationComponent } from './classification/classification.component';
+import { ClassificationLayoutComponent } from './classification/classification-layout.component';
 import { RepositoryComponent } from './repository/repository.component';
+import { DnaTerminiComponent } from './classification/dna-termini.component';
 import { HelpComponent } from './help/help.component';
 import { HelpFamilyComponent } from './help/help-family.component';
 import { HelpBrowseComponent } from './help/help-browse.component';
@@ -24,6 +26,7 @@ import { HelpToolsComponent } from './help/help-tools.component';
 import { HelpApiComponent } from './help/help-api.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './login/login.component';
+import { VerifyComponent } from './login/verify.component';
 import { PublicLayoutComponent } from './shared';
 
 export const PUBLIC_ROUTES: Routes = [
@@ -46,7 +49,11 @@ export const PUBLIC_ROUTES: Routes = [
     { path: 'relationships', component: FamilyRelationshipsComponent },
     { path: 'download', component: FamilyDownloadComponent },
   ]},
-  { path: 'classification', component: ClassificationComponent},
+  { path: 'classification', component: ClassificationLayoutComponent, children: [
+    { path: '', redirectTo: 'tree', pathMatch: 'full' },
+    { path: 'tree', component: ClassificationComponent },
+    { path: 'dna-termini', component: DnaTerminiComponent },
+  ]},
   { path: 'repository', component: RepositoryComponent},
   { path: 'help', component: HelpComponent, children: [
     { path: '', redirectTo: 'family', pathMatch: 'full' },
@@ -66,6 +73,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: LoginComponent},
+  { path: 'verify', component: VerifyComponent },
   { path: 'workbench', loadChildren: () => import('./workbench/workbench.module').then(mod => mod.WorkbenchModule) },
   { path: '', component: PublicLayoutComponent, data: { title: 'Public Views' }, children: PUBLIC_ROUTES },
 ];

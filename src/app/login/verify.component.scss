@@ -1,0 +1,12 @@
+
+// This needs to be adapted if the main style.scss changes.
+// This assumes that the body,html,api-root elements have
+// been sized to be 100% of the screen. -RMH-
+.login-body {
+  margin: 0px;
+  background-image:url('../../assets/images/mt_ranier-6.jpeg');
+  -webkit-background-size: cover;
+  -moz-background-size: center cover;
+  background-size: cover;
+  background-position: center top;
+}

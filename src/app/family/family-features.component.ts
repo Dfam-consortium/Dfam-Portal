@@ -20,7 +20,7 @@ export class FamilyFeaturesComponent implements OnInit, AfterViewInit {
 
   family;
 
-  @ViewChild('outlet', { static: false }) outlet: ElementRef;
+  @ViewChild('outlet') outlet: ElementRef;
 
   visualization: any;
 

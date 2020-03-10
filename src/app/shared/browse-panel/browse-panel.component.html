@@ -74,6 +74,10 @@
         Descendants
       </mat-checkbox>
     </div>
+
+    <div>
+      <button mat-raised-button (click)="clearSearch()">Clear Filters</button>
+    </div>
   </div>
   <mat-divider></mat-divider>
   <p>Total results: {{families.total_count}}</p>
@@ -87,6 +91,7 @@
       <td mat-cell *matCellDef="let family">
         <a routerLink="../family/{{family.accession}}">
           {{family.accession}}
+          <mat-icon class="edit-icon" *ngIf="isEditing">edit</mat-icon>
         </a>
       </td>
     </ng-container>
@@ -97,7 +102,7 @@
     <ng-container matColumnDef="classification">
       <th mat-header-cell *matHeaderCellDef>Classification</th>
       <td mat-cell *matCellDef="let family">
-        <a routerLink="/classification"
+        <a routerLink="/classification/tree"
             [fragment]="family.classification"
             [matTooltip]="family.classification_tooltip">
           {{family.classification_display}}

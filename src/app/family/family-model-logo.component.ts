@@ -24,7 +24,7 @@ export class FamilyModelLogoComponent implements AfterViewChecked {
     this.needsRedraw = true;
   };
 
-  @ViewChild('logo', { static: false }) logo: ElementRef;
+  @ViewChild('logo') logo: ElementRef;
 
   logoObject: any;
 

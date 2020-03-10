@@ -1,0 +1,26 @@
+<body fxLayout="column" class="login-body">
+  <div fxLayout="row">
+    <button fxFlexOffset="2" label="Home" mat-button matTooltip="Return to the public site" routerLink="/home">
+      <mat-icon aria-label="Login">
+        <svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_home_24px" x="216" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
+      </mat-icon>
+    </button>
+  </div>
+  <div fxLayout="column" fxLayoutAlign="center center" style="height: 100%">
+    <div fxFlex="20%">
+      <mat-card>
+        <mat-card-title>
+          <img style="height:55px;width:177px;" src="assets/images/dfam_logo.png" alt="Dfam" />
+        </mat-card-title>
+        <mat-card-content>
+          <p>{{ message }}</p>
+
+          <a routerLink="/login">Return to Login Page</a>
+
+          <hr>
+          <p><em>Having trouble? Send us an email at help@dfam.org for assistance.</em></p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</body>

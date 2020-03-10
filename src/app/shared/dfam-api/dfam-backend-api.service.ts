@@ -41,6 +41,29 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     return this.http.get(endpoint + 'user', opts);
   }
 
+  getUploads(): Observable<any> {
+    const opts = this.optsWithAuth();
+    return this.http.get(endpoint + 'uploads', opts);
+  }
+
+  patchUpload(id: number, changeset: any): Observable<{}> {
+    const url = endpoint + 'uploads/' + encodeURIComponent(id);
+    const opts = this.optsWithAuth();
+    return this.http.patch<any>(url, changeset, opts)
+      .pipe(tap(null, this.handleError("patchUpload", null)));
+  }
+
+  getFlowConfig() {
+    return {
+      target: endpoint + 'upload',
+      singleFile: true,
+      headers: {
+        'Authorization': 'Bearer ' + this.apiToken,
+      },
+      permanentErrors: [400, 403, 415, 500, 501],
+    };
+  }
+
   private familyPath(accession: string): string {
     return endpoint + 'families/' + encodeURIComponent(accession);
   }
@@ -212,6 +235,10 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     ).pipe(map(this.extractData));
   }
 
+  verify(token): Observable<any> {
+    const params = new HttpParams().set('token', token);
+    return this.http.get(endpoint + 'verify', { params, observe: 'response' });
+  }
 
   private handleError<T> (operation = 'operation', result: T) {
     return (error: any): Observable<T> => {

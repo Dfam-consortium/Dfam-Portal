@@ -25,7 +25,7 @@ export class FamilyModelConservationComponent implements OnInit, AfterViewChecke
   }
 
 
-  @ViewChild('graph', { static: false }) graph: ElementRef;
+  @ViewChild('graph') graph: ElementRef;
 
   resizeSubscription: Unsubscribable;
 
