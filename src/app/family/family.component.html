@@ -10,13 +10,15 @@
       <div style="font-size:1.15em;">{{family.title}}</div>
   
       <nav mat-tab-nav-bar mat-stretch-tabs fxHide fxShow.gt-md='true'>
-        <a mat-tab-link
-          *ngFor="let link of navLinks"
-          [routerLink]="link.path"
-          routerLinkActive #rla="routerLinkActive"
-          [active]="rla.isActive">
-          {{link.label}}
-        </a>
+        <ng-container *ngFor="let link of navLinks">
+          <a mat-tab-link
+            *ngIf="link.available"
+            [routerLink]="link.path"
+            routerLinkActive #rla="routerLinkActive"
+            [active]="rla.isActive">
+            {{link.label}}
+          </a>
+        </ng-container>
       </nav>
   
       <button mat-flat-button [matMenuTriggerFor]="menu" fxShow fxHide.gt-md='true'>
