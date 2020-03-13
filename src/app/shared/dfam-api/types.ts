@@ -25,6 +25,8 @@ export class Family {
   clades: string[];
   features: any[];
   coding_seqs: any[];
+
+  is_raw: boolean;
 }
 
 export class FamilySummary {

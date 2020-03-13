@@ -26,6 +26,12 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     return body || { };
   }
 
+  // Adds additional computed properties not returned by the API,
+  // such as is_raw, for easier use in templates.
+  private extendFamilyProperties(family: Family) {
+    family.is_raw = family.accession.startsWith("DR");
+  }
+
   private optsWithAuth(): { headers: HttpHeaders } {
     const opts = {
       headers: new HttpHeaders({
@@ -88,7 +94,10 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     const url = this.familyPath(accession);
     const opts = this.optsWithAuth();
     return this.http.get<Family>(url, opts)
-      .pipe(catchError(this.handleError('getFamily', null)));
+      .pipe(
+        catchError(this.handleError('getFamily', null)),
+        tap(this.extendFamilyProperties),
+      );
   }
 
   patchFamily(accession: string, changeset: any): Observable<{}> {
@@ -156,7 +165,10 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
   getFamilies(criteria: FamilyCriteria): Observable<FamilyResults> {
     const [url, options] = this.getFamiliesUrlOptions(criteria);
     return this.http.get<FamilyResults>(url, options)
-      .pipe(catchError(this.handleError('getFamilies', { results: [], total_count: 0 })));
+      .pipe(
+        catchError(this.handleError('getFamilies', { results: [], total_count: 0 })),
+        tap((res) => res.results.forEach(this.extendFamilyProperties)),
+      );
   }
 
   getClasses(name?: string): Observable<Classification | Classification[]> {

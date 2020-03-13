@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, tap, catchError } from 'rxjs/operators';
 
 import { ErrorsService } from '../services/errors.service';
 import { FamilyCriteria, FamilyRepository, FamilyResults, ClassesRepository, TaxaResults, TaxaRepository } from './common';
@@ -24,6 +24,12 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
     return body || { };
   }
 
+  // Adds additional computed properties not returned by the API,
+  // such as is_raw, for easier use in templates.
+  private extendFamilyProperties(family: Family) {
+    family.is_raw = family.accession.startsWith("DR");
+  }
+
   private familyPath(accession: string): string {
     return endpoint + 'families/' + encodeURIComponent(accession);
   }
@@ -43,7 +49,10 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
   getFamily(accession: string): Observable<Family> {
     const url = this.familyPath(accession);
     return this.http.get<Family>(url)
-      .pipe(catchError(this.handleError('getFamily', null)));
+      .pipe(
+        catchError(this.handleError('getFamily', null)),
+        tap(this.extendFamilyProperties),
+      );
   }
 
   // NB: If download is true, criteria.start and criteria.limit are ignored.
@@ -100,7 +109,10 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
   getFamilies(criteria: FamilyCriteria): Observable<FamilyResults> {
     const [url, options] = this.getFamiliesUrlOptions(criteria);
     return this.http.get<FamilyResults>(url, options)
-      .pipe(catchError(this.handleError('getFamilies', { results: [], total_count: 0 })));
+      .pipe(
+        catchError(this.handleError('getFamilies', { results: [], total_count: 0 })),
+        tap((res) => res.results.forEach(this.extendFamilyProperties)),
+      );
   }
 
   getFamilyHmm(accession: string): Observable<string> {
