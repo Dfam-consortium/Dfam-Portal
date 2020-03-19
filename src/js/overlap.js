@@ -5,6 +5,28 @@ function scale(coord, max, desired) {
   return scaled;
 }
 
+// Determine which points along a length will get axis markers
+function axisPoints(length) {
+  var points = [];
+
+  // Calculate step length: nearest power of 10
+  var step = Math.pow(10, Math.floor(Math.log10(length)));
+
+  // Reduce step size until enough marks would be shown
+  while (length / step < 5) {
+    step /= 2;
+  }
+
+  // Stop a bit early, so that the last label does not overlap the end marker.
+  var stop = length - step/2;
+
+  for (var i = step; i < stop; i += step) {
+    points.push(i);
+  }
+
+  return points;
+}
+
 function DotPlot(options) {
   options     = options || {};
   this.target = options.target || document.body;
@@ -188,7 +210,7 @@ function Overlap(options) {
   this.data = options.data || null;
 
   this.target       = options.target || document.body;
-  this.height       = (this.data.length + 1) * 15;
+  this.height       = (this.data.length + 2) * 15;
   this.width        = options.width || 800;
   this.model        = this.data[0].auto_overlap.model;
   this.order        = options.order || 'default';
@@ -213,6 +235,8 @@ function Overlap(options) {
 
     context = canvas.getContext('2d');
     context.font = "normal 10px Arial";
+
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
     this.drawModel(context);
     // draw all the overlap sequences and map coordinates
@@ -349,18 +373,56 @@ function Overlap(options) {
   };
 
   this.drawModel = function (context) {
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-
     var y = 0,
       height = 10,
       arrow_width = parseInt(height / 2, 10);
+
+    // draw scale bar
+    context.beginPath();
+    context.moveTo(0, y);
+    context.lineTo(scale(this.model.length-1, this.model.length, this.overlap_area), y);
+    context.stroke();
+
+    // draw axis marks
+    var marks = axisPoints(this.model.length);
+
+    // drawMark: draws both an axis line and a label
+    var that = this;
+    function drawMark(i) {
+      var x = scale(i-1, that.model.length, that.overlap_area);
+
+      context.beginPath();
+      context.moveTo(x, y);
+      context.lineTo(x, y + 5);
+      context.stroke();
+
+      context.fillText(i, x, y + 5);
+    }
+
+    context.textBaseline = "top";
+    context.strokeStyle = '#333';
+    context.fillStyle = '#333';
+
+    context.textAlign = "start";
+    drawMark(1);
+
+    context.textAlign = "center";
+    marks.forEach(function(i) {
+      drawMark(i);
+    }, this);
+
+    context.textAlign = "end";
+    drawMark(this.model.length);
+
+    // draw the gray arrow representing the primary model
+    y = 15;
     context.fillStyle = '#aaa';
     context.beginPath();
-    context.moveTo(0, 0); // move to the top left
-    context.lineTo(this.overlap_area - arrow_width, 0); // horizontal line to the right
-    context.lineTo(this.overlap_area, arrow_width); // diagonal line to the middle height
-    context.lineTo(this.overlap_area - arrow_width, height); // diagonal to close the arrow
-    context.lineTo(0, height); // horizontal line back to the start
+    context.moveTo(0, y); // move to the top left
+    context.lineTo(this.overlap_area - arrow_width, y); // horizontal line to the right
+    context.lineTo(this.overlap_area, y + arrow_width); // diagonal line to the middle height
+    context.lineTo(this.overlap_area - arrow_width, y + height); // diagonal to close the arrow
+    context.lineTo(0, y + height); // horizontal line back to the start
     context.closePath();// close the path;
     context.fill();
 
@@ -368,7 +430,7 @@ function Overlap(options) {
     context.textBaseline = "top";
     context.strokeStyle = '#333';
     context.fillStyle = '#333';
-    context.fillText(this.data[0].auto_overlap.model.id, 10, 0);
+    context.fillText(this.model.id, 10, y);
   };
 
   this.drawToggleArrows = function (context, x, y) {
@@ -405,15 +467,17 @@ function Overlap(options) {
   this.drawOverlaps = function (context) {
     var that = this;
 
+    var y = 15;
+
     //draw data column labels
-    context.fillText('%id', that.overlap_area + 15, 0);
-    that.drawToggleArrows(context, that.overlap_area + 38, 0);
+    context.fillText('%id', that.overlap_area + 15, y);
+    that.drawToggleArrows(context, that.overlap_area + 38, y);
 
-    context.fillText('%cov', that.overlap_area + 55, 0);
-    that.drawToggleArrows(context, that.overlap_area + 87, 0);
+    context.fillText('%cov', that.overlap_area + 55, y);
+    that.drawToggleArrows(context, that.overlap_area + 87, y);
 
-    context.fillText('E-value', that.overlap_area + 95, 0);
-    that.drawToggleArrows(context, that.overlap_area + 135, 0);
+    context.fillText('E-value', that.overlap_area + 95, y);
+    that.drawToggleArrows(context, that.overlap_area + 135, y);
 
 
     // sort by evalue if that is the order specified
@@ -427,7 +491,7 @@ function Overlap(options) {
           return parseFloat(b.evalue) - parseFloat(a.evalue);
         });
       }
-      that.drawToggleFilled(context, that.overlap_area + 135, 0);
+      that.drawToggleFilled(context, that.overlap_area + 135, y);
     } else if (this.order === 'coverage') {
       if (this.orientation === 'down') {
         this.data.sort(function (a, b) {
@@ -438,7 +502,7 @@ function Overlap(options) {
           return parseFloat(b.coverage) - parseFloat(a.coverage);
         });
       }
-      that.drawToggleFilled(context, that.overlap_area + 87, 0);
+      that.drawToggleFilled(context, that.overlap_area + 87, y);
     } else if (this.order === 'id') {
       if (this.orientation === 'down') {
         this.data.sort(function (a, b) {
@@ -449,7 +513,7 @@ function Overlap(options) {
           return b.identity - a.identity;
         });
       }
-      that.drawToggleFilled(context, that.overlap_area + 38, 0);
+      that.drawToggleFilled(context, that.overlap_area + 38, y);
     } else {
       // the default sort is alphabetical by the target id.
       this.data.sort(function (a, b) {
@@ -461,7 +525,7 @@ function Overlap(options) {
 
     this.data.forEach(function (overlap, i) {
       //draw rectangle
-      var y = overlap.y = 20 + (i * 15),
+      var y = overlap.y = 5 + ((i+2) * 15),
         x = overlap.x = Math.floor(scale(overlap.model_start - 1, that.model.length, that.overlap_area)),
         width = overlap.width = Math.ceil(scale(overlap.model_end - overlap.model_start + 1, that.model.length, that.overlap_area)),
         height = overlap.height = 10,
