@@ -7,7 +7,13 @@
         [{{family.name}}]
         </span>
       </h2>
-      <div style="font-size:1.15em;">{{family.title}}</div>
+      <div style="font-size:1.15em;">
+        <mat-icon *ngIf="family.is_raw" class="raw-warning-icon"
+            matTooltip="This database entry has not been validated or curated.">
+          warning
+        </mat-icon>
+        {{family.title}}
+      </div>
   
       <nav mat-tab-nav-bar mat-stretch-tabs fxHide fxShow.gt-md='true'>
         <ng-container *ngFor="let link of navLinks">
