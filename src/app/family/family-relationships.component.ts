@@ -13,6 +13,11 @@ export class FamilyRelationshipsComponent implements AfterViewInit {
 
   help = 'An interactive representation of the relationships between TE families.';
 
+  filter = {
+    include: "all",
+    include_raw: false,
+  };
+
   @ViewChild('outlet') outlet: ElementRef;
 
   constructor(
@@ -35,8 +40,16 @@ export class FamilyRelationshipsComponent implements AfterViewInit {
     this.getRelationships();
   }
 
+  filterChanged() {
+    this.getRelationships();
+  }
+
   getRelationships() {
     const accession = this.route.parent.snapshot.params['id'];
-    this.dfamapi.getFamilyRelationships(accession).subscribe(rel => this.relationships = rel);
+    this.dfamapi.getFamilyRelationships(
+      accession,
+      this.filter.include,
+      this.filter.include_raw,
+    ).subscribe(rel => this.relationships = rel);
   }
 }

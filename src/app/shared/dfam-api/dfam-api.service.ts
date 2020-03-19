@@ -194,9 +194,13 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
     return this.familyPath(accession) + '/sequence?format=fasta&download=true';
   }
 
-  getFamilyRelationships(accession: string): Observable<any> {
+  getFamilyRelationships(accession: string, include: string, include_raw: boolean): Observable<any> {
     const url = this.familyPath(accession) + '/relationships';
-    return this.http.get(url).pipe(
+    let params = new HttpParams();
+    params = params.set("include", include);
+    params = params.set("include_raw", include_raw.toString());
+
+    return this.http.get(url, { params }).pipe(
       map(this.extractData),
       catchError(this.handleError('getFamilyRelationships', [])),
     );
