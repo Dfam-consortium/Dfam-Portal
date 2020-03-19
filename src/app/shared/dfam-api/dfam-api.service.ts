@@ -87,6 +87,10 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
       options.params = options.params.set('keywords', criteria.keywords);
     }
 
+    if ( criteria.include_raw ) {
+      options.params = options.params.set('include_raw', 'true');
+    }
+
     if (download) {
       options.params = options.params.set('download', 'true');
     } else {

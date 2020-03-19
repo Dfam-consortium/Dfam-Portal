@@ -73,6 +73,12 @@
           (change)="searchChanged()">
         Descendants
       </mat-checkbox>
+
+      <mat-checkbox
+          [(ngModel)]="search.include_raw"
+          (change)="searchChanged()">
+        Include Uncurated
+      </mat-checkbox>
     </div>
 
     <div>

@@ -204,6 +204,11 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
       this.search.keywords = initialK;
       this.searchApiOptions.keywords = initialK;
     }
+    const initialR = this.route.snapshot.queryParamMap.get('include_raw');
+    if (initialR) {
+      this.search.include_raw = initialR;
+      this.searchApiOptions.include_raw = initialR;
+    }
     const initialP = parseInt(this.route.snapshot.queryParamMap.get('page'), 10);
     if (initialP) {
       const initialPS = parseInt(this.route.snapshot.queryParamMap.get('pageSize'), 10);
@@ -232,6 +237,7 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     this.searchApiOptions.clade_ancestors = this.search.clade_ancestors;
     this.searchApiOptions.clade_descendants = this.search.clade_descendants;
     this.searchApiOptions.keywords = this.search.keywords;
+    this.searchApiOptions.include_raw = this.search.include_raw;
 
     this.paginator.pageIndex = 0;
     this.updateUrlTask.next();
@@ -259,6 +265,9 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     if (this.searchApiOptions.keywords) {
       queryParams.keywords = this.searchApiOptions.keywords;
     }
+    if (this.searchApiOptions.include_raw) {
+      queryParams.include_raw = this.searchApiOptions.include_raw;
+    }
     if (this.paginator.pageIndex) {
       queryParams.pageSize = this.paginator.pageSize;
       queryParams.page = this.paginator.pageIndex;
@@ -277,6 +286,7 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     this.search.clade_ancestors = false;
     this.search.clade_descendants = false;
     this.search.keywords = null;
+    this.search.include_raw = false;
     this.searchChanged();
   }
 

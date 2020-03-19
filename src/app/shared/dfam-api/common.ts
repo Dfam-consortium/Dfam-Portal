@@ -8,6 +8,7 @@ export interface FamilyCriteria {
   clade_ancestors?: boolean;
   clade_descendants?: boolean;
   keywords?: string;
+  include_raw?: boolean;
   sort?: string;
 
   start?: number;
