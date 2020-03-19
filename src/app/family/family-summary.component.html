@@ -53,6 +53,22 @@
 <div fxLayout="row">
   <div fxLayout="column" fxFlexOffset="2">
     <p class="tight"><strong>Status:</strong> {{family.curation_state_name}} <dfam-help-icon link="/help/family#summary" [tooltip]="family.curation_state_description"></dfam-help-icon></p>
+    <p *ngIf="family.source_method || family.source_method_description" class="tight">
+      <strong>Method:</strong>
+      <span>
+        {{family.source_method}}
+        {{family.source_method_description}}
+      </span>
+    </p>
+    <p *ngIf="family.source_assembly" class="tight"><strong>Source Assembly:</strong>
+      <a *ngIf="family.source_assembly.hyperlink; else asmNoLink"
+          href="{{family.source_assembly.hyperlink}}">
+        {{family.source_assembly.label}}
+      </a>
+      <ng-template #asmNoLink>
+        {{family.source_assembly.label}}
+      </ng-template>
+    </p>
     <p class="tight"><strong>Length:</strong> {{family.length}}</p>
     <p class="tight"><strong>Target Site Duplication:</strong> {{family.target_site_cons || "Unknown"}}</p>
   </div>
