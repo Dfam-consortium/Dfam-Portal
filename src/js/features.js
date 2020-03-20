@@ -1,32 +1,8 @@
-function scale(x, width, target_width) {
-  return (x/width) * target_width;
-}
-
-function createSVGElement(elem) {
-  return document.createElementNS("http://www.w3.org/2000/svg", elem);
-}
-
-function setSVGAttrs(el, attrs) {
-  Object.keys(attrs).forEach(function(k) {
-    el.setAttributeNS(null, k, attrs[k]);
-  });
-  return el;
-}
-
-function createSVGText(x, y, text, anchor) {
-  var el = createSVGElement("text");
-  el.textContent = text;
-  var attrs = { "x": x, "y": y };
-  if (anchor) {
-    attrs["text-anchor"] = anchor;
-  }
-  return setSVGAttrs(el, attrs);
-}
+import * as d3 from 'd3';
 
 function FeaturesVisualization(options) {
   options = options || {};
   this.target = options.target || document.body;
-  this.data = options.data || {};
 
   this.DIMENSIONS = {
     margin: {
@@ -35,304 +11,369 @@ function FeaturesVisualization(options) {
       bottom: 10,
       left: 10,
     },
+    tsd: {
+      margin_side: 20,
+    },
     axis: {
-      height: 4,
+      height: 30,
+      margin_bottom: 20,
     },
     feature: {
-      height: 15,
+      box_height: 15,
+      box_text_space: 5,
+      text_height: 20,
       margin_bottom: 4,
     },
     coding_sequence: {
       intron_inflect_height: 3,
     },
-  }
+    section: {
+      min_height: 100,
+    },
+    divider_margin: 5,
+  };
+
+  this.setData(options.data || {});
 };
 
-FeaturesVisualization.prototype.render = function() {
-  if (this.svg) {
-    if (this.svg.parentNode) {
-      this.svg.parentNode.removeChild(this.svg);
-    }
+// Sets the data to be rendered, normalizes it, separates it into
+// sections, and recalculates the layout.
+FeaturesVisualization.prototype.setData = function(data) {
+  this.data = data;
+
+  const CURATED_FEATURE_TYPES = [
+    "named_region",
+    "binding_site",
+  ];
+
+  function isCuratedFeature(feature) {
+    return CURATED_FEATURE_TYPES.includes(feature.type);
   }
 
-  // Create the SVG element
-  this.svg = createSVGElement("svg");
-  this.target.appendChild(this.svg);
-  this.width = this.target.offsetWidth;
-  this.height = 0;
+  let curated = { class: "curated", name: "curated", items: [] };
+  let aligned = { class: "aligned", name: "aligned", items: [] };
 
-  var DIMENSIONS = this.DIMENSIONS;
-
-  if (this.data.target_site_cons) {
-    // Draw TSD boxes on either side of axis
-
-    var tsdTextL = createSVGText(DIMENSIONS.margin.left, DIMENSIONS.margin.top + 5, "TSD");
-    var tsdTextLTitle = createSVGElement("title");
-    tsdTextLTitle.innerHTML = this.data.target_site_cons;
-    tsdTextL.appendChild(tsdTextLTitle);
-    this.svg.appendChild(tsdTextL);
-    var tsdTextLBB = tsdTextL.getBBox();
-
-    var tsdTextR = createSVGText(this.width - DIMENSIONS.margin.right, DIMENSIONS.margin.top + 5, "TSD", "end");
-    var tsdTextRTitle = createSVGElement("title");
-    tsdTextRTitle.innerHTML = this.data.target_site_cons;
-    tsdTextR.appendChild(tsdTextRTitle);
-    this.svg.appendChild(tsdTextR);
-    var tsdTextRBB = tsdTextR.getBBox();
-
-    var tsdBoxL = createSVGElement("rect");
-    this.svg.appendChild(tsdBoxL);
-    setSVGAttrs(tsdBoxL, {
-      "x": tsdTextLBB.x, "y": tsdTextLBB.y,
-      "width": tsdTextLBB.width, "height": tsdTextLBB.height,
-      "fill": "none", "stroke": "black",
-    });
-
-    var tsdBoxR = createSVGElement("rect");
-    this.svg.appendChild(tsdBoxR);
-    setSVGAttrs(tsdBoxR, {
-      "x": tsdTextRBB.x, "y": tsdTextRBB.y,
-      "width": tsdTextRBB.width,
-      "height": tsdTextRBB.height,
-      "fill": "none", "stroke": "black",
-    });
-
-    DIMENSIONS.margin.left += tsdBoxL.getBBox().width + 4;
-    DIMENSIONS.margin.right += tsdBoxR.getBBox().width + 4;
-  }
-
-  this.inWidth = this.width - DIMENSIONS.margin.left - DIMENSIONS.margin.right;
-
-  // Render the main axis and labels
-  var axisG = createSVGElement("g");
-  this.svg.appendChild(axisG);
-  setSVGAttrs(axisG, { "transform": "translate(" + DIMENSIONS.margin.left + " " + DIMENSIONS.margin.top + ")" });
-  this.height += DIMENSIONS.margin.top;
-
-  var axis = createSVGElement("line");
-  axisG.appendChild(axis);
-  setSVGAttrs(axis, { "x1": 0, "y1": 0, "x2": this.inWidth, "y2": 0, stroke: "black" });
-
-  var startLine = createSVGElement("line");
-  axisG.appendChild(startLine);
-  setSVGAttrs(startLine, { "x1": 0, "y1": 0, "x2": 0, "y2": DIMENSIONS.axis.height, stroke: "black" });
-  var startLabel = createSVGText(0, 0, "1");
-  axisG.appendChild(startLabel);
-
-  var endLine = createSVGElement("line");
-  axisG.appendChild(endLine);
-  setSVGAttrs(endLine, { "x1": this.inWidth, "y1": 0, "x2": this.inWidth, "y2": DIMENSIONS.axis.height, stroke: "black" });
-  var endLabel = createSVGText(this.inWidth, 0, this.data.length, "end");
-  axisG.appendChild(endLabel);
-
-  var textHeight = startLabel.getBBox().height;
-  setSVGAttrs(startLabel, { y: textHeight });
-  setSVGAttrs(endLabel, { y: textHeight });
-
-  this.height += textHeight;
-
-  // Figure out how many tick marks to draw
-  var endWidth = endLabel.getBBox().width;
-  var maxTickCount = (this.inWidth - endWidth) / endWidth;
-  var ticksAt = Math.pow(10, Math.floor(Math.log10(this.data.length))) / 2;
-  if (this.data.length / ticksAt > maxTickCount) {
-    ticksAt *= 2;
-  }
-  if (this.data.length / ticksAt > maxTickCount) {
-    ticksAt = this.data.length;
-  }
-
-  // Render peridoic axis tick marks
-  for (var x = ticksAt; x < this.data.length; x += ticksAt) {
-    // -1 because positions are 1-based
-    var scaled_x = scale(x - 1, this.data.length, this.inWidth);
-    var line = createSVGElement("line");
-    axisG.appendChild(line);
-    setSVGAttrs(line, { "x1": scaled_x, "y1": 0, "x2": scaled_x, "y2": DIMENSIONS.axis.height, stroke: "black" });
-
-    var label = createSVGText(scaled_x, textHeight, x, "middle");
-    axisG.appendChild(label);
-
-    // Remove labels that overlap with the end label
-    var bbox = label.getBBox()
-    if ((bbox.x + bbox.width) > endLabel.getBBox().x) {
-      line.parentNode.removeChild(line);
-      label.parentNode.removeChild(label);
-      break;
-    }
-  }
-
-  this.height += 10;
-
-  // Render features
-  var featuresG = createSVGElement("g");
-  this.svg.appendChild(featuresG);
-  setSVGAttrs(featuresG, {
-    "transform": "translate(" + DIMENSIONS.margin.left + " 0)"
-  });
-
-  this.data.features.forEach(function(feat) {
-    var featG = createSVGElement("g");
-    featuresG.appendChild(featG);
-    setSVGAttrs(featG, { "transform": "translate(0 " + this.height + ")" });
-
-    var left = feat.model_start_pos;
-    var right = feat.model_end_pos;
-    if (left > right) {
-      var tmp = left;
-      left = right;
-      right = tmp;
-    }
-
-    // Subtract 1 from left to convert from 1-based to 0-based drawing coordinates
-    // Do not change right (1-based to 0-based is -1, left edge to right edge of 'cell' is +1)
-    left -= 1;
-
-    left = scale(left, this.data.length, this.inWidth);
-    right = scale(right, this.data.length, this.inWidth);
-
-    var height = DIMENSIONS.feature.height;
-
-    // A feature is made up of left and right (vertical) bars and a connecting horizontal bar
-
-    var featLeftBar = createSVGElement("line");
-    featG.appendChild(featLeftBar);
-    setSVGAttrs(featLeftBar, { "x1": left, "y1": 0, "x2": left, "y2": height, stroke: "black" });
-
-    var featRightBar = createSVGElement("line");
-    featG.appendChild(featRightBar);
-    setSVGAttrs(featRightBar, { "x1": right, "y1": 0, "x2": right, "y2": height, stroke: "black" });
-
-    var featCrossBar = createSVGElement("line");
-    featG.appendChild(featCrossBar);
-    setSVGAttrs(featCrossBar, { "x1": left, "y1": height/2, "x2": right, "y2": height/2, stroke: "black" });
-
-    var featText = createSVGText(left, 0, feat.label);
-    featG.appendChild(featText);
-    var featHeight = DIMENSIONS.feature.height + featText.getBBox().height;
-    setSVGAttrs(featText, { y: featHeight });
-
-    this.height += featHeight + DIMENSIONS.feature.margin_bottom;
-  }, this);
-
-  // Render coding sequences
-  var cdsG = createSVGElement("g");
-  this.svg.appendChild(cdsG);
-  setSVGAttrs(cdsG, {
-    "transform": "translate(" + DIMENSIONS.margin.left + " 0)"
-  });
-
-  this.data.coding_seqs.forEach(function(cs) {
-    // Build list of exons in screen position order
-    var exons = [];
-    for (var i = 0; i < cs.exon_count; i++) {
-      var left = cs.exon_starts[i];
-      var right = cs.exon_ends[i];
-
+  // Normalize: rename model_start_pos => start and exon_starts+exon_ends => exons,introns
+  // Segregate: push features into either curated.items or aligned.items
+  data.coding_seqs.forEach(cds => {
+    cds.exons = [];
+    for (let i = 0; i < cds.exon_count; i++) {
+      let left = cds.exon_starts[i];
+      let right = cds.exon_ends[i];
       if (left > right) {
-        var tmp = left;
+        let tmp = left;
         left = right;
         right = tmp;
       }
-
-      // Subtract 1 from left to convert from 1-based to 0-based drawing coordinates
-      // Do not change right (1-based to 0-based is -1, left edge to right edge of 'cell' is +1)
-      left -= 1;
-
-      exons.push({ left: left, right: right, length: right - left });
+      cds.exons.push([left, right]);
     }
-    exons.sort(function(a, b) { return a.left - b.left; });
 
-    var csG = createSVGElement("g");
-    cdsG.appendChild(csG);
-    setSVGAttrs(csG, { "transform": "translate(0 " + this.height + ")" });
+    cds.exons.sort((a, b) => a.start - b.start);
 
-    // -1 because positions are 1-based
-    var left = cs.start;
-    var right = cs.end;
+    cds.introns = [];
+    let prev_end = -1;
+    for (let i = 0; i < cds.exons.length; i++) {
+      if (prev_end != -1) {
+        cds.introns.push([prev_end + 1, cds.exon_starts[i]]);
+      }
+      prev_end = cds.exon_ends[i];
+    }
+
+    curated.items.push(cds);
+  });
+
+  data.features.forEach(feature => {
+    feature.start = feature.model_start_pos;
+    feature.end = feature.model_end_pos;
+
+    if (isCuratedFeature(feature)) {
+      curated.items.push(feature);
+    } else {
+      aligned.items.push(feature);
+    }
+  });
+
+  // Calculate layout
+  this.sections = [curated, aligned];
+  this.sections.forEach(s => this.layoutSection(s));
+};
+
+// Layout: set x0, x1, y, and similar properties taking into account
+// items that have swapped coordinates
+FeaturesVisualization.prototype.layoutSection = function(section) {
+  const DIM_feature = this.DIMENSIONS.feature;
+  let y = 0;
+  section.items.forEach(item => {
+    let left = item.start;
+    let right = item.end;
     if (left > right) {
-      var tmp = left;
+      let tmp = left;
       left = right;
       right = tmp;
     }
 
-    // Subtract 1 from left to convert from 1-based to 0-based drawing coordinates
-    // Do not change right (1-based to 0-based is -1, left edge to right edge of 'cell' is +1)
-    left -= 1;
+    item.x0 = left;
+    item.x1 = right;
+    item.y = y;
+    y += DIM_feature.box_height + DIM_feature.box_text_space + DIM_feature.text_height + DIM_feature.margin_bottom;
+  });
+  section.height = y;
+  if (section.height < this.DIMENSIONS.section.min_height) {
+    section.height = this.DIMENSIONS.section.min_height;
+  }
+}
 
-    left = scale(left, this.data.length, this.inWidth);
-    right = scale(right, this.data.length, this.inWidth);
-
-    var last_right = left;
-
-    function maybeDrawIntron(to) {
-      if (last_right != to) {
-        // Draw intron line
-        //
-        //             B
-        //         ---- ----
-        //     ----         ----
-        // A---                 ---C
-        //
-        // A: Starting point at (0, 0)
-        // B: Inflection point at (width/2, height)
-        // C: Ending point at (width, 0)
-        // Note that "height" can be simply negated for the reverse direction
-
-        var width = to - last_right;
-        var height = -DIMENSIONS.coding_sequence.intron_inflect_height;
-        if (cs.reverse) {
-          height = -height;
-        }
-
-        var pathDef = "M 0,0" +
-          " L " + (width/2) + "," + height +
-          " L " + width + ",0";
-
-        var intronLine = createSVGElement("path");
-        csG.appendChild(intronLine);
-        setSVGAttrs(intronLine, {
-          "d": pathDef,
-          "transform": "translate(" + last_right + " 5)",
-          "fill": "none",
-          "stroke": "black",
-        });
-      }
-    }
-
-    // Render each exon
-    exons.forEach(function(exon) {
-      var left = scale(exon.left, this.data.length, this.inWidth);
-      var right = scale(exon.right, this.data.length, this.inWidth);
-
-      maybeDrawIntron(left);
-
-      // Draw exon rectangle
-      var exonRect = createSVGElement("rect");
-      csG.appendChild(exonRect);
-      setSVGAttrs(exonRect, {
-        "x": left, "y": 0,
-        "width": right - left, "height": DIMENSIONS.feature.height,
-        "fill": "none", "stroke": "black",
-      });
-
-      last_right = right;
-    }, this);
-
-    maybeDrawIntron(right);
-
-    var label = (cs.reverse ? '< ' + cs.product : cs.product + ' >');
-    var csText = createSVGText(left, 0, label);
-    csG.appendChild(csText);
-    var csHeight = DIMENSIONS.feature.height + csText.getBBox().height;
-    setSVGAttrs(csText, { y: csHeight });
-
-    this.height += csHeight + DIMENSIONS.feature.margin_bottom;
-  }, this);
-
-  this.height += DIMENSIONS.margin.bottom;
-
-  setSVGAttrs(this.svg, { "width": this.width, "height": this.height });
+// Render a generic feature:
+//
+// |------|
+// feature
+FeaturesVisualization.prototype.renderFeature = function(g) {
+  // left bar
+  g.call(g => g
+    .append("line")
+    .attr("stroke", "black")
+    .attr("x1", d => this.scale(d.x0))
+    .attr("y1", d => d.y)
+    .attr("x2", d => this.scale(d.x0))
+    .attr("y2", d => d.y + this.DIMENSIONS.feature.box_height)
+  )
+  // bar across
+  .call(g => g
+    .append("line")
+    .attr("stroke", "black")
+    .attr("x1", d => this.scale(d.x0))
+    .attr("y1", d => d.y + this.DIMENSIONS.feature.box_height / 2)
+    .attr("x2", d => this.scale(d.x1 + 1))
+    .attr("y2", d => d.y + this.DIMENSIONS.feature.box_height / 2)
+  )
+  // right bar
+  .call(g => g
+    .append("line")
+    .attr("stroke", "black")
+    .attr("x1", d => this.scale(d.x1 + 1))
+    .attr("y1", d => d.y)
+    .attr("x2", d => this.scale(d.x1 + 1))
+    .attr("y2", d => d.y + this.DIMENSIONS.feature.box_height)
+  )
+  .call(g => g
+    .append("text")
+    .text(d => d.label)
+    .attr("dominant-baseline", "hanging")
+    .attr("x", d => this.scale(d.x0))
+    .attr("y", d => d.y + this.DIMENSIONS.feature.box_height + this.DIMENSIONS.feature.box_text_space)
+  );
 };
+
+// Render a protein match (as simply a single rectangle)
+FeaturesVisualization.prototype.renderProteinMatch = function(g) {
+  g.call(g => g
+    .append("rect")
+    .attr("stroke", "black")
+    .attr("fill", "transparent")
+    .attr("x", d => this.scale(d.x0))
+    .attr("y", d => d.y)
+    .attr("width", d => this.scale(d.x1 + 1) - this.scale(d.x0))
+    .attr("height", this.DIMENSIONS.feature.box_height)
+  )
+  .call(g => g
+    .append("text")
+    .text(d => d.label)
+    .attr("dominant-baseline", "hanging")
+    .attr("x", d => this.scale(d.x0))
+    .attr("y", d => d.y + this.DIMENSIONS.feature.box_height + this.DIMENSIONS.feature.box_text_space)
+  );
+}
+
+// Calculate an intron path, which spans 'from'-'to' on the x axis and makes
+// a bend with height 'inflection' above the y value.
+FeaturesVisualization.prototype.intronPath = function(from, to, y, inflection) {
+  let path = d3.path();
+  path.moveTo(from, y)
+  path.lineTo((from + to) / 2, y - inflection)
+  path.lineTo(to, y)
+  return path.toString();
+}
+
+// Render a coding sequence with exons and introns
+FeaturesVisualization.prototype.renderCDS = function(g, cds) {
+  function cdsLabel(d) {
+    if (d.reverse) {
+      return "< " + d.product;
+    } else {
+      return d.product + " >";
+    }
+  }
+
+  g.call(g => g
+        .selectAll(".exon")
+    .data(d => d.exons)
+    .enter()
+      .append("rect")
+        .attr("class", "exon")
+        .attr("stroke", "black")
+        .attr("fill", "none")
+        .attr("x", d => this.scale(d[0]))
+        .attr("y", d => cds.y)
+        .attr("width", d => this.scale(d[1] + 1) - this.scale(d[0]))
+        .attr("height", this.DIMENSIONS.feature.box_height)
+  )
+  .call(g => g
+        .selectAll(".intron")
+    .data(d => d.introns)
+    .enter()
+      .append("path")
+        .attr("class", "intron")
+      .attr("stroke", "black")
+      .attr("fill", "none")
+      .attr("d", d => this.intronPath(
+        this.scale(d[0]),
+        this.scale(d[1]),
+        cds.y,
+        (cds.reverse ? -1 : 1) * this.DIMENSIONS.coding_sequence.intron_inflect_height,
+      ))
+  )
+  .call(g => g
+    .append("text")
+      .text(d => cdsLabel(d))
+      .attr("dominant-baseline", "hanging")
+      .attr("x", d => this.scale(d.x0))
+      .attr("y", d => d.y + this.DIMENSIONS.feature.box_height + this.DIMENSIONS.feature.box_text_space)
+  );
+};
+
+// Render the appropriate shape depending on the data type associated with 'g'
+FeaturesVisualization.prototype.renderAny = function(g) {
+  let self = this;
+  g.each(function(d) {
+    d3.select(this).call(g => {
+      if (d.exon_count) {
+        self.renderCDS(g, d);
+      } else if (d.type === "protein_match") {
+        self.renderProteinMatch(g);
+      } else {
+        self.renderFeature(g);
+      }
+    });
+  });
+}
+
+// Render the TSD boxes and main axis labels
+FeaturesVisualization.prototype.renderAxis = function(g, width, tsd) {
+  let left_margin = this.DIMENSIONS.margin.left;
+  let right_margin = this.DIMENSIONS.margin.right;
+
+  if (tsd) {
+    // Draw the fixed text "TSD" in a box and add it to the left_margin
+    let tsd_left = g
+      .append("text")
+        .text("TSD")
+        .attr("x", left_margin)
+        .attr("y", 10)
+        .attr("dominant-baseline", "hanging")
+        .call(text => text.append("title").text(tsd));
+    let tsd_left_box = tsd_left.node().getBBox();
+    g.append("rect")
+      .attr("x", tsd_left_box.x)
+      .attr("y", tsd_left_box.y)
+      .attr("width", tsd_left_box.width)
+      .attr("height", tsd_left_box.height)
+      .attr("stroke", "black")
+      .attr("fill", "none")
+
+    left_margin += tsd_left_box.width + this.DIMENSIONS.tsd.margin_side;
+
+    // And the same on the right
+    let tsd_right = g
+      .append("text")
+        .text("TSD")
+        .attr("x", width - right_margin)
+        .attr("y", 10)
+        .attr("dominant-baseline", "hanging")
+        .attr("text-anchor", "end")
+        .call(text => text.append("title").text(tsd));
+    let tsd_right_box = tsd_right.node().getBBox();
+    g.append("rect")
+      .attr("x", tsd_right_box.x)
+      .attr("y", tsd_right_box.y)
+      .attr("width", tsd_right_box.width)
+      .attr("height", tsd_right_box.height)
+      .attr("stroke", "black")
+      .attr("fill", "none")
+
+    right_margin += tsd_right_box.width + this.DIMENSIONS.tsd.margin_side;
+  }
+
+  this.scale = d3.scaleLinear().domain([1, this.data.length]).range([left_margin, width - right_margin]);
+  let axis = d3.axisTop(this.scale);
+
+  g
+    .append("g")
+    .attr("id", "axis")
+    .attr("transform", `translate(0, ${this.DIMENSIONS.axis.height})`)
+    .call(axis);
+
+  this.total_height += this.DIMENSIONS.axis.height + this.DIMENSIONS.axis.margin_bottom;
+}
+
+// Render a "section" (such as "curated" or "aligned").
+// This includes a label on the left and all features in section_data.items.
+FeaturesVisualization.prototype.renderSection = function(g, section_data) {
+  if (section_data.items.length) {
+    g
+      .append("g")
+      .attr("class", section_data.class)
+      .attr("transform", `translate(0, ${this.total_height})`)
+      .call(g => g.append("text")
+        .text(section_data.name)
+        .attr("x", 0)
+        .attr("y", section_data.height / 2)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "hanging")
+        .attr("transform", `rotate(-90 0 ${section_data.height / 2})`)
+      )
+      .selectAll("g")
+      .data(section_data.items)
+      .enter()
+        .append("g")
+        .call(g => this.renderAny(g));
+  }
+  this.total_height += section_data.height;
+};
+
+// Render a vertical line between sections at the current total_height.
+FeaturesVisualization.prototype.renderSectionDivider = function(svg) {
+  this.total_height += this.DIMENSIONS.divider_margin;
+
+  svg
+    .append("line")
+    .attr("stroke", "black")
+    .attr("x1", this.scale(0))
+    .attr("y1", this.total_height)
+    .attr("x2", this.scale(this.data.length))
+    .attr("y2", this.total_height);
+
+  this.total_height += this.DIMENSIONS.divider_margin;
+};
+
+// (Re)render the axis and all sections
+FeaturesVisualization.prototype.render = function() {
+  console.log(this);
+  let width = this.target.offsetWidth;
+
+  if (this.svg) {
+    this.svg.remove();
+  }
+  this.svg = d3.select(this.target).append("svg");
+
+  this.total_height = 0;
+  this.renderAxis(this.svg, width, this.data.target_site_cons);
+  for (let i = 0; i < this.sections.length; i++) {
+    this.renderSection(this.svg, this.sections[i]);
+    if ((i + 1) < this.sections.length && this.sections[i + 1].items.length > 0) {
+      this.renderSectionDivider(this.svg);
+    }
+  }
+  this.svg.attr("width", width).attr("height", this.total_height);
+}
 
 export { FeaturesVisualization };
