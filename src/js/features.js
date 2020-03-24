@@ -53,10 +53,10 @@ FeaturesVisualization.prototype.setData = function(data) {
   let curated = { class: "curated", name: "curated", items: [] };
   let aligned = { class: "aligned", name: "aligned", items: [] };
 
-  // Normalize: rename model_start_pos => start and exon_starts+exon_ends => exons,introns
+  // Normalize: rename e.g. model_start_pos => start and exon_starts+exon_ends => exons,introns
   // Segregate: push features into either curated.items or aligned.items
   data.coding_seqs.forEach(cds => {
-    cds.exons = [];
+    cds.segments = [];
     for (let i = 0; i < cds.exon_count; i++) {
       let left = cds.exon_starts[i];
       let right = cds.exon_ends[i];
@@ -65,19 +65,21 @@ FeaturesVisualization.prototype.setData = function(data) {
         left = right;
         right = tmp;
       }
-      cds.exons.push([left, right]);
+      cds.segments.push([left, right]);
     }
 
-    cds.exons.sort((a, b) => a.start - b.start);
+    cds.segments.sort((a, b) => a.start - b.start);
 
-    cds.introns = [];
+    cds.between_segments = [];
     let prev_end = -1;
-    for (let i = 0; i < cds.exons.length; i++) {
+    for (let i = 0; i < cds.segments.length; i++) {
       if (prev_end != -1) {
-        cds.introns.push([prev_end + 1, cds.exon_starts[i]]);
+        cds.between_segments.push([prev_end + 1, cds.segments[i][0]]);
       }
-      prev_end = cds.exon_ends[i];
+      prev_end = cds.segments[i][1];
     }
+
+    cds.label = cds.product;
 
     curated.items.push(cds);
   });
@@ -85,6 +87,36 @@ FeaturesVisualization.prototype.setData = function(data) {
   data.features.forEach(feature => {
     feature.start = feature.model_start_pos;
     feature.end = feature.model_end_pos;
+
+    const segs_attr = feature.attributes.find(a => a.attribute === "prot_segments");
+    if (feature.type === "protein_match" && segs_attr) {
+      // Rename fields and calculate segments similarly to coding sequences above
+      const segs = segs_attr.value.split(",").map(s => parseInt(s.trim()));
+      feature.segments = [];
+      for (let i = 0; i < segs.length; i += 2) {
+        let left = segs[i];
+        let right = segs[i + 1];
+        if (left > right) {
+          let tmp = left;
+          left = right;
+          right = tmp;
+        }
+        feature.segments.push([left, right]);
+      }
+
+      feature.segments.sort((a, b) => a.start - b.start);
+
+      feature.between_segments = [];
+      let prev_end = -1;
+      for (let i = 0; i < feature.segments.length; i++) {
+        if (prev_end != -1) {
+          feature.between_segments.push([prev_end + 1, feature.segments[i][0]]);
+        }
+        prev_end = feature.segments[i][1];
+      }
+
+      feature.reverse = feature.attributes.find(a => a.attribute === "orientation" && a.value === "-") !== undefined;
+    }
 
     if (isCuratedFeature(feature)) {
       curated.items.push(feature);
@@ -114,11 +146,14 @@ FeaturesVisualization.prototype.layoutSection = function(section) {
 
     item.x0 = left;
     item.x1 = right;
-    item.y = y;
+    item.y0 = y;
+    item.y1 = y + DIM_feature.box_height;
+    item.ymid = (item.y1 + item.y0) / 2;
+
     y += DIM_feature.box_height + DIM_feature.box_text_space + DIM_feature.text_height + DIM_feature.margin_bottom;
   });
   section.height = y;
-  if (section.height < this.DIMENSIONS.section.min_height) {
+  if (section.items.length && section.height < this.DIMENSIONS.section.min_height) {
     section.height = this.DIMENSIONS.section.min_height;
   }
 }
@@ -133,54 +168,104 @@ FeaturesVisualization.prototype.renderFeature = function(g) {
     .append("line")
     .attr("stroke", "black")
     .attr("x1", d => this.scale(d.x0))
-    .attr("y1", d => d.y)
+    .attr("y1", d => d.y0)
     .attr("x2", d => this.scale(d.x0))
-    .attr("y2", d => d.y + this.DIMENSIONS.feature.box_height)
+    .attr("y2", d => d.y1)
   )
   // bar across
   .call(g => g
     .append("line")
     .attr("stroke", "black")
     .attr("x1", d => this.scale(d.x0))
-    .attr("y1", d => d.y + this.DIMENSIONS.feature.box_height / 2)
+    .attr("y1", d => d.ymid)
     .attr("x2", d => this.scale(d.x1 + 1))
-    .attr("y2", d => d.y + this.DIMENSIONS.feature.box_height / 2)
+    .attr("y2", d => d.ymid)
   )
   // right bar
   .call(g => g
     .append("line")
     .attr("stroke", "black")
     .attr("x1", d => this.scale(d.x1 + 1))
-    .attr("y1", d => d.y)
+    .attr("y1", d => d.y0)
     .attr("x2", d => this.scale(d.x1 + 1))
-    .attr("y2", d => d.y + this.DIMENSIONS.feature.box_height)
+    .attr("y2", d => d.y1)
   )
   .call(g => g
     .append("text")
     .text(d => d.label)
     .attr("dominant-baseline", "hanging")
     .attr("x", d => this.scale(d.x0))
-    .attr("y", d => d.y + this.DIMENSIONS.feature.box_height + this.DIMENSIONS.feature.box_text_space)
+    .attr("y", d => d.y1 + this.DIMENSIONS.feature.box_text_space)
   );
 };
 
-// Render a protein match (as simply a single rectangle)
-FeaturesVisualization.prototype.renderProteinMatch = function(g) {
+// Render segments for a feature, such as exons or chained fragments.
+// Currently implemented styles:
+//   "cds" - inflected caret to represent introns between the segments (exons)
+//   "plain" - a simple line between segments
+FeaturesVisualization.prototype.renderSegments = function(g, data, style) {
+  // Segments are drawn as a box for all current styles
   g.call(g => g
-    .append("rect")
-    .attr("stroke", "black")
-    .attr("fill", "transparent")
-    .attr("x", d => this.scale(d.x0))
-    .attr("y", d => d.y)
-    .attr("width", d => this.scale(d.x1 + 1) - this.scale(d.x0))
-    .attr("height", this.DIMENSIONS.feature.box_height)
-  )
+        .selectAll(".segment")
+    .data(d => d.segments)
+    .enter()
+      .append("rect")
+        .attr("class", "segment")
+        .attr("stroke", "black")
+        .attr("fill", "none")
+        .attr("x", d => this.scale(d[0]))
+        .attr("y", d => data.y0)
+        .attr("width", d => this.scale(d[1] + 1) - this.scale(d[0]))
+        .attr("height", this.DIMENSIONS.feature.box_height)
+  );
+
+  // Between_segments are drawn as inflected introns for "cds" style,
+  // or as simple lines for "plain"
+  if (style == "cds") {
+    g.call(g => g
+          .selectAll(".between-segment")
+      .data(d => d.between_segments)
+      .enter()
+        .append("path")
+          .attr("class", "between-segment")
+        .attr("stroke", "black")
+        .attr("fill", "none")
+        .attr("d", d => this.intronPath(
+          this.scale(d[0]),
+          this.scale(d[1]),
+          data.y0,
+          (data.reverse ? -1 : 1) * this.DIMENSIONS.coding_sequence.intron_inflect_height,
+        ))
+    );
+  } else if (style === "plain") {
+    g.call(g => g
+          .selectAll(".between-segment")
+      .data(d => d.between_segments)
+      .enter()
+        .append("line")
+          .attr("class", "between-segment")
+        .attr("stroke", "black")
+        .attr("fill", "none")
+        .attr("x1", d => this.scale(d[0]))
+        .attr("y1", d => data.ymid)
+        .attr("x2", d => this.scale(d[1]))
+        .attr("y2", d => data.ymid)
+    );
+  } else {
+    throw new Exception("Unknown segment style: " + style);
+  }
+};
+
+// Render a protein match (as chained fragments)
+FeaturesVisualization.prototype.renderProteinMatch = function(g, feature) {
+  g
+  .call(g => this.renderSegments(g, feature, "plain"))
   .call(g => g
     .append("text")
-    .text(d => d.label)
+    .text(d => proteinLabel(d))
     .attr("dominant-baseline", "hanging")
     .attr("x", d => this.scale(d.x0))
-    .attr("y", d => d.y + this.DIMENSIONS.feature.box_height + this.DIMENSIONS.feature.box_text_space)
+    .attr("y", d => d.y1 + this.DIMENSIONS.feature.box_text_space)
   );
 }
 
@@ -194,50 +279,24 @@ FeaturesVisualization.prototype.intronPath = function(from, to, y, inflection) {
   return path.toString();
 }
 
+function proteinLabel(d) {
+  if (d.reverse) {
+    return "< " + d.label;
+  } else {
+    return d.label + " >";
+  }
+}
+
 // Render a coding sequence with exons and introns
 FeaturesVisualization.prototype.renderCDS = function(g, cds) {
-  function cdsLabel(d) {
-    if (d.reverse) {
-      return "< " + d.product;
-    } else {
-      return d.product + " >";
-    }
-  }
-
-  g.call(g => g
-        .selectAll(".exon")
-    .data(d => d.exons)
-    .enter()
-      .append("rect")
-        .attr("class", "exon")
-        .attr("stroke", "black")
-        .attr("fill", "none")
-        .attr("x", d => this.scale(d[0]))
-        .attr("y", d => cds.y)
-        .attr("width", d => this.scale(d[1] + 1) - this.scale(d[0]))
-        .attr("height", this.DIMENSIONS.feature.box_height)
-  )
-  .call(g => g
-        .selectAll(".intron")
-    .data(d => d.introns)
-    .enter()
-      .append("path")
-        .attr("class", "intron")
-      .attr("stroke", "black")
-      .attr("fill", "none")
-      .attr("d", d => this.intronPath(
-        this.scale(d[0]),
-        this.scale(d[1]),
-        cds.y,
-        (cds.reverse ? -1 : 1) * this.DIMENSIONS.coding_sequence.intron_inflect_height,
-      ))
-  )
+  g
+  .call(g => this.renderSegments(g, cds, "cds"))
   .call(g => g
     .append("text")
-      .text(d => cdsLabel(d))
+      .text(d => proteinLabel(d))
       .attr("dominant-baseline", "hanging")
       .attr("x", d => this.scale(d.x0))
-      .attr("y", d => d.y + this.DIMENSIONS.feature.box_height + this.DIMENSIONS.feature.box_text_space)
+      .attr("y", d => d.y1 + this.DIMENSIONS.feature.box_text_space)
   );
 };
 
@@ -249,7 +308,7 @@ FeaturesVisualization.prototype.renderAny = function(g) {
       if (d.exon_count) {
         self.renderCDS(g, d);
       } else if (d.type === "protein_match") {
-        self.renderProteinMatch(g);
+        self.renderProteinMatch(g, d);
       } else {
         self.renderFeature(g);
       }
@@ -357,7 +416,6 @@ FeaturesVisualization.prototype.renderSectionDivider = function(svg) {
 
 // (Re)render the axis and all sections
 FeaturesVisualization.prototype.render = function() {
-  console.log(this);
   let width = this.target.offsetWidth;
 
   if (this.svg) {
@@ -368,9 +426,11 @@ FeaturesVisualization.prototype.render = function() {
   this.total_height = 0;
   this.renderAxis(this.svg, width, this.data.target_site_cons);
   for (let i = 0; i < this.sections.length; i++) {
-    this.renderSection(this.svg, this.sections[i]);
-    if ((i + 1) < this.sections.length && this.sections[i + 1].items.length > 0) {
-      this.renderSectionDivider(this.svg);
+    if (this.sections[i].items.length) {
+      this.renderSection(this.svg, this.sections[i]);
+      if ((i + 1) < this.sections.length && this.sections[i + 1].items.length > 0) {
+        this.renderSectionDivider(this.svg);
+      }
     }
   }
   this.svg.attr("width", width).attr("height", this.total_height);
