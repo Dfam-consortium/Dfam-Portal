@@ -391,15 +391,14 @@ Overlap.prototype.renderOverlaps = function(g) {
       .each(function(d) {
         d3.select(this)
           .call(g => {
-            g.append("g")
+            g.append("a")
               .call(g => self.renderArrow(g,
                 d.x0, d.x1, d.y,
                 self.DIMENSIONS.overlap.height,
                 d.color, d.strand === "-", d.label
               ))
-              .on("click", function(d) {
-                location.href = '/family/' + d.auto_overlap.target.accession;
-              })
+              .attr("href", d => '/family/' + d.auto_overlap.target.accession)
+              .style("cursor", "default")
               .on("mouseenter", function(d) { self.hovered_overlap = d; })
               .on("mouseleave", function(d) {
                 if (self.hovered_overlap === d) {
