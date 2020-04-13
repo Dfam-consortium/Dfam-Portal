@@ -1,32 +1,8 @@
-"use strict";
+import * as d3 from "d3";
 
-function scale(coord, max, desired) {
-  var scaled = (desired * coord) / max;
-  return scaled;
-}
-
-// Determine which points along a length will get axis markers
-function axisPoints(length) {
-  var points = [];
-
-  // Calculate step length: nearest power of 10
-  var step = Math.pow(10, Math.floor(Math.log10(length)));
-
-  // Reduce step size until enough marks would be shown
-  while (length / step < 5) {
-    step /= 2;
-  }
-
-  // Stop a bit early, so that the last label does not overlap the end marker.
-  var stop = length - step/2;
-
-  for (var i = step; i < stop; i += step) {
-    points.push(i);
-  }
-
-  return points;
-}
-
+// The "dot plot" visualization shows alignment between two sequences
+// from a CIGAR-like string, and it is used as a tooltip for the
+// overlaps visualization.
 function DotPlot(options) {
   options     = options || {};
   this.target = options.target || document.body;
@@ -34,586 +10,546 @@ function DotPlot(options) {
   this.cigar  = this.data.cigar || null;
   this.strand = this.data.strand || '+';
 
-  function createSVGElement(elem) {
-    return document.createElementNS("http://www.w3.org/2000/svg", elem);
+  this.DIMENSIONS = {
+    maxPlotSize: 280,
+    axisMargin: 20,
+  };
+};
+
+// (re-)renders the dot plot.
+DotPlot.prototype.render = function() {
+  // Calculate data dimensions. 'bwidth' and 'bheight' are in Basepairs
+  this.bwidth = this.data.model_end - this.data.model_start;
+  this.bheight = this.data.target_end - this.data.target_start;
+  if (this.strand === '-') {
+    this.bheight = -this.bheight;
   }
 
-  function setSVGAttrs(svg, attrs) {
-    Object.keys(attrs).forEach(function(k) {
-      svg.setAttributeNS(null, k, attrs[k]);
-    });
+  // Calculate the Plot width and height - the longer dimension will
+  // be constrained to fit into maxPlotSize and the other will be
+  // scaled to maintain aspect ratio.
+  if (this.bwidth > this.bheight) {
+    this.pwidth = this.DIMENSIONS.maxPlotSize;
+    this.pheight = Math.round(this.bheight / this.bwidth * this.pwidth);
+  } else {
+    this.pheight = this.DIMENSIONS.maxPlotSize;
+    this.pwidth = Math.round(this.bwidth / this.bheight * this.pheight);
   }
 
-  this.render = function () {
-    // plot the dimensions of the graphic
-    this.width = options.data.model_end - options.data.model_start;
-    if (this.strand === '-') {
-      this.height  = options.data.target_start - options.data.target_end;
-    }
-    else {
-      this.height  = options.data.target_end - options.data.target_start;
-    }
-
-    var pwidth, pheight;
-    if (this.width > this.height) {
-      pwidth = 280;
-      pheight = Math.round(this.height / this.width * pwidth);
-    } else {
-      pheight = 280;
-      pwidth = Math.round(this.width / this.height * pheight);
-    }
-
-    var rwidth = pwidth + 20;
-    var rheight = pheight + 20;
-
-    var svg = createSVGElement("svg");
-    setSVGAttrs(svg, { "width": rwidth.toString(), "height": rheight.toString(), viewBox: "0 0 " + rwidth.toString() + " " + rheight.toString() });
-
-    var plot = this.drawPlot(pwidth, pheight);
-    setSVGAttrs(plot, { "transform": "translate(20,20)" });
-    svg.appendChild(plot);
-
-    var axes = this.drawAxes(rwidth, rheight, 20, 20);
-    svg.appendChild(axes);
-
-    this.target.appendChild(svg);
+  if (this.svg) {
+    this.svg.remove();
   }
 
-  this.drawAxes = function (rwidth, rheight, startx, starty) {
-    var g = createSVGElement("g");
-    setSVGAttrs(g, { "font-size": "10px" });
+  this.svg = d3.select(this.target).append("svg")
+    .attr("width", this.pwidth + this.DIMENSIONS.axisMargin)
+    .attr("height", this.pheight + this.DIMENSIONS.axisMargin);
 
-    var xunit = (rwidth - startx) / this.width;
-    var yunit = (rheight - starty) / this.height;
+  this.drawAxes(this.svg);
+  this.drawPlot(this.svg, this.pwidth, this.pheight);
+};
 
-    var axisLines = createSVGElement("path");
-    setSVGAttrs(axisLines, {
-      d: "M" + startx + "," + (starty + this.height * yunit) + "L" + startx + "," + starty + "h" + this.width * xunit,
-      fill: "none",
-      stroke: "black",
-      "stroke-width": "2px",
-    });
 
-    g.appendChild(axisLines);
+// Draws axes. Each axis is represented as a line with labels for
+// the start position, end position, and name for the family
+DotPlot.prototype.drawAxes = function (svg) {
+  const g = svg.append("g")
+    .attr("class", "axis")
+    .attr("font-size", "10px");
 
-    function createLabel(x, y, text, anchor) {
-      var label = createSVGElement("text");
-      label.textContent = text.toString();
-      setSVGAttrs(label, { "x": x, "y": y, "text-anchor": anchor });
-      return label;
-    }
+  const margin = this.DIMENSIONS.axisMargin;
+  const baseline = this.DIMENSIONS.axisMargin - 3;
 
-    var xlabels = createSVGElement("g");
-    var xtxform = "translate(0, " + starty/2 + ")";
-    setSVGAttrs(xlabels, { "transform": xtxform });
+  const axesPath = d3.path();
+  // Bottom-left
+  axesPath.moveTo(margin, margin + this.pheight);
+  // Top-left corner
+  axesPath.lineTo(margin, margin)
+  // Top-right corner
+  axesPath.lineTo(margin + this.pwidth, margin);
 
-    var model_label = this.data.auto_overlap.model.id;
-    var model_start = this.data.model_start;
-    var model_end = this.data.model_end;
+  g.append("path")
+    .attr("d", axesPath.toString())
+    .attr("fill", "none")
+    .attr("stroke", "black")
+    .attr("stroke-width", "2px");
 
-    var left_x = startx;
-    var right_x = startx + this.width * xunit;
-    var center_x = (left_x + right_x) / 2;
-
-    xlabels.appendChild(createLabel(center_x, 0, model_label, "middle"));
-    xlabels.appendChild(createLabel(left_x, 0, model_start, "start"));
-    xlabels.appendChild(createLabel(right_x, 0, model_end, "end"));
-    g.appendChild(xlabels);
-
-    var ylabels = createSVGElement("g");
-    var ytxform = "translate(" + startx/2 + "," + rheight + ") rotate(-90)";
-    setSVGAttrs(ylabels, { "transform": ytxform });
-
-    var target_label = this.data.auto_overlap.target.id;
-    var target_start = this.data.target_start;
-    var target_end   = this.data.target_end;
-    if (this.strand === '-') {
-      target_start = this.data.target_end;
-      target_end   = this.data.target_start;
-    }
-
-    var left_y = rheight - starty - this.height * yunit;
-    var right_y = rheight - starty;
-    var center_y = (left_y + right_y) / 2;
-
-    ylabels.appendChild(createLabel(center_y, 0, target_label, "middle"));
-    ylabels.appendChild(createLabel(right_y, 0, target_start, "end"));
-    ylabels.appendChild(createLabel(left_y, 0, target_end, "start"));
-    g.appendChild(ylabels);
-
-    return g;
+  function createLabel(g, x, y, text, anchor) {
+    return g.append("text")
+      .attr("x", x)
+      .attr("y", y)
+      .attr("text-anchor", anchor)
+      .text(text);
   }
 
-  this.drawPlot = function (pwidth, pheight) {
-    var that = this;
-    //split cigar string into array of characters
-    var chars = this.cigar.split('');
-    if (this.strand === '-') {
-      chars = chars.reverse();
-    }
+  // Draw top labels
+  const xlabels = g.append("g")
+    .attr("transform", `translate(${margin} 0)`);
 
-    var xunit = pwidth / this.width;
-    var yunit = pheight / this.height;
+  createLabel(xlabels, 0, baseline, this.data.model_start, "start");
+  createLabel(xlabels, this.pwidth / 2, baseline, this.data.auto_overlap.model.id, "middle");
+  createLabel(xlabels, this.pwidth, baseline, this.data.model_end, "end");
 
-    var x = 0;
-    if (this.strand === '-') {
-      x = this.width * xunit;
-    }
-    var y = 0;
+  // Draw side labels (by using a rotation)
+  const ylabels = g.append("g")
+    .attr("transform", `translate(0 ${this.pheight + margin}) rotate(-90)`);
 
-    var path = 'M ' + x + ' , ' + y;
+  let target_start = this.data.target_start;
+  let target_end   = this.data.target_end;
+  if (this.strand === '-') {
+    target_start = this.data.target_end;
+    target_end   = this.data.target_start;
+  }
 
-    chars.forEach(function(ch) {
-      var dx = 0;
-      var dy = 0;
+  createLabel(ylabels, 0, baseline, target_end, "start");
+  createLabel(ylabels, this.pheight / 2, baseline, this.data.auto_overlap.target.id, "middle");
+  createLabel(ylabels, this.pheight, baseline, target_start, "end");
 
-      //for each item in data string draw a dota / move the line to a point.
-      if (ch[0] === 'M') {
-        dy = yunit;
-        if (that.strand === '-') {
-          dx = -xunit;
-        }
-        else {
-          dx = xunit;
-        }
+  return g;
+};
+
+DotPlot.prototype.drawPlot = function (g) {
+  let self = this;
+  // Split cigar string into array of characters
+  let chars = this.cigar.split('');
+  if (this.strand === '-') {
+    chars = chars.reverse();
+  }
+
+  // NB: Instead of drawing in data space and transforming the
+  // whole thing to graph space, we scale the individual points
+  // to graph space. This is done so that we are not also scaling
+  // the 1px thickness of the line.
+  const xscale = d3.scaleLinear()
+    .domain([0, this.bwidth])
+    .range([0, this.pwidth]);
+  const yscale = d3.scaleLinear()
+    .domain([0, this.bheight])
+    .range([0, this.pheight]);
+
+  let x = 0;
+  let y = 0;
+  if (this.strand === '-') {
+    x = this.bwidth;
+  }
+
+  const path = d3.path();
+  path.moveTo(xscale(x), yscale(y));
+
+  chars.forEach(function(ch) {
+    // For each item in the data string, move the line to the next point.
+    if (ch[0] === 'M') {
+      y += 1;
+      if (self.strand === '-') {
+        x -= 1;
       }
-      else if (ch[0] === 'I') {
-        dy = yunit;
+      else {
+        x += 1;
       }
-      else if (ch[0] === 'D'){
-        if (that.strand === '-') {
-          dx = -xunit;
-        }
-        else {
-          dx = xunit;
-        }
+    }
+    else if (ch[0] === 'I') {
+      y += 1;
+    }
+    else if (ch[0] === 'D'){
+      if (self.strand === '-') {
+        x -= 1;
       }
-      path += 'l '+ dx + ' , ' + dy + ' ';
-    });
+      else {
+        x += 1;
+      }
+    }
+    path.lineTo(xscale(x), yscale(y));
+  });
 
-    var pathEl = createSVGElement("path");
-    setSVGAttrs(pathEl, {
-      d: path,
-      fill: "none",
-      stroke: "black",
-      "stroke-width": "1px",
-    });
-
-    return pathEl;
-  }
-}
+  return g.append("path")
+    .attr("d", path.toString())
+    .attr("fill", "none")
+    .attr("stroke", "black")
+    .attr("stroke-width", "1px")
+    .attr("transform", `translate(${this.DIMENSIONS.axisMargin} ${this.DIMENSIONS.axisMargin})`);
+};
 
 export { DotPlot };
 
+// The "overlap" visualization shows a model (a gray block) and overlapping
+// families (green or purple blocks) at the overlap positions, with text columns
+// for %identity, %coverage, and match E-value.
+//
+// Hovering a model shows a tooltip (a DotPlot) of the individual alignment.
+//
+// The text columns can be used to re-sort the data.
 function Overlap(options) {
-  options = options || {};
-  this.data = options.data || null;
+  this.data = options.data;
+  this.target = options.target;
 
-  this.target       = options.target || document.body;
-  this.height       = (this.data.length + 2) * 15;
-  this.width        = options.width || 800;
-  this.model        = this.data[0].auto_overlap.model;
-  this.order        = options.order || 'default';
-  this.right_margin = options.right_margin || 150;
-  this.overlap_area = this.width - this.right_margin;
-  this.orientation  = options.orientation || 'down';
-
-  this.render = function () {
-    // plot the dimensions of the graphic
-    // attach a canvas element if it isn't there already
-    var canvas = this.target.querySelector('canvas');
-    var context = null;
-
-    if (!canvas) {
-      canvas = document.createElement('canvas');
-      canvas.height = this.height;
-      canvas.width = this.width;
-      this.target.appendChild(canvas);
-    }
-
-    this.canvas = canvas;
-
-    context = canvas.getContext('2d');
-    context.font = "normal 10px Arial";
-
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-
-    this.drawModel(context);
-    // draw all the overlap sequences and map coordinates
-    this.drawOverlaps(context);
-    //attach the click event
-    this.attachPopUp(canvas);
+  this.DIMENSIONS = {
+    margin: {
+      top: 10,
+      right: 10,
+      bottom: 10,
+      left: 10,
+    },
+    axis: {
+      height: 30,
+      margin_bottom: 20,
+    },
+    overlap: {
+      height: 10,
+      margin_bottom: 4,
+    },
+    sidebar: {
+      padding_left: 30,
+      column_width: 40,
+      width: 150,
+    },
   };
 
-  this.attachPopUp = function (canvas) {
-    var that = this;
+  this.width = options.width || 800;
+  this.model = this.data[0].auto_overlap.model;
+  this.sort_by = options.sort_by || "identity";
+  this.sort_reverse = options.sort_reverse || true;
 
-    var tooltip = document.createElement("div");
-    tooltip.style.position = "fixed";
-    tooltip.style.background = "#ffffff";
-    tooltip.style.border = "2px solid #333333";
-    tooltip.style.borderRadius = "3px";
-    tooltip.style.fontSize = "0.8em";
-    tooltip.style.zIndex = "10";
-
-    var tooltipTitle = document.createElement("div");
-    tooltipTitle.style.background = "#333333";
-    tooltipTitle.style.color = "#ffffff";
-    tooltipTitle.style.padding = "0.3em 1em";
-    tooltipTitle.style.fontWeight = "bold";
-    tooltip.appendChild(tooltipTitle);
-
-    var tooltipContent = document.createElement("div");
-    tooltipContent.style.padding = "0.3em 1em";
-    tooltip.appendChild(tooltipContent);
-
-    canvas.parentNode.appendChild(tooltip);
-
-    tooltip.style.display = "none";
-
-    canvas.addEventListener('mouseleave', function(e) {
-      tooltip.style.display = "none";
-    });
-
-    canvas.addEventListener('click', function (e) {
-      var y = e.offsetY;
-      var x = e.offsetX;
-      var scaled_y = scale(y, this.offsetHeight, that.height);
-      var scaled_x = scale(x, this.offsetWidth, that.width);
-
-      var target_family = that.data.find(function(overlap) {
-        // find the overlap the mouse is over
-        return ((scaled_y >= overlap.y && scaled_y < (overlap.y + overlap.height + 5))
-            && (scaled_x >= overlap.x && scaled_x < (overlap.x + overlap.width)));
-      });
-
-      if (target_family) {
-        location.href = '/family/' + target_family.auto_overlap.target.accession;
-        return;
-      }
-
-      var region;
-      if (scaled_x > that.overlap_area) {// in the control region
-        if (scaled_x < (that.overlap_area + 55)) {
-          region = 'id';
-        } else if (scaled_x < (that.overlap_area + 95)) {
-          region = 'coverage';
-        } else {
-          region = 'evalue';
-        }
-      }
-
-      if (region) {
-        if (that.order === region) {
-          if (that.orientation === 'down') {
-            that.orientation = 'up';
-          } else {
-            that.orientation = 'down';
-          }
-        } else {
-          that.order = region;
-          that.orientation = 'down';
-        }
-
-        var context = this.getContext('2d');
-        that.drawModel(context);
-        that.drawOverlaps(context);
-        return;
-      }
-    });
-
-    canvas.addEventListener('mousemove', function (e) {
-      var y = e.offsetY;
-      var x = e.offsetX;
-      var scaled_y = scale(y, this.offsetHeight, that.height);
-      var scaled_x = scale(x, this.offsetWidth, that.width);
-      var match = that.data.find(function(overlap) {
-        return ((scaled_y >= overlap.y && scaled_y < (overlap.y + overlap.height + 5))
-            && (scaled_x >= overlap.x && scaled_x < (overlap.x + overlap.width)));
-      });
-
-      if (match) {
-        // if previous not the same, then render, otherwise just show it
-        if (that.previous !== match) {
-          tooltipTitle.innerText = match.auto_overlap.target.id;
-          tooltipContent.innerHTML = '<ul style="margin:0; padding: 0 0 0 1em;"><li style="margin: 0;"><strong>E-value</strong>: ' + match.evalue + '</li></ul><div class="dotplot"></div>';
-          var tooltipCanvas = tooltip.querySelector('canvas')
-          if (tooltipCanvas) {
-            tooltipCanvas.parentNode.removeChild(tooltipCanvas);
-          }
-          new DotPlot({ target: tooltipContent.querySelector('.dotplot'), data: match }).render();
-        }
-        tooltip.style.removeProperty("display");
-        that.previous = match;
-
-        var displayX = e.clientX + 20;
-        var displayY = e.clientY - 20;
-        // if the pop up falls off the right side, then flip to
-        // the other side of the pointer
-        if ((x + tooltip.offsetWidth) > canvas.offsetWidth) {
-          displayX -= (tooltip.offsetWidth + 40);
-        }
-        // if the pop up falls off the bottom of the image, then flip
-        // it to be above the pointer.
-        if ((y + tooltip.offsetHeight) > canvas.offsetHeight) {
-          // If the top of the tooltip is off the top of the page then
-          // don't bother flipping as the result is worse from a UI
-          // point of view
-          if (e.pageY - tooltip.offsetHeight > 1) {
-            displayY -= (tooltip.offsetHeight - 20);
-          }
-        }
-        // move the div to follow the mouse
-        tooltip.style.top = displayY.toString() + "px";
-        tooltip.style.left = displayX.toString() + "px";
-      } else {
-        tooltip.style.display = "none";
-      }
-    });
-  };
-
-  this.drawModel = function (context) {
-    var y = 0,
-      height = 10,
-      arrow_width = parseInt(height / 2, 10);
-
-    // draw scale bar
-    context.beginPath();
-    context.moveTo(0, y);
-    context.lineTo(scale(this.model.length-1, this.model.length, this.overlap_area), y);
-    context.stroke();
-
-    // draw axis marks
-    var marks = axisPoints(this.model.length);
-
-    // drawMark: draws both an axis line and a label
-    var that = this;
-    function drawMark(i) {
-      var x = scale(i-1, that.model.length, that.overlap_area);
-
-      context.beginPath();
-      context.moveTo(x, y);
-      context.lineTo(x, y + 5);
-      context.stroke();
-
-      context.fillText(i, x, y + 5);
-    }
-
-    context.textBaseline = "top";
-    context.strokeStyle = '#333';
-    context.fillStyle = '#333';
-
-    context.textAlign = "start";
-    drawMark(1);
-
-    context.textAlign = "center";
-    marks.forEach(function(i) {
-      drawMark(i);
-    }, this);
-
-    context.textAlign = "end";
-    drawMark(this.model.length);
-
-    // draw the gray arrow representing the primary model
-    y = 15;
-    context.fillStyle = '#aaa';
-    context.beginPath();
-    context.moveTo(0, y); // move to the top left
-    context.lineTo(this.overlap_area - arrow_width, y); // horizontal line to the right
-    context.lineTo(this.overlap_area, y + arrow_width); // diagonal line to the middle height
-    context.lineTo(this.overlap_area - arrow_width, y + height); // diagonal to close the arrow
-    context.lineTo(0, y + height); // horizontal line back to the start
-    context.closePath();// close the path;
-    context.fill();
-
-    context.textAlign = "start";
-    context.textBaseline = "top";
-    context.strokeStyle = '#333';
-    context.fillStyle = '#333';
-    context.fillText(this.model.id, 10, y);
-  };
-
-  this.drawToggleArrows = function (context, x, y) {
-    context.beginPath();
-    context.moveTo(x, y);
-    context.lineTo(x + 3, y + 5);
-    context.lineTo(x - 3, y + 5);
-    context.lineTo(x, y);
-
-    context.moveTo(x, y + 13);
-    context.lineTo(x + 3, y + 8);
-    context.lineTo(x - 3, y + 8);
-    context.lineTo(x, y + 13);
-    context.stroke();
-
-  };
-
-  this.drawToggleFilled = function (context, x, y) {
-    context.beginPath();
-    if (this.orientation === 'up') {
-      context.moveTo(x, y);
-      context.lineTo(x + 3, y + 5);
-      context.lineTo(x - 3, y + 5);
-      context.lineTo(x, y);
-    } else {
-      context.moveTo(x, y + 13);
-      context.lineTo(x + 3, y + 8);
-      context.lineTo(x - 3, y + 8);
-      context.lineTo(x, y + 13);
-    }
-    context.fill();
-  };
-
-  this.drawOverlaps = function (context) {
-    var that = this;
-
-    var y = 15;
-
-    //draw data column labels
-    context.fillText('%id', that.overlap_area + 15, y);
-    that.drawToggleArrows(context, that.overlap_area + 38, y);
-
-    context.fillText('%cov', that.overlap_area + 55, y);
-    that.drawToggleArrows(context, that.overlap_area + 87, y);
-
-    context.fillText('E-value', that.overlap_area + 95, y);
-    that.drawToggleArrows(context, that.overlap_area + 135, y);
-
-
-    // sort by evalue if that is the order specified
-    if (this.order === 'evalue') {
-      if (this.orientation === 'down') {
-        this.data.sort(function (a, b) {
-          return parseFloat(a.evalue) - parseFloat(b.evalue);
-        });
-      } else {
-        this.data.sort(function (a, b) {
-          return parseFloat(b.evalue) - parseFloat(a.evalue);
-        });
-      }
-      that.drawToggleFilled(context, that.overlap_area + 135, y);
-    } else if (this.order === 'coverage') {
-      if (this.orientation === 'down') {
-        this.data.sort(function (a, b) {
-          return parseFloat(a.coverage) - parseFloat(b.coverage);
-        });
-      } else {
-        this.data.sort(function (a, b) {
-          return parseFloat(b.coverage) - parseFloat(a.coverage);
-        });
-      }
-      that.drawToggleFilled(context, that.overlap_area + 87, y);
-    } else if (this.order === 'id') {
-      if (this.orientation === 'down') {
-        this.data.sort(function (a, b) {
-          return a.identity - b.identity;
-        });
-      } else {
-        this.data.sort(function (a, b) {
-          return b.identity - a.identity;
-        });
-      }
-      that.drawToggleFilled(context, that.overlap_area + 38, y);
-    } else {
-      // the default sort is alphabetical by the target id.
-      this.data.sort(function (a, b) {
-        var idA = a.auto_overlap.target.id,
-          idB = b.auto_overlap.target.id;
-        return (idA < idB) ? -1 : (idA > idB) ? 1 : 0;
-      });
-    }
-
-    this.data.forEach(function (overlap, i) {
-      //draw rectangle
-      var y = overlap.y = 5 + ((i+2) * 15),
-        x = overlap.x = Math.floor(scale(overlap.model_start - 1, that.model.length, that.overlap_area)),
-        width = overlap.width = Math.ceil(scale(overlap.model_end - overlap.model_start + 1, that.model.length, that.overlap_area)),
-        height = overlap.height = 10,
-        arrow_width = parseInt(height / 2, 10),
-        text = overlap.auto_overlap.target.id;
-
-
-      if (overlap.strand === '-') { // draw left facing arrow
-        context.fillStyle = '#B7A4E8';
-        context.beginPath();
-        context.moveTo(x + arrow_width, y); // move to the top left
-        context.lineTo((x + width + arrow_width), y); // horizontal line to the right
-        context.lineTo((x + width + arrow_width), y + height); // vertical line to the bottom
-        context.lineTo(x + arrow_width, y + height); // horizontal line back to the start
-        context.lineTo(x, y + arrow_width); // diagonal line to the middle height
-        context.lineTo(x + arrow_width, y); // diagonal to close the arrow
-        context.closePath();// close the path;
-        context.fill();
-      } else { // draw right facing arrow
-        context.fillStyle = '#AFD353';
-        context.beginPath();
-        context.moveTo(x, y); // move to the top left
-        context.lineTo(x + (width - arrow_width), y); // horizontal line to the right
-        context.lineTo(x + width, y + arrow_width); // diagonal line to the middle height
-        context.lineTo(x + (width - arrow_width), y + height); // diagonal to close the arrow
-        context.lineTo(x, y + height); // horizontal line back to the start
-        context.closePath();// close the path;
-        context.fill();
-      }
-
-      context.strokeStyle = '#222';
-      context.fillStyle = '#222';
-      context.textBaseline = "top";
-      context.textAlign = "start";
-
-      // if text fits inside the arrow, then put it there
-      if (context.measureText(text).width < (width - (arrow_width * 2))) {
-        context.fillText(text, x + (arrow_width * 2), y);
-      } else if (context.measureText(text).width + x + width > that.overlap_area) {
-      //  else if it doesn't fit and would fall off the left edge then draw it
-      //  on the right side of the arrow
-        context.textAlign = "end";
-        if (overlap.strand === '-') { // draw left facing arrow
-          context.fillText(text, x + (arrow_width * 2), y);
-        } else {
-          context.fillText(text, x, y);
-        }
-      } else {
-      // finally draw it on the left side of the arrow if none of the other conditions
-      // are fired.
-        if (overlap.strand === '-') { // draw left facing arrow
-          context.fillText(text, x + width + (arrow_width * 2), y);
-        } else {
-          context.fillText(text, x + width, y);
-        }
-      }
-
-      context.textAlign = "start";
-      // add the %id column
-      context.fillText(Math.round(overlap.identity * 100), that.overlap_area + 15, y);
-      // add the %coverage column
-      context.fillText(Math.round(overlap.coverage * 100), that.overlap_area + 55, y);
-      // add the E-value column
-      context.fillText(overlap.evalue, that.overlap_area + 95, y);
-
-    });
-  };
-
-  this.dfamOverlapClicked = function (e) {
-    //if x is > the overlap_area then we are in the right place
-    var canvas = this.canvas;
-    var y = e.offsetY;
-    var x = e.offsetX;
-    var scaled_y = scale(y, canvas.offsetHeight, this.height);
-    var scaled_x = scale(x, canvas.offsetWidth, this.width);
-    var region;
-
-    if (scaled_x > this.overlap_area) {// in the control region
-      if (scaled_x < (this.overlap_area + 55)) {
-        region = 'id';
-      } else if (scaled_x < (this.overlap_area + 95)) {
-        region = 'coverage';
-      } else {
-        region = 'evalue';
-      }
-    }
-    return region;
-  };
+  this.calculateLayout();
 }
+
+// (re-)sort data and calculate layout
+Overlap.prototype.calculateLayout = function() {
+  this.data.sort((a, b) => {
+    const aval = +a[this.sort_by];
+    const bval = +b[this.sort_by]
+
+    return this.sort_reverse ? (bval - aval) : (aval - bval);
+  });
+
+  this.sidebar_x0 = this.width - this.DIMENSIONS.margin.right - this.DIMENSIONS.sidebar.width;
+  this.x_identity = this.sidebar_x0 + this.DIMENSIONS.sidebar.padding_left;
+  this.x_coverage = this.x_identity + this.DIMENSIONS.sidebar.column_width;
+  this.x_evalue = this.x_coverage + this.DIMENSIONS.sidebar.column_width;
+
+  this.scale = d3.scaleLinear()
+    .domain([1, this.model.length])
+    .range([this.DIMENSIONS.margin.left, this.sidebar_x0]);
+
+  let y = 0;
+  this.data.forEach(overlap => {
+    // Inclusive coordinates - +1 to end to "fill" that space
+    overlap.x0 = this.scale(overlap.model_start);
+    overlap.x1 = this.scale(overlap.model_end + 1);
+    overlap.y = y;
+    overlap.color = overlap.strand === "-" ? "#b7a4e8" : "#afd353";
+    overlap.label = overlap.auto_overlap.target.id;
+
+    y += this.DIMENSIONS.overlap.height + this.DIMENSIONS.overlap.margin_bottom;
+  });
+  this.overlaps_height = y;
+};
+
+Overlap.prototype.render = function () {
+  // Create root element and popup
+  if (this.svg) {
+    this.svg.remove();
+  }
+
+  if (this.tooltip) {
+    this.tooltip.remove();
+  }
+
+  this.svg = d3.select(this.target).append("svg");
+  this.tooltip = d3.select(this.target).append("div");
+
+  this.total_height = 0;
+
+  const dataArea = this.svg.append("g");
+
+  // Render top axis
+  dataArea
+    .append("g")
+    .attr("class", "axis")
+    .attr("transform", `translate(0, ${this.DIMENSIONS.axis.height})`)
+    .call(d3.axisTop(this.scale));
+
+  this.total_height += this.DIMENSIONS.axis.height + this.DIMENSIONS.axis.margin_bottom;
+
+  // Render the "current" model and sort columns
+  this.renderHeader(dataArea);
+
+  // Render each match - arrow graphic and data values
+  dataArea
+    .append("g")
+    .attr("class", "overlaps")
+    .attr("transform", `translate(0, ${this.total_height})`)
+    .call(g => this.renderOverlaps(g));
+
+  this.total_height += this.overlaps_height;
+
+  // Set up the popup
+  this.setupPopUp();
+  this.svg.on("mousemove", () => this.updatePopUp());
+
+  // Resize the host element
+  this.svg
+    .attr("width", this.width)
+    .attr("height", this.total_height);
+};
+
+// Recalculate layout and re-render. Called after sorting.
+Overlap.prototype.reRender = function() {
+  this.calculateLayout();
+  this.render();
+};
+
+// Inserts a text element into 'g' at 'x,y' with text 'text' and returns it.
+// "dy" is set to 1em to emulate a "hanging" baseline, a consistent font is
+// applied, and the cursor is set to "cursor" instead of the usual text
+// selection I-beam.
+function renderText(g, x, y, text, color, cursor) {
+  color = color || "black";
+  cursor = cursor || "default";
+  return g.append("text")
+    .attr("x", x)
+    .attr("y", y)
+    .attr("dy", "1em")
+    .attr("fill", color)
+    .style("font", '10px Arial, sans-serif')
+    .style("cursor", cursor)
+    .text(text);
+}
+
+// Renders the header - the arrow representing the "current"
+// model, and the sorting columns.
+Overlap.prototype.renderHeader = function(g) {
+  this.renderArrow(
+    g,
+    this.scale(1),
+    this.scale(this.model.length + 1),
+    this.total_height,
+    this.DIMENSIONS.overlap.height,
+    "#aaaaaa",
+    false,
+    this.model.id,
+  );
+
+  const columns = [
+    { name: "identity", label: "%id", x: this.x_identity },
+    { name: "coverage", label: "%cov", x: this.x_coverage },
+    { name: "evalue", label: "E-value", x: this.x_evalue },
+  ];
+
+  const self = this;
+  g
+    .selectAll(".sorter")
+    .data(columns)
+    .enter()
+      .append("g")
+      .attr("class", "sorter")
+      .attr("transform", d => `translate(${d.x} ${self.total_height})`)
+      .style("cursor", "pointer")
+      .style("user-select", "none")
+      .on("click", function(d) {
+        if (self.sort_by === d.name) {
+          self.sort_reverse = !self.sort_reverse;
+        } else {
+          self.sort_by = d.name;
+          self.sort_reverse = (self.sort_by !== "evalue");
+        }
+
+        self.reRender();
+      })
+      .each(function(d) {
+        const text = renderText(d3.select(this), 0, 0, d.label, null, "pointer");
+        const length = text.node().getComputedTextLength();
+        renderSortArrows(d3.select(this), length + 2, 0, self.sort_by === d.name ? self.sort_reverse : null);
+      });
+
+  this.total_height += this.DIMENSIONS.overlap.height + this.DIMENSIONS.overlap.margin_bottom;
+};
+
+// Render sort arrows starting at x,y.
+// sort can be true (descending), false (ascending), or null (neither)
+function renderSortArrows(g, x, y, sort) {
+  g.append("path")
+    .attr("d", "M3,0 L0,5 L6,5 L3,0")
+    .attr("transform", `translate(${x} ${y})`)
+    .attr("stroke", "black")
+    .attr("fill", sort === false ? "black" : "transparent");
+
+  g.append("path")
+    .attr("d", "M3,13 L0,8 L6,8 L3,13")
+    .attr("transform", `translate(${x} ${y})`)
+    .attr("stroke", "black")
+    .attr("fill", sort === true ? "black" : "transparent");
+}
+
+// Renders the overlap arrows, and attaches click/mouseover events
+Overlap.prototype.renderOverlaps = function(g) {
+  const self = this;
+
+  g.selectAll("g.overlap")
+    .data(this.data)
+    .enter()
+      .append("g")
+      .attr("class", "overlap")
+      .each(function(d) {
+        d3.select(this)
+          .call(g => {
+            g.append("g")
+              .call(g => self.renderArrow(g,
+                d.x0, d.x1, d.y,
+                self.DIMENSIONS.overlap.height,
+                d.color, d.strand === "-", d.label
+              ))
+              .on("click", function(d) {
+                location.href = '/family/' + d.auto_overlap.target.accession;
+              })
+              .on("mouseenter", function(d) { self.hovered_overlap = d; })
+              .on("mouseleave", function(d) {
+                if (self.hovered_overlap === d) {
+                  self.hovered_overlap = null;
+                }
+              })
+          })
+          .call(g => renderText(g, self.x_identity, d.y, Math.round(d.identity * 100)))
+          .call(g => renderText(g, self.x_coverage, d.y, Math.round(d.coverage * 100)))
+          .call(g => renderText(g, self.x_evalue, d.y, d.evalue));
+      });
+};
+
+// Calculate an arrow path.
+// x0 and x1 are the left and right ends, y is the top,
+// and reverse should be set to true to draw on the reverse strand
+function arrowPath(x0, x1, y, height, reverse) {
+  const arr_width = height / 2 * (reverse ? -1 : 1);
+  if (reverse) {
+    const tmp = x0;
+    x0 = x1;
+    x1 = tmp;
+  }
+
+  const path = d3.path();
+  // starting corner
+  path.moveTo(x0, y);
+  // straight across
+  path.lineTo(x1 - arr_width, y);
+  // diagonal to tip of pointed end
+  path.lineTo(x1, y + height/2);
+  // diagonal back to "floor"
+  path.lineTo(x1 - arr_width, y + height);
+  // straight back
+  path.lineTo(x0, y + height);
+  return path.toString();
+}
+
+// Render an arrow, appending a path and text label into 'g'
+Overlap.prototype.renderArrow = function(g, x0, x1, y, height, color, reverse, label) {
+  g.append("path")
+    .attr("fill", color)
+    .attr("d", arrowPath(x0, x1, y, height, reverse));
+
+  const text = renderText(g, x0 + 5, y - 1, label, "#333333");
+
+  // If the text would run into the sidebar, set the sidebar to be the right
+  // edge instead
+  if (x0 + 5 + text.node().getComputedTextLength() > this.sidebar_x0) {
+    text
+      .attr("x", this.scale(this.model.length))
+      .attr("text-anchor", "end");
+  }
+}
+
+// Initializes the static parts of the popup tooltip.
+Overlap.prototype.setupPopUp = function() {
+  let self = this;
+
+  this.tooltip
+    .style("position", "fixed")
+    .style("background", "#ffffff")
+    .style("border", "2px solid #333333")
+    .style("border-radius", "3px")
+    .style("font-size", "0.8em")
+    .style("z-index", "10")
+    .style("display", "none");
+
+  this.tooltip.title = this.tooltip.append("div")
+    .style("background", "#333333")
+    .style("color", "#ffffff")
+    .style("padding", "0.3em 1em")
+    .style("font-weight", "bold");
+
+  this.tooltip.content = this.tooltip.append("div")
+    .style("padding", "0.3em 1em");
+
+  const li = this.tooltip.content.append("ul")
+    .style("margin", "0")
+    .style("padding", "0 0 0 1em")
+    .append("li")
+      .style("margin", "0")
+
+  li.append("strong").text("E-value");
+  li.append("span").text(": ");
+  this.tooltip.content_evalue = li.append("span");
+
+  this.tooltip.dotplot = this.tooltip.content.append("div")
+    .attr("class", "dotplot");
+};
+
+// Updates the popup tooltip after the mouse has moved or entered/left an
+// overlapping element
+Overlap.prototype.updatePopUp = function() {
+  const tooltip = this.tooltip;
+  const hovered = this.hovered_overlap;
+
+  if (!hovered) {
+    tooltip.style("display", "none");
+    return;
+  }
+
+  // If the hovered item changed, reset the tooltip data first
+  if (this.hovered_overlap_prev !== hovered) {
+    tooltip.title.text(hovered.auto_overlap.target.id);
+    tooltip.content_evalue.text(hovered.evalue);
+
+    tooltip.dotplot.text("");
+    new DotPlot({ target: tooltip.dotplot.node(), data: hovered }).render();
+
+    this.hovered_overlap_prev = hovered;
+  }
+
+  tooltip.style("display", null);
+
+  const x = d3.event.clientX;
+  const y = d3.event.clientY;
+
+  const ttNode = tooltip.node();
+  const svgNode = this.svg.node();
+  const svgBBox = svgNode.getBBox();
+
+  let displayX;
+  if ((d3.mouse(svgNode)[0] + ttNode.offsetWidth) < svgBBox.width) {
+    // Display to right of pointer, if it would stay within bounds
+    displayX = x + 20;
+  } else {
+    // Otherwise display to left of pointer
+    displayX = x - (ttNode.offsetWidth + 20);
+  }
+
+  let displayY;
+  if (
+    (y + ttNode.offsetHeight < document.querySelector("html").clientHeight)
+    ||
+    (y - ttNode.offsetHeight <= 0)
+  ) {
+    // Display only slightly above the pointer, if it would
+    //   a) not go past the bottom, or
+    //   b) it would go off the top of the screen if displayed above
+    displayY = y - 20;
+  } else {
+    // Otherwise display far above the pointer
+    displayY = y - (ttNode.offsetHeight + 20);
+  }
+
+  // Move the tooltip to follow the mouse
+  tooltip
+    .style("left", `${displayX}px`)
+    .style("top", `${displayY}px`);
+};
 
 export { Overlap };
