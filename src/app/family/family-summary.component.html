@@ -60,14 +60,11 @@
         {{family.source_method_description}}
       </span>
     </p>
-    <p *ngIf="family.source_assembly" class="tight"><strong>Source Assembly:</strong>
+    <p *ngIf="family.source_assembly" class="tight"><strong>Source Assembly:</strong>&nbsp;
       <a *ngIf="family.source_assembly.hyperlink; else asmNoLink"
-          href="{{family.source_assembly.hyperlink}}">
-        {{family.source_assembly.label}}
-      </a>
-      <ng-template #asmNoLink>
-        {{family.source_assembly.label}}
-      </ng-template>
+        class="ext"
+        href="{{family.source_assembly.hyperlink}}">{{family.source_assembly.label}}</a>
+      <ng-template #asmNoLink>{{family.source_assembly.label}}</ng-template>
     </p>
     <p class="tight"><strong>Length:</strong> {{family.length}}</p>
     <p class="tight"><strong>Target Site Duplication:</strong> {{family.target_site_cons || "Unknown"}}</p>
