@@ -20,21 +20,27 @@ export class FamilyComponent implements OnInit {
     { path: './download', label: 'DOWNLOAD', available: true },
   ];
 
+  menuLabel = "SUMMARY";
+
   family: Family;
 
   constructor(
     private dfamapi: DfamAPIService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
+    const initialPath = this.route.snapshot.firstChild.routeConfig.path;
+    this.navLinks.forEach(nl => {
+      if ("./" + initialPath === nl.path) {
+        this.setMenuLabel(nl.label);
+      }
+    });
     this.getFamily();
   }
 
-  menuLabel = "SUMMARY";
-
-  public setMenuLabel(label){
-	this.menuLabel = label;
+  setMenuLabel(label){
+    this.menuLabel = label;
   }
 
   getFamily() {
