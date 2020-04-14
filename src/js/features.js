@@ -9,10 +9,10 @@ function FeaturesVisualization(options) {
       top: 10,
       right: 10,
       bottom: 10,
-      left: 10,
+      left: 30,
     },
     tsd: {
-      margin_side: 20,
+      margin_side: 5,
     },
     axis: {
       height: 30,
@@ -193,9 +193,9 @@ FeaturesVisualization.prototype.renderFeature = function(g) {
   .call(g => g
     .append("text")
     .text(d => d.label)
-    .attr("dominant-baseline", "hanging")
     .attr("x", d => this.scale(d.x0))
     .attr("y", d => d.y1 + this.DIMENSIONS.feature.box_text_space)
+    .attr("dy", "1em")
   );
 };
 
@@ -263,9 +263,9 @@ FeaturesVisualization.prototype.renderProteinMatch = function(g, feature) {
   .call(g => g
     .append("text")
     .text(d => proteinLabel(d))
-    .attr("dominant-baseline", "hanging")
     .attr("x", d => this.scale(d.x0))
     .attr("y", d => d.y1 + this.DIMENSIONS.feature.box_text_space)
+    .attr("dy", "1em")
   );
 }
 
@@ -294,9 +294,9 @@ FeaturesVisualization.prototype.renderCDS = function(g, cds) {
   .call(g => g
     .append("text")
       .text(d => proteinLabel(d))
-      .attr("dominant-baseline", "hanging")
       .attr("x", d => this.scale(d.x0))
       .attr("y", d => d.y1 + this.DIMENSIONS.feature.box_text_space)
+      .attr("dy", "1em")
   );
 };
 
@@ -328,7 +328,7 @@ FeaturesVisualization.prototype.renderAxis = function(g, width, tsd) {
         .text("TSD")
         .attr("x", left_margin)
         .attr("y", 10)
-        .attr("dominant-baseline", "hanging")
+        .attr("dy", "1em")
         .call(text => text.append("title").text(tsd));
     let tsd_left_box = tsd_left.node().getBBox();
     g.append("rect")
@@ -347,7 +347,7 @@ FeaturesVisualization.prototype.renderAxis = function(g, width, tsd) {
         .text("TSD")
         .attr("x", width - right_margin)
         .attr("y", 10)
-        .attr("dominant-baseline", "hanging")
+        .attr("dy", "1em")
         .attr("text-anchor", "end")
         .call(text => text.append("title").text(tsd));
     let tsd_right_box = tsd_right.node().getBBox();
@@ -386,8 +386,8 @@ FeaturesVisualization.prototype.renderSection = function(g, section_data) {
         .text(section_data.name)
         .attr("x", 0)
         .attr("y", section_data.height / 2)
+        .attr("dy", "1em")
         .attr("text-anchor", "middle")
-        .attr("dominant-baseline", "hanging")
         .attr("transform", `rotate(-90 0 ${section_data.height / 2})`)
       )
       .selectAll("g")
