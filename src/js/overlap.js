@@ -85,8 +85,10 @@ DotPlot.prototype.drawAxes = function (svg) {
   const xlabels = g.append("g")
     .attr("transform", `translate(${margin} 0)`);
 
+  const xtitle = `${this.data.auto_overlap.model.id} (${this.data.auto_overlap.model.length}bp)`;
+
   createLabel(xlabels, 0, baseline, this.data.model_start, "start");
-  createLabel(xlabels, this.pwidth / 2, baseline, this.data.auto_overlap.model.id, "middle");
+  createLabel(xlabels, this.pwidth / 2, baseline, xtitle, "middle");
   createLabel(xlabels, this.pwidth, baseline, this.data.model_end, "end");
 
   // Draw side labels (by using a rotation)
@@ -100,8 +102,10 @@ DotPlot.prototype.drawAxes = function (svg) {
     target_end   = this.data.target_start;
   }
 
+  const ytitle = `${this.data.auto_overlap.target.id} (${this.data.auto_overlap.target.length}bp)`;
+
   createLabel(ylabels, 0, baseline, target_end, "start");
-  createLabel(ylabels, this.pheight / 2, baseline, this.data.auto_overlap.target.id, "middle");
+  createLabel(ylabels, this.pheight / 2, baseline, ytitle, "middle");
   createLabel(ylabels, this.pheight, baseline, target_start, "end");
 
   return g;
