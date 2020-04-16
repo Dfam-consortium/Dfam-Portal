@@ -28,7 +28,19 @@
     <p>The clades or species in which this family is known to be present.  In most cases this will be the oldest clade in which copies of the family have been found at orthologous positions, meaning that the transposable element was active before the first speciation of extant species in this clade.  In the case of horizontal transfer several clades/species may be listed.  Clicking on the [..] icon will expand out the full taxonomic lineage for an entry.  Clicking on the final clade/species links to the corresponding record in the NCBI taxonomy database.
 
     <h4>Curation Details - Status</h4>
-    <p></p>
+    <p>The family's curation status indicates how throughly it has been reviewed
+    and worked on. Curation of a family might include filtering for redundancy
+    with other families, extending a seed alignment for better coverage and
+    representation of a family's true diversity in the genome(s) it appears in,
+    ensuring gene families are not classified as transposable elements, and
+    defining subfamilies.</p>
+
+    <h4>Curation Details - Method and Source Assembly</h4>
+    <p>For some families, the discovery method and source assembly are listed.
+    The discovery method indicates what tool(s) produced the family and might
+    include parameters or a command line for reproducibility. If known, a link
+    is provided to the genome assembly that was processed to discover the
+    family.</p>
 
     <h4>Length</h4>
     <p>The sequence length of the family.  The process by which Dfam creates the consensus and profile HMM ensures that there is a one for one correspondence between the consensus and HMM match states.</p>
@@ -72,7 +84,8 @@
     conservation and warmer colors indicate regions of poor alignment.  Drawing each aligned sequence as rows from
     top to bottom in the figure creates a heatmap of the multiple alignment highlighting regions of high variability
     or poor alignment.  The length of the family as well as the number of sequences in
-    the seed alignment are displayed above the figure.</p>
+    the seed alignment are displayed above the figure, and the kimura divergence of the seed alignment is displayed below
+    the figure.</p>
 
   </mat-card-content>
 </mat-card>
@@ -80,12 +93,18 @@
 <mat-card id="features">
   <mat-card-content>
   <h3>Features</h3>
-  <p>For families with either curated coding sequences or specific sequence features a feature map will be generated depicting the location of each feature within the family.  Target site duplications (TSD) will also be depicted on either side of the scale if applicable to the family.  Hovering over the TSD will display the consensus sequence if a composition preference is known or a string of N's if only a length is known.</p>
+  <p>Some families in Dfam include a curated set of known coding sequences,
+  high-scoring matches to a protein database, or specific known sequence
+  features. For these families a feature map is generated depicting the
+  location of each feature within the family.  Target site duplications (TSD)
+  will also be depicted on either side of the scale if applicable to the family.
+  Hovering over the TSD will display the consensus sequence if a composition
+  preference is known or a string of N's if only a length is known.</p>
  
   <img class="resizing" src="/assets/images/screenshots/feature.png" alt="Example Feature Visualization.">
 
   <h4>Coding Sequences</h4>
-  <p>In this initial release of the features page we provide details on a curated set of TE derived proteins.  This
+  <p>For some families we provide details on a curated set of TE derived proteins.  This
 is a non-redundant set, therefore many families may not have a coding sequence directly associated with them.  For those that do, this section provides the following details:</p>
   <div fxLayout="row">
     <div fxLayout="column" fxFlexOffset="2">
@@ -343,6 +362,14 @@ is a non-redundant set, therefore many families may not have a coding sequence d
   hmmemit. These sequences were then searched with all models using nhmmer ( and 
   reciprocally with nhmmscan ), with
   a hit with E-value better than 1e-5 supporting a relationship.
+  </p>
+
+  <p>
+  If desired, results can be restricted to sequence similarities to families
+  that belong to ancestor or descendant clades with the 'Related Clades Only'
+  option. Additionally, the results can be expanded to include sequence
+  similarity to uncurated or "raw" data (accessions starting with DR) which are
+  hidden by default.
   </p>
 
   <p>
