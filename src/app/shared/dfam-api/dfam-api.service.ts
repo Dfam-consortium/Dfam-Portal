@@ -291,6 +291,15 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
     );
   }
 
+  getTaxaCoverage(): Observable<any> {
+    const url = endpoint + 'taxa/coverage';
+
+    return this.http.get<TaxaResults>(url).pipe(
+      catchError(this.handleError('getTaxaCoverage', { count: undefined })),
+    );
+  }
+
+
   getTaxonById(id: number): Observable<Taxon> {
     const url = endpoint + 'taxa/' + encodeURIComponent(id.toString());
 

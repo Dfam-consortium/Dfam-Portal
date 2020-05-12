@@ -27,6 +27,10 @@ button {
   min-width: unset;
 }
 
+.stats td:nth-child(1) {
+  text-align: right;
+}
+
 .blog-article-title {
   font-size: 1em;
 }

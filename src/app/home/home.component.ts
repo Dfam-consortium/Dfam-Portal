@@ -18,7 +18,9 @@ export class HomeComponent implements OnInit {
   showMore1 = false;
   dfamBlogArticles: Object = [];
 
-  totalEntries: number;
+  totalFamilies: number;
+  curatedFamilies: number;
+  coveredSpecies: number;
 
   searchSequence: string;
   searchSequenceAssembly: string = 'Homo sapiens';
@@ -39,7 +41,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.dfamapi.getAssemblies().subscribe(data => this.assemblies = data);
-    this.dfamapi.getFamilies({ limit: 0 }).subscribe(data => this.totalEntries = data.total_count);
+    this.dfamapi.getFamilies({ include_raw: true, limit: 0 }).subscribe(data => this.totalFamilies = data.total_count);
+    this.dfamapi.getFamilies({ limit: 0 }).subscribe(data => this.curatedFamilies = data.total_count);
+    this.dfamapi.getTaxaCoverage().subscribe(data => this.coveredSpecies = data.count);
     this.dfamapi.getBlogPosts().subscribe(data => this.dfamBlogArticles = data.slice(0, 1));
   }
 
