@@ -103,7 +103,7 @@ No recorded aliases for this family.
 <h3 class="underline-span">Source</h3>
 <div fxLayout="row">
   <div fxLayout="column" fxFlexOffset="2">
-    <p class="tight"><strong>Submitter:</strong> {{family.submitter || "Unknown"}}</p>
+    <p class="tight" *ngIf="family.submitter"><strong>Submitter:</strong> {{family.submitter}}</p>
     <p class="tight"><strong>Author:</strong> {{family.author || "Unknown"}}</p>
     <p class="tight"><strong>Created On:</strong> {{family.date_created | date: 'medium'}}</p>
     <p class="tight"><strong>Modified On:</strong> {{family.date_modified | date: 'medium'}}</p>
