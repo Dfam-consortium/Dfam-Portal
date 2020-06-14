@@ -32,7 +32,7 @@ export class FamilyRelationshipsComponent implements AfterViewInit {
   set relationships(value: []) {
     this._relationships = value;
     this.outlet.nativeElement.innerText = '';
-    if (value.length) {
+    if (value && value.length) {
       new Overlap({ target: this.outlet.nativeElement, data: value }).render();
     }
   }
@@ -42,6 +42,7 @@ export class FamilyRelationshipsComponent implements AfterViewInit {
   }
 
   filterChanged() {
+    this.relationships = null;
     this.getRelationships();
   }
 
