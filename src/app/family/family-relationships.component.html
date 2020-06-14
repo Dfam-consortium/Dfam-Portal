@@ -23,14 +23,22 @@
         <p>Similarity to Reverse Complement Strand</p>
       </div>
     </div>
-  
+
+    <ng-template #noData>
+      <div *ngIf="relationships">
+        No relationships found for these search options.
+      </div>
+    </ng-template>
+
     <div #outlet>
     </div>
   </div>
 </div>
 
-  <ng-template #noData>
-    No relationships recorded.
-  </ng-template>
+<div *ngIf="relationships?.length >= 300">
+<mat-icon class="limit-warning-icon">warning</mat-icon>
+The results shown on this page are limited to the 300 most significant
+hits by e-value.
+</div>
 
 </dfam-loader>
