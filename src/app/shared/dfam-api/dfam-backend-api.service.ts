@@ -57,6 +57,8 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     return {
       target: endpoint + 'upload',
       singleFile: true,
+      chunkSize: 1000 * 1024, // slightly less than 1MB
+      forceChunkSize: true,
       headers: {
         'Authorization': 'Bearer ' + this.apiToken,
       },
