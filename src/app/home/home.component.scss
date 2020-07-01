@@ -27,6 +27,15 @@ button {
   min-width: unset;
 }
 
+.stats {
+  border-collapse: collapse;
+}
+
+.stats th,td {
+  border: 1px solid #cccccc;
+  padding: .5em 1em;
+}
+
 .stats td:nth-child(1) {
   text-align: right;
 }
