@@ -6,7 +6,7 @@ describe('DfamAPIService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: DfamAPIService = TestBed.get(DfamAPIService);
+    const service: DfamAPIService = TestBed.inject(DfamAPIService);
     expect(service).toBeTruthy();
   });
 });
