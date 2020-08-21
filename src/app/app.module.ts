@@ -7,9 +7,6 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// Angular-JWT
-import { JwtModule } from '@auth0/angular-jwt';
-
 // Material Imports
 import {MatRadioModule} from '@angular/material/radio';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -125,14 +122,6 @@ export function tokenGetter() {
     MatTabsModule,
     MatToolbarModule,
     BrowserModule,
-    // Angular-Jwt for decoding tokens and sending it along through HTTP request auto-magically
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        whitelistedDomains: ['localhost:10010'],
-        blacklistedRoutes: ['localhost:10010/login']
-      }
-    }),
     SharedModule,
     AppRoutingModule,
   ],
