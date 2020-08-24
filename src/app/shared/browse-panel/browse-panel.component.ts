@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
-import { Subject, forkJoin } from 'rxjs';
+import { Subject, Subscription, forkJoin } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
@@ -56,6 +56,12 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
   private classSearchTerm = new Subject<string>();
   private cladeSearchTerm = new Subject<string>();
   private updateUrlTask = new Subject<void>();
+
+  // These queries can take a long time. Storing the Subscription allows us to
+  // cancel a query if another one is made before it finishes, so that only the
+  // most recent query is respected.
+  private getTaxaSubscription: Subscription;
+  private getFamiliesSubscription: Subscription;
 
   displayColumns = [ 'accession', 'name', 'classification', 'clades', 'title', 'length' ];
 
@@ -132,7 +138,10 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
       // escape search_term so it will be found in the escaped markup
       const escaped_search_term = search_term.replace(/&/, '&amp;').replace(/</, '&lt;').replace(/>/, '&gt;');
 
-      this.repository.getTaxa(search_term.trim()).subscribe(clades => {
+      if (this.getTaxaSubscription) {
+        this.getTaxaSubscription.unsubscribe();
+      }
+      this.getTaxaSubscription = this.repository.getTaxa(search_term.trim()).subscribe(clades => {
         this.cladeOptions = clades.taxa.filter(f => f.name !== 'root');
         this.cladeOptions.forEach(c => {
           c.name_markup = c.name;
@@ -327,9 +336,12 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
   }
 
   getFamilies() {
+    if (this.getFamiliesSubscription) {
+      this.getFamiliesSubscription.unsubscribe();
+    }
     this.searchApiOptions.limit = this.paginator.pageSize;
     this.searchApiOptions.start = this.paginator.pageSize * this.paginator.pageIndex;
-    this.repository.getFamilies(this.searchApiOptions).subscribe(data => {
+    this.getFamiliesSubscription = this.repository.getFamilies(this.searchApiOptions).subscribe(data => {
       this.disableDownload = (data.total_count <= 0 || data.total_count > 2000);
       for (const format of ['hmm', 'embl', 'fasta']) {
         this.downloadUrls[format] = this.repository.getFamiliesDownloadUrl(this.searchApiOptions, format);
