@@ -203,7 +203,7 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
       this.search.clade_ancestors = initialCladeA;
       this.searchApiOptions.clade_ancestors = initialCladeA;
     }
-    const initialCladeD = queryParamMap.get('clade_descendants') === 'true';
+    const initialCladeD = queryParamMap.get('clade_descendants') !== 'false';
     if (initialCladeD) {
       this.search.clade_descendants = initialCladeD;
       this.searchApiOptions.clade_descendants = initialCladeD;
@@ -268,9 +268,7 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     if (this.searchApiOptions.clade_ancestors) {
       queryParams.clade_ancestors = this.searchApiOptions.clade_ancestors;
     }
-    if (this.searchApiOptions.clade_descendants) {
-      queryParams.clade_descendants = this.searchApiOptions.clade_descendants;
-    }
+    queryParams.clade_descendants = this.searchApiOptions.clade_descendants;
     if (this.searchApiOptions.keywords) {
       queryParams.keywords = this.searchApiOptions.keywords;
     }
@@ -293,7 +291,7 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     this.search.classification = null;
     this.search.clade = null;
     this.search.clade_ancestors = false;
-    this.search.clade_descendants = false;
+    this.search.clade_descendants = true;
     this.search.keywords = null;
     this.search.include_raw = false;
     this.searchChanged();
