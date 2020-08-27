@@ -53,6 +53,8 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
   disableDownload = false;
   downloadUrls = {};
 
+  unusualNameCharacter?: string = null;
+
   private classSearchTerm = new Subject<string>();
   private cladeSearchTerm = new Subject<string>();
   private updateUrlTask = new Subject<void>();
@@ -170,6 +172,17 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     return clade ? clade.name : '';
   }
 
+  // "unusual" characters, here defined as "anything that should not show up in a name"
+  UNUSUAL_REGEXP = /[^A-Za-z0-9._-]/u;
+  findUnusualCharacter(term: string) {
+    const result = this.UNUSUAL_REGEXP.exec(term);
+    if (result) {
+      return result[0];
+    } else {
+      return null;
+    }
+  }
+
   restoreSearch() {
     const queryParamMap = this.route.snapshot.queryParamMap;
 
@@ -240,6 +253,8 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
   }
 
   searchChanged() {
+    this.unusualNameCharacter = this.findUnusualCharacter(this.search.name_accession);
+
     this.searchApiOptions.name_accession = this.search.name_accession;
     this.searchApiOptions.classification = this.search.classification ? this.search.classification.full_name : null;
     this.searchApiOptions.clade = this.search.clade ? this.search.clade.id : null;

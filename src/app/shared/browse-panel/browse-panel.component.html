@@ -10,6 +10,11 @@
             placeholder="Name/Accession"
             [(ngModel)]="search.name_accession"
             (input)="searchChanged()">
+        <mat-icon class="input-warn" matSuffix
+            [matTooltip]="'Invalid character for names: ' + unusualNameCharacter"
+            *ngIf="unusualNameCharacter">
+          warning
+        </mat-icon>
       </mat-form-field>
 
       <mat-form-field>
