@@ -1,9 +1,9 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Subject, Subscription, forkJoin } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
 import { FamilyRepository, ClassesRepository, TaxaRepository } from '../dfam-api/common';
 
 function preg_quote( str ) {
@@ -37,7 +37,7 @@ function has_duplicates(array: any[]) {
   templateUrl: './browse-panel.component.html',
   styleUrls: ['./browse-panel.component.scss']
 })
-export class BrowsePanelComponent implements OnInit, AfterViewInit {
+export class BrowsePanelComponent implements OnInit {
 
   @Input() repository: FamilyRepository & ClassesRepository & TaxaRepository;
   @Input() isEditing: boolean;
@@ -45,6 +45,8 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
   families: any = {};
 
   search: any = {};
+  pageSize: number = 20;
+  pageIndex: number = 0;
   searchApiOptions: any = { };
 
   classOptions: any[] = [];
@@ -67,7 +69,6 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
 
   displayColumns = [ 'accession', 'name', 'classification', 'clades', 'title', 'length' ];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
@@ -158,9 +159,7 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     this.updateUrlTask.pipe(debounceTime(300)).subscribe(() => {
       this.updateUrl();
     });
-  }
 
-  ngAfterViewInit() {
     this.restoreSearch();
   }
 
@@ -234,8 +233,8 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     const initialP = parseInt(this.route.snapshot.queryParamMap.get('page'), 10);
     if (initialP) {
       const initialPS = parseInt(this.route.snapshot.queryParamMap.get('pageSize'), 10);
-      this.paginator.pageIndex = initialP;
-      this.paginator.pageSize = initialPS;
+      this.pageIndex = initialP;
+      this.pageSize = initialPS;
     }
     const initialSort = this.route.snapshot.queryParamMap.get('sort');
     if (initialSort) {
@@ -263,7 +262,7 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     this.searchApiOptions.keywords = this.search.keywords;
     this.searchApiOptions.include_raw = this.search.include_raw;
 
-    this.paginator.pageIndex = 0;
+    this.pageIndex = 0;
     this.updateUrlTask.next();
     this.getFamilies();
   }
@@ -290,9 +289,9 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     if (this.searchApiOptions.include_raw) {
       queryParams.include_raw = this.searchApiOptions.include_raw;
     }
-    if (this.paginator.pageIndex) {
-      queryParams.pageSize = this.paginator.pageSize;
-      queryParams.page = this.paginator.pageIndex;
+    if (this.pageIndex > 0) {
+      queryParams.pageSize = this.pageSize;
+      queryParams.page = this.pageIndex;
     }
     if (this.searchApiOptions.sort) {
       queryParams.sort = this.searchApiOptions.sort;
@@ -344,6 +343,8 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
   }
 
   pageChanged(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
     this.updateUrlTask.next();
     this.getFamilies();
   }
@@ -352,8 +353,8 @@ export class BrowsePanelComponent implements OnInit, AfterViewInit {
     if (this.getFamiliesSubscription) {
       this.getFamiliesSubscription.unsubscribe();
     }
-    this.searchApiOptions.limit = this.paginator.pageSize;
-    this.searchApiOptions.start = this.paginator.pageSize * this.paginator.pageIndex;
+    this.searchApiOptions.limit = this.pageSize;
+    this.searchApiOptions.start = this.pageSize * this.pageIndex;
     this.getFamiliesSubscription = this.repository.getFamilies(this.searchApiOptions).subscribe(data => {
       this.disableDownload = (data.total_count <= 0 || data.total_count > 2000);
       for (const format of ['hmm', 'embl', 'fasta']) {

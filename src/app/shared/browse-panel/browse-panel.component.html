@@ -160,7 +160,7 @@
     </div>
 
     <mat-paginator
-      [pageSize]="20" [pageSizeOptions]="[20,50,100]"
+      [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[20,50,100]"
       [length]="families?.total_count" (page)="pageChanged($event)">
     </mat-paginator>
   </div>
