@@ -1,0 +1,12 @@
+{
+  "/api/backend": {
+    "target": "https://www.dfam.org",
+    "secure": true,
+    "changeOrigin": true
+  },
+  "/api": {
+    "target": "https://www.dfam.org",
+    "secure": true,
+    "changeOrigin": true
+  }
+}
