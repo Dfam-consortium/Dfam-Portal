@@ -172,7 +172,7 @@ export class BrowsePanelComponent implements OnInit {
   }
 
   // "unusual" characters, here defined as "anything that should not show up in a name"
-  UNUSUAL_REGEXP = /[^A-Za-z0-9._-]/u;
+  UNUSUAL_REGEXP = /[^A-Za-z0-9._-]/;
   findUnusualCharacter(term: string) {
     const result = this.UNUSUAL_REGEXP.exec(term);
     if (result) {
