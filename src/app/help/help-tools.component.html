@@ -23,18 +23,23 @@
   </p>
 
   <ol>
-    <li>The Dfam HMM library, <a href="releases/current/families/Dfam.hmm.gz">Dfam.hmm</a></li> 
+    <li>The Dfam HMM library, <a href="releases/current/families/Dfam.hmm.gz">Dfam.hmm</a>.
+      <ul>
+        <li>Or, the curated-only library which does not include "DR" entries and is smaller:
+          <a href="releases/current/families/Dfam_curatedonly.hmm.gz">Dfam_curatedonly.hmm</a>.
+        </li>
+      </ul>
+    </li>
     <li><a class="ext" href="http://hmmer.org/download.html">HMMER</a> v3.2.1,
       provided as source code. Follow the installation directions in
       the INSTALL file, contained within this tar-ball.
     </li>
-    <li>The Perl code for <a href="releases/current/infrastructure/dfamscan.pl.gz">dfamscan.pl</a></li>
+    <li>The Perl script, <a href="releases/current/infrastructure/dfamscan.pl.gz">dfamscan.pl</a></li>
   </ol>
 
   <p>
-  If you want to include Tandem Repeat Finder annotation, please download the
-  TRF binary (trf) from <a class="ext" href="http://tandem.bu.edu/trf/trf.html">
-  the TRF website</a>.
+  If you want to include Tandem Repeat Finder annotation, please obtain
+  TRF from <a class="ext" href="http://tandem.bu.edu/trf/trf.html">the TRF website</a>.
   dfamscan.pl assumes that nhmmer and trf (if required) are in the executable PATH.
   </p>
 
@@ -59,6 +64,14 @@
   '--cut_tc' flag, should be used.
   </p>
 
+  <p>
+  Models for "raw" families (accessions starting with DR) do not undergo the
+  same threshold calculation process as curated families. For these models, you
+  must use E-value or bit score thresholds (-E and -T respectively). Trying to
+  use the precalculated threshold options will produce an error such as:
+  "Error: GA bit thresholds unavailable on model _____".
+  </p>
+
   <p>To see the full set of command line options, execute the following command:</p>
 
   <pre>dfamscan.pl --help</pre>
@@ -66,38 +79,46 @@
   <p>This should print a help page like this:</p>
 
 <pre>
-Command line options for controlling dfamscan.pl
+Command line options for controlling ./dfamscan.pl
 -------------------------------------------------------------------------------
-
-   --help       : prints this help message
-
+   --help       : prints this help messeage
+   --version    : prints version information for this program and
+                  both nhmmscan and trf
    Requires either
-    --dfam_infile &lt;s&gt;
+    --dfam_infile &lt;s&gt;    Use this is you've already run nhmmscan, and
+                         just want to perfom dfamscan filtering/sorting.
+                         The file must be the one produced by nhmmscan's
+                         --dfamtblout flag.
+                         (Note: must be nhmmscan output, not nhmmer output)
    or both of these
-    -fastafile &lt;s&gt;
-    -hmmfile &lt;s&gt;
-
+    --fastafile &lt;s&gt;      Use these if you want dfamscan to control a
+    --hmmfile &lt;s&gt;        run of nhmmscan, then do filtering/sorting
    Requires
-    -dfam_outfile &lt;s&gt;
-
+    --dfam_outfile &lt;s&gt;   Output file, also in dfamtblout format
    Optionally, one of these  (only -E and -T allowed with --dfam_infile)
-    -E              (&gt;0, &lt;=10000)
-    -T 
+    -E &lt;f&gt;               &gt;0, &lt;=10000
+    -T &lt;f&gt;
     --masking_thresh/--cut_ga
-    --annotation_thresh/--cut_tc  (default)
-    --species &lt;i&gt;  (not yet implemented)
-
+    --annotation_thresh/--cut_tc  Default
+    --species &lt;i&gt;        Currently allowed are "Other", "Homo sapiens", 
+                         "Mus Musculus", "Danio rerio", "Drosophila melanogaster",
+                         or "Caenorhabditis elegans"
    Optionally one of these
     --sortby_eval
     --sortby_model
-    --sortby_seq     (default)
-
+    --sortby_seq         Default
+   Redundant Profile Hit (RPH) removal (only if not --no_rph_removal)
+    --min_cov_frac &lt;f&gt;   This is similar to the MaskLevel concept in 
+                         crossmatch.  A match is considered non-redundant
+                         if at least (100-min_cov_frac)% of it's aligned
+                         bases are not contained within the domain of any
+                         higher-scoring hit. Default: 0.75
    All optional
-    --trf_outfile &lt;s&gt;  (runs trf, put results in &lt;s&gt;; only with --fastafile)
-    --cpu &lt;i&gt;    (default 4)
-    --no_overlap
-    --overlap_trim &lt;i&gt; (default 3, only if not --no_overlap)
+    --trf_outfile &lt;s&gt;    Runs trf, put results in &lt;s&gt;; only with --fastafile
+    --cpu &lt;i&gt;            Default 8
+    --no_rph_removal     Don't remove redundant profile hits
     --log_file &lt;s&gt;
+
 </pre>
 
   <p>The recommended usage for masking is:</p>
