@@ -28,7 +28,7 @@
     "@traviswheelerlab/dfam-soda": "^1.2.3",
     "AlignmentSummaryViewer": "git+https://github.com/Dfam-consortium/AlignmentSummaryViewer.git#0.1.2",
     "Karyotype": "git+https://github.com/Dfam-consortium/Karyotype.git#0.1.0",
-    "core-js": "^3.6.5",
+    "core-js": "~3.5.0",
     "custom-event-polyfill": "^1.0.7",
     "d3": "^5.16.0",
     "file-saver": "^2.0.2",
