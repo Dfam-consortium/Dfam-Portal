@@ -49,9 +49,21 @@ export class SearchSequenceResultsComponent implements OnInit {
             let i = 0;
             result.hits.forEach(function(hit) {
               hit.row_id = 'annotation_' + (i++);
+
+              // TODO: API says it returns numbers, but it returns strings
+              [
+                "bit_score", "model_start", "model_end",
+                "ali_start", "ali_end", "seq_start", "seq_end"
+              ].forEach(key => {
+                hit[key] = +hit[key];
+              });
             });
             result.tandem_repeats.forEach(function(tr_hit) {
               tr_hit.row_id = 'annotation_' + (i++);
+              // TODO: API says it returns numbers, but it returns strings
+              ["start", "end", "repeat_length"].forEach(key => {
+                tr_hit[key] = +tr_hit[key];
+              });
             });
           });
 
