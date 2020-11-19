@@ -57,7 +57,7 @@ export class SearchResultsGraphComponent implements OnInit, AfterViewChecked {
         target: el,
         data: this.data,
         binHeight: 14,
-        scaleExtent: [1, Infinity],
+        scaleExtent: [1, 10],
         translateExtent: (chart) => [[0, 0], [chart.width, chart.height]],
       };
       this.graphic = new DfamAnnotationsGraphic(graphicConf);
