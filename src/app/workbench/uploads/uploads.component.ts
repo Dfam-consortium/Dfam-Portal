@@ -1,10 +1,8 @@
-import { Component, AfterViewInit, ViewChild, OnDestroy, HostListener, Injectable } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, OnInit, OnDestroy, HostListener, Injectable } from '@angular/core';
 import { CanDeactivate, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
-import { of, Subscription, Observable } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Subscription, Observable } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 
 import { FlowDirective } from '@flowjs/ngx-flow';
 
@@ -20,7 +18,7 @@ enum UploaderState { NoFileSelected, FileSelected, InProgress, Error, Succeeded 
   templateUrl: './uploads.component.html',
   styleUrls: ['./uploads.component.scss']
 })
-export class WorkbenchUploadsComponent implements AfterViewInit, OnDestroy {
+export class WorkbenchUploadsComponent implements AfterViewInit, OnInit, OnDestroy {
 
   loading = true;
   uploads = [];
@@ -107,24 +105,24 @@ export class WorkbenchUploadsComponent implements AfterViewInit, OnDestroy {
   }
 
   changeUploadStatus(upload, event) {
-    let newStatus = event.target.value;
+    const newStatus = event.target.value;
     upload.status = newStatus;
     this.dfambackendapi.patchUpload(upload.id, { status: newStatus }).subscribe();
   }
 
   updateStatusText() {
     if (this.uploaderState === UploaderState.NoFileSelected) {
-      this.statusText = "";
+      this.statusText = '';
     } else if (this.uploaderState === UploaderState.FileSelected) {
-      this.statusText = "Ready to upload.";
+      this.statusText = 'Ready to upload.';
     } else if (this.uploaderState === UploaderState.InProgress) {
-      this.statusText = "Uploading: " + (100 * this.uploadProgress).toFixed(0) + "%";
+      this.statusText = 'Uploading: ' + (100 * this.uploadProgress).toFixed(0) + '%';
     } else if (this.uploaderState === UploaderState.Error) {
-      this.statusText = "Error: " + this.uploadError;
+      this.statusText = 'Error: ' + this.uploadError;
     } else if (this.uploaderState === UploaderState.Succeeded) {
-      this.statusText = "File uploaded successfully.";
+      this.statusText = 'File uploaded successfully.';
     } else {
-      throw new Error("updateStatusText: unexpected UploaderState: " + this.uploaderState);
+      throw new Error('updateStatusText: unexpected UploaderState: ' + this.uploaderState);
     }
   }
 
@@ -132,16 +130,16 @@ export class WorkbenchUploadsComponent implements AfterViewInit, OnDestroy {
     const type = event.type;
     const detail = event.event;
 
-    if (type === "fileAdded") {
+    if (type === 'fileAdded') {
       this.selectedFile = detail[0];
       this.uploaderState = UploaderState.FileSelected;
-    } else if (type === "fileProgress") {
+    } else if (type === 'fileProgress') {
       this.uploadProgress = +detail[0].progress();
       this.uploaderState = UploaderState.InProgress;
-    } else if (type === "fileSuccess") {
+    } else if (type === 'fileSuccess') {
       this.uploaderState = UploaderState.Succeeded;
       this.getUploads();
-    } else if (type === "fileError") {
+    } else if (type === 'fileError') {
       // The API response is in detail[1]. Hopefully it's JSON.
       let responseObj;
       try {
@@ -153,7 +151,7 @@ export class WorkbenchUploadsComponent implements AfterViewInit, OnDestroy {
       if (responseObj.message) {
         this.uploadError = responseObj.message;
       } else {
-        this.uploadError = "Unexpected response from server."
+        this.uploadError = 'Unexpected response from server.';
       }
 
       this.uploaderState = UploaderState.Error;

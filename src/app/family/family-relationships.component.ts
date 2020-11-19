@@ -14,7 +14,7 @@ export class FamilyRelationshipsComponent implements AfterViewInit {
   help = 'An interactive representation of the relationships between TE families.';
 
   filter = {
-    include: "all",
+    include: 'all',
     include_raw: false,
   };
 

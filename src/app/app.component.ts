@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Event, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
+import { NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'dfam-root',

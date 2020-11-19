@@ -27,7 +27,7 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
   // Adds additional computed properties not returned by the API,
   // such as is_raw, for easier use in templates.
   private extendFamilyProperties(family: Family) {
-    family.is_raw = family.accession.startsWith("DR");
+    family.is_raw = family.accession.startsWith('DR');
   }
 
   private familyPath(accession: string): string {
@@ -197,8 +197,8 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
   getFamilyRelationships(accession: string, include: string, include_raw: boolean): Observable<any> {
     const url = this.familyPath(accession) + '/relationships';
     let params = new HttpParams();
-    params = params.set("include", include);
-    params = params.set("include_raw", include_raw.toString());
+    params = params.set('include', include);
+    params = params.set('include_raw', include_raw.toString());
 
     return this.http.get(url, { params }).pipe(
       map(this.extractData),

@@ -20,7 +20,7 @@ export class FamilyComponent implements OnInit {
     { path: './download', label: 'DOWNLOAD', available: true },
   ];
 
-  menuLabel = "SUMMARY";
+  menuLabel = 'SUMMARY';
 
   family: Family;
 
@@ -32,14 +32,14 @@ export class FamilyComponent implements OnInit {
   ngOnInit() {
     const initialPath = this.route.snapshot.firstChild.routeConfig.path;
     this.navLinks.forEach(nl => {
-      if ("./" + initialPath === nl.path) {
+      if ('./' + initialPath === nl.path) {
         this.setMenuLabel(nl.label);
       }
     });
     this.getFamily();
   }
 
-  setMenuLabel(label){
+  setMenuLabel(label) {
     this.menuLabel = label;
   }
 

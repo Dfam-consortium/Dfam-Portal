@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   coveredSpecies: number;
 
   searchSequence: string;
-  searchSequenceAssembly: string = 'Homo sapiens';
+  searchSequenceAssembly = 'Homo sapiens';
   searchSubmitting: boolean;
 
 

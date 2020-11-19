@@ -3,7 +3,6 @@ import { forkJoin } from 'rxjs';
 import { FamilyModelLogoComponent } from './family-model-logo.component';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
-import { SeqViewComponent } from '../shared/seq-view';
 
 @Component({
   selector: 'dfam-family-model',
@@ -130,13 +129,13 @@ export class FamilyModelComponent implements OnInit {
         this.selectedThreshold = 'TC';
 
         for (let i = 0; i < tryThresholds.length; i++) {
-          let th = this.assemblyData[assembly].thresholds.find(t => t.id === tryThresholds[i]);
+          const th = this.assemblyData[assembly].thresholds.find(t => t.id === tryThresholds[i]);
           if (th && th.num_seqs > 0) {
             this.selectedThreshold = tryThresholds[i];
             break;
           }
         }
-    }
+    };
 
     if (!this.assemblyData[assembly]) {
       const assembly_info = this.assemblies.find(a => a.id === assembly);
@@ -148,7 +147,7 @@ export class FamilyModelComponent implements OnInit {
       const getConservation = this.dfamapi.getFamilyAssemblyModelConservation(accession, assembly);
       const getCoverage = this.dfamapi.getFamilyAssemblyModelCoverage(accession, assembly);
 
-      return forkJoin(getConservation, getCoverage).subscribe(([mcons, mcov]) => {
+      return forkJoin([getConservation, getCoverage]).subscribe(([mcons, mcov]) => {
         this.assemblyData[assembly].model_conservation = mcons;
         this.assemblyData[assembly].model_coverage = mcov;
 

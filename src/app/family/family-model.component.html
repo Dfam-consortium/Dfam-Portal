@@ -38,9 +38,11 @@
   <div *ngIf="!family.is_raw; else noCharacteristicsForRaw">
     Genome-specific characteristics are not available for this family.
   </div>
-  <div #noCharacteristicsForRaw>
-    Genome-specific characteristics are not available for uncurated entries.
-  </div>
+  <ng-template #noCharacteristicsForRaw>
+    <div>
+      Genome-specific characteristics are not available for uncurated entries.
+    </div>
+  </ng-template>
 </div>
 
 <div *ngIf="assemblies.length">

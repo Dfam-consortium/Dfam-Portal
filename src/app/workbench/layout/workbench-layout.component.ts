@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 
@@ -6,7 +6,7 @@ import { AuthService } from '../../shared/services/auth.service';
   styleUrls: ['./workbench-layout.component.scss'],
   templateUrl: './workbench-layout.component.html'
 })
-export class WorkbenchLayoutComponent {
+export class WorkbenchLayoutComponent implements OnInit {
   title = 'Dfam';
 
   showUploads = false;

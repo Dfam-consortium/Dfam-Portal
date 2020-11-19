@@ -22,7 +22,7 @@ export class FamilyModelLogoComponent implements AfterViewChecked {
   set data(data: any) {
     this._data = data;
     this.needsRedraw = true;
-  };
+  }
 
   @ViewChild('logo') logo: ElementRef;
 

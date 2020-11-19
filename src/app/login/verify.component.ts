@@ -9,7 +9,7 @@ import { DfamBackendAPIService } from '../shared/dfam-api/dfam-backend-api.servi
 })
 export class VerifyComponent implements OnInit {
 
-  message = "Verifying your account...";
+  message = 'Verifying your account...';
 
   constructor(
     private dfamBackendAPIService: DfamBackendAPIService,
@@ -17,19 +17,19 @@ export class VerifyComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.verify(this.route.snapshot.queryParams["token"]);
+    this.verify(this.route.snapshot.queryParams['token']);
   }
 
   verify(token) {
     this.dfamBackendAPIService.verify(token).subscribe(data => {
-      this.message = "Thank you for verifying your email address! Your account has been enabled for login.";
+      this.message = 'Thank you for verifying your email address! Your account has been enabled for login.';
     }, response => {
       if (response.status === 400 && response.error.message) {
         // If it was a 400 (client error), display the message.
-        this.message = "Error: " + response.error.message;
+        this.message = 'Error: ' + response.error.message;
       } else {
         // Unknown error
-        this.message = "An unknown error occurred. Please try again later.";
+        this.message = 'An unknown error occurred. Please try again later.';
       }
     });
   }

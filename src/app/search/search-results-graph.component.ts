@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewChecked, Input, ElementRef, ViewChild } from '@angular/core';
 import { fromEvent, Unsubscribable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -9,7 +9,7 @@ import { DfamAnnotationsGraphic, DfamAnnotationGraphicConfig } from '@traviswhee
   templateUrl: './search-results-graph.component.html',
   styleUrls: ['./search-results-graph.component.scss']
 })
-export class SearchResultsGraphComponent implements OnInit, AfterViewChecked {
+export class SearchResultsGraphComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   private needsRedraw;
 
@@ -21,7 +21,7 @@ export class SearchResultsGraphComponent implements OnInit, AfterViewChecked {
   @Input() set data(data: any) {
     this._data = data;
     this.needsRedraw = true;
-  };
+  }
 
   @ViewChild('graph') graph: ElementRef;
 

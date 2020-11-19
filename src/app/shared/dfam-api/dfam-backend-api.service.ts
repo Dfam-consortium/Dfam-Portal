@@ -29,7 +29,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
   // Adds additional computed properties not returned by the API,
   // such as is_raw, for easier use in templates.
   private extendFamilyProperties(family: Family) {
-    family.is_raw = family.accession.startsWith("DR");
+    family.is_raw = family.accession.startsWith('DR');
   }
 
   private optsWithAuth(): { headers: HttpHeaders } {
@@ -56,7 +56,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     const url = endpoint + 'uploads/' + encodeURIComponent(id);
     const opts = this.optsWithAuth();
     return this.http.patch<any>(url, changeset, opts)
-      .pipe(tap(null, this.handleError("patchUpload", null)));
+      .pipe(tap({ error: e => this.handleError('patchUpload', null) }));
   }
 
   getFlowConfig() {
@@ -106,7 +106,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     const url = this.familyPath(accession);
     const opts = this.optsWithAuth();
     return this.http.patch<any>(url, changeset, opts)
-      .pipe(tap(null, this.handleError("patchFamily", null)));
+      .pipe(tap({ error: e => this.handleError('patchFamily', null) }));
   }
 
   // NB: If download is true, criteria.start and criteria.limit are ignored.

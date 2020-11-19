@@ -1,17 +1,17 @@
 <h3 class="underline-span">Seed Alignment <dfam-help-icon link="/help/family#download" [tooltip]="help.seed"></dfam-help-icon></h3>
 
 <div fxFlexLayout="row" fxLayoutGap="15px">
-   <dfam-family-download-button fxFlexOffset="1" title='STK' description='Stockholm formatted seed alignment used to generate the HMM and consensus.' icon="/assets/images/stk-file.png" alt-description="Download the Stockholm seed alignment for this family." [button-url]="seedUrl"></dfam-family-download-button>
+   <dfam-family-download-button fxFlexOffset="1" title='STK' description='Stockholm formatted seed alignment used to generate the HMM and consensus.' icon="/assets/images/stk-file.png" altDescription="Download the Stockholm seed alignment for this family." [href]="seedUrl"></dfam-family-download-button>
 </div>
 
 <h3 class="underline-span">Models <dfam-help-icon link="/help/family#download" [tooltip]="help.models"></dfam-help-icon></h3>
 
 <div fxFlexLayout="row" fxLayoutGap="15px">
-   <dfam-family-download-button fxFlexOffset="1" title='HMM' description='Hidden Markov Model representing this family.' icon="/assets/images/hmm-file.png" alt-description="Download the Hidden Markov Model for this family." [button-url]="hmmUrl"></dfam-family-download-button> 
+   <dfam-family-download-button fxFlexOffset="1" title='HMM' description='Hidden Markov Model representing this family.' icon="/assets/images/hmm-file.png" altDescription="Download the Hidden Markov Model for this family." [href]="hmmUrl"></dfam-family-download-button>
 
-   <dfam-family-download-button title='EMBL' description='EMBL-formatted consensus sequence and metadata.' icon="/assets/images/embl-file.png" alt-description="Download the consensus sequence and metadata for this family as EMBL." [button-url]="emblUrl"></dfam-family-download-button>
+   <dfam-family-download-button title='EMBL' description='EMBL-formatted consensus sequence and metadata.' icon="/assets/images/embl-file.png" altDescription="Download the consensus sequence and metadata for this family as EMBL." [href]="emblUrl"></dfam-family-download-button>
 
-   <dfam-family-download-button title='FASTA' description='FASTA-formatted consensus sequence.' icon="/assets/images/fasta_file.png" alt-description="Download the consensus sequence for this family as FASTA." [button-url]="fastaUrl"></dfam-family-download-button>
+   <dfam-family-download-button title='FASTA' description='FASTA-formatted consensus sequence.' icon="/assets/images/fasta_file.png" altDescription="Download the consensus sequence for this family as FASTA." [href]="fastaUrl"></dfam-family-download-button>
 </div>
 
 <h3 class="underline-span">Annotations <dfam-help-icon link="/help/family#download" [tooltip]="help.annotations"></dfam-help-icon></h3>
@@ -33,10 +33,10 @@
         <tr *ngFor="let assembly of assemblies">
           <td>{{assembly.name}} [{{assembly.id}}]</td>
           <td>
-            <dfam-family-download-button icon="/assets/images/gzipd-file.png" alt-description="Non-redundant hits for this model/organism." [button-url]="annotationsUrl(assembly.id,true)"></dfam-family-download-button> 
+            <dfam-family-download-button icon="/assets/images/gzipd-file.png" altDescription="Non-redundant hits for this model/organism." [href]="annotationsUrl(assembly.id,true)"></dfam-family-download-button>
           </td>
           <td>
-            <dfam-family-download-button icon="/assets/images/gzipd-file.png" alt-description="All hits for this model/organism." [button-url]="annotationsUrl(assembly.id,false)"></dfam-family-download-button> 
+            <dfam-family-download-button icon="/assets/images/gzipd-file.png" altDescription="All hits for this model/organism." [href]="annotationsUrl(assembly.id,false)"></dfam-family-download-button>
           </td>
         </tr>
       </table>

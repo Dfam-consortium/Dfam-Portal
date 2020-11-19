@@ -45,8 +45,6 @@ export class ClassificationTreeComponent implements AfterViewInit {
     left: 120
   };
 
-  private nextID = 0;
-
   constructor() { }
 
   ngAfterViewInit() {
@@ -168,7 +166,7 @@ export class ClassificationTreeComponent implements AfterViewInit {
     while (next) {
       const node = next.node;
       let depth = next.depth;
-      let children = node.children;
+      const children = node.children;
       if (children && children.length > 0) {
         depth += 1;
         if (depth > treeDepth) {
@@ -237,20 +235,20 @@ export class ClassificationTreeComponent implements AfterViewInit {
 
   expandPath(path) {
     this.collapse(this.rootNode);
-    if (!path || typeof path !== "string") {
+    if (!path || typeof path !== 'string') {
       return;
     }
 
-    path = path.replace(/^root;/, '').split(";");
+    path = path.replace(/^root;/, '').split(';');
 
     let parent = this.rootNode;
     parent._collapsed = false;
 
     while (path.length && parent && parent.children) {
-      let segment = path.shift();
+      const segment = path.shift();
 
       // Find the child with this name
-      let child = parent.children.find(node => node.name == segment);
+      const child = parent.children.find(node => node.name === segment);
       if (child) {
         // Mark this child as not-hidden and not-collapsed
         child._hidden = false;
@@ -424,7 +422,7 @@ export class ClassificationTreeComponent implements AfterViewInit {
 
     const diagonal = function(from, to) {
       const p = d3.path();
-      p.moveTo(from.y, from.x)
+      p.moveTo(from.y, from.x);
       p.bezierCurveTo(from.y + 100, from.x, to.y - 100, to.x, to.y, to.x);
       return p.toString();
     };

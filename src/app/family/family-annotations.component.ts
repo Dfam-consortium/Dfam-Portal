@@ -39,7 +39,7 @@ export class FamilyAnnotationsComponent implements OnInit {
     return this._selectedAssembly;
   }
   set selectedAssembly(assembly: string) {
-    if (this.selectedAssembly != assembly) {
+    if (this.selectedAssembly !== assembly) {
       this.annotationData = null;
     }
     this._selectedAssembly = assembly;

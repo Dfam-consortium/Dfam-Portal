@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { ClassificationTreeComponent } from './classification-tree.component';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({

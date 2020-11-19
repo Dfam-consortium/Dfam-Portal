@@ -112,7 +112,7 @@ export class FamilyClassificationDialogComponent implements OnInit {
     const search_markup = search.replace(/&/, '&amp;').replace(/</, '&lt;').replace(/>/, '&gt;');
 
     const search_regex = new RegExp(search_markup, 'i');
-    return name_markup.replace(search_regex, "<strong>$&</strong>");
+    return name_markup.replace(search_regex, '<strong>$&</strong>');
   }
 
   chooseClassification(id: number) {

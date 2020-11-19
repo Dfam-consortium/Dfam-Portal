@@ -53,7 +53,7 @@
     <mat-divider fxShow.gt-sm [vertical]="true"></mat-divider>
 
     <div fxFlex.gt-sm="1 1 calc(50%)">
-      <h3>Taxa <workbench-warning-icon></workbench-warning-icon></h3>
+      <h3>Taxa <dfam-workbench-warning-icon></dfam-workbench-warning-icon></h3>
       <mat-list>
         <mat-list-item *ngFor="let control of this.familyForm.controls.clades.controls; index as i;">
           <div fxLayout="row" fxLayoutAlign="start baseline" class="wide">
@@ -95,7 +95,7 @@
 <mat-card-content>
   <p>
     <mat-checkbox [formControl]="familyForm.controls.disabled">Disabled</mat-checkbox>
-    <workbench-warning-icon></workbench-warning-icon>
+    <dfam-workbench-warning-icon></dfam-workbench-warning-icon>
   </p>
 
   <div fxLayout.gt-sm="row" fxLayoutGap.gt-sm="1em">
@@ -173,7 +173,7 @@
         {{option.name}}
       </mat-option>
     </mat-select>
-    <workbench-warning-icon matSuffix></workbench-warning-icon>
+    <dfam-workbench-warning-icon matSuffix></dfam-workbench-warning-icon>
   </mat-form-field>
 
   <p><strong>Length:</strong> {{family.length}} </p>

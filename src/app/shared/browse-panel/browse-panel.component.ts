@@ -32,6 +32,9 @@ function has_duplicates(array: any[]) {
   return false;
 }
 
+// "unusual" characters, here defined as "anything that should not show up in a name"
+const UNUSUAL_REGEXP = /[^A-Za-z0-9._-]/;
+
 @Component({
   selector: 'dfam-browse-panel',
   templateUrl: './browse-panel.component.html',
@@ -45,8 +48,8 @@ export class BrowsePanelComponent implements OnInit {
   families: any = {};
 
   search: any = {};
-  pageSize: number = 20;
-  pageIndex: number = 0;
+  pageSize = 20;
+  pageIndex = 0;
   searchApiOptions: any = { };
 
   classOptions: any[] = [];
@@ -171,10 +174,8 @@ export class BrowsePanelComponent implements OnInit {
     return clade ? clade.name : '';
   }
 
-  // "unusual" characters, here defined as "anything that should not show up in a name"
-  UNUSUAL_REGEXP = /[^A-Za-z0-9._-]/;
   findUnusualCharacter(term: string) {
-    const result = this.UNUSUAL_REGEXP.exec(term);
+    const result = UNUSUAL_REGEXP.exec(term);
     if (result) {
       return result[0];
     } else {

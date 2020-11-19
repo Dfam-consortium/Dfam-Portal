@@ -9,7 +9,7 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 })
 export class FamilySummaryComponent implements OnInit {
 
-  taxa_expand = []
+  taxa_expand = [];
 
   help = {
     classification: 'The Dfam classification and the taxonomic specificity of the family',
