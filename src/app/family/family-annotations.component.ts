@@ -15,7 +15,7 @@ export class FamilyAnnotationsComponent implements OnInit {
     distribution: 'Interactive heat map of hits to genome assemblies included in Dfam',
   };
 
-  stats: {}[] = [];
+  stats: Record<string, any>[] = [];
   assemblies = [];
   loadingKaryotype: boolean;
   loadingAnnotationData: boolean;

@@ -52,7 +52,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     return this.http.get(endpoint + 'uploads', opts);
   }
 
-  patchUpload(id: number, changeset: any): Observable<{}> {
+  patchUpload(id: number, changeset: any): Observable<unknown> {
     const url = endpoint + 'uploads/' + encodeURIComponent(id);
     const opts = this.optsWithAuth();
     return this.http.patch<any>(url, changeset, opts)
@@ -102,7 +102,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
       );
   }
 
-  patchFamily(accession: string, changeset: any): Observable<{}> {
+  patchFamily(accession: string, changeset: any): Observable<unknown> {
     const url = this.familyPath(accession);
     const opts = this.optsWithAuth();
     return this.http.patch<any>(url, changeset, opts)
