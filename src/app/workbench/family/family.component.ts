@@ -260,7 +260,7 @@ export class WorkbenchFamilyComponent implements OnInit {
 
       const flattened_all = flatten(root);
       this.allClassificationsSubject.next(flattened_all);
-      this.rootClassificationSubject.next(<Classification>root);
+      this.rootClassificationSubject.next(root as Classification);
     });
   }
 
@@ -303,8 +303,8 @@ export class WorkbenchFamilyComponent implements OnInit {
     // to be sent to the server.
 
     const aliasesArray = controls.aliases as FormArray;
-    const aliasObjs = (<FormGroup[]>aliasesArray.controls).map(a => {
-      const alias_controls = < { [key: string]: FormControl }>(a.controls);
+    const aliasObjs = (aliasesArray.controls as FormGroup[]).map(a => {
+       const alias_controls = a.controls as { [key: string]: FormControl };
       return {
         database: alias_controls['database'].value,
         alias: alias_controls['alias'].value,
@@ -342,8 +342,8 @@ export class WorkbenchFamilyComponent implements OnInit {
     // Same with citations as with aliases
 
     const citationsArray = controls.citations as FormArray;
-    const citationObjs = (<FormGroup[]>citationsArray.controls).map(c => {
-      const cit_controls = < { [key: string]: FormControl }>(c.controls);
+    const citationObjs = (citationsArray.controls as FormGroup[]).map(c => {
+      const cit_controls = c.controls as { [key: string]: FormControl };
       return {
         pmid: cit_controls['pmid'].value,
         comment: cit_controls['comment'].value || '',
@@ -377,7 +377,7 @@ export class WorkbenchFamilyComponent implements OnInit {
     // Clades is a bit easier because it's just the one field.
 
     const cladesArray = controls.clades as FormArray;
-    const cladeVals = (<FormGroup[]>cladesArray.controls)
+    const cladeVals = (cladesArray.controls as FormGroup[])
       .map(c => c.value ? parseInt(c.value.id, 10) : NaN)
       .filter(c => !isNaN(c));
 
@@ -401,7 +401,7 @@ export class WorkbenchFamilyComponent implements OnInit {
     // Search stages
 
     const searchStagesArray = controls.search_stages as FormArray;
-    const searchStageVals = (<FormGroup[]>searchStagesArray.controls).map(c => c.value);
+    const searchStageVals = (searchStagesArray.controls as FormGroup[]).map(c => c.value);
 
     let searchStagesChanged = false;
     if (searchStageVals.length === old.search_stages.length) {

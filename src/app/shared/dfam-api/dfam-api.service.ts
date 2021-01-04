@@ -401,7 +401,7 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
     );
   }
 
-  private handleError<T> (operation = 'operation', result: T) {
+  private handleError<T>(operation = 'operation', result: T) {
     return (error: any): Observable<T> => {
       // Short-circuit 404 without any error logging
       if (error.status === 404) {

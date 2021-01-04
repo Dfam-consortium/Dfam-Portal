@@ -68,9 +68,7 @@ export class WorkbenchUploadsComponent implements AfterViewInit, OnInit, OnDestr
     });
 
     this.flowConfig = this.dfambackendapi.getFlowConfig();
-    this.flowConfig.query = (_file, _chunk, isTest) => {
-      return isTest ? undefined : { notes: this.uploadNotes };
-    };
+    this.flowConfig.query = (_file, _chunk, isTest) => isTest ? undefined : { notes: this.uploadNotes };
   }
 
   ngAfterViewInit() {

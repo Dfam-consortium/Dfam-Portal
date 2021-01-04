@@ -172,12 +172,7 @@ export class ClassificationTreeComponent implements AfterViewInit {
         if (depth > treeDepth) {
           treeDepth = depth;
         }
-        children.forEach(function(child) {
-          queue.push({
-            depth: depth,
-            node: child
-          });
-        });
+        children.forEach(child => queue.push({ depth, node: child }));
       }
       next = queue.shift();
     }

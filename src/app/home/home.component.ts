@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   showMore1 = false;
-  dfamBlogArticles: Object = [];
+  dfamBlogArticles: object = [];
 
   totalFamilies: number;
   curatedFamilies: number;

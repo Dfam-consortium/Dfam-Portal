@@ -113,7 +113,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
   // This corresponds most closely to the usual usage within Dfam-Portal.
   getFamiliesUrlOptions(
     criteria: FamilyCriteria, format?: string, download?: boolean
-  ): [string, { params: HttpParams, headers: HttpHeaders }] {
+  ): [string, { params: HttpParams; headers: HttpHeaders }] {
     const url = endpoint + 'families';
     const opts = this.optsWithAuth();
     const options = {
@@ -254,7 +254,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     return this.http.get(endpoint + 'verify', { params, observe: 'response' });
   }
 
-  private handleError<T> (operation = 'operation', result: T) {
+  private handleError<T>(operation = 'operation', result: T) {
     return (error: any): Observable<T> => {
       // Short-circuit 404 without any error logging
       if (error.status === 404) {

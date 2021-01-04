@@ -23,7 +23,7 @@ export class AuthService implements CanActivate {
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
-  constructor (
+  constructor(
     private router: Router,
     private dfamBackendAPIService: DfamBackendAPIService,
   ) {
@@ -115,9 +115,7 @@ export class AuthService implements CanActivate {
         }), concatAll());
     } else if (type === 'register') {
       return this.dfamBackendAPIService.register( credentials.fullname, credentials.email, credentials.password )
-        .pipe(map(data => {
-          return data;
-        }));
+        .pipe(map(data => data));
     }
   }
 

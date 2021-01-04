@@ -112,7 +112,9 @@ export class BrowsePanelComponent implements OnInit {
           }
         }
 
-        const exact = [], starts = [], contains = [];
+        const exact = [];
+        const starts = [];
+        const contains = [];
         classes.forEach(c => {
           if (c.sort_name === search_term.toLowerCase()) {
             exact.push(c);

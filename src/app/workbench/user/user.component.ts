@@ -9,7 +9,7 @@ export class WorkbenchUserComponent implements OnInit {
   title = 'Dfam';
 
   user: User;
-  role: String;
+  role: string;
   isNewUser: boolean;
 
   constructor(private authService: AuthService) { }

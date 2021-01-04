@@ -21,7 +21,7 @@ export class Family {
   aliases: {database: string; alias: string}[];
   search_stages: {name: string}[];
   buffer_stages: {name: string; start: number; end: number}[];
-  citations: {pmid: number, title: string, authors: string, journal: string, pubdate: string}[];
+  citations: {pmid: number; title: string; authors: string; journal: string; pubdate: string}[];
   clades: string[];
   features: any[];
   coding_seqs: any[];

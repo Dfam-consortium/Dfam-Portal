@@ -13,7 +13,7 @@ export class AppComponent {
   constructor(private router: Router) {
      this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        (<any>window).gtag('config', 'UA-135151408-1', {'page_path': event.urlAfterRedirects });
+        (window as any).gtag('config', 'UA-135151408-1', {'page_path': event.urlAfterRedirects });
       }
     });
   }

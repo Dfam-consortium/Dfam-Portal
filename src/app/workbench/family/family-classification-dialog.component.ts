@@ -27,7 +27,7 @@ export class FamilyClassificationDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) data: any,
     private dialogRef: MatDialogRef<FamilyClassificationDialogComponent>,
   ) {
-    this.rootNode = <Classification>data.rootNode;
+    this.rootNode = data.rootNode as Classification;
     this.classificationTreeDataSource.data = this.rootNode.children;
   }
 
