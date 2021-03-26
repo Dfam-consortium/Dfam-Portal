@@ -22,11 +22,19 @@
       "rules": {
         "@angular-eslint/component-selector": [
           "error",
-          { "type": "element", "prefix": "dfam", "style": "kebab-case" }
+          {
+            "type": "element",
+            "prefix": "dfam",
+            "style": "kebab-case"
+          }
         ],
         "@angular-eslint/directive-selector": [
           "error",
-          { "type": "attribute", "prefix": "dfam", "style": "kebab-case" }
+          {
+            "type": "attribute",
+            "prefix": "dfam",
+            "style": "kebab-case"
+          }
         ],
         "@typescript-eslint/consistent-type-definitions": "error",
         "@typescript-eslint/dot-notation": "off",
@@ -42,13 +50,18 @@
         "brace-style": [
           "error",
           "1tbs",
-          { "allowSingleLine": true }
+          {
+            "allowSingleLine": true
+          }
         ],
         "id-blacklist": "off",
         "id-match": "off",
         "no-underscore-dangle": "off",
         "prefer-arrow/prefer-arrow-functions": "off",
-        "quote-props": ["error", "consistent"]
+        "quote-props": [
+          "error",
+          "consistent"
+        ]
       }
     },
     {
