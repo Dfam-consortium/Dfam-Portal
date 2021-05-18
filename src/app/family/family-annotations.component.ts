@@ -15,7 +15,6 @@ export class FamilyAnnotationsComponent implements OnInit {
     distribution: 'Interactive heat map of hits to genome assemblies included in Dfam',
   };
 
-  stats: Record<string, any>[] = [];
   assemblies = [];
   loadingKaryotype: boolean;
   loadingAnnotationData: boolean;
@@ -64,17 +63,10 @@ export class FamilyAnnotationsComponent implements OnInit {
 
   getData() {
     const accession = this.route.parent.snapshot.params['id'];
-    this.dfamapi.getFamilyAssemblies(accession).subscribe(data => {
+    this.dfamapi.getFamilyAnnotationStats(accession).subscribe(data => {
       this.assemblies = data;
       if (data.length) {
         this.selectedAssembly = data[0].id;
-      }
-      for (const assembly of data) {
-        this.dfamapi.getFamilyAssemblyAnnotationStats(accession, assembly.id)
-          .subscribe(stats => {
-            stats.hmm.species = assembly.name;
-            this.stats.push(stats.hmm);
-          });
       }
     });
   }

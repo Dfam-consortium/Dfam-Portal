@@ -6,7 +6,7 @@
     the count, length, and Kimura divergence of HMM-produced annotations above the 
     score thresholds.
 
-    <table *ngIf="stats?.length">
+    <table *ngIf="assemblies.length">
 
     <thead>
       <tr>
@@ -29,25 +29,25 @@
       </tr>
     </thead>
 
-    <tr *ngFor="let stat of stats">
-      <td style="text-align: right;">{{stat.species}}</td>
-      <td style="text-align: right;">{{stat.avg_hit_length}}</td>
-      <td style="text-align: right;">{{stat.gathering_nonredundant}}</td>
-      <td style="text-align: right;">{{stat.gathering_divergence|number:'1.1-1'}}<span *ngIf="stat.gathering_divergence">%</span></td>
-      <td style="text-align: right;">{{stat.trusted_nonredundant}}</td>
-      <td style="text-align: right;">{{stat.trusted_divergence|number:'1.1-1'}}<span *ngIf="stat.trusted_divergence">%</span></td>
-      <td style="text-align: right;">{{stat.gathering_all}}</td>
-      <td style="text-align: right;">{{stat.trusted_all}}</td>
+    <tr *ngFor="let assembly of assemblies">
+      <td style="text-align: right;">{{assembly.name}}</td>
+      <td style="text-align: right;">{{assembly.stats.hmm.avg_hit_length}}</td>
+      <td style="text-align: right;">{{assembly.stats.hmm.gathering_nonredundant}}</td>
+      <td style="text-align: right;">{{assembly.stats.hmm.gathering_divergence|number:'1.1-1'}}<span *ngIf="assembly.stats.hmm.gathering_divergence">%</span></td>
+      <td style="text-align: right;">{{assembly.stats.hmm.trusted_nonredundant}}</td>
+      <td style="text-align: right;">{{assembly.stats.hmm.trusted_divergence|number:'1.1-1'}}<span *ngIf="assembly.stats.hmm.trusted_divergence">%</span></td>
+      <td style="text-align: right;">{{assembly.stats.hmm.gathering_all}}</td>
+      <td style="text-align: right;">{{assembly.stats.hmm.trusted_all}}</td>
     </tr>
 
     </table>
   </div>
 </div>
 
-<dfam-loader [loading]="!stats">
+<dfam-loader [loading]="!assemblies">
 
-<div *ngIf="stats?.length === 0">
-No statistics are available for this family.
+<div *ngIf="assemblies?.length === 0">
+No statistics are available for this family. It might not be in any assemblies currently available in Dfam.
 </div>
 
 <h3 class="underline-span">Genome Annotation Distribution <dfam-help-icon link="/help/family#annotations" [tooltip]="help.distribution"></dfam-help-icon></h3>

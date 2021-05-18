@@ -214,6 +214,14 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
     );
   }
 
+  getFamilyAnnotationStats(accession: string): Observable<any> {
+    const url = this.familyPath(accession) + '/annotation_stats';
+    return this.http.get(url).pipe(
+      map(this.extractData),
+      catchError(this.handleError('getFamilyAnnotationStats', [])),
+    );
+  }
+
   getFamilyAssemblyModelCoverage(accession: string, assembly: string): Observable<any> {
     const url = this.familyAssemblyPath(accession, assembly) + '/model_coverage';
     const options = {
