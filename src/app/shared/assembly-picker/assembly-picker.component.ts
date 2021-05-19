@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
 
 interface Assembly {
   id: string;
@@ -12,7 +13,21 @@ interface Assembly {
 })
 export class AssemblyPickerComponent implements OnInit {
 
-  @Input() assemblies: Assembly[];
+  _assemblies: Assembly[];
+  get assemblies() {
+    return this._assemblies;
+  }
+
+  @Input() set assemblies(value: Assembly[]) {
+    if (this.assemblies !== value) {
+      this._assemblies = value;
+      this.updateFilter(this.lastFilter);
+    }
+  }
+
+  lastFilter?: string;
+
+  filteredAssemblies: ReplaySubject<Assembly[]> = new ReplaySubject(1);
 
   _value: Assembly;
   get value(): Assembly {
@@ -29,6 +44,22 @@ export class AssemblyPickerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.updateFilter("");
+  }
+
+  updateFilter(term) {
+    if (!this.assemblies) return;
+
+    this.lastFilter = term;
+    if (term) {
+      term = term.toLowerCase();
+      this.filteredAssemblies.next(this.assemblies.filter(a => {
+        return a.name.toLowerCase().indexOf(term) !== -1 ||
+          a.id.toLowerCase().indexOf(term) !== -1;
+      }));
+    } else {
+      this.filteredAssemblies.next(this.assemblies);
+    }
   }
 
 }

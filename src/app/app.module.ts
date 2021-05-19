@@ -13,6 +13,9 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
+// Third-party Imports
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+
 // Application Imports
 import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
@@ -121,6 +124,9 @@ export function tokenGetter() {
     MatMenuModule,
     MatTabsModule,
     MatToolbarModule,
+
+    NgxMatSelectSearchModule,
+
     BrowserModule,
     SharedModule,
     AppRoutingModule,

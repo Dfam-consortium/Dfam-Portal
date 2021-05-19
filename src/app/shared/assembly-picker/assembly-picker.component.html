@@ -1,5 +1,11 @@
 <mat-form-field>
   <mat-select placeholder="Assembly" name="assembly" [(ngModel)]="value">
-    <mat-option *ngFor="let assembly of assemblies" [value]="assembly.id">{{assembly.name}} [{{assembly.id}}]</mat-option>
+    <mat-option>
+      <ngx-mat-select-search ngModel (ngModelChange)="this.updateFilter($event)"
+        placeholderLabel="Type to search"
+        noEntriesFoundLabel="No matches found">
+      </ngx-mat-select-search>
+    </mat-option>
+    <mat-option *ngFor="let assembly of filteredAssemblies | async" [value]="assembly.id">{{assembly.name}} [{{assembly.id}}]</mat-option>
   </mat-select>
 </mat-form-field>
