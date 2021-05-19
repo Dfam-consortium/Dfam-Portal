@@ -11,6 +11,8 @@ export class FamilyDownloadButtonComponent implements OnInit {
   @Input() description: string;
   @Input() altDescription: string;
   @Input() icon: string;
+  @Input() iconHeight: number;
+  @Input() iconWidth: number;
   @Input() href: string;
 
   constructor() { }

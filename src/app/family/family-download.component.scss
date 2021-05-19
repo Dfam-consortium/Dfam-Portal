@@ -2,8 +2,25 @@ mat-card {
   margin: 1em;
 }
 
+.table-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
 table {
   border-collapse: collapse;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+
+  // HACK: workaround for buttons "popping out" from under the sticky thead
+  // and overlaying the column headers. It seems related to
+  // position:relative and/or transform:translate3d
+
+  // Unfortunately, this workaround causes flickering when scrolling.
+  z-index: 1;
 }
 
 table, th, td {

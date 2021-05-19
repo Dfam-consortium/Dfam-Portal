@@ -1,46 +1,48 @@
 <h3 class="underline-span">Overview <dfam-help-icon link="/help/family#annotations" [tooltip]="help.overview"></dfam-help-icon></h3>
 
 <div fxLayout="row">
-  <div fxLayout="column" fxFlexOffset="2">
+  <div fxLayout="column" fxLayoutAlign="stretch" fxFlex="auto" fxFlexOffset="2">
     For each annotated genome within this family's taxa we calculate
     the count, length, and Kimura divergence of HMM-produced annotations above the 
     score thresholds.
 
-    <table *ngIf="assemblies.length">
+    <div class="table-container">
+      <table *ngIf="assemblies?.length > 0">
 
-    <thead>
-      <tr>
-        <th rowspan="3">Species</th>
-        <th colspan="5">Non-Redundant Hits</th>
-        <th colspan="2">All Hits</th>
-      </tr>
-      <tr>
-        <th rowspan="2">Avg. Hit Length</th>
-        <th colspan="2">Gathering Threshold</th>
-        <th colspan="2">Trusted Threshold</th>
-        <th rowspan="2" style="word-break: break-word; max-width: 100px;">Gathering Threshold Count</th>
-        <th rowspan="2" style="word-break: break-word; max-width: 100px;">Trusted Threshold Count</th>
-      </tr>
-      <tr>
-        <th>Count</th>
-        <th>Kimura Div.</th>
-        <th>Count</th>
-        <th>Kimura Div.</th>
-      </tr>
-    </thead>
+      <thead>
+        <tr>
+          <th rowspan="3">Species</th>
+          <th colspan="5">Non-Redundant Hits</th>
+          <th colspan="2">All Hits</th>
+        </tr>
+        <tr>
+          <th rowspan="2">Avg. Hit Length</th>
+          <th colspan="2">Gathering Threshold</th>
+          <th colspan="2">Trusted Threshold</th>
+          <th rowspan="2" style="word-break: break-word; max-width: 100px;">Gathering Threshold Count</th>
+          <th rowspan="2" style="word-break: break-word; max-width: 100px;">Trusted Threshold Count</th>
+        </tr>
+        <tr>
+          <th>Count</th>
+          <th>Kimura Div.</th>
+          <th>Count</th>
+          <th>Kimura Div.</th>
+        </tr>
+      </thead>
 
-    <tr *ngFor="let assembly of assemblies">
-      <td style="text-align: right;">{{assembly.name}}</td>
-      <td style="text-align: right;">{{assembly.stats.hmm.avg_hit_length}}</td>
-      <td style="text-align: right;">{{assembly.stats.hmm.gathering_nonredundant}}</td>
-      <td style="text-align: right;">{{assembly.stats.hmm.gathering_divergence|number:'1.1-1'}}<span *ngIf="assembly.stats.hmm.gathering_divergence">%</span></td>
-      <td style="text-align: right;">{{assembly.stats.hmm.trusted_nonredundant}}</td>
-      <td style="text-align: right;">{{assembly.stats.hmm.trusted_divergence|number:'1.1-1'}}<span *ngIf="assembly.stats.hmm.trusted_divergence">%</span></td>
-      <td style="text-align: right;">{{assembly.stats.hmm.gathering_all}}</td>
-      <td style="text-align: right;">{{assembly.stats.hmm.trusted_all}}</td>
-    </tr>
+      <tr *ngFor="let assembly of assemblies">
+        <td style="text-align: right;">{{assembly.name}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm.avg_hit_length}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm.gathering_nonredundant}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm.gathering_divergence|number:'1.1-1'}}<span *ngIf="assembly.stats.hmm.gathering_divergence">%</span></td>
+        <td style="text-align: right;">{{assembly.stats.hmm.trusted_nonredundant}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm.trusted_divergence|number:'1.1-1'}}<span *ngIf="assembly.stats.hmm.trusted_divergence">%</span></td>
+        <td style="text-align: right;">{{assembly.stats.hmm.gathering_all}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm.trusted_all}}</td>
+      </tr>
 
-    </table>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -55,11 +57,11 @@ No statistics are available for this family. It might not be in any assemblies c
 <div fxLayout="row">
   <div fxLayout="column" fxFlexOffset="2">
 
-    <div *ngIf="!assemblies.length">
+    <div *ngIf="assemblies?.length === 0">
       Genome-specific characteristics are not available for this family.
     </div>
 
-    <div *ngIf="assemblies.length">
+    <div *ngIf="assemblies?.length > 0">
       <dfam-assembly-picker [(value)]="selectedAssembly" [assemblies]="assemblies">
       </dfam-assembly-picker>
 

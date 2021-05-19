@@ -21,7 +21,7 @@
     <p>
     Annotations produced by the HMM model for applicable species at, or above, the gathering threshold.  The Non-redundant download is a subset of the annotations for which no other repeat family dominates it ( overlaps with a higher score ).  Both file are in tab-separated format and compressed with gzip.
     </p>
-    <div>
+    <div class="table-container">
       <table>
         <thead>
           <tr>
@@ -33,10 +33,20 @@
         <tr *ngFor="let assembly of assemblies">
           <td>{{assembly.name}} [{{assembly.id}}]</td>
           <td>
-            <dfam-family-download-button icon="/assets/images/gzipd-file.png" altDescription="Non-redundant hits for this model/organism." [href]="annotationsUrl(assembly.id,true)"></dfam-family-download-button>
+            <dfam-family-download-button
+              icon="/assets/images/gzipd-file.png"
+              iconHeight = "24"
+              altDescription="Non-redundant hits for this model/organism."
+              [href]="annotationsUrl(assembly.id,true)">
+            </dfam-family-download-button>
           </td>
           <td>
-            <dfam-family-download-button icon="/assets/images/gzipd-file.png" altDescription="All hits for this model/organism." [href]="annotationsUrl(assembly.id,false)"></dfam-family-download-button>
+            <dfam-family-download-button
+              icon="/assets/images/gzipd-file.png"
+              iconHeight = "24"
+              altDescription="All hits for this model/organism."
+              [href]="annotationsUrl(assembly.id,false)">
+            </dfam-family-download-button>
           </td>
         </tr>
       </table>
