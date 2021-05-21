@@ -4,6 +4,7 @@ import { ReplaySubject } from 'rxjs';
 interface Assembly {
   id: string;
   name: string;
+  displayName?: string;
 }
 
 @Component({
@@ -20,10 +21,19 @@ export class AssemblyPickerComponent implements OnInit {
 
   @Input() set assemblies(value: Assembly[]) {
     if (this.assemblies !== value) {
-      this._assemblies = value;
+      this._assemblies = Array.from(value);
+      this._assemblies.forEach(a => {
+        a.displayName = a.name;
+        if (this.showIds) {
+          a.displayName += ` [${a.id}]`;
+        }
+      });
       this.updateFilter(this.lastFilter);
     }
   }
+
+  @Input() showIds: boolean = true;
+  @Input() placeholder: string = "Assembly";
 
   lastFilter?: string;
 

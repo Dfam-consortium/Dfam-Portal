@@ -250,13 +250,13 @@ TCCATTGCTGTGGGCCACGGACAGGCAGAAGGAAGCACCTCCTCATGGCAGAGGCCTACC
 CAGGAGAAACCCAAGGGAAGGCACTACTGGGCTGGCCCCTCTCTGCCAAGGCCATATTCT
 TTTTTTTTTTTTGAGGCCAGTTTCACTCTGTCTCCCAGACTGGAGTGCAGGGGCACAATC
 TCGGCTCACTTCGACCTCTGCCTCCCCAGTTCAAGTGATTCTCCTGCCTCAGTCTCCTGA`,
-    organism: 'Homo sapiens',
+    assembly: 'hg38',
     cutoff: 'curated',
     evalue: 0.001,
   };
 
   search: any = {};
-  organisms: any[] = [];
+  assemblies: any[] = [];
 
   loading: boolean;
 
@@ -268,7 +268,7 @@ TCGGCTCACTTCGACCTCTGCCTCCCCAGTTCAAGTGATTCTCCTGCCTCAGTCTCCTGA`,
   }
 
   getAssemblies() {
-    this.dfamapi.getAssemblies().subscribe(data => this.organisms = data);
+    this.dfamapi.getAssemblies().subscribe(data => this.assemblies = data);
   }
 
   onSubmit() {
@@ -276,10 +276,16 @@ TCGGCTCACTTCGACCTCTGCCTCCCCAGTTCAAGTGATTCTCCTGCCTCAGTCTCCTGA`,
       return;
     }
 
+    // TODO: This is not quite right. This dropdown and the backend
+    // search process is supposed to be based on organism, not assembly,
+    // but historically these have corresponded 1:1. This needs to be
+    // corrected in all of the backend, API, and frontend.
+    const organismName = this.assemblies.find(a => a.id === this.search.assembly);
+
     this.loading = true;
     this.dfamapi.postSearch(
       this.search.sequence,
-      this.search.organism,
+      organismName,
       this.search.cutoff,
       this.search.evalue,
     ).subscribe(result => {
@@ -294,14 +300,14 @@ TCGGCTCACTTCGACCTCTGCCTCCCCAGTTCAAGTGATTCTCCTGCCTCAGTCTCCTGA`,
 
   onReset() {
     this.search.sequence = '';
-    this.search.organism = 'Homo sapiens';
+    this.search.assembly = 'hg38';
     this.search.cutoff = 'curated';
     this.search.evalue = 0.001;
   }
 
   onExample() {
     this.search.sequence = SearchSequenceComponent.example.sequence;
-    this.search.organism = SearchSequenceComponent.example.organism;
+    this.search.assembly = SearchSequenceComponent.example.assembly;
     this.search.cutoff = SearchSequenceComponent.example.cutoff;
     this.search.evalue = SearchSequenceComponent.example.evalue;
   }

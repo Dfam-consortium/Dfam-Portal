@@ -46,14 +46,14 @@
             </div>
 
             <div fxLayout="row" fxLayoutAlign="start center">
-              <mat-form-field>
-                <mat-select placeholder="Organism" name="organism" [(ngModel)]="searchSequenceAssembly">
-                  <mat-option *ngFor="let assembly of assemblies" [value]="assembly.name">{{assembly.name}}</mat-option>
-                  <mat-option value="other">Other</mat-option>
-                </mat-select>
-              </mat-form-field>
-              &nbsp;
+              <dfam-assembly-picker
+                [assemblies]="searchSequenceAssemblies"
+                [(value)]="searchSequenceAssembly"
+                [showIds]="false"
+                placeholder="Organism">
+              </dfam-assembly-picker>
 
+              &nbsp;
               <button mat-raised-button class="accordian-button" color="primary" (click)="onSubmitSearch()">Go</button>
               &nbsp;
               <button mat-raised-button type="button" (click)="onExampleSearch()">Example</button>
@@ -98,23 +98,23 @@
             <form fxFlex.gt-sm="80" fxFlexOffset.gt-sm="32">
 
               <div>
-                <mat-form-field>
-                  <mat-select placeholder="Assembly" name="assembly" [(ngModel)]="annotations.assembly">
-                    <mat-option *ngFor="let assembly of assemblies" [value]="assembly.id">{{assembly.name}} [{{assembly.id}}]</mat-option>
-                  </mat-select>
-                </mat-form-field>
+                <dfam-assembly-picker
+                  fxFlex="0 1 auto"
+                  [assemblies]="assemblies"
+                  [(value)]="annotations.assembly" >
+                </dfam-assembly-picker>
                 &nbsp;
-                <mat-form-field>
+                <mat-form-field fxFlex="0 1 auto">
                   <input matInput placeholder="Chromosome" name="chromosome" [(ngModel)]="annotations.chromosome">
                 </mat-form-field>
               </div>
 
               <div>
-                <mat-form-field>
+                <mat-form-field fxFlex="0 1 auto">
                   <input matInput placeholder="Start" name="start" [(ngModel)]="annotations.start">
                 </mat-form-field>
                 &nbsp;
-                <mat-form-field>
+                <mat-form-field fxFlex="0 1 auto">
                   <input matInput placeholder="End" name="end" [(ngModel)]="annotations.end">
                 </mat-form-field>
               </div>
