@@ -16,6 +16,8 @@
 
 <h3 class="underline-span">Annotations <dfam-help-icon link="/help/family#download" [tooltip]="help.annotations"></dfam-help-icon></h3>
 
+<dfam-loader [loading]="!assemblies">
+
 <div fxLayout="row">
   <div fxLayout="column" fxFlexOffset="2" *ngIf="assemblies?.length; else noAssemblies">
     <p>
@@ -56,3 +58,5 @@
 <ng-template #noAssemblies>
   <p>No assembly-specific annotations available for this family.</p>
 </ng-template>
+
+</dfam-loader>
