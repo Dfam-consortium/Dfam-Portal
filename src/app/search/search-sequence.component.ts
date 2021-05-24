@@ -280,12 +280,12 @@ TCGGCTCACTTCGACCTCTGCCTCCCCAGTTCAAGTGATTCTCCTGCCTCAGTCTCCTGA`,
     // search process is supposed to be based on organism, not assembly,
     // but historically these have corresponded 1:1. This needs to be
     // corrected in all of the backend, API, and frontend.
-    const organismName = this.assemblies.find(a => a.id === this.search.assembly);
+    const organism = this.assemblies.find(a => a.id === this.search.assembly);
 
     this.loading = true;
     this.dfamapi.postSearch(
       this.search.sequence,
-      organismName,
+      organism.name,
       this.search.cutoff,
       this.search.evalue,
     ).subscribe(result => {
