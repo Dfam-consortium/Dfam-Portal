@@ -268,7 +268,10 @@ TCGGCTCACTTCGACCTCTGCCTCCCCAGTTCAAGTGATTCTCCTGCCTCAGTCTCCTGA`,
   }
 
   getAssemblies() {
-    this.dfamapi.getAssemblies().subscribe(data => this.assemblies = data);
+    this.dfamapi.getAssemblies().subscribe(data => {
+      this.assemblies = data;
+      this.assemblies.push({ id: 'other', name: 'Other' });
+    });
   }
 
   onSubmit() {
