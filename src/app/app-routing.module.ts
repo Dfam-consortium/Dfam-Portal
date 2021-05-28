@@ -18,6 +18,7 @@ import { ClassificationComponent } from './classification/classification.compone
 import { ClassificationLayoutComponent } from './classification/classification-layout.component';
 import { RepositoryComponent } from './repository/repository.component';
 import { DnaTerminiComponent } from './classification/dna-termini.component';
+import { PublicationsComponent } from './publications/publications.component';
 import { HelpComponent } from './help/help.component';
 import { HelpFamilyComponent } from './help/help-family.component';
 import { HelpBrowseComponent } from './help/help-browse.component';
@@ -55,6 +56,7 @@ export const PUBLIC_ROUTES: Routes = [
     { path: 'dna-termini', component: DnaTerminiComponent },
   ]},
   { path: 'repository', component: RepositoryComponent},
+  { path: 'publications', component: PublicationsComponent},
   { path: 'help', component: HelpComponent, children: [
     { path: '', redirectTo: 'family', pathMatch: 'full' },
     { path: 'family', component: HelpFamilyComponent },
