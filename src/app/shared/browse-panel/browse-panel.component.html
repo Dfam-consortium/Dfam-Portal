@@ -95,7 +95,10 @@
 </mat-expansion-panel>
 
 <div class="browse">
-  <table mat-table matSort (matSortChange)="sortChanged($event)"
+  <table mat-table matSort
+        [matSortActive]="sortActive"
+        [matSortDirection]="sortDirection"
+        (matSortChange)="sortChanged($event)"
         [dataSource]="families.results">
     <ng-container matColumnDef="accession">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Accession</th>

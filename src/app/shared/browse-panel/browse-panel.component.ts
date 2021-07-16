@@ -48,6 +48,8 @@ export class BrowsePanelComponent implements OnInit {
   families: any = {};
 
   search: any = {};
+  sortActive: string = null;
+  sortDirection: SortDirection = 'asc';
   pageSize = 20;
   pageIndex = 0;
   searchApiOptions: any = { };
@@ -71,8 +73,6 @@ export class BrowsePanelComponent implements OnInit {
   private getFamiliesSubscription: Subscription;
 
   displayColumns = [ 'accession', 'name', 'classification', 'clades', 'title', 'length' ];
-
-  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private route: ActivatedRoute,
@@ -243,8 +243,8 @@ export class BrowsePanelComponent implements OnInit {
     if (initialSort) {
       const parts = initialSort.split(':');
       if (parts.length === 2) {
-        this.sort.active = parts[0];
-        this.sort.direction = parts[1] as SortDirection;
+        this.sortActive = parts[0];
+        this.sortDirection = parts[1] as SortDirection;
         this.searchApiOptions.sort = initialSort;
       }
     }
