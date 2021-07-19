@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 
 // The "dot plot" visualization shows alignment between two sequences
-// from a CIGAR-like string, and it is used as a tooltip for the
+// from a CIGAR string, and it is used as a tooltip for the
 // overlaps visualization.
 function DotPlot(options) {
   options     = options || {};
@@ -113,11 +113,6 @@ DotPlot.prototype.drawAxes = function (svg) {
 
 DotPlot.prototype.drawPlot = function (g) {
   let self = this;
-  // Split cigar string into array of characters
-  let chars = this.cigar.split('');
-  if (this.strand === '-') {
-    chars = chars.reverse();
-  }
 
   // NB: Instead of drawing in data space and transforming the
   // whole thing to graph space, we scale the individual points
@@ -139,26 +134,45 @@ DotPlot.prototype.drawPlot = function (g) {
   const path = d3.path();
   path.moveTo(xscale(x), yscale(y));
 
-  chars.forEach(function(ch) {
+  let data = [];
+  let count = 0;
+  for (const ch of this.cigar) {
+    if (ch >= '0' && ch <= '9') {
+      count *= 10;
+      count += ch - '0';
+    } else {
+      data.push([count, ch]);
+      count = 0;
+    }
+  }
+
+  if (this.strand === '-') {
+    data.reverse()
+  }
+
+  data.forEach(function(pair) {
+    const count = pair[0];
+    const ch = pair[1];
+
     // For each item in the data string, move the line to the next point.
     if (ch[0] === 'M') {
-      y += 1;
+      y += count;
       if (self.strand === '-') {
-        x -= 1;
+        x -= count;
       }
       else {
-        x += 1;
+        x += count;
       }
     }
     else if (ch[0] === 'I') {
-      y += 1;
+      y += count;
     }
     else if (ch[0] === 'D'){
       if (self.strand === '-') {
-        x -= 1;
+        x -= count;
       }
       else {
-        x += 1;
+        x += count;
       }
     }
     path.lineTo(xscale(x), yscale(y));
