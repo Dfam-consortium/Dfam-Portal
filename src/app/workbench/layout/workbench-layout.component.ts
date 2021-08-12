@@ -9,6 +9,7 @@ import { AuthService } from '../../shared/services/auth.service';
 export class WorkbenchLayoutComponent implements OnInit {
   title = 'Dfam';
 
+  showUsers = false;
   showUploads = false;
   showBrowse = false;
 
@@ -16,8 +17,9 @@ export class WorkbenchLayoutComponent implements OnInit {
 
   ngOnInit() {
     this.authService.currentUser.subscribe(user => {
-      this.showUploads = (user.role === 'curator' || user.role === 'submitter');
-      this.showBrowse = (user.role === 'curator');
+      this.showUsers = (user.role === 'administrator');
+      this.showUploads = (user.role === 'administrator' || user.role === 'curator' || user.role === 'submitter');
+      this.showBrowse = (user.role === 'administrator' || user.role === 'curator');
     });
   }
 

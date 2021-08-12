@@ -4,6 +4,7 @@
       <mat-list-item>
         <a routerLink="/home"><img class="dfam-logo" src="assets/images/dfam_logo.png" alt="Dfam" /></a>
       </mat-list-item>
+      <a mat-list-item routerLink="/workbench/users" *ngIf="showUsers">Users</a>
       <a mat-list-item routerLink="/workbench/uploads" *ngIf="showUploads">Uploads</a>
       <a mat-list-item routerLink="/workbench/browse" *ngIf="showBrowse">Browse</a>
       <mat-divider></mat-divider>

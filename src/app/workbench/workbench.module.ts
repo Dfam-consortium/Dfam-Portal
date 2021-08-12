@@ -19,6 +19,7 @@ import { WorkbenchRoutingModule } from './workbench-routing.module';
 
 import { WorkbenchLayoutComponent } from './layout/workbench-layout.component';
 import { WorkbenchUserComponent } from './user/user.component';
+import { WorkbenchUsersComponent } from './users/users.component';
 import { WorkbenchUploadsComponent } from './uploads/uploads.component';
 import { WorkbenchBrowseComponent } from './browse/browse.component';
 import { WorkbenchFamilyComponent } from './family/family.component';
@@ -33,6 +34,7 @@ import { UploadCloseDialogComponent } from './uploads/upload-close-dialog.compon
   declarations: [
     WorkbenchLayoutComponent,
     WorkbenchUserComponent,
+    WorkbenchUsersComponent,
     WorkbenchUploadsComponent,
     WorkbenchBrowseComponent,
     WorkbenchFamilyComponent,
