@@ -32,8 +32,8 @@ export class AssemblyPickerComponent implements OnInit {
     }
   }
 
-  @Input() showIds: boolean = true;
-  @Input() placeholder: string = "Assembly";
+  @Input() showIds = true;
+  @Input() placeholder = 'Assembly';
 
   lastFilter?: string;
 
@@ -54,19 +54,17 @@ export class AssemblyPickerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.updateFilter("");
+    this.updateFilter('');
   }
 
   updateFilter(term) {
-    if (!this.assemblies) return;
+    if (!this.assemblies) { return; }
 
     this.lastFilter = term;
     if (term) {
       term = term.toLowerCase();
-      this.filteredAssemblies.next(this.assemblies.filter(a => {
-        return a.name.toLowerCase().indexOf(term) !== -1 ||
-          a.id.toLowerCase().indexOf(term) !== -1;
-      }));
+      this.filteredAssemblies.next(this.assemblies.filter(a => a.name.toLowerCase().indexOf(term) !== -1 ||
+          a.id.toLowerCase().indexOf(term) !== -1));
     } else {
       this.filteredAssemblies.next(this.assemblies);
     }
