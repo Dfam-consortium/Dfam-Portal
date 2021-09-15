@@ -59,7 +59,7 @@ export class WorkbenchUploadsComponent implements AfterViewInit, OnInit, OnDestr
 
       if (user.role === 'submitter') {
         this.displayColumns =  ['expander', 'file_name', 'upload_date', 'status'];
-      } else if (user.role === 'curator') {
+      } else if (user.role === 'curator' || user.role === 'administrator') {
         this.displayColumns =  ['expander', 'uploaded_by', 'file_name', 'upload_date', 'status'];
         this.editableStatus = true;
       } else {
