@@ -4,7 +4,8 @@
 }
 
 table {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 thead {
@@ -12,9 +13,18 @@ thead {
   top: 0;
 }
 
-table, th, td {
-  border: 1px solid #cccccc;
+th, td {
+  border-right: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
   padding: 0.5em;
+}
+
+tr:first-child th, tr:first-child td {
+  border-top: 1px solid #cccccc;
+}
+
+th:first-child, td:first-child {
+  border-left: 1px solid #cccccc;
 }
 
 th {
