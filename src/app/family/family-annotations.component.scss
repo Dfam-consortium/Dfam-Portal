@@ -3,6 +3,15 @@
   overflow-y: auto;
 }
 
+.karyotype-section {
+  overflow-x: auto;
+}
+
+dfam-family-annotations-karyotype {
+  display: block;
+  overflow-x: auto;
+}
+
 table {
   border-collapse: separate;
   border-spacing: 0;
