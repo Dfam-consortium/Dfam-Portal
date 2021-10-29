@@ -1,13 +1,13 @@
-<div>
-Job submitted: {{serverResponse?.submittedAt}}
-<br>
-Duration: {{serverResponse?.duration}}
-<br>
-Parameters: {{serverResponse?.searchParameters}}
-</div>
-
 <dfam-loader [loading]="loading">
   <p>{{message}}</p>
+
+  <p *ngIf="results">
+  Job submitted: {{serverResponse?.submittedAt}}
+  <br>
+  Duration: {{serverResponse?.duration}}
+  <br>
+  Parameters: {{serverResponse?.searchParameters}}
+  </p>
 
   <mat-form-field *ngIf="results">
     <mat-select placeholder="Query" [(ngModel)]="selectedResult">

@@ -71,8 +71,8 @@ export class SearchSequenceResultsComponent implements OnInit {
           this.selectedResult = res.results[0];
         }
       } else {
-        this.message = 'An error occurred in communication with the server. Retrying...';
-        setTimeout(this.getResults.bind(this), 5000);
+        this.loading = false;
+        this.message = 'An error occurred in contacting the server. Please try refreshing the page or re-submitting this search query.';
       }
     });
   }
