@@ -26,7 +26,7 @@
     "@flowjs/flow.js": "^2.14.1",
     "@flowjs/ngx-flow": "^0.4.6",
     "@traviswheelerlab/dfam-soda": "^1.2.3",
-    "AlignmentSummaryViewer": "git+https://github.com/Dfam-consortium/AlignmentSummaryViewer.git#0.1.2",
+    "AlignmentSummaryViewer": "git+https://github.com/Dfam-consortium/AlignmentSummaryViewer.git#0.1.3",
     "Karyotype": "git+https://github.com/Dfam-consortium/Karyotype.git#0.1.0",
     "core-js": "~3.5.0",
     "custom-event-polyfill": "^1.0.7",
