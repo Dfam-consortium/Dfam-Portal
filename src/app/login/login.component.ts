@@ -43,9 +43,9 @@ export class LoginComponent implements OnInit {
     this.isSubmitting = true;
     this.message = null;
 
-    const credentials = { email: this.email,
-                          fullname: this.fullName,
-                          password: this.password };
+    const credentials = { email: this.email || "",
+                          fullname: this.fullName || "",
+                          password: this.password || "" };
     this.authService
       .attemptAuth(this.loginType, credentials)
       .subscribe(
