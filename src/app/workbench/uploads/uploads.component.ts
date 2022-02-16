@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, ViewChild, OnInit, OnDestroy, HostListener, Injectable } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CanDeactivate, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 
@@ -35,11 +36,18 @@ export class WorkbenchUploadsComponent implements AfterViewInit, OnInit, OnDestr
     return this.uploaderState !== UploaderState.InProgress;
   }
   get canStartUpload(): boolean {
-    return this.uploaderState === UploaderState.FileSelected && this.uploadTermsAgreed;
+    return this.formData.valid && this.uploaderState === UploaderState.FileSelected && this.uploadTermsAgreed;
   }
 
+  formData = new FormGroup({
+    'dataFormat': new FormControl("", Validators.required),
+    'species': new FormControl("", Validators.required),
+    'assembly': new FormControl("", Validators.required),
+    'discoveryMethod': new FormControl(""),
+    'curationMethod': new FormControl(""),
+    'notes': new FormControl(""),
+  });
   selectedFile: File;
-  uploadNotes: string;
   uploadTermsAgreed: boolean;
 
   uploadProgress: number;
@@ -67,8 +75,10 @@ export class WorkbenchUploadsComponent implements AfterViewInit, OnInit, OnDestr
       }
     });
 
+    this.formData.statusChanges.forEach(s => this.updateStatusText());
+
     this.flowConfig = this.dfambackendapi.getFlowConfig();
-    this.flowConfig.query = (_file, _chunk, isTest) => isTest ? undefined : { notes: this.uploadNotes };
+    this.flowConfig.query = (_file, _chunk, isTest) => isTest ? undefined : { notes: this.generateNotes() };
   }
 
   ngAfterViewInit() {
@@ -109,8 +119,10 @@ export class WorkbenchUploadsComponent implements AfterViewInit, OnInit, OnDestr
   }
 
   updateStatusText() {
-    if (this.uploaderState === UploaderState.NoFileSelected) {
-      this.statusText = '';
+    if (!this.formData.valid) {
+      this.statusText = 'Please include all required information.';
+    } else if (this.uploaderState === UploaderState.NoFileSelected) {
+      this.statusText = 'Ready to choose a file.';
     } else if (this.uploaderState === UploaderState.FileSelected) {
       this.statusText = 'Ready to upload.';
     } else if (this.uploaderState === UploaderState.InProgress) {
@@ -122,6 +134,17 @@ export class WorkbenchUploadsComponent implements AfterViewInit, OnInit, OnDestr
     } else {
       throw new Error('updateStatusText: unexpected UploaderState: ' + this.uploaderState);
     }
+  }
+
+  generateNotes () {
+    return `TE Family Format: ${this.formData.controls.dataFormat.value}
+Species: ${this.formData.controls.species.value}
+Assembly: ${this.formData.controls.assembly.value}
+Discovery Method: ${this.formData.controls.discoveryMethod.value}
+Curation Method: ${this.formData.controls.curationMethod.value}
+
+Additional Notes:
+${this.formData.controls.notes.value}`
   }
 
   handleFlowEvent(event) {

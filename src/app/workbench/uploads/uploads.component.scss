@@ -2,6 +2,10 @@
   width: 100%;
 }
 
+::placeholder {
+  font-style: italic;
+}
+
 // Set a fixed size for the expander column instead
 // of letting it automatically adjust
 .uploads-area th:first-child {
