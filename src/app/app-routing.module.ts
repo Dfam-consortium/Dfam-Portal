@@ -23,6 +23,7 @@ import { HelpComponent } from './help/help.component';
 import { HelpFamilyComponent } from './help/help-family.component';
 import { HelpBrowseComponent } from './help/help-browse.component';
 import { HelpSearchComponent } from './help/help-search.component';
+import { HelpWorkbenchComponent } from './help/help-workbench.component';
 import { HelpToolsComponent } from './help/help-tools.component';
 import { HelpApiComponent } from './help/help-api.component';
 import { AboutComponent } from './about/about.component';
@@ -62,6 +63,7 @@ export const PUBLIC_ROUTES: Routes = [
     { path: 'family', component: HelpFamilyComponent },
     { path: 'browse', component: HelpBrowseComponent },
     { path: 'search', component: HelpSearchComponent },
+    { path: 'workbench', component: HelpWorkbenchComponent },
     { path: 'tools', component: HelpToolsComponent },
     { path: 'api', component: HelpApiComponent },
   ] },

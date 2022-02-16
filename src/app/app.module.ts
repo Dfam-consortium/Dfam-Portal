@@ -58,6 +58,7 @@ import { HelpSearchComponent } from './help/help-search.component';
 import { HelpFamilyComponent } from './help/help-family.component';
 import { HelpBrowseComponent } from './help/help-browse.component';
 import { HelpToolsComponent } from './help/help-tools.component';
+import { HelpWorkbenchComponent } from './help/help-workbench.component';
 import { RepositoryComponent } from './repository/repository.component';
 import { RepositoryEntryComponent } from './repository/repository-entry.component';
 import { HelpApiComponent } from './help/help-api.component';
@@ -117,6 +118,7 @@ export function tokenGetter() {
     DnaTerminiComponent,
     ClassificationLayoutComponent,
     PublicationsComponent,
+    HelpWorkbenchComponent,
   ],
   imports: [
     CommonModule,

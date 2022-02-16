@@ -1,0 +1,137 @@
+<div fxFlex.gt-sm="70" fxFlexOffset.gt-sm="15">
+
+<mat-card>
+  <mat-card-title>Submitting Data</mat-card-title>
+  <mat-card-content>
+    <h3>Creating an Account</h3>
+    <p>
+    In order to begin the submission process, you need to register for an account
+    on the Dfam website. There is a login button below the ISB logo in the upper
+    right corner of the Dfam homepage. If you don't have an account, there is a
+    link to create a new account. If you have any questions or problems with
+    registration, <em>please let us know and we can accept your submission via email</em>.
+    </p>
+
+    <p>
+    You will receive an email to verify that the email address is correct and
+    belongs to you. After registering an account and verifying your email address,
+    we will enable your account for data submission.
+    </p>
+
+    <h3>Uploading Files</h3>
+    <p>
+    After you have created an account, you can upload data for submission here:
+    <a routerLink="/workbench/uploads">https://www.dfam.org/workbench/uploads</a>.
+    </p>
+
+    <!-- text copied from /workbench/uploads -->
+
+    <p>
+      The Dfam database primarily consists of curated Transposable Element (TE)
+      families derived from seed alignments.  In addition, Dfam now supports
+      submission of raw output from <em>de novo</em> pipelines such as
+      RepeatModeler, which may include fragments, redundancies, and non-TE
+      repetitive DNA such as gene families or segmental duplications. Such entries
+      will be made available through Dfam but will not go through the full
+      species-specific threshold calculation and annotation processes. Raw families
+      can later be replaced by curated equivalents.
+    </p>
+
+    <p>
+      Submissions should be in the form of <em>seed alignments</em>: multiple
+      alignments of (putative) repetitive element families. The preferred format is
+      Stockholm, as produced by the RepeatModeler tool, however other formats may
+      be submitted.  We do not want format issues to be a barrier to submission,
+      and have resources to assist in this process.  If available, each library
+      should include additional metadata such as family classifications,
+      organism/assembly details, citations, and/or additional project background.
+      We recommend that each dataset be compressed before upload.
+    </p>
+
+    <p>
+      Data submitted through this portal may be included in future Dfam releases
+      after review by the Dfam team. By submitting data for inclusion in Dfam, you
+      agree to release it under the Creative Commons CC0 1.0 public domain license.
+      More information about this license is available at <a
+      href="https://creativecommons.org/publicdomain/zero/1.0/">
+      https://creativecommons.org/publicdomain/zero/1.0/</a>
+    </p>
+
+    <!-- end copy -->
+
+    <h3>Seed Alignments</h3>
+    <p>
+    Dfam families are represented by seed alignments and models derived from those
+    seed alignments, namely consensus sequences and pHMMs (profile Hidden Markov
+    Models). A seed alignment is a multiple sequence alignment of representative
+    instances of a family, including their coordinates within the source
+    assembly(ies). From this multiple alignment, Dfam calls a consensus sequence
+    and builds a pHMM. We build the pHMM such that each position of the model
+    corresponds to the same position within the consensus sequence. In addition to
+    generating pHMMs, preserving seed alignments provides a record of evidence
+    for the called consensus sequence.
+    </p>
+
+    <h3>Seed Alignment file formats</h3>
+    <p>
+    The most important information in a seed alignment are the sequences, including
+    their coordinates within the assembly. We prefer the
+    <a href="https://sonnhammer.sbc.su.se/Stockholm.html">Stockholm format</a>
+    because it
+    accommodates additional metadata, such as authorship, classification, comments,
+    and references. We can accept other formats, such as a fasta file
+    representing a multiple sequence alignment, as long as the sequences and
+    positions are present and consistently labeled.
+    </p>
+
+    <h3>Genome Assemblies</h3>
+    <p>
+    We ask about the genome assembly used to generate TE libraries for several
+    reasons. For libraries submitted as consensus sequences, an assembly is
+    necessary to generate seed alignments. The assembly can also be used to
+    validate the coordinates of sequences within the seed alignment.
+    </p>
+
+    <p>
+    In the case of well-curated libraries, we provide annotations of some
+    assemblies for <a routerLink="/search/annotations">viewing</a> and
+    <a href="/releases/current/annotations">download</a>.
+    </p>
+
+    <p>
+    If the genome is not yet publicly available, please let us know when it
+    becomes public and if any sequence identifiers should be renamed or
+    remapped at that time. In general, sequence identifiers should
+    match the <em>publicly available version</em> of the assembly in the
+    interests of transparency and verifiability.
+    </p>
+
+    <p>
+    If multiple genomes were used to build a library, please provide as much
+    detail as possible on the assemblies used so that we can use the
+    appropriate methods to preprocess it.
+    </p>
+
+    <h3>Generating Seed Alignments from consensus sequences</h3>
+    <p>
+    One can "reverse-engineer" seed alignments from a library of consensus
+    sequences by annotating instances in the genome and assigning each found
+    instance to the most appropriate entry in the library. These assignments of
+    instances become the new seed alignments, from which new consensus
+    sequences are called. The quality of these results depends on the level of
+    curation performed on the library and how well the library corresponds to
+    the true TE content of the assembly.
+    </p>
+
+    <p>
+    We perform this process using the script
+    <code>generateSeedAlignments.pl</code>, available as part of the
+    <a href="http://www.repeatmasker.org/RepeatModeler/">RepeatModeler</a>
+    package in the <code>util/</code> subdirectory. We encourage
+    researchers to run this tool themselves to evaluate the results on their
+    own libraries.
+    </p>
+  </mat-card-content>
+</mat-card>
+
+</div>

@@ -11,6 +11,7 @@ export class HelpComponent implements OnInit {
     { path: './family', label: 'Family' },
     { path: './browse', label: 'Browse' },
     { path: './search', label: 'Search' },
+    { path: './workbench', label: 'Workbench' },
     { path: './tools', label: 'Tools' },
     { path: './api', label: 'API' },
   ];
