@@ -8,7 +8,7 @@
   </div>
   <div fxLayout="column" fxLayoutAlign="center center" style="height: 100%">
     <div>
-      <mat-card style="min-width: 260px;">
+      <mat-card style="min-width: 260px; max-width: 400px;">
         <mat-card-title fxLayout="row" fxLayoutAlign="center center">
           <img height="55" width="177" src="assets/images/dfam_logo.png" alt="Dfam">
         </mat-card-title>
@@ -41,6 +41,12 @@
                   placeholder="Password"
                   [(ngModel)]="password">
             </mat-form-field>
+            <p *ngIf="loginType == 'register'">
+              After registering an account and verifying your email address,
+              we will enable your account for data submission.
+              See the <a routerLink="/help/workbench">help page</a> for more information
+              about submitting data to Dfam.
+            </p>
             <button type="submit" [disabled]="isSubmitting" mat-raised-button color="primary" (click)="submitForm()">
              {{ title }}
             </button>
