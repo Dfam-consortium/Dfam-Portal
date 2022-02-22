@@ -25,7 +25,7 @@
     "@angular/router": "^11.2.14",
     "@flowjs/flow.js": "^2.14.1",
     "@flowjs/ngx-flow": "^0.4.6",
-    "@traviswheelerlab/dfam-soda": "^1.2.3",
+    "@sodaviz/dfam-soda": "^1.0.0",
     "AlignmentSummaryViewer": "git+https://github.com/Dfam-consortium/AlignmentSummaryViewer.git#0.1.4",
     "Karyotype": "git+https://github.com/Dfam-consortium/Karyotype.git#0.1.0",
     "core-js": "~3.5.0",

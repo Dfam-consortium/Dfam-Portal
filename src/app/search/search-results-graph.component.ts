@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, AfterViewChecked, Input, ElementRef, View
 import { fromEvent, Unsubscribable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { DfamAnnotationsGraphic, DfamAnnotationGraphicConfig } from '@traviswheelerlab/dfam-soda';
+import { DfamAnnotationsGraphic, DfamAnnotationGraphicConfig } from '@sodaviz/dfam-soda';
 
 @Component({
   selector: 'dfam-search-results-graph',
@@ -33,7 +33,7 @@ export class SearchResultsGraphComponent implements OnInit, OnDestroy, AfterView
   ngOnInit() {
     this.resizeSubscription = fromEvent(window, 'resize')
       .pipe(debounceTime(50))
-      .subscribe(e => this.redraw());
+      .subscribe(e => this.graphic?.resize());
   }
 
   ngAfterViewChecked() {
@@ -54,11 +54,10 @@ export class SearchResultsGraphComponent implements OnInit, OnDestroy, AfterView
       el.innerHTML = '';
 
       const graphicConf: DfamAnnotationGraphicConfig = {
-        target: el,
+        selector: '.search-results-container',
         data: this.data,
-        binHeight: 14,
-        scaleExtent: [1, 10],
-        translateExtent: (chart) => [[0, 0], [chart.width, chart.height]],
+        rowHeight: 14,
+        zoomConstraint: [1, 10],
       };
       this.graphic = new DfamAnnotationsGraphic(graphicConf);
     }
