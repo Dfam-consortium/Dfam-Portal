@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, ViewChild, OnInit, OnDestroy, HostListener, Injectable } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { CanDeactivate, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 
@@ -39,13 +39,13 @@ export class WorkbenchUploadsComponent implements AfterViewInit, OnInit, OnDestr
     return this.formData.valid && this.uploaderState === UploaderState.FileSelected && this.uploadTermsAgreed;
   }
 
-  formData = new FormGroup({
-    'dataFormat': new FormControl("", Validators.required),
-    'species': new FormControl("", Validators.required),
-    'assembly': new FormControl("", Validators.required),
-    'discoveryMethod': new FormControl(""),
-    'curationMethod': new FormControl(""),
-    'notes': new FormControl(""),
+  formData = new UntypedFormGroup({
+    'dataFormat': new UntypedFormControl("", Validators.required),
+    'species': new UntypedFormControl("", Validators.required),
+    'assembly': new UntypedFormControl("", Validators.required),
+    'discoveryMethod': new UntypedFormControl(""),
+    'curationMethod': new UntypedFormControl(""),
+    'notes': new UntypedFormControl(""),
   });
   selectedFile: File;
   uploadTermsAgreed: boolean;

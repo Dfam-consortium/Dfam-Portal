@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
@@ -15,7 +15,7 @@ import { Classification } from '../../shared/dfam-api/types';
 })
 export class FamilyClassificationDialogComponent implements OnInit {
 
-  classificationSearch = new FormControl('');
+  classificationSearch = new UntypedFormControl('');
 
   rootNode: Classification;
 

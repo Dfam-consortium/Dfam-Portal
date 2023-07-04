@@ -1,6 +1,6 @@
 import { Component, OnInit, Injectable, HostListener } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate } from '@angular/router';
-import { AbstractControl, FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormArray, UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -85,7 +85,7 @@ export class WorkbenchFamilyComponent implements OnInit {
   }
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private dfambackendapi: DfamBackendAPIService,
     private dialog: MatDialog,
     private errorsService: ErrorsService,
@@ -133,7 +133,7 @@ export class WorkbenchFamilyComponent implements OnInit {
   }
 
   addAlias(data?) {
-    const aliasesArray = this.familyForm.controls.aliases as FormArray;
+    const aliasesArray = this.familyForm.controls.aliases as UntypedFormArray;
     data = data || { database: '', alias: '', comment: '', deprecated: false };
     aliasesArray.push(this.fb.group({
       database: [data.database, Validators.required],
@@ -144,7 +144,7 @@ export class WorkbenchFamilyComponent implements OnInit {
   }
 
   addCitation(data?) {
-    const citationsArray = this.familyForm.controls.citations as FormArray;
+    const citationsArray = this.familyForm.controls.citations as UntypedFormArray;
     data = data || { pmid: null, comment: '' };
     citationsArray.push(this.fb.group({
       pmid: [data.pmid, Validators.required],
@@ -153,19 +153,19 @@ export class WorkbenchFamilyComponent implements OnInit {
   }
 
   addClade(data?) {
-    const cladesArray = this.familyForm.controls.clades as FormArray;
+    const cladesArray = this.familyForm.controls.clades as UntypedFormArray;
     data = data || null;
     cladesArray.push(this.fb.control(data, [WorkbenchFamilyComponent.validateClade]));
   }
 
   addSearchStage(data?) {
-    const searchStagesArray = this.familyForm.controls.search_stages as FormArray;
+    const searchStagesArray = this.familyForm.controls.search_stages as UntypedFormArray;
     data = data || null;
     searchStagesArray.push(this.fb.control(data, Validators.required));
   }
 
   addBufferStage(data?) {
-    const bufferStagesArray = this.familyForm.controls.buffer_stages as FormArray;
+    const bufferStagesArray = this.familyForm.controls.buffer_stages as UntypedFormArray;
     data = data || { stage: null, start: 0, end: 0 };
     bufferStagesArray.push(this.fb.group({
       stage: [data.stage, Validators.required],
@@ -196,13 +196,13 @@ export class WorkbenchFamilyComponent implements OnInit {
       controls.curation_notes.setValue(this.family.curation_notes);
       controls.author.setValue(this.family.author);
 
-      const aliasesArray = controls.aliases as FormArray;
+      const aliasesArray = controls.aliases as UntypedFormArray;
       aliasesArray.clear();
       this.family.aliases.forEach(a => {
         this.addAlias(a);
       });
 
-      const citationsArray = controls.citations as FormArray;
+      const citationsArray = controls.citations as UntypedFormArray;
       citationsArray.clear();
       this.knownCitations = {};
       this.family.citations.forEach(c => {
@@ -210,7 +210,7 @@ export class WorkbenchFamilyComponent implements OnInit {
         this.knownCitations[c.pmid] = c.title;
       });
 
-      const cladesArray = controls.clades as FormArray;
+      const cladesArray = controls.clades as UntypedFormArray;
       cladesArray.clear();
       for (let i = 0; i < this.family.clades.length; i++) {
         const full_name = this.family.clades[i];
@@ -221,13 +221,13 @@ export class WorkbenchFamilyComponent implements OnInit {
         });
       }
 
-      const sStagesArray = controls.search_stages as FormArray;
+      const sStagesArray = controls.search_stages as UntypedFormArray;
       sStagesArray.clear();
       this.family.search_stages.forEach(ss => {
         this.addSearchStage(ss.id);
       });
 
-      const bStagesArray = controls.buffer_stages as FormArray;
+      const bStagesArray = controls.buffer_stages as UntypedFormArray;
       bStagesArray.clear();
       this.family.buffer_stages.forEach(bs => {
         this.addBufferStage({ stage: bs.id, start: bs.start, end: bs.end });
@@ -302,9 +302,9 @@ export class WorkbenchFamilyComponent implements OnInit {
     // doesn't match up exactly, we assume all aliases need
     // to be sent to the server.
 
-    const aliasesArray = controls.aliases as FormArray;
-    const aliasObjs = (aliasesArray.controls as FormGroup[]).map(a => {
-       const alias_controls = a.controls as { [key: string]: FormControl };
+    const aliasesArray = controls.aliases as UntypedFormArray;
+    const aliasObjs = (aliasesArray.controls as UntypedFormGroup[]).map(a => {
+       const alias_controls = a.controls as { [key: string]: UntypedFormControl };
       return {
         database: alias_controls['database'].value,
         alias: alias_controls['alias'].value,
@@ -341,9 +341,9 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     // Same with citations as with aliases
 
-    const citationsArray = controls.citations as FormArray;
-    const citationObjs = (citationsArray.controls as FormGroup[]).map(c => {
-      const cit_controls = c.controls as { [key: string]: FormControl };
+    const citationsArray = controls.citations as UntypedFormArray;
+    const citationObjs = (citationsArray.controls as UntypedFormGroup[]).map(c => {
+      const cit_controls = c.controls as { [key: string]: UntypedFormControl };
       return {
         pmid: cit_controls['pmid'].value,
         comment: cit_controls['comment'].value || '',
@@ -376,8 +376,8 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     // Clades is a bit easier because it's just the one field.
 
-    const cladesArray = controls.clades as FormArray;
-    const cladeVals = (cladesArray.controls as FormGroup[])
+    const cladesArray = controls.clades as UntypedFormArray;
+    const cladeVals = (cladesArray.controls as UntypedFormGroup[])
       .map(c => c.value ? parseInt(c.value.id, 10) : NaN)
       .filter(c => !isNaN(c));
 
@@ -400,8 +400,8 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     // Search stages
 
-    const searchStagesArray = controls.search_stages as FormArray;
-    const searchStageVals = (searchStagesArray.controls as FormGroup[]).map(c => c.value);
+    const searchStagesArray = controls.search_stages as UntypedFormArray;
+    const searchStageVals = (searchStagesArray.controls as UntypedFormGroup[]).map(c => c.value);
 
     let searchStagesChanged = false;
     if (searchStageVals.length === old.search_stages.length) {
@@ -422,7 +422,7 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     // Buffer stages
 
-    const bufferStagesArray = controls.buffer_stages as FormArray;
+    const bufferStagesArray = controls.buffer_stages as UntypedFormArray;
     const bufferStageObjs = bufferStagesArray.value;
 
     let bufferStagesChanged = false;
