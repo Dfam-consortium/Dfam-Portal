@@ -3,7 +3,7 @@ import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms
 import { CanDeactivate, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { FlowDirective } from '@flowjs/ngx-flow';
 

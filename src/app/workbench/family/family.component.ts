@@ -2,7 +2,7 @@ import { Component, OnInit, Injectable, HostListener } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate } from '@angular/router';
 import { AbstractControl, UntypedFormBuilder, UntypedFormArray, UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { Observable, Subject, ReplaySubject } from 'rxjs';
 import { map, debounceTime } from 'rxjs/operators';
