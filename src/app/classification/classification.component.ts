@@ -81,7 +81,7 @@ export class ClassificationComponent implements OnInit {
   onDownload() {
     if (this.tsv) {
       const blob = new Blob([this.tsv], { type: 'text/plain' });
-      window.saveAs(blob, 'TEClasses.tsv');
+      // window.saveAs(blob, 'TEClasses.tsv'); TODO UPDATE
     }
   }
 }

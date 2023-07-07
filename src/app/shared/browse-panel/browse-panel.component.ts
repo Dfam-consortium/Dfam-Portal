@@ -3,7 +3,7 @@ import { Subject, Subscription, forkJoin } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
-import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
+import { PageEvent } from '@angular/material/paginator';
 import { FamilyRepository, ClassesRepository, TaxaRepository } from '../dfam-api/common';
 
 function preg_quote( str ) {

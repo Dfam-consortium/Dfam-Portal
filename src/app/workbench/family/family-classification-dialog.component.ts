@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Classification } from '../../shared/dfam-api/types';
 
@@ -15,7 +15,7 @@ import { Classification } from '../../shared/dfam-api/types';
 })
 export class FamilyClassificationDialogComponent implements OnInit {
 
-  classificationSearch = new UntypedFormControl('');
+  classificationSearch = new FormControl('');
 
   rootNode: Classification;
 

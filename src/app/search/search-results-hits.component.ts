@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, Input, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'dfam-search-results-hits',
@@ -49,7 +49,7 @@ export class SearchResultsHitsComponent implements AfterViewInit {
       });
     }
     const blob = new Blob([data], { type: 'text/plain' });
-    window.saveAs(blob, 'search_results.hits');
+    // window.saveAs(blob, 'search_results.hits'); TODO UPDATE
   }
 
 }

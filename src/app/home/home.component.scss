@@ -1,9 +1,8 @@
 // Import material theming functions and definitions
-@use '@angular/material' as mat;
 @import '../../dfam-app-theme';
 
 // Reference standard color theme from dfam-app-theme
-$primary: mat.get-color-from-palette($dfam-app-primary);
+$primary: mat-color($dfam-app-primary);
 
 .mat-expansion-panel-header-title {
   flex-grow: 0;
