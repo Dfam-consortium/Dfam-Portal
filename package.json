@@ -30,6 +30,7 @@
     "d3": "^5.16.0",
     "file-saver": "^2.0.5",
     "Karyotype": "git+https://github.com/Dfam-consortium/Karyotype.git#0.1.0",
+    "ngx-mat-select-search": "^7.0.2",
     "raphael": "^2.3.0",
     "rxjs": "^6.6.7",
     "tslib": "^2.3.1",

@@ -49,7 +49,7 @@ export class SearchResultsHitsComponent implements AfterViewInit {
       });
     }
     const blob = new Blob([data], { type: 'text/plain' });
-    // window.saveAs(blob, 'search_results.hits'); TODO UPDATE
+    window.saveAs(blob, 'search_results.hits');
   }
 
 }

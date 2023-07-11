@@ -37,6 +37,6 @@ export class SearchResultsComponent implements AfterViewInit, OnChanges {
       });
     }
     const blob = new Blob([report], { type: 'text/plain' });
-    // window.saveAs(blob, 'search_results.hits'); TODO UPDATE
+    window.saveAs(blob, 'search_results.hits');
   }
 }

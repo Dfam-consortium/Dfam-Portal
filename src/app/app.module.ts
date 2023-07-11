@@ -14,7 +14,7 @@ import {MatLegacyMenuModule as MatMenuModule} from '@angular/material/legacy-men
 import {MatToolbarModule} from '@angular/material/toolbar';
 
 // Third-party Imports
-// import { NgxMatSelectSearchModule } from 'ngx-mat-select-search'; TODO UPDATE
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 // Application Imports
 import { SharedModule } from './shared/shared.module';
@@ -129,7 +129,7 @@ export function tokenGetter() {
     MatTabsModule,
     MatToolbarModule,
 
-    // NgxMatSelectSearchModule,
+    NgxMatSelectSearchModule,
 
     BrowserModule,
     SharedModule,

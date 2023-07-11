@@ -3,9 +3,6 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// Flex-Layout Import
-// import { FlexLayoutModule } from '@angular/flex-layout'; TODO UPDATE
-
 // Material Imports
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -63,7 +60,6 @@ import { LoaderComponent } from './loader/loader.component';
   ],
   exports: [
     FormsModule,
-    // FlexLayoutModule,
 
     MatAutocompleteModule,
     MatButtonModule,
