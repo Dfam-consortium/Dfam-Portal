@@ -78,7 +78,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'register', component: LoginComponent},
   { path: 'verify', component: VerifyComponent },
-  // { path: 'workbench', loadChildren: () => import('./workbench/workbench.module').then(mod => mod.WorkbenchModule) }, TODO UPDATE
+  { path: 'workbench', loadChildren: () => import('./workbench/workbench.module').then(mod => mod.WorkbenchModule) },
   { path: '', component: PublicLayoutComponent, data: { title: 'Public Views' }, children: PUBLIC_ROUTES },
 ];
 

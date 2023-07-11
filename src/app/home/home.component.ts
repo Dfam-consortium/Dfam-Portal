@@ -6,7 +6,7 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
   templateUrl: './home.component.html',
-  // styleUrls: ['./home.component.scss'] TODO UPDATE
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
 
