@@ -13,7 +13,10 @@
 //  If you don't need the default component typographies but still want the hierarchy styles,
 //  you can delete this line and instead use:
 //    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
-@include mat.all-legacy-component-typographies();
+// @include mat.all-legacy-component-typographies();
+// @include mat.legacy-core();
+
+@include mat.core();
 @include mat.legacy-core();
 
 //
@@ -55,14 +58,22 @@ $mat-dfam: (
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$dfam-app-primary: mat.define-palette($mat-dfam);
+$dfam-app-primary: mat.define-palette($mat-dfam, 500);
 $dfam-app-accent:  mat.define-palette($mat-dfam, 600, A100, A400);
 
 // The warn palette is optional (defaults to red).
 $dfam-app-warn:    mat.define-palette(mat.$red-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$dfam-app-theme: mat.define-light-theme($dfam-app-primary, $dfam-app-accent, $dfam-app-warn);
+$dfam-app-theme: mat.define-light-theme((
+    color: (
+        primary: $dfam-app-primary, 
+        accent: $dfam-app-accent, 
+        warn: $dfam-app-warn
+        ),
+    typography: mat.define-typography-config(),
+    density: 0,
+));
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component

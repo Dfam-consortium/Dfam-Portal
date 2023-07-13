@@ -4,6 +4,9 @@
 // Import material theming functions and definitions
 @use 'dfam-app-theme' as theme;
 
+@include mat.core();
+@include mat.legacy-core();
+
 // Import Roboto font
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
 
