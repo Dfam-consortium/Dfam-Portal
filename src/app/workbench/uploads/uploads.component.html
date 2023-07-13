@@ -95,17 +95,17 @@
 
   <hr>
 
-  <ng-container #flow="flow" [flowConfig]="flowConfig"></ng-container>
+  <!-- <ng-container #flow="flow" [flowConfig]="flowConfig"></ng-container> -->
 
   <div fxLayout="column" fxLayoutGap="1em" fxLayoutAlign="center stretch">
-    <input #fileInput type="file" class="hidden" flowButton [flow]="flow.flowJs" [disabled]="!canSelectFile">
-    <div class="drop-area" flowDrop [flow]="flow.flowJs"
+    <!-- <input #fileInput type="file" class="hidden" flowButton [flow]="flow.flowJs" [disabled]="!canSelectFile"> -->
+    <!-- <div class="drop-area" flowDrop [flow]="flow.flowJs"
         fxLayout="row" fxLayoutAlign="center center">
       Drop a file here
-    </div>
-    <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">
+    </div> TODO UPDATE ngx-flow-->
+    <!-- <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">
       Browse
-    </button>
+    </button> -->
   </div>
 
   <p *ngIf="selectedFile">Selected file: {{selectedFile.name}}</p>
@@ -118,10 +118,10 @@
       CC0 Public Domain license.
     </mat-checkbox>
     <br>
-    <button type="button" mat-raised-button color="primary"
+    <!-- <button type="button" mat-raised-button color="primary"
         (click)="flow.upload()" [disabled]="!canStartUpload">
       Upload
-    </button>
+    </button> -->
     <p>{{statusText}}</p>
     <mat-progress-bar *ngIf="uploaderState == UploaderState.InProgress" mode="determinate" [value]="100 * uploadProgress">
     </mat-progress-bar>
