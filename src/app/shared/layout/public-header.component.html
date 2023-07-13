@@ -1,5 +1,5 @@
 <div>
-  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="space-between center">
+  <div class="headerdiv" fxLayout="row" fxLayout.lt-md="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="space-between center">
     <a routerLink="/">
       <img class='dflogo' src="assets/images/dfam_logo.png" alt="Dfam" />
     </a>
@@ -18,7 +18,7 @@
       <img class='isblogo' src="assets/images/ISB_Logo.png" alt="ISB" />
     </a>
   </div>
-  <div fxLayout="row" fxHide fxShow.gt-xs='true'>
+  <div class="loginrow" fxLayout="row" fxHide fxShow.gt-xs='true'>
     <span fxFlex></span>
     <ng-container *ngIf="isAuthenticated | async; else notAuthenticated">
       <a routerLink="/workbench"><b>Workbench</b></a>

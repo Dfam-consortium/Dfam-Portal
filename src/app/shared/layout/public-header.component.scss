@@ -12,6 +12,14 @@
 }
 
 // Site navigation menu div
+.headerdiv {
+  flex-direction: row; 
+  box-sizing: border-box; 
+  display: flex; 
+  place-content: center space-between; 
+  align-items: center;
+}
+
 .sitenavdiv {
   text-align: center;
 }
@@ -19,4 +27,10 @@
 .sitenavdiv .active {
   font-weight: bold;
   text-decoration: underline 2px;
+}
+
+.loginrow {
+  flex-direction: row; 
+  box-sizing: border-box; 
+  display: flex;
 }
