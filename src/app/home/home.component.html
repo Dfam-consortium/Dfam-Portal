@@ -1,4 +1,4 @@
-<div class='dfam-home' fxLayout="row" fxFlex.gt-sm="50" fxFlexOffset.gt-sm="25">
+<div class='dfam-home' data-layout="row" data-flex-gt-sm="50" fxFlexOffset.gt-sm="25">
   <div>
     <h2>Dfam release 3.7 (January 2023)</h2>
 
@@ -39,14 +39,14 @@
             <mat-panel-description>Analyze your DNA sequence for Dfam matches</mat-panel-description>
           </mat-expansion-panel-header>
           <dfam-loader [loading]="searchSubmitting">
-            <div fxFlex.gt-sm="80" fxFlexOffset.gt-sm="32">
+            <div data-flex-gt-sm="80" fxFlexOffset.gt-sm="32">
             <div>
-              <mat-form-field fxFlex="100">
+              <mat-form-field data-flex="100">
                 <textarea matInput rows="10" cols="60" placeholder="Sequence" [(ngModel)]="searchSequence"></textarea>
               </mat-form-field>
             </div>
 
-            <div fxLayout="row" fxLayoutAlign="start center">
+            <div data-layout="row" data-layout-align="start center">
               <dfam-assembly-picker
                 [assemblies]="searchSequenceAssemblies"
                 [(value)]="searchSequenceAssembly"
@@ -78,12 +78,12 @@
             Enter an accession or name (e.g. DF0000001 or Harlequin) to see all data for that entry.
             </p>
 
-            <form fxLayout="row">
-              <mat-form-field fxFlex.gt-sm="80">
+            <form data-layout="row">
+              <mat-form-field data-flex-gt-sm="80">
                 <input matInput type="text" name="accession" placeholder="Accession" [(ngModel)]="gotoEntryTarget">
               </mat-form-field>
               &nbsp;
-              <div fxLayoutAlign="space-around center">
+              <div data-layout-align="space-around center">
               <button mat-raised-button color="primary" (click)="onGotoEntry()">Go</button>
               </div>
             </form>
@@ -95,27 +95,27 @@
             <mat-panel-description>View pre-calculated annotations on a DNA sequence</mat-panel-description>
           </mat-expansion-panel-header>
 
-          <div fxLayout="row">
-            <form fxFlex.gt-sm="80" fxFlexOffset.gt-sm="32">
+          <div data-layout="row">
+            <form data-flex-gt-sm="80" fxFlexOffset.gt-sm="32">
 
               <div>
                 <dfam-assembly-picker
-                  fxFlex="0 1 auto"
+                  data-flex="0 1 auto"
                   [assemblies]="assemblies"
                   [(value)]="annotations.assembly" >
                 </dfam-assembly-picker>
                 &nbsp;
-                <mat-form-field fxFlex="0 1 auto">
+                <mat-form-field data-flex="0 1 auto">
                   <input matInput placeholder="Chromosome" name="chromosome" [(ngModel)]="annotations.chromosome">
                 </mat-form-field>
               </div>
 
               <div>
-                <mat-form-field fxFlex="0 1 auto">
+                <mat-form-field data-flex="0 1 auto">
                   <input matInput placeholder="Start" name="start" [(ngModel)]="annotations.start">
                 </mat-form-field>
                 &nbsp;
-                <mat-form-field fxFlex="0 1 auto">
+                <mat-form-field data-flex="0 1 auto">
                   <input matInput placeholder="End" name="end" [(ngModel)]="annotations.end">
                 </mat-form-field>
               </div>
@@ -135,12 +135,12 @@
             <mat-panel-description>Query Dfam by keywords</mat-panel-description>
           </mat-expansion-panel-header>
 
-          <form fxLayout.gt-sm="row">
-            <mat-form-field fxFlex.gt-sm="80" fxFlexOffset.gt-sm="32">
+          <form data-layout-gt-sm="row">
+            <mat-form-field data-flex-gt-sm="80" fxFlexOffset.gt-sm="32">
               <input matInput type="text" name="keywords" placeholder="Keywords" [(ngModel)]="searchKeywords">
             </mat-form-field>
             &nbsp;
-            <div fxLayout="row" fxLayoutAlign="start center">
+            <div data-layout="row" data-layout-align="start center">
               <button mat-raised-button color="primary" (click)="searchByKeywords()">Go</button>
               &nbsp;
               <button mat-raised-button type="button" (click)="searchKeywords='tigger'">Example</button>

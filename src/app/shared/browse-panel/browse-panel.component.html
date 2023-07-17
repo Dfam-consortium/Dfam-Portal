@@ -152,9 +152,9 @@
     <tr mat-row *matRowDef="let families; columns: displayColumns"></tr>
   </table>
 
-  <div fxLayout="row">
-    <div fxLayout="row" fxLayoutAlign="left center">
-      <div fxLayoutGap="15px" [class.hidden]="disableDownload">
+  <div data-layout="row">
+    <div data-layout="row" data-layout-align="left center">
+      <div data-layout-gap="15px" [class.hidden]="disableDownload">
         <span>Download these results:</span>
         <a [href]="downloadUrls['hmm']">HMM</a>
         <a [href]="downloadUrls['embl']">EMBL</a>

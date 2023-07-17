@@ -3,17 +3,17 @@
     <input matInput #searchVal placeholder="Search (e.g. 'CACA' or '1' or '2-10')" value="" (keyup)="onKeyPress(searchVal.value)">
   </mat-form-field>
 </form>
-<div fxLayout="row" fxLayoutGap="10px" class="sequence-div">
-    <div fxLayout="column" >
+<div data-layout="row" data-layout-gap="10px" class="sequence-div">
+    <div data-layout="column" >
       <div *ngFor="let line of formatted_sequence_lines" class="seq-font">
        {{line.start}}
       </div>
     </div>
-    <div fxLayout="column" >
+    <div data-layout="column" >
       <div *ngFor="let line of formatted_sequence_lines" class="seq-font" [innerHTML]="line.text">
       </div>
     </div>
-    <div fxLayout="column" >
+    <div data-layout="column" >
       <div *ngFor="let line of formatted_sequence_lines" class="seq-font">
         {{line.end}}
       </div>

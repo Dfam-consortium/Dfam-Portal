@@ -1,7 +1,7 @@
 <div *ngIf="family" >
-  <div class="family-content" fxLayout.gt-sm="row" fxLayoutAlign="center start" >
+  <div class="family-content" data-layout-gt-sm="row" data-layout-align="center start" >
 
-    <div fxFlex="100" fxFlex.gt-sm="90">
+    <div data-flex="100" data-flex-gt-sm="90">
       <h2 class="green" style="margin-bottom:5px;">{{family.accession}}.{{family.version}}
         <span *ngIf="family.name">
         [{{family.name}}]
@@ -15,7 +15,7 @@
         {{family.title}}
       </div>
   
-      <nav mat-tab-nav-bar mat-stretch-tabs fxHide fxShow.gt-md='true'>
+      <nav mat-tab-nav-bar mat-stretch-tabs data-hide data-show-gt-md='true'>
         <ng-container *ngFor="let link of navLinks">
           <a mat-tab-link
             *ngIf="link.available"
@@ -27,8 +27,8 @@
         </ng-container>
       </nav>
   
-      <button mat-flat-button [matMenuTriggerFor]="menu" fxShow fxHide.gt-md='true'>
-          <div fxLayout="row" fxLayoutAlign=" center">
+      <button mat-flat-button [matMenuTriggerFor]="menu" data-show data-hide-gt-md='true'>
+          <div data-layout="row" data-layout-align=" center">
           <mat-icon>menu</mat-icon> 
           <div class="menu-gap"></div>
           <h3><b class="menu-selected-label">{{menuLabel}}</b></h3>
@@ -41,7 +41,7 @@
             <span>{{link.label}}</span>
         </button>
       </mat-menu>
-      <mat-divider fxShow fxHide.gt-md='true'></mat-divider>
+      <mat-divider data-show data-hide-gt-md='true'></mat-divider>
     
       <router-outlet></router-outlet>
     </div>

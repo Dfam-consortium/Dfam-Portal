@@ -3,23 +3,23 @@
 <div #outlet>
 </div>
 
-<div fxLayout="column">
+<div data-layout="column">
 <h3 class="underline-span">Coding Sequences <dfam-help-icon link="/help/family#features" [tooltip]="help.coding_seqs"></dfam-help-icon></h3>
 
 <div *ngIf="!family?.coding_seqs?.length">
 No curated coding sequences recorded for this family.
 </div>
 
-<div fxLayout="row" fxFlexOffset="1">
-<div fxLayout="column" fxLayoutAlign="start stretch"  fxLayoutGap="8px" fxFlexOffset="4">
+<div data-layout="row" fxFlexOffset="1">
+<div data-layout="column" data-layout-align="start stretch"  data-layout-gap="8px" fxFlexOffset="4">
 <mat-card *ngFor="let cs of family?.coding_seqs">
   <mat-card-content>
-    <div fxLayout="column" fxLayoutGap="8px">
+    <div data-layout="column" data-layout-gap="8px">
     <div><strong>Product:&nbsp;</strong>{{cs.product}}</div>
-    <div fxLayout="row"><strong>Description:&nbsp;</strong><div> {{cs.description}}</div></div>
+    <div data-layout="row"><strong>Description:&nbsp;</strong><div> {{cs.description}}</div></div>
     <div><strong>Protein Type:&nbsp;</strong>{{cs.protein_type}}</div>
-    <div fxLayout="row">
-    <mat-expansion-panel fxFlex.gt-xs="50">
+    <div data-layout="row">
+    <mat-expansion-panel data-flex-gt-xs="50">
       <mat-expansion-panel-header>
         <mat-panel-title>Translation</mat-panel-title>
       </mat-expansion-panel-header>
