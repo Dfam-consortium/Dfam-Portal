@@ -132,17 +132,17 @@
       <mat-list>
         <mat-list-item *ngFor="let group of this.familyForm.controls.buffer_stages.controls; index as i;">
           <div data-layout="row" data-layout-align="start baseline" class="wide">
-            <mat-form-field data-flex="calc(50px)">
+            <mat-form-field fixed-flex="50">
               <mat-select placeholder="Buffer Stage" [formControl]="group.controls.stage">
                 <mat-option *ngFor="let option of this.rmStageOptions" [value]="option.id">
                   {{option.id}} - {{option.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field data-flex="calc(50px)" flex-offset="1em">
+            <mat-form-field fixed-flex="50" flex-offset="1em">
               <input matInput type="number" placeholder="Start" [formControl]="group.controls.start">
             </mat-form-field>
-            <mat-form-field data-flex="calc(50px)" flex-offset="1em">
+            <mat-form-field fixed-flex="50" flex-offset="1em">
               <input matInput type="number" placeholder="End" [formControl]="group.controls.end">
             </mat-form-field>
             <button mat-icon-button data-flex="none" flex-offset="1em"
@@ -203,11 +203,11 @@
                 [matTooltip]="displayCitationById(group.controls.pmid.value)">
               {{displayCitationById(group.controls.pmid.value)}}
             </span>
-            <mat-form-field data-flex="0 0 calc(100px)" flex-offset="1em">
+            <mat-form-field fixed-flex="100" flex-offset="1em">
               <input matInput type="number" placeholder="PubMed ID"
                 [formControl]="group.controls.pmid">
             </mat-form-field>
-            <mat-form-field data-flex="0 0 calc(200px)" flex-offset="1em">
+            <mat-form-field fixed-flex="200" flex-offset="1em">
               <input matInput type="text" placeholder="Comment"
                 [formControl]="group.controls.comment">
             </mat-form-field>
@@ -234,15 +234,15 @@
         <mat-list-item
             *ngFor="let group of this.familyForm.controls.aliases.controls; index as i;">
           <div data-layout="row" data-layout-align="start baseline" class="wide">
-            <mat-form-field data-flex="calc(50px)">
+            <mat-form-field fixed-flex="50">
               <input matInput type="text" placeholder="Database"
                 [formControl]="group.controls.database">
             </mat-form-field>
-            <mat-form-field data-flex="calc(50px)" flex-offset="1em">
+            <mat-form-field fixed-flex="50" flex-offset="1em">
               <input matInput type="text" placeholder="Alias"
                 [formControl]="group.controls.alias">
             </mat-form-field>
-            <mat-form-field data-flex="calc(50px)" flex-offset="1em">
+            <mat-form-field fixed-flex="50" flex-offset="1em">
               <input matInput type="text" placeholder="Comment"
                 [formControl]="group.controls.comment">
             </mat-form-field>
