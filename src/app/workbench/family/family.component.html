@@ -71,7 +71,7 @@
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
-            <button mat-icon-button data-flex="none" fxFlexOffset="1em"
+            <button mat-icon-button data-flex="none" flex-offset="1em"
                 (click)="this.familyForm.controls.clades.removeAt(i)">
               <mat-icon>remove_circle_outline</mat-icon>
             </button>
@@ -111,7 +111,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <button mat-icon-button data-flex="none" fxFlexOffset="1em"
+            <button mat-icon-button data-flex="none" flex-offset="1em"
                 (click)="this.familyForm.controls.search_stages.removeAt(i)">
               <mat-icon>remove_circle_outline</mat-icon>
             </button>
@@ -139,13 +139,13 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field data-flex="calc(50px)" fxFlexOffset="1em">
+            <mat-form-field data-flex="calc(50px)" flex-offset="1em">
               <input matInput type="number" placeholder="Start" [formControl]="group.controls.start">
             </mat-form-field>
-            <mat-form-field data-flex="calc(50px)" fxFlexOffset="1em">
+            <mat-form-field data-flex="calc(50px)" flex-offset="1em">
               <input matInput type="number" placeholder="End" [formControl]="group.controls.end">
             </mat-form-field>
-            <button mat-icon-button data-flex="none" fxFlexOffset="1em"
+            <button mat-icon-button data-flex="none" flex-offset="1em"
                 (click)="this.familyForm.controls.buffer_stages.removeAt(i)">
               <mat-icon>remove_circle_outline</mat-icon>
             </button>
@@ -203,15 +203,15 @@
                 [matTooltip]="displayCitationById(group.controls.pmid.value)">
               {{displayCitationById(group.controls.pmid.value)}}
             </span>
-            <mat-form-field data-flex="0 0 calc(100px)" fxFlexOffset="1em">
+            <mat-form-field data-flex="0 0 calc(100px)" flex-offset="1em">
               <input matInput type="number" placeholder="PubMed ID"
                 [formControl]="group.controls.pmid">
             </mat-form-field>
-            <mat-form-field data-flex="0 0 calc(200px)" fxFlexOffset="1em">
+            <mat-form-field data-flex="0 0 calc(200px)" flex-offset="1em">
               <input matInput type="text" placeholder="Comment"
                 [formControl]="group.controls.comment">
             </mat-form-field>
-            <button mat-icon-button data-flex="none" fxFlexOffset="1em"
+            <button mat-icon-button data-flex="none" flex-offset="1em"
                 (click)="this.familyForm.controls.citations.removeAt(i)">
               <mat-icon>remove_circle_outline</mat-icon>
             </button>
@@ -238,19 +238,19 @@
               <input matInput type="text" placeholder="Database"
                 [formControl]="group.controls.database">
             </mat-form-field>
-            <mat-form-field data-flex="calc(50px)" fxFlexOffset="1em">
+            <mat-form-field data-flex="calc(50px)" flex-offset="1em">
               <input matInput type="text" placeholder="Alias"
                 [formControl]="group.controls.alias">
             </mat-form-field>
-            <mat-form-field data-flex="calc(50px)" fxFlexOffset="1em">
+            <mat-form-field data-flex="calc(50px)" flex-offset="1em">
               <input matInput type="text" placeholder="Comment"
                 [formControl]="group.controls.comment">
             </mat-form-field>
-            <mat-checkbox data-flex="none" fxFlexOffset="1em"
+            <mat-checkbox data-flex="none" flex-offset="1em"
                 [formControl]="group.controls.deprecated">
               Deprecated
             </mat-checkbox>
-            <button mat-icon-button data-flex="none" fxFlexOffset="1em"
+            <button mat-icon-button data-flex="none" flex-offset="1em"
                 (click)="this.familyForm.controls.aliases.removeAt(i)">
               <mat-icon>remove_circle_outline</mat-icon>
             </button>
