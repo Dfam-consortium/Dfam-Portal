@@ -1,5 +1,7 @@
 .filters > div {
   display: inline-block;
+  place-content:  space-between; 
+  align-items: center;
 }
 
 .browse mat-paginator {
@@ -8,6 +10,7 @@
 
 mat-form-field, mat-checkbox {
   margin: 0 0.5em;
+  appearance: "fill";
 }
 
 .classification-option, .clade-option {
