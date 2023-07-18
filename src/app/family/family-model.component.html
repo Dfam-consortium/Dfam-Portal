@@ -50,7 +50,7 @@
   <dfam-assembly-picker [(value)]="selectedAssembly" [assemblies]="assemblies">
   </dfam-assembly-picker>
 
-  <mat-card *ngIf="selectedAssembly">
+  <mat-card appearance="outlined" *ngIf="selectedAssembly">
 
     <h4>Coverage, Conservation, and Inserts <dfam-help-icon link="/help/family#model" [tooltip]="help.conservation"></dfam-help-icon></h4>
 

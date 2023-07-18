@@ -65,7 +65,7 @@ No statistics are available for this family. It might not be in any assemblies c
       <dfam-assembly-picker [(value)]="selectedAssembly" [assemblies]="assemblies">
       </dfam-assembly-picker>
 
-      <mat-card *ngIf="selectedAssembly">
+      <mat-card appearance="outlined" *ngIf="selectedAssembly">
         <mat-radio-group [(ngModel)]="selectedVisualizationType">
           <mat-radio-button name="image_type" value="nrph">Non-Redundant Hits</mat-radio-button>
           &nbsp;

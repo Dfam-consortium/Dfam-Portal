@@ -12,7 +12,7 @@ No curated coding sequences recorded for this family.
 
 <div data-layout="row" flex-offset="1">
 <div data-layout="column" data-layout-align="start stretch"  data-layout-gap="8px" flex-offset="4">
-<mat-card *ngFor="let cs of family?.coding_seqs">
+<mat-card appearance="outlined" *ngFor="let cs of family?.coding_seqs">
   <mat-card-content>
     <div data-layout="column" data-layout-gap="8px">
     <div><strong>Product:&nbsp;</strong>{{cs.product}}</div>
