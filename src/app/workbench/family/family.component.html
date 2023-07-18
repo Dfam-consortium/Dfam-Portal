@@ -2,7 +2,7 @@
 
 <mat-toolbar color="primary">
 <mat-toolbar-row>
-  <h2 data-flex="1 1 auto">
+  <h2 data-flex="auto">
     {{family.accession}}.{{family.version}}
   </h2>
   <button mat-icon-button (click)="openHelp()">
@@ -42,11 +42,11 @@
       <div
           data-layout-gt-sm="row" data-layout-align-gt-sm="space-between center"
           data-layout-lt-md="column">
-        <span data-flex-gt-sm="0 0 auto"><strong>Classification:</strong>&nbsp;</span>
+        <span data-flex-gt-sm="none"><strong>Classification:</strong>&nbsp;</span>
         <span>
         {{ displayClassById(familyForm.controls.classification_id.value) | async }}
         </span>
-        <button data-flex-gt-sm="0 0 auto" mat-raised-button (click)="pickClassification()"><mat-icon>list</mat-icon> Choose</button>
+        <button data-flex-gt-sm="none" mat-raised-button (click)="pickClassification()"><mat-icon>list</mat-icon> Choose</button>
       </div>
     </div>
 
@@ -71,7 +71,7 @@
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
-            <button mat-icon-button data-flex="0 0 auto" fxFlexOffset="1em"
+            <button mat-icon-button data-flex="none" fxFlexOffset="1em"
                 (click)="this.familyForm.controls.clades.removeAt(i)">
               <mat-icon>remove_circle_outline</mat-icon>
             </button>
@@ -111,7 +111,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <button mat-icon-button data-flex="0 0 auto" fxFlexOffset="1em"
+            <button mat-icon-button data-flex="none" fxFlexOffset="1em"
                 (click)="this.familyForm.controls.search_stages.removeAt(i)">
               <mat-icon>remove_circle_outline</mat-icon>
             </button>
@@ -145,7 +145,7 @@
             <mat-form-field data-flex="calc(50px)" fxFlexOffset="1em">
               <input matInput type="number" placeholder="End" [formControl]="group.controls.end">
             </mat-form-field>
-            <button mat-icon-button data-flex="0 0 auto" fxFlexOffset="1em"
+            <button mat-icon-button data-flex="none" fxFlexOffset="1em"
                 (click)="this.familyForm.controls.buffer_stages.removeAt(i)">
               <mat-icon>remove_circle_outline</mat-icon>
             </button>
@@ -199,7 +199,7 @@
       <mat-list>
         <mat-list-item *ngFor="let group of this.familyForm.controls.citations.controls; index as i;">
           <div data-layout="row" data-layout-align="start baseline" class="wide">
-            <span class="clipped" data-flex="1 1 auto"
+            <span class="clipped" data-flex="auto"
                 [matTooltip]="displayCitationById(group.controls.pmid.value)">
               {{displayCitationById(group.controls.pmid.value)}}
             </span>
@@ -211,7 +211,7 @@
               <input matInput type="text" placeholder="Comment"
                 [formControl]="group.controls.comment">
             </mat-form-field>
-            <button mat-icon-button data-flex="0 0 auto" fxFlexOffset="1em"
+            <button mat-icon-button data-flex="none" fxFlexOffset="1em"
                 (click)="this.familyForm.controls.citations.removeAt(i)">
               <mat-icon>remove_circle_outline</mat-icon>
             </button>
@@ -246,11 +246,11 @@
               <input matInput type="text" placeholder="Comment"
                 [formControl]="group.controls.comment">
             </mat-form-field>
-            <mat-checkbox data-flex="0 0 auto" fxFlexOffset="1em"
+            <mat-checkbox data-flex="none" fxFlexOffset="1em"
                 [formControl]="group.controls.deprecated">
               Deprecated
             </mat-checkbox>
-            <button mat-icon-button data-flex="0 0 auto" fxFlexOffset="1em"
+            <button mat-icon-button data-flex="none" fxFlexOffset="1em"
                 (click)="this.familyForm.controls.aliases.removeAt(i)">
               <mat-icon>remove_circle_outline</mat-icon>
             </button>

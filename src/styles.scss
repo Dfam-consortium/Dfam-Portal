@@ -3,12 +3,25 @@
 
 // Import material theming functions and definitions
 @use 'dfam-app-theme' as theme;
+@use "css-fx-layout" as fx;
 
 @include mat.core();
 @include mat.legacy-core();
 
 // Import Roboto font
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
+
+
+// If you want to include the responsive API selectors
+$includeResponsiveApi: true;
+
+// If you choose to use attribute selectors:
+@include fx.attribute-selectors($includeResponsiveApi);
+@include fx.gap-attribute-selectors(1, 16, 1, px em, $includeResponsiveApi);
+@include fx.gap-attribute-selectors-from-list(32 48, px em, $includeResponsiveApi);
+// @include fx.flex-size-attribute-selectors(5, 100, 5, $includeResponsiveApi);
+@include fx.flex-size-attribute-selectors-from-list(50 60 70 80 90, $includeResponsiveApi);
+
 
 // Reference standard color theme from dfam-app-theme
 $primary: mat.get-color-from-palette(theme.$dfam-app-primary, default);
@@ -168,6 +181,29 @@ th.mat-header-cell, td.mat-cell {
 .help-tooltip {
   font-size: 95%;
 }
+
+@media screen and (min-width: 600px){
+  div[offset-gt-sm='15']{
+    margin-left: 15%;
+  }
+
+  div[offset-gt-sm='20']{
+    margin-left: 20%;
+  }
+
+  div[offset-gt-sm='25']{
+    margin-left: 25%;
+  }
+
+  div[offset-gt-sm='32']{
+    margin-left: 32%;
+  }
+}
+
+
+
+
+
 
 // OLD Dfam CSS -- wading through it to see what we want
 

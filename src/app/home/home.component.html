@@ -1,4 +1,4 @@
-<div class='dfam-home' data-layout="row" data-flex-gt-sm="50" fxFlexOffset.gt-sm="25">
+<div data-layout="row" data-flex-gt-sm="50" offset-gt-sm="25">
   <div>
     <h2>Dfam release 3.7 (January 2023)</h2>
 
@@ -100,22 +100,22 @@
 
               <div>
                 <dfam-assembly-picker
-                  data-flex="0 1 auto"
+                  data-flex="initial"
                   [assemblies]="assemblies"
                   [(value)]="annotations.assembly" >
                 </dfam-assembly-picker>
                 &nbsp;
-                <mat-form-field data-flex="0 1 auto">
+                <mat-form-field data-flex="initial">
                   <input matInput placeholder="Chromosome" name="chromosome" [(ngModel)]="annotations.chromosome">
                 </mat-form-field>
               </div>
 
               <div>
-                <mat-form-field data-flex="0 1 auto">
+                <mat-form-field data-flex="initial">
                   <input matInput placeholder="Start" name="start" [(ngModel)]="annotations.start">
                 </mat-form-field>
                 &nbsp;
-                <mat-form-field data-flex="0 1 auto">
+                <mat-form-field data-flex="initial">
                   <input matInput placeholder="End" name="end" [(ngModel)]="annotations.end">
                 </mat-form-field>
               </div>
