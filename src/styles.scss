@@ -5,8 +5,9 @@
 @use 'dfam-app-theme' as theme;
 @use "css-fx-layout" as fx;
 
-@include mat.core();
-@include mat.legacy-core();
+
+// Emit theme-dependent styles for common features used across multiple components.
+@include mat.core-theme(theme.$dfam-app-theme);
 
 // Import Roboto font
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
@@ -417,3 +418,6 @@ div[fixed-flex='200']{
 //                top: 5px; // adjust for svg viewbox
 //            }
 //        }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

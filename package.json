@@ -27,6 +27,7 @@
     "@sodaviz/dfam-soda": "^1.0.1",
     "AlignmentSummaryViewer": "git+https://github.com/Dfam-consortium/AlignmentSummaryViewer.git#0.1.4",
     "core-js": "~3.5.0",
+    "css-fx-layout": "^3.0.4",
     "custom-event-polyfill": "^1.0.7",
     "d3": "^5.16.0",
     "file-saver": "^2.0.5",
