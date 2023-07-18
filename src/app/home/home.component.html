@@ -39,7 +39,7 @@
             <mat-panel-description>Analyze your DNA sequence for Dfam matches</mat-panel-description>
           </mat-expansion-panel-header>
           <dfam-loader [loading]="searchSubmitting">
-            <div data-flex-gt-sm="80" fxFlexOffset.gt-sm="32">
+            <div data-flex-gt-sm="80" offset-gt-sm="32">
             <div>
               <mat-form-field data-flex="100">
                 <textarea matInput rows="10" cols="60" placeholder="Sequence" [(ngModel)]="searchSequence"></textarea>
@@ -73,7 +73,7 @@
             <mat-panel-description>View Dfam entry annotation and alignments</mat-panel-description>
           </mat-expansion-panel-header>
 
-          <div fxFlexOffset.gt-sm="32">
+          <div offset-gt-sm="32">
             <p>
             Enter an accession or name (e.g. DF0000001 or Harlequin) to see all data for that entry.
             </p>
@@ -96,7 +96,7 @@
           </mat-expansion-panel-header>
 
           <div data-layout="row">
-            <form data-flex-gt-sm="80" fxFlexOffset.gt-sm="32">
+            <form data-flex-gt-sm="80" offset-gt-sm="32">
 
               <div>
                 <dfam-assembly-picker
@@ -136,7 +136,7 @@
           </mat-expansion-panel-header>
 
           <form data-layout-gt-sm="row">
-            <mat-form-field data-flex-gt-sm="80" fxFlexOffset.gt-sm="32">
+            <mat-form-field data-flex-gt-sm="80" offset-gt-sm="32">
               <input matInput type="text" name="keywords" placeholder="Keywords" [(ngModel)]="searchKeywords">
             </mat-form-field>
             &nbsp;
