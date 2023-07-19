@@ -39,8 +39,10 @@
 </p>
 
 <mat-card appearance="outlined" class="upload-card">
-  <mat-card-title>Submit a data file</mat-card-title>
-
+  <mat-card-header>
+    <mat-card-title>Submit a data file</mat-card-title>
+  </mat-card-header>
+<mat-card-content>
   <p><strong>Required information:</strong></p>
 
   <strong>TE family format.</strong><br>
@@ -126,6 +128,7 @@
     <mat-progress-bar *ngIf="uploaderState == UploaderState.InProgress" mode="determinate" [value]="100 * uploadProgress">
     </mat-progress-bar>
   </div>
+</mat-card-content>
 </mat-card>
 
 <dfam-loader [loading]="loading">
