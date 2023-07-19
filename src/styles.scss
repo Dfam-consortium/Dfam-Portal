@@ -8,6 +8,10 @@
 
 // Emit theme-dependent styles for common features used across multiple components.
 @include mat.core-theme(theme.$dfam-app-theme);
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes(theme.$dfam-app-theme);
 
 // Import Roboto font
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
