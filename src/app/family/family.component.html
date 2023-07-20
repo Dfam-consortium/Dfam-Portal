@@ -15,7 +15,7 @@
         {{family.title}}
       </div>
   
-      <nav mat-tab-nav-bar mat-stretch-tabs data-hide data-show-gt-md='true' [tabPanel]="tabPanel">
+      <nav mat-tab-nav-bar mat-stretch-tabs data-hide-lt-md='true' [tabPanel]="tabPanel">
         <ng-container *ngFor="let link of navLinks">
           <a mat-tab-link
             *ngIf="link.available"
@@ -27,7 +27,7 @@
         </ng-container>
       </nav>
   
-      <button mat-flat-button [matMenuTriggerFor]="menu" data-show data-hide-gt-md='true'>
+      <button mat-flat-button [matMenuTriggerFor]="menu" data-hide-gt-sm='true'>
           <div data-layout="row" data-layout-align=" center">
           <mat-icon>menu</mat-icon> 
           <div class="menu-gap"></div>
@@ -41,7 +41,7 @@
             <span>{{link.label}}</span>
         </button>
       </mat-menu>
-      <mat-divider data-show data-hide-gt-md='true'></mat-divider>
+      <mat-divider data-hide-gt-md='true'></mat-divider>
     
       <mat-tab-nav-panel #tabPanel>
         <router-outlet></router-outlet>

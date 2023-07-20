@@ -231,6 +231,10 @@ div[flex-offset='1em'] {
   div[data-flex-gt-sm="50"]{
     max-width: 50%;
   }
+
+  div[data-flex-gt-sm="90"]{
+    max-width: 90%;
+  }
 }
 
 @media screen and (min-width: 960px){
