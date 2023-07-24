@@ -12,8 +12,9 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-// import { NgxFlowModule, FlowInjectionToken } from '@flowjs/ngx-flow'; //TODO UPDATE
-import Flow from '@flowjs/flow.js'; 
+import { NgxFlowModule, FlowInjectionToken } from '@flowjs/ngx-flow';
+//import Flow from '@flowjs/flow.js'; 
+import * as Flow from '@flowjs/flow.js'; 
 
 import { WorkbenchRoutingModule } from './workbench-routing.module';
 
@@ -50,7 +51,7 @@ import { UploadCloseDialogComponent } from './uploads/upload-close-dialog.compon
 
     SharedModule,
 
-    // NgxFlowModule,
+    NgxFlowModule,
 
     MatDialogModule,
     MatSidenavModule,
@@ -62,7 +63,7 @@ import { UploadCloseDialogComponent } from './uploads/upload-close-dialog.compon
     WorkbenchRoutingModule,
   ],
   providers: [
-    // { provide: FlowInjectionToken, useValue: Flow },
+    { provide: FlowInjectionToken, useValue: Flow },
   ],
 })
 export class WorkbenchModule { }
