@@ -16,6 +16,9 @@
 // Import Roboto font
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
 
+// Importing this theme makes ngx-mat-select-search behave. idk TODO?
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 // If you want to include the responsive API selectors
 $includeResponsiveApi: true;
 
@@ -195,18 +198,6 @@ div[flex-offset='1em'] {
   margin-left: 1em;
 }
 
-// div[fixed-flex='50']{
-//   width: 50px;
-// }
-
-// div[fixed-flex='100']{
-//   width: 100px;
-// }
-
-// div[fixed-flex='200']{
-//   width: 200px;
-// }
-
 @media screen and (min-width: 600px){
   div[offset-gt-sm='15']{
     margin-left: 15%;
@@ -244,190 +235,5 @@ div[flex-offset='1em'] {
   }
 }
 
-
-
-// OLD Dfam CSS -- wading through it to see what we want
-
-//.node {
-//    cursor: pointer;
-//}
-
-//.node circle {
-//    fill: #fff;
-//    stroke: steelblue;
-//    stroke-width: 1.5px;
-//}
-
-//.node text {
-//    font: 11px sans-serif;
-//}
-
-//.link {
-//    fill: none;
-//    stroke: #ccc;
-//    stroke-width: 1.5px;
-//}
-
-//.plastic {
-//    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset;
-//    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-//    border-style: solid;
-//    border-width: 1px;
-//}
-
-//.drop {
-//    padding: 15px;
-//    border: 2px grey dashed;
-//    border-radius: 5px;
-//    line-height: 34px;
-//}
-//
-//.drop.drag-over {
-//    background: #5CB85C;
-//    color: #fff
-//}
-//
-//.with-border {
-//    border: solid 1px grey;
-//}
-
-//md-datepicker.extra-wide .md-datepicker-input {
-//    width: 200px;
-//}
-
-//md-toolbar.radius-corner {
-//    border-radius: 3px 3px 0 0;
-//}
-
-//.red-icon {
-//    color: #E57373;
-//}
-//
-//.blue-icon {
-//    color: #1A237E;
-//}
-
-//.material-table {
-//    border-collapse: collapse;
-//}
-
-//td.iconCell {
-//    vertical-align: top;
-//}
-
-//table.material-table th {
-//    background-color: #81D4FA;
-//    height: 40px;
-//}
-//
-//table.material-table td {
-//    padding-left: 20px;
-//    padding-right: 20px;
-//}
-
-//.myGrid {}
-//
-//.disabled {
-//    color: red;
-//}
-
-//.enabled-dfam {
-//    background-color: #E1F5FE !important;
-//}
-        
-//.disabled-dfam {
-//    color: red !important;
-//    background-color: #E1F5FE !important;
-//}
-
-//.ui-grid-menu-button {
-//    height: 31px;
-//}
-
-//.my-custom-menu {
-//    position: absolute;
-//}
-        
-//md-input-container {
-//  min-height: 58px;
-//  !important;
-//  margin: 0px 10px 0px 0px;
-//}
-        
-//.md-chips .md-chip-input-container md-autocomplete input {
-//  width: 400px;
-//}
-        
-//.my-custom-menu .ui-grid-menu {
-//    padding: 0px;
-//}
-
-//.my-custom-menu .ui-grid-menu-inner {
-//    -webkit-box-shadow: none;
-//    box-shadow: none;
-//}
-
-//.virtualRepeatdemoDeferredLoading #vertical-container {
-//    height: 292px;
-//    width: 100%;
-//}
-
-//.virtualRepeatdemoDeferredLoading .repeated-item {
-//    border-bottom: 1px solid #ddd;
-//    box-sizing: border-box;
-//    height: 40px;
-//    padding-top: 10px;
-//}
-
-//.virtualRepeatdemoDeferredLoading md-content {
-//    margin: 16px;
-//}
-
-//.virtualRepeatdemoDeferredLoading md-virtual-repeat-container {
-//    border: solid 1px grey;
-//}
-
-//.virtualRepeatdemoDeferredLoading .md-virtual-repeat-container .md-virtual-repeat-offsetter div {
-//    padding-left: 16px;
-//}
-
-//$gray: #eee;
-//        md-content.md-default-theme {
-//            background-color: $gray;
-//        }
-        
-//       md-card {
-//           background-color: #fff;
-//           h2:first-of-type {
-//               margin-top: 0;
-//           }
-//       }
-        
-//        md-toolbar {
-//            .md-button.md-default-theme {
-//                border-radius: 99%; // round toolbar buttons
-//            }
-//        }
-       
-//        .md-toolbar-tools-bottom {
-//            font-size: small;
-//            & :last-child {
-//                opacity: 0.8;
-//            }
-//        }
-        
-//        md-toolbar:not(.md-hue-1),
-//        .md-fab {
-//            fill: #fff;
-//        }
-        
-//        md-sidenav {
-//            fill: #737373;
-//            ng-md-icon {
-//                position: relative;
-//                top: 5px; // adjust for svg viewbox
-//            }
-//        }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// html, body { height: 100%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
