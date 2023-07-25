@@ -1,6 +1,10 @@
 
 a {
   height: 100%;
+  text-decoration: none;
+  color: black;
+  word-wrap: break-word; 
+  max-width: 40ch;
 }
 
 .content-container {
