@@ -26,17 +26,20 @@
     <div data-layout-gt-sm="row" data-layout-gap-gt-sm="1em">
       <div data-flex-gt-sm="50">
         <mat-form-field class="wide">
-          <input matInput type="text" placeholder="Name"
+          <mat-label>Name</mat-label>
+          <input matInput type="text"
             [formControl]="familyForm.controls.name">
         </mat-form-field>
 
         <mat-form-field class="wide">
-          <input matInput type="text" placeholder="Title"
+          <mat-label>Title</mat-label>
+          <input matInput type="text"
             [formControl]="familyForm.controls.title">
         </mat-form-field>
 
         <mat-form-field class="wide">
-          <textarea matInput placeholder="Description" [formControl]="familyForm.controls.description"></textarea>
+          <mat-label>Description</mat-label>
+          <textarea matInput [formControl]="familyForm.controls.description"></textarea>
         </mat-form-field>
 
         <div
@@ -60,8 +63,8 @@
           <mat-list-item *ngFor="let control of this.familyForm.controls.clades.controls; index as i;">
             <div data-layout="row" data-layout-align="start baseline" class="wide">
               <mat-form-field data-flex="auto">
-                <mat-label></mat-label>
-                  <input matInput type="text" placeholder="Clade"
+                  <mat-label>Clade</mat-label>
+                  <input matInput type="text"
                       [matAutocomplete]="clade_autocomplete"
                       [formControl]="control"
                       (input)="this.cladeSearchTerm.next($event.target.value)">
@@ -111,7 +114,8 @@
             <mat-list-item *ngFor="let control of this.familyForm.controls.search_stages.controls; index as i;">
               <div data-layout="row" data-layout-align="start baseline" class="wide">
                 <mat-form-field data-flex="auto">
-                  <mat-select placeholder="Search Stage" [formControl]="control">
+                  <mat-label>Search Stage</mat-label>
+                  <mat-select [formControl]="control">
                     <mat-option *ngFor="let option of this.rmStageOptions" [value]="option.id">
                       {{option.id}} - {{option.name}}
                     </mat-option>
@@ -139,17 +143,20 @@
             <mat-list-item *ngFor="let group of this.familyForm.controls.buffer_stages.controls; index as i;">
               <div data-layout="row" data-layout-align="start baseline" class="wide">
                 <mat-form-field fixed-flex="50">
-                  <mat-select placeholder="Buffer Stage" [formControl]="group.controls.stage">
+                  <mat-label>Buffer Stage</mat-label>
+                  <mat-select [formControl]="group.controls.stage">
                     <mat-option *ngFor="let option of this.rmStageOptions" [value]="option.id">
                       {{option.id}} - {{option.name}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field fixed-flex="50" flex-offset="1em">
-                  <input matInput type="number" placeholder="Start" [formControl]="group.controls.start">
+                  <mat-label>Start</mat-label>
+                  <input matInput type="number" [formControl]="group.controls.start">
                 </mat-form-field>
                 <mat-form-field fixed-flex="50" flex-offset="1em">
-                  <input matInput type="number" placeholder="End" [formControl]="group.controls.end">
+                  <mat-label>End</mat-label>
+                  <input matInput type="number" [formControl]="group.controls.end">
                 </mat-form-field>
                 <button mat-icon-button data-flex="none" flex-offset="1em"
                     (click)="this.familyForm.controls.buffer_stages.removeAt(i)">
@@ -175,7 +182,8 @@
 
     <mat-card-content>
       <mat-form-field class="wide">
-        <mat-select placeholder="Curation Status"
+        <mat-label>Curation Status</mat-label>
+        <mat-select
           [formControl]="familyForm.controls.curation_state_id">
           <mat-option *ngFor="let option of curationStateOptions" [value]="option.id">
             {{option.name}}
@@ -187,11 +195,13 @@
       <p><strong>Length:</strong> {{family.length}} </p>
 
       <mat-form-field>
-        <input matInput type="text" placeholder="Target Site Duplication" [formControl]="familyForm.controls.target_site_cons">
+        <mat-label>Target Site Duplication</mat-label>
+        <input matInput type="text" [formControl]="familyForm.controls.target_site_cons">
       </mat-form-field>
 
       <mat-form-field class="wide">
-        <textarea matInput placeholder="Curation Notes" [formControl]="familyForm.controls.curation_notes"></textarea>
+        <mat-label>Curation Notes</mat-label>
+        <textarea matInput [formControl]="familyForm.controls.curation_notes"></textarea>
       </mat-form-field>
     </mat-card-content>
 
@@ -214,11 +224,13 @@
                   {{displayCitationById(group.controls.pmid.value)}}
                 </span>
                 <mat-form-field  flex-offset="1em">
-                  <input matInput type="number" placeholder="PubMed ID"
+                  <mat-label>PubMed ID</mat-label>
+                  <input matInput type="number"
                     [formControl]="group.controls.pmid">
                 </mat-form-field>
                 <mat-form-field  flex-offset="1em">
-                  <input matInput type="text" placeholder="Comment"
+                  <mat-label>Comment</mat-label>
+                  <input matInput type="text"
                     [formControl]="group.controls.comment">
                 </mat-form-field>
                 <button mat-icon-button data-flex="none" flex-offset="1em"
@@ -245,15 +257,18 @@
                 *ngFor="let group of this.familyForm.controls.aliases.controls; index as i;">
               <div data-layout="row" data-layout-align="start baseline" class="wide">
                 <mat-form-field fixed-flex="50">
-                  <input matInput type="text" placeholder="Database"
+                  <mat-label>Database</mat-label>
+                  <input matInput type="text"
                     [formControl]="group.controls.database">
                 </mat-form-field>
                 <mat-form-field fixed-flex="50" flex-offset="1em">
-                  <input matInput type="text" placeholder="Alias"
+                  <mat-label>Alias</mat-label>
+                  <input matInput type="text"
                     [formControl]="group.controls.alias">
                 </mat-form-field>
                 <mat-form-field fixed-flex="50" flex-offset="1em">
-                  <input matInput type="text" placeholder="Comment"
+                  <mat-label>Comment</mat-label>
+                  <input matInput type="text"
                     [formControl]="group.controls.comment">
                 </mat-form-field>
                 <mat-checkbox data-flex="none" flex-offset="1em"
@@ -286,7 +301,8 @@
   <p><strong>Submitter:</strong> {{family.submitter || "Unknown"}}</p>
   <p>
     <mat-form-field class="wide">
-      <input matInput type="text" placeholder="Author(s)" [formControl]="familyForm.controls.author">
+      <mat-label>Author(s)</mat-label>
+      <input matInput type="text" [formControl]="familyForm.controls.author">
     </mat-form-field>
   </p>
   <p><strong>Created On:</strong> {{family.date_created | date: 'medium'}}</p>

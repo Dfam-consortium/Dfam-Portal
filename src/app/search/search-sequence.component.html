@@ -28,11 +28,11 @@
 
 <form>
   <mat-form-field>
+    <mat-label>Sequence</mat-label>
     <textarea
         matInput
         class="sequence-field"
         rows="10"
-        placeholder="Sequence"
         name="sequence"
         required
         minlength="50"
@@ -61,7 +61,8 @@
   </div>
 
   <mat-form-field *ngIf="search.cutoff === 'evalue'">
-    <input matInput type="text" placeholder="E-value" name="evalue" [(ngModel)]="search.evalue">
+    <mat-label>E-value</mat-label>
+    <input matInput type="text" name="evalue" [(ngModel)]="search.evalue">
   </mat-form-field>
 
   <div class="buttons">

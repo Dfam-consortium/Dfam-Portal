@@ -51,12 +51,14 @@
   consensus sequences, see also the <a routerLink="/help/workbench" target="_blank">help page</a>
   for more information about seed alignments in Dfam.
   <mat-form-field class="wide" appearance="fill">
-    <input matInput type="text" [formControl]="formData.controls.dataFormat" placeholder="e.g. seed alignments">
+    <mat-label>e.g. seed alignments</mat-label>
+    <input matInput type="text" [formControl]="formData.controls.dataFormat">
   </mat-form-field>
 
   <strong>Species.</strong><br>
   <mat-form-field class="wide" appearance="fill">
-    <input matInput type="text" [formControl]="formData.controls.species" placeholder="e.g. Homo sapiens">
+    <mat-label>e.g. Homo sapiens</mat-label>
+    <input matInput type="text" [formControl]="formData.controls.species">
   </mat-form-field>
 
   <strong>Genome assembly.</strong><br>
@@ -64,7 +66,8 @@
   submitted as consensus sequences, an assembly is necessary to generate seed alignments.
   For more information about how we use the genome assembly, see the <a routerLink="/help/workbench" target="_blank">help page</a>.
   <mat-form-field class="wide" appearance="fill">
-    <input matInput type="text" [formControl]="formData.controls.assembly" placeholder="e.g. GRCh38">
+    <mat-label>e.g. GRCh38</mat-label>
+    <input matInput type="text" [formControl]="formData.controls.assembly">
   </mat-form-field>
 
   <hr>
@@ -75,7 +78,8 @@
   What method or tool was used to generate this library? For example,
   RepeatModeler, REPET, or EDTA.
   <mat-form-field class="wide" appearance="fill">
-    <input matInput type="text" [formControl]="formData.controls.discoveryMethod" placeholder="e.g. RepeatModeler">
+    <mat-label>e.g. RepeatModeler</mat-label>
+    <input matInput type="text" [formControl]="formData.controls.discoveryMethod">
   </mat-form-field>
 
   <strong>Curation method.</strong><br>
@@ -90,8 +94,8 @@
 
   Please provide any additional information here:
   <mat-form-field class="wide" appearance="fill">
-    <textarea matInput [formControl]="formData.controls.notes"
-      placeholder="e.g. methods described in paper: https://...">
+    <mat-label>e.g. methods described in paper: https://...</mat-label>
+    <textarea matInput [formControl]="formData.controls.notes">
     </textarea>
   </mat-form-field>
 

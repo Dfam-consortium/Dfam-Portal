@@ -18,27 +18,27 @@
             <a [routerLink]="['/login']" *ngIf="loginType == 'register'">Have an account?</a>
             <a [routerLink]="['/register']" *ngIf="loginType == 'login'">Need an account?</a>
             <mat-form-field *ngIf="loginType == 'register'">
+              <mat-label>Full Name</mat-label>
               <input matInput
                   type="text"
                   name="fullName"
                   [disabled]="isSubmitting"
-                  placeholder="Full Name"
                   [(ngModel)]="fullName">
             </mat-form-field>
             <mat-form-field>
+              <mat-label>Email</mat-label>
               <input matInput
                   type="text"
                   name="email"
                   [disabled]="isSubmitting"
-                  placeholder="Email"
                   [(ngModel)]="email">
             </mat-form-field>
             <mat-form-field>
+              <mat-label>Password</mat-label>
               <input matInput
                   type="password"
                   name="password"
                   [disabled]="isSubmitting"
-                  placeholder="Password"
                   [(ngModel)]="password">
             </mat-form-field>
             <p *ngIf="loginType == 'register'">

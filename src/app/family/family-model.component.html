@@ -58,7 +58,8 @@
 
     <div *ngIf="assemblyData[selectedAssembly]?.thresholds?.length">
       <mat-form-field class="threshold-field">
-        <mat-select appearance="standard" placeholder="Threshold" [(value)]="selectedThreshold">
+        <mat-label>Threshold</mat-label>
+        <mat-select appearance="standard" [(value)]="selectedThreshold">
           <mat-option *ngFor="let th of assemblyData[selectedAssembly]?.thresholds" value="{{th.id}}">
             {{th.label}}
           </mat-option>

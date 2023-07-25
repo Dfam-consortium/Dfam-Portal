@@ -10,7 +10,8 @@
   </p>
 
   <mat-form-field *ngIf="results">
-    <mat-select placeholder="Query" [(ngModel)]="selectedResult">
+    <mat-label>Query</mat-label>
+    <mat-select [(ngModel)]="selectedResult">
       <mat-option *ngFor="let result of results" [value]="result">{{result.query}}</mat-option>
     </mat-select>
   </mat-form-field>

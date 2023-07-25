@@ -6,8 +6,8 @@
   <div class="filters">
     <div>
       <mat-form-field>
+        <mat-label>Name/Accession</mat-label>
         <input matInput type="text"
-            placeholder="Name/Accession"
             [(ngModel)]="search.name_accession"
             (input)="searchChanged()">
         <mat-icon class="input-warn" matSuffix
@@ -18,8 +18,8 @@
       </mat-form-field>
 
       <mat-form-field>
+        <mat-label>Classification</mat-label>
         <input matInput type="text"
-            placeholder="Classification"
             [(ngModel)]="search.classification"
             [matAutocomplete]="classAutocomplete"
             (input)="updateClasses()">
@@ -39,8 +39,8 @@
       </mat-autocomplete>
 
       <mat-form-field>
+        <mat-label>Keywords</mat-label>
         <input matInput type="text"
-            placeholder="Keywords"
             [(ngModel)]="search.keywords"
             (input)="searchChanged()">
       </mat-form-field>
@@ -48,8 +48,8 @@
 
     <div>
       <mat-form-field>
+        <mat-label>Taxon</mat-label>
         <input matInput type="text"
-            placeholder="Taxon"
             [(ngModel)]="search.clade"
             [matAutocomplete]="cladeAutocomplete"
             (input)="updateClades()">

@@ -1,6 +1,7 @@
 <form class="search-form">
   <mat-form-field class="full-width">
-    <input matInput #searchVal placeholder="Search (e.g. 'CACA' or '1' or '2-10')" value="" (keyup)="onKeyPress(searchVal.value)">
+    <mat-label>Search (e.g. 'CACA' or '1' or '2-10')</mat-label>
+    <input matInput #searchVal value="" (keyup)="onKeyPress(searchVal.value)">
   </mat-form-field>
 </form>
 <div data-layout="row" data-layout-gap="10px" class="sequence-div">

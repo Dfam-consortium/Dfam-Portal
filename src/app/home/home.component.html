@@ -42,7 +42,8 @@
             <div data-flex-gt-sm="80" offset-gt-sm="32">
             <div>
               <mat-form-field data-flex="100">
-                <textarea matInput rows="10" cols="60" placeholder="Sequence" [(ngModel)]="searchSequence"></textarea>
+                <mat-label>Sequence</mat-label>
+                <textarea matInput rows="10" cols="60" [(ngModel)]="searchSequence"></textarea>
               </mat-form-field>
             </div>
 
@@ -80,7 +81,8 @@
 
             <form data-layout="row">
               <mat-form-field data-flex-gt-sm="80">
-                <input matInput type="text" name="accession" placeholder="Accession" [(ngModel)]="gotoEntryTarget">
+                <mat-label>Accession</mat-label>
+                <input matInput type="text" name="accession" [(ngModel)]="gotoEntryTarget">
               </mat-form-field>
               &nbsp;
               <div data-layout-align="space-around center">
@@ -106,17 +108,20 @@
                 </dfam-assembly-picker>
                 &nbsp;
                 <mat-form-field data-flex="initial">
-                  <input matInput placeholder="Chromosome" name="chromosome" [(ngModel)]="annotations.chromosome">
+                  <mat-label>Chromosome</mat-label>
+                  <input matInput name="chromosome" [(ngModel)]="annotations.chromosome">
                 </mat-form-field>
               </div>
 
               <div>
                 <mat-form-field data-flex="initial">
-                  <input matInput placeholder="Start" name="start" [(ngModel)]="annotations.start">
+                  <mat-label>Start</mat-label>
+                  <input matInput name="start" [(ngModel)]="annotations.start">
                 </mat-form-field>
                 &nbsp;
                 <mat-form-field data-flex="initial">
-                  <input matInput placeholder="End" name="end" [(ngModel)]="annotations.end">
+                  <mat-label>End</mat-label>
+                  <input matInput name="end" [(ngModel)]="annotations.end">
                 </mat-form-field>
               </div>
 
@@ -137,7 +142,8 @@
 
           <form data-layout-gt-sm="row">
             <mat-form-field data-flex-gt-sm="80" offset-gt-sm="32">
-              <input matInput type="text" name="keywords" placeholder="Keywords" [(ngModel)]="searchKeywords">
+              <mat-label>Keywords</mat-label>
+              <input matInput type="text" name="keywords" [(ngModel)]="searchKeywords">
             </mat-form-field>
             &nbsp;
             <div data-layout="row" data-layout-align="start center">
