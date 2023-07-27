@@ -88,9 +88,11 @@ a:visited {
     color: $primary;
 }
 
-a:focus {
-    outline: thin dotted;
-}
+// RMH: 7/27/23 : This causes navigation tabs to have a thin dotted outline when clicked
+//                and overall I don't like the look of the outline even on normal links.
+//a:focus {
+//    outline: thin dotted;
+//}
 
 footer {
     text-align: center;

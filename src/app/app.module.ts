@@ -70,6 +70,17 @@ export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
 
+// RMH: 7/27/23 : Configure Material ripple effect.  The old site had a much slower default
+//                ripple and fade.
+import {  MAT_RIPPLE_GLOBAL_OPTIONS, RippleGlobalOptions } from '@angular/material/core';
+const globalRippleConfig: RippleGlobalOptions = {
+  disabled: false,
+  animation: {
+    enterDuration: 600,
+    exitDuration: 600
+  }
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -135,7 +146,7 @@ export function tokenGetter() {
     SharedModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [{provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: globalRippleConfig}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
