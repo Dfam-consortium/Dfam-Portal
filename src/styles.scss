@@ -1,25 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+// Pull in core material styles
 @use '@angular/material' as mat;
 
 // Import material theming functions and definitions
 @use 'dfam-app-theme' as theme;
+
+//
 @use "css-fx-layout" as fx;
-
-
-// Emit theme-dependent styles for common features used across multiple components.
-@include mat.core-theme(theme.$dfam-app-theme);
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes(theme.$dfam-app-theme);
 
 // Import Roboto font
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
 
-// Importing this theme makes ngx-mat-select-search behave. idk TODO?
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-
-// If you want to include the responsive API selectors
+// Include the responsive API selectors from css-fx-layout
 $includeResponsiveApi: true;
 
 // If you choose to use attribute selectors:
@@ -28,7 +19,6 @@ $includeResponsiveApi: true;
 @include fx.gap-attribute-selectors-from-list(32 48, px em, $includeResponsiveApi);
 @include fx.flex-size-attribute-selectors(5, 100, 5, $includeResponsiveApi);
 @include fx.flex-size-attribute-selectors-from-list(50 60 70 80 90, $includeResponsiveApi);
-
 
 // Reference standard color theme from dfam-app-theme
 $primary: mat.get-color-from-palette(theme.$dfam-app-primary, default);
@@ -66,7 +56,6 @@ h3 {
 .tight {
   margin-block-end: .1em;
 }
-
 
 // Create the effect of an underline but extended to span
 // the entire div and much closer to the text.
@@ -237,5 +226,3 @@ div[flex-offset='1em'] {
   }
 }
 
-// html, body { height: 100%; }
-// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
