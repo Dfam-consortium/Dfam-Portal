@@ -63,7 +63,8 @@ $dfam-typography-config: mat.define-typography-config(
   $subtitle-1: mat.define-typography-level(16px, 28px, 400),
   $body-1: mat.define-typography-level(14px, 20px, 400),
   $body-2: mat.define-typography-level(14px, 20px, 400),
-  $subtitle-2: mat.define-typography-level(16px, 28px, 400),
+  // Changed from 16px to 14px, and line height from 28 to 20 and finally weight from 400 to 600
+  $subtitle-2: mat.define-typography-level(14px, 20px, 600),
   $caption: mat.define-typography-level(12px, 20px, 400),
   $button: mat.define-typography-level(14px, 14px, 500)
 );

@@ -36,3 +36,9 @@ mat-form-field, mat-checkbox {
 .hidden {
   display: none;
 }
+
+// Compresses the browse table rows so that it's easier to see 20 records at a time.
+.mat-mdc-table .mdc-data-table__row {
+    height: 44px;
+}
+
