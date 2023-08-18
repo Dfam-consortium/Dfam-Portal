@@ -47,9 +47,14 @@ export class HomeComponent implements OnInit {
       this.searchSequenceAssemblies = Array.from(data);
       this.searchSequenceAssemblies.push({ id: 'other', name: 'Other' });
     });
-    this.dfamapi.getFamilies({ include_raw: true, limit: 0 }).subscribe(data => this.totalFamilies = data.total_count);
-    this.dfamapi.getFamilies({ limit: 0 }).subscribe(data => this.curatedFamilies = data.total_count);
-    this.dfamapi.getTaxaCoverage().subscribe(data => this.coveredSpecies = data.count);
+    // this.dfamapi.getFamilies({ include_raw: true, limit: 0 }).subscribe(data => this.totalFamilies = data.total_count);
+    // this.dfamapi.getFamilies({ limit: 0 }).subscribe(data => this.curatedFamilies = data.total_count);
+    // this.dfamapi.getTaxaCoverage().subscribe(data => this.coveredSpecies = data.count);
+    this.dfamapi.getVersionData().subscribe(data => {
+      this.totalFamilies = data.total_families
+      this.curatedFamilies = data.curated_families
+      this.coveredSpecies = data.species
+    })
     this.dfamapi.getBlogPosts().subscribe(data => this.dfamBlogArticles = data.slice(0, 1));
   }
 
