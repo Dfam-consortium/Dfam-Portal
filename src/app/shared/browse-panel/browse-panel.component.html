@@ -6,8 +6,8 @@
   <div class="filters">
     <div>
       <mat-form-field>
+        <mat-label>Name/Accession</mat-label>
         <input matInput type="text"
-            placeholder="Name/Accession"
             [(ngModel)]="search.name_accession"
             (input)="searchChanged()">
         <mat-icon class="input-warn" matSuffix
@@ -18,8 +18,8 @@
       </mat-form-field>
 
       <mat-form-field>
+        <mat-label>Classification</mat-label>
         <input matInput type="text"
-            placeholder="Classification"
             [(ngModel)]="search.classification"
             [matAutocomplete]="classAutocomplete"
             (input)="updateClasses()">
@@ -39,8 +39,8 @@
       </mat-autocomplete>
 
       <mat-form-field>
+        <mat-label>Keywords</mat-label>
         <input matInput type="text"
-            placeholder="Keywords"
             [(ngModel)]="search.keywords"
             (input)="searchChanged()">
       </mat-form-field>
@@ -48,8 +48,8 @@
 
     <div>
       <mat-form-field>
+        <mat-label>Taxon</mat-label>
         <input matInput type="text"
-            placeholder="Taxon"
             [(ngModel)]="search.clade"
             [matAutocomplete]="cladeAutocomplete"
             (input)="updateClades()">
@@ -66,7 +66,7 @@
           <span [innerHTML]="clade.name_markup"></span>
         </mat-option>
       </mat-autocomplete>
-
+      
       <mat-checkbox
           [(ngModel)]="search.clade_ancestors"
           (change)="searchChanged()">
@@ -152,9 +152,9 @@
     <tr mat-row *matRowDef="let families; columns: displayColumns"></tr>
   </table>
 
-  <div fxLayout="row">
-    <div fxLayout="row" fxLayoutAlign="left center">
-      <div fxLayoutGap="15px" [class.hidden]="disableDownload">
+  <div data-layout="row">
+    <div data-layout="row" data-layout-align="left center">
+      <div data-layout-gap="15px" [class.hidden]="disableDownload">
         <span>Download these results:</span>
         <a [href]="downloadUrls['hmm']">HMM</a>
         <a [href]="downloadUrls['embl']">EMBL</a>

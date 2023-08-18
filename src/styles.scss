@@ -1,13 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+// Pull in core material styles
+@use '@angular/material' as mat;
 
 // Import material theming functions and definitions
-@import 'dfam-app-theme';
+@use 'dfam-app-theme' as theme;
+
+//
+@use "css-fx-layout" as fx;
 
 // Import Roboto font
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
 
+// Include the responsive API selectors from css-fx-layout
+$includeResponsiveApi: true;
+
+// If you choose to use attribute selectors:
+@include fx.attribute-selectors($includeResponsiveApi);
+@include fx.gap-attribute-selectors(1, 16, 1, px em, $includeResponsiveApi);
+@include fx.gap-attribute-selectors-from-list(32 48, px em, $includeResponsiveApi);
+@include fx.flex-size-attribute-selectors(5, 100, 5, $includeResponsiveApi);
+@include fx.flex-size-attribute-selectors-from-list(50 60 70 80 90, $includeResponsiveApi);
+
 // Reference standard color theme from dfam-app-theme
-$primary: mat-color($dfam-app-primary);
+$primary: mat.get-color-from-palette(theme.$dfam-app-primary, default);
 
 html, body, app-root {
   height: 100%;
@@ -43,7 +57,6 @@ h3 {
   margin-block-end: .1em;
 }
 
-
 // Create the effect of an underline but extended to span
 // the entire div and much closer to the text.
 .underline-span {
@@ -64,9 +77,11 @@ a:visited {
     color: $primary;
 }
 
-a:focus {
-    outline: thin dotted;
-}
+// RMH: 7/27/23 : This causes navigation tabs to have a thin dotted outline when clicked
+//                and overall I don't like the look of the outline even on normal links.
+//a:focus {
+//    outline: thin dotted;
+//}
 
 footer {
     text-align: center;
@@ -165,185 +180,49 @@ th.mat-header-cell, td.mat-cell {
   font-size: 95%;
 }
 
-// OLD Dfam CSS -- wading through it to see what we want
+// fxFlexOffset Replacements
+div[flex-offset='2'] {
+  margin-left: 2;
+}
 
-//.node {
-//    cursor: pointer;
-//}
+div[flex-offset='1em'] {
+  margin-left: 1em;
+}
 
-//.node circle {
-//    fill: #fff;
-//    stroke: steelblue;
-//    stroke-width: 1.5px;
-//}
+@media screen and (min-width: 600px){
+  div[offset-gt-sm='15']{
+    margin-left: 15%;
+    max-width: 70%;
+  }
 
-//.node text {
-//    font: 11px sans-serif;
-//}
+  div[offset-gt-sm='20']{
+    margin-left: 20%;
+    max-width: 60%;
+  }
 
-//.link {
-//    fill: none;
-//    stroke: #ccc;
-//    stroke-width: 1.5px;
-//}
+  div[offset-gt-sm='25']{
+    margin-left: 25%;
+    max-width: 50%;
+  }
 
-//.plastic {
-//    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset;
-//    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-//    border-style: solid;
-//    border-width: 1px;
-//}
+  div[offset-gt-sm='32']{
+    margin-left: 32%;
+    max-width: 80%;
+  }
 
-//.drop {
-//    padding: 15px;
-//    border: 2px grey dashed;
-//    border-radius: 5px;
-//    line-height: 34px;
-//}
-//
-//.drop.drag-over {
-//    background: #5CB85C;
-//    color: #fff
-//}
-//
-//.with-border {
-//    border: solid 1px grey;
-//}
+  div[data-flex-gt-sm="50"]{
+    max-width: 50%;
+  }
 
-//md-datepicker.extra-wide .md-datepicker-input {
-//    width: 200px;
-//}
+  div[data-flex-gt-sm="90"]{
+    max-width: 90%;
+  }
+}
 
-//md-toolbar.radius-corner {
-//    border-radius: 3px 3px 0 0;
-//}
+@media screen and (min-width: 960px){
+  div[offset-gt-md='10']{
+    margin-left: 10%;
+    max-width: 80%;
+  }
+}
 
-//.red-icon {
-//    color: #E57373;
-//}
-//
-//.blue-icon {
-//    color: #1A237E;
-//}
-
-//.material-table {
-//    border-collapse: collapse;
-//}
-
-//td.iconCell {
-//    vertical-align: top;
-//}
-
-//table.material-table th {
-//    background-color: #81D4FA;
-//    height: 40px;
-//}
-//
-//table.material-table td {
-//    padding-left: 20px;
-//    padding-right: 20px;
-//}
-
-//.myGrid {}
-//
-//.disabled {
-//    color: red;
-//}
-
-//.enabled-dfam {
-//    background-color: #E1F5FE !important;
-//}
-        
-//.disabled-dfam {
-//    color: red !important;
-//    background-color: #E1F5FE !important;
-//}
-
-//.ui-grid-menu-button {
-//    height: 31px;
-//}
-
-//.my-custom-menu {
-//    position: absolute;
-//}
-        
-//md-input-container {
-//  min-height: 58px;
-//  !important;
-//  margin: 0px 10px 0px 0px;
-//}
-        
-//.md-chips .md-chip-input-container md-autocomplete input {
-//  width: 400px;
-//}
-        
-//.my-custom-menu .ui-grid-menu {
-//    padding: 0px;
-//}
-
-//.my-custom-menu .ui-grid-menu-inner {
-//    -webkit-box-shadow: none;
-//    box-shadow: none;
-//}
-
-//.virtualRepeatdemoDeferredLoading #vertical-container {
-//    height: 292px;
-//    width: 100%;
-//}
-
-//.virtualRepeatdemoDeferredLoading .repeated-item {
-//    border-bottom: 1px solid #ddd;
-//    box-sizing: border-box;
-//    height: 40px;
-//    padding-top: 10px;
-//}
-
-//.virtualRepeatdemoDeferredLoading md-content {
-//    margin: 16px;
-//}
-
-//.virtualRepeatdemoDeferredLoading md-virtual-repeat-container {
-//    border: solid 1px grey;
-//}
-
-//.virtualRepeatdemoDeferredLoading .md-virtual-repeat-container .md-virtual-repeat-offsetter div {
-//    padding-left: 16px;
-//}
-
-//$gray: #eee;
-//        md-content.md-default-theme {
-//            background-color: $gray;
-//        }
-        
-//       md-card {
-//           background-color: #fff;
-//           h2:first-of-type {
-//               margin-top: 0;
-//           }
-//       }
-        
-//        md-toolbar {
-//            .md-button.md-default-theme {
-//                border-radius: 99%; // round toolbar buttons
-//            }
-//        }
-       
-//        .md-toolbar-tools-bottom {
-//            font-size: small;
-//            & :last-child {
-//                opacity: 0.8;
-//            }
-//        }
-        
-//        md-toolbar:not(.md-hue-1),
-//        .md-fab {
-//            fill: #fff;
-//        }
-        
-//        md-sidenav {
-//            fill: #737373;
-//            ng-md-icon {
-//                position: relative;
-//                top: 5px; // adjust for svg viewbox
-//            }
-//        }

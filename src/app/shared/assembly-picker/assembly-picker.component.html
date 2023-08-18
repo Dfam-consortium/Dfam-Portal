@@ -1,5 +1,6 @@
 <mat-form-field>
-  <mat-select [placeholder]="placeholder" name="assembly" [(ngModel)]="value">
+  <mat-label>{{placeholder}}</mat-label>
+  <mat-select name="assembly" [(ngModel)]="value">
     <mat-option>
       <ngx-mat-select-search ngModel (ngModelChange)="this.updateFilter($event)"
         placeholderLabel="Type to search"

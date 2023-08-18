@@ -1,11 +1,12 @@
-<div fxFlex.gt-sm="70" fxFlexOffset.gt-sm="15">
+<div>
 
-<mat-card>
-  <mat-card-title>Browse</mat-card-title>
+<mat-card appearance="outlined">
+  <mat-card-header><mat-card-title>Browse</mat-card-title></mat-card-header>
+<mat-card-content>
   <p>The browse page provides an summary view of Dfam families and a set of filters for quickly locating families of interest.</p>
   <h3>Filters</h3>
-  <div fxLayout="row">
-    <div fxLayout="column" fxFlexOffset="2" fxLayoutGap="5px">
+  <div data-layout="row">
+    <div data-layout="column" flex-offset="2" data-layout-gap="5px">
       <div><strong>Name/Accession</strong> Select all families where either the accession field or the name field contain the search term.  For example the term "3423" will match the family "DF0003423".</div>
       <div><strong>Classification</strong> Search for families using the Dfam <a href="">TE classification system</a>.  This filter field uses a suggestion box to find possible matches as you type.  The suggestion lines show the unique portion of the clasification tree as well as the number of families assigned to the classification ( in brackets ).</div>
       <div><strong>Keywords</strong> Search for families using a keyword.  This will return results where the keyword appears in the family title or description.</div>
@@ -19,6 +20,7 @@
   <p></p>
   <h3>Table</h3>
   <p>The table is automatically updated to reflect the state of the filters applied.  The classification and clades employ tooltips to display the lineage ( clasification heirarchy, or taxa ) leading to the displayed value.  In addition, links are provided to pages with further information on a family, classificaiton or clade.  At the bottom of the table there are controls for paging through the results or expanding the table size.</p>
+</mat-card-content>
 </mat-card>
 
 </div>

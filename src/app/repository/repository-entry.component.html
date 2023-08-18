@@ -1,5 +1,7 @@
-<mat-card>
+<mat-card appearance="outlined">
+<mat-card-header>
   <mat-card-title>{{data.name}}</mat-card-title>
+</mat-card-header>
   <mat-card-content>
     <p class="description">{{data.description}}</p>
     <h4>Files:</h4>
@@ -9,6 +11,7 @@
       </li>
     </ul>
   </mat-card-content>
+  <br>
   <mat-card-footer>
     Uploaded {{data.uploadDate}}
   </mat-card-footer>

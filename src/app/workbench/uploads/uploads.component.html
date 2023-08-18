@@ -1,4 +1,4 @@
-<div fxFlex="100" fxFlex.gt-sm="60" fxFlexOffset.gt-sm="20">
+<div data-flex="100" data-flex-gt-sm="60" offset-gt-sm="20">
 
 <h2>Uploads</h2>
 
@@ -38,9 +38,11 @@
   <a href="mailto:help@dfam.org">help@dfam.org</a>.
 </p>
 
-<mat-card class="upload-card">
-  <mat-card-title>Submit a data file</mat-card-title>
-
+<mat-card appearance="outlined" class="upload-card">
+  <mat-card-header>
+    <mat-card-title>Submit a data file</mat-card-title>
+  </mat-card-header>
+<mat-card-content>
   <p><strong>Required information:</strong></p>
 
   <strong>TE family format.</strong><br>
@@ -49,12 +51,14 @@
   consensus sequences, see also the <a routerLink="/help/workbench" target="_blank">help page</a>
   for more information about seed alignments in Dfam.
   <mat-form-field class="wide" appearance="fill">
-    <input matInput type="text" [formControl]="formData.controls.dataFormat" placeholder="e.g. seed alignments">
+    <mat-label>e.g. seed alignments</mat-label>
+    <input matInput type="text" [formControl]="formData.controls.dataFormat">
   </mat-form-field>
 
   <strong>Species.</strong><br>
   <mat-form-field class="wide" appearance="fill">
-    <input matInput type="text" [formControl]="formData.controls.species" placeholder="e.g. Homo sapiens">
+    <mat-label>e.g. Homo sapiens</mat-label>
+    <input matInput type="text" [formControl]="formData.controls.species">
   </mat-form-field>
 
   <strong>Genome assembly.</strong><br>
@@ -62,7 +66,8 @@
   submitted as consensus sequences, an assembly is necessary to generate seed alignments.
   For more information about how we use the genome assembly, see the <a routerLink="/help/workbench" target="_blank">help page</a>.
   <mat-form-field class="wide" appearance="fill">
-    <input matInput type="text" [formControl]="formData.controls.assembly" placeholder="e.g. GRCh38">
+    <mat-label>e.g. GRCh38</mat-label>
+    <input matInput type="text" [formControl]="formData.controls.assembly">
   </mat-form-field>
 
   <hr>
@@ -73,7 +78,8 @@
   What method or tool was used to generate this library? For example,
   RepeatModeler, REPET, or EDTA.
   <mat-form-field class="wide" appearance="fill">
-    <input matInput type="text" [formControl]="formData.controls.discoveryMethod" placeholder="e.g. RepeatModeler">
+    <mat-label>e.g. RepeatModeler</mat-label>
+    <input matInput type="text" [formControl]="formData.controls.discoveryMethod">
   </mat-form-field>
 
   <strong>Curation method.</strong><br>
@@ -88,8 +94,8 @@
 
   Please provide any additional information here:
   <mat-form-field class="wide" appearance="fill">
-    <textarea matInput [formControl]="formData.controls.notes"
-      placeholder="e.g. methods described in paper: https://...">
+    <mat-label>e.g. methods described in paper: https://...</mat-label>
+    <textarea matInput [formControl]="formData.controls.notes">
     </textarea>
   </mat-form-field>
 
@@ -97,10 +103,10 @@
 
   <ng-container #flow="flow" [flowConfig]="flowConfig"></ng-container>
 
-  <div fxLayout="column" fxLayoutGap="1em" fxLayoutAlign="center stretch">
+  <div data-layout="column" data-layout-gap="1em" data-layout-align="center stretch">
     <input #fileInput type="file" class="hidden" flowButton [flow]="flow.flowJs" [disabled]="!canSelectFile">
     <div class="drop-area" flowDrop [flow]="flow.flowJs"
-        fxLayout="row" fxLayoutAlign="center center">
+        data-layout="row" data-layout-align="center center">
       Drop a file here
     </div>
     <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">
@@ -126,6 +132,7 @@
     <mat-progress-bar *ngIf="uploaderState == UploaderState.InProgress" mode="determinate" [value]="100 * uploadProgress">
     </mat-progress-bar>
   </div>
+</mat-card-content>
 </mat-card>
 
 <dfam-loader [loading]="loading">

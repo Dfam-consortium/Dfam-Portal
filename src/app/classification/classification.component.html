@@ -16,14 +16,15 @@
     matches within the tree.
   </p>
 
-  <div fxLayout="row">
-    <div fxLayoutAlign="start start">
+  <div data-layout="row">
+    <div data-layout-align="start start">
       <button mat-button type="button" (click)="classificationTree.expandAll()"><mat-icon aria-label="Expand">unfold_more</mat-icon></button>
       <button mat-button type="button" (click)="classificationTree.collapseAll()"><mat-icon aria-label="Collapse">unfold_less</mat-icon></button>
     </div>
     <div>
       <mat-form-field>
-        <input matInput placeholder="Search" [(ngModel)]="liveSearchInput">
+        <mat-label>Search</mat-label>
+        <input matInput [(ngModel)]="liveSearchInput">
       </mat-form-field>
     </div>
   </div>
@@ -44,7 +45,7 @@
     tab-separated file suitable for loading into Excel.
   </p>
 
-  <div fxLayout="row" fxLayoutAlign="space-between">
+  <div data-layout="row" data-layout-align="space-between">
     <button *ngIf="tsv" mat-button type="button" (click)="onDownload()">
       <img src="/assets/images/tsv_file.png">
     </button>

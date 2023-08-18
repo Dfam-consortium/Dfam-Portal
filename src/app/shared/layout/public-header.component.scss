@@ -12,6 +12,13 @@
 }
 
 // Site navigation menu div
+.headerdiv {
+  box-sizing: border-box; 
+  display: flex; 
+  place-content: center space-between; 
+  align-items: center;
+}
+
 .sitenavdiv {
   text-align: center;
 }

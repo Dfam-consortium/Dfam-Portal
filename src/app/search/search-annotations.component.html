@@ -1,6 +1,6 @@
 <div>
-  <div fxLayout="row">
-    <div fxFlex.gt-sm="50" fxFlexOffset.gt-sm="25">
+  <div data-layout="row">
+    <div data-flex-gt-sm="50" offset-gt-sm="25">
 
     <h3>Retrieve Hits</h3>
 
@@ -36,19 +36,23 @@
       </dfam-assembly-picker>
 
       <mat-form-field>
-        <input matInput placeholder="Chromosome" name="chromosome" [(ngModel)]="search.chromosome">
+        <mat-label>Chromosome</mat-label>
+        <input matInput name="chromosome" [(ngModel)]="search.chromosome">
       </mat-form-field>
 
       <mat-form-field>
-        <input matInput placeholder="Start" name="start" [(ngModel)]="search.start">
+        <mat-label>Start</mat-label>
+        <input matInput name="start" [(ngModel)]="search.start">
       </mat-form-field>
 
       <mat-form-field>
-        <input matInput placeholder="End" name="end" [(ngModel)]="search.end">
+        <mat-label>End</mat-label>
+        <input matInput name="end" [(ngModel)]="search.end">
       </mat-form-field>
 
       <mat-form-field>
-        <input matInput placeholder="Dfam entry (optional)" name="family" [(ngModel)]="search.family">
+        <mat-label>Dfam entry (optional)</mat-label>
+        <input matInput name="family" [(ngModel)]="search.family">
       </mat-form-field>
 
       <mat-checkbox name="nrph" [(ngModel)]="search.nrph">Remove redundant profile hits</mat-checkbox>

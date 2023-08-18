@@ -13,7 +13,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { NgxFlowModule, FlowInjectionToken } from '@flowjs/ngx-flow';
-import Flow from '@flowjs/flow.js';
+//import Flow from '@flowjs/flow.js'; 
+import * as Flow from '@flowjs/flow.js'; 
 
 import { WorkbenchRoutingModule } from './workbench-routing.module';
 

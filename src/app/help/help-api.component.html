@@ -1,7 +1,10 @@
-<div fxFlex.gt-sm="70" fxFlexOffset.gt-sm="15">
+<div> 
 
-<mat-card>
-  <mat-card-title>Using the Dfam API</mat-card-title>
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Using the Dfam API</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
   <p>
   Beginning with Dfam 3.0, the data in the current release of Dfam is accessible via a RESTful
   API.  The API provides a means for programs and script to access Dfam information directly in a structured 
@@ -92,6 +95,7 @@ my $json = decode_json $response-&gt;decoded_content;
 # Prints '24.5' at the time of this writing
 print "${{ '{' }}$json}{{ '{' }}'hits'}[0]{{ '{' }}'bit_score'}\n";
 </pre>
+</mat-card-content>
 </mat-card>
 
 </div>

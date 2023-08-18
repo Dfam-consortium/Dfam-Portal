@@ -1,4 +1,5 @@
-<nav mat-tab-nav-bar>
+<div data-flex-gt-sm="70" offset-gt-sm="15">
+<nav mat-tab-nav-bar [tabPanel]="tabPanel">
   <a mat-tab-link
     *ngFor="let link of navLinks"
     [routerLink]="link.path"
@@ -7,5 +8,7 @@
     {{link.label}}
   </a>
 </nav>
-
-<router-outlet></router-outlet>
+<mat-tab-nav-panel #tabPanel>
+  <router-outlet></router-outlet>
+</mat-tab-nav-panel>
+</div>
