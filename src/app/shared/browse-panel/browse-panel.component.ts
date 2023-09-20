@@ -260,7 +260,7 @@ export class BrowsePanelComponent implements OnInit {
     this.unusualNameCharacter = this.findUnusualCharacter(this.search.name_accession);
 
     this.searchApiOptions.name_accession = this.search.name_accession;
-    this.searchApiOptions.classification = this.search.classification ? this.search.classification.full_name : null;
+    this.searchApiOptions.classification = this.search.classification ? encodeURIComponent(this.search.classification.full_name) : null;
     this.searchApiOptions.clade = this.search.clade ? this.search.clade.id : null;
     this.searchApiOptions.clade_ancestors = this.search.clade_ancestors;
     this.searchApiOptions.clade_descendants = this.search.clade_descendants;
@@ -279,7 +279,7 @@ export class BrowsePanelComponent implements OnInit {
       queryParams.name_accession = this.searchApiOptions.name_accession;
     }
     if (this.searchApiOptions.classification) {
-      queryParams.classification = this.searchApiOptions.classification;
+      queryParams.classification = encodeURIComponent(this.searchApiOptions.classification);
     }
     if (this.searchApiOptions.clade) {
       queryParams.clade = this.searchApiOptions.clade;
@@ -354,14 +354,14 @@ export class BrowsePanelComponent implements OnInit {
     this.getFamilies();
   }
 
-  async getFamilies() {
+  getFamilies() {
     if (this.getFamiliesSubscription) {
       this.getFamiliesSubscription.unsubscribe();
     }
     this.searchSubmitting = true
     this.searchApiOptions.limit = this.pageSize;
     this.searchApiOptions.start = this.pageSize * this.pageIndex;
-    this.getFamiliesSubscription = await this.repository.getFamilies(this.searchApiOptions).subscribe(data => {
+    this.getFamiliesSubscription = this.repository.getFamilies(this.searchApiOptions).subscribe(data => {
       this.disableDownload = (data.total_count <= 0 || data.total_count > 2000);
       for (const format of ['hmm', 'embl', 'fasta']) {
         this.downloadUrls[format] = this.repository.getFamiliesDownloadUrl(this.searchApiOptions, format);
