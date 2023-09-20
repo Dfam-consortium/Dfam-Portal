@@ -54,6 +54,8 @@ export class BrowsePanelComponent implements OnInit {
   pageIndex = 0;
   searchApiOptions: any = { };
 
+  searchSubmitting: boolean;
+
   classOptions: any[] = [];
   cladeOptions: any[] = [];
 
@@ -352,18 +354,19 @@ export class BrowsePanelComponent implements OnInit {
     this.getFamilies();
   }
 
-  getFamilies() {
+  async getFamilies() {
     if (this.getFamiliesSubscription) {
       this.getFamiliesSubscription.unsubscribe();
     }
+    this.searchSubmitting = true
     this.searchApiOptions.limit = this.pageSize;
     this.searchApiOptions.start = this.pageSize * this.pageIndex;
-    this.getFamiliesSubscription = this.repository.getFamilies(this.searchApiOptions).subscribe(data => {
+    this.getFamiliesSubscription = await this.repository.getFamilies(this.searchApiOptions).subscribe(data => {
       this.disableDownload = (data.total_count <= 0 || data.total_count > 2000);
       for (const format of ['hmm', 'embl', 'fasta']) {
         this.downloadUrls[format] = this.repository.getFamiliesDownloadUrl(this.searchApiOptions, format);
       }
-
+      this.searchSubmitting = false
       this.families = data;
       this.families.results.forEach(function(family) {
         if (family.classification) {

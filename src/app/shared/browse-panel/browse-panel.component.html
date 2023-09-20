@@ -91,10 +91,14 @@
     </div>
   </div>
   <mat-divider></mat-divider>
-  <p>Total results: {{families.total_count}}</p>
+  <p>Total results: {{searchSubmitting ? "..." : families.total_count }}</p>
 </mat-expansion-panel>
+<br/>
+<div>
 
-<div class="browse">
+<dfam-loader *ngIf="searchSubmitting" [loading]=true></dfam-loader>
+
+<div *ngIf="!searchSubmitting" class="browse">
   <table mat-table matSort
         [matSortActive]="sortActive"
         [matSortDirection]="sortDirection"
@@ -167,4 +171,6 @@
       [length]="families?.total_count" (page)="pageChanged($event)">
     </mat-paginator>
   </div>
-</div>
+
+</div> 
+
