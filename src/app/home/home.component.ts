@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   showMore1 = false;
   dfamBlogArticles = [];
 
+  releaseData: string;
   totalFamilies: number;
   curatedFamilies: number;
   coveredSpecies: number;
@@ -54,6 +55,7 @@ export class HomeComponent implements OnInit {
       this.totalFamilies = data.total_families
       this.curatedFamilies = data.curated_families
       this.coveredSpecies = data.species
+      this.releaseData = ` release ${data.dfam_version} (${data.release_date})`
     })
     this.dfamapi.getBlogPosts().subscribe(data => this.dfamBlogArticles = data.slice(0, 1));
   }
