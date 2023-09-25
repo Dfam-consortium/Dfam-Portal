@@ -26,13 +26,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ErrorsSnackbarComponent } from './layout/errors-snackbar.component';
 import { BrowsePanelComponent } from './browse-panel/browse-panel.component';
 import { LoaderComponent } from './loader/loader.component';
-
+import { BulkDownloadButtonComponent } from './bulk-download-button/bulk-download-button.component';
 
 @NgModule({
   declarations: [
     ErrorsSnackbarComponent,
     BrowsePanelComponent,
     LoaderComponent,
+    BulkDownloadButtonComponent
   ],
   imports: [
     CommonModule,

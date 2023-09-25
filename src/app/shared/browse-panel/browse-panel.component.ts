@@ -60,6 +60,7 @@ export class BrowsePanelComponent implements OnInit {
   cladeOptions: any[] = [];
 
   disableDownload = false;
+  downloadLimit: number = 2000;
   downloadUrls = {};
 
   unusualNameCharacter?: string = null;
@@ -362,7 +363,7 @@ export class BrowsePanelComponent implements OnInit {
     this.searchApiOptions.limit = this.pageSize;
     this.searchApiOptions.start = this.pageSize * this.pageIndex;
     this.getFamiliesSubscription = this.repository.getFamilies(this.searchApiOptions).subscribe(data => {
-      this.disableDownload = (data.total_count <= 0 || data.total_count > 2000);
+      this.disableDownload = (data.total_count <= 0 || data.total_count > this.downloadLimit);
       for (const format of ['hmm', 'embl', 'fasta']) {
         this.downloadUrls[format] = this.repository.getFamiliesDownloadUrl(this.searchApiOptions, format);
       }

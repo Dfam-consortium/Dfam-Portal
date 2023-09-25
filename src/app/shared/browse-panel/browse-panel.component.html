@@ -160,9 +160,12 @@
     <div data-layout="row" data-layout-align="left center">
       <div data-layout-gap="15px" [class.hidden]="disableDownload">
         <span>Download these results:</span>
-        <a mat-button color="primary" [href]="downloadUrls['hmm']">HMM</a>
-        <a mat-button color="primary" [href]="downloadUrls['embl']">EMBL</a>
-        <a mat-button color="primary" [href]="downloadUrls['fasta']">FASTA</a>
+        <dfam-bulk-download-button [downloadUrl]="downloadUrls['hmm']" [label]="'HMM'"></dfam-bulk-download-button>
+        <dfam-bulk-download-button [downloadUrl]="downloadUrls['embl']" [label]="'EMBL'"></dfam-bulk-download-button>
+        <dfam-bulk-download-button [downloadUrl]="downloadUrls['fasta']" [label]="'FASTA'"></dfam-bulk-download-button>
+      </div>
+      <div data-layout-gap="15px" [class.hidden]="!disableDownload">
+        <span>Data Can Be Downloaded With FamDB</span>
       </div>
     </div>
 
