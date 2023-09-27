@@ -15,7 +15,7 @@ export class BulkDownloadButtonComponent implements OnInit {
   download: string;
   type: string;
   waiting: boolean;
-  reloadInterval: number = 5;
+  data: object;
 
   constructor(
     private http: HttpClient
@@ -27,21 +27,38 @@ export class BulkDownloadButtonComponent implements OnInit {
     this.waiting = false;
   }
 
-  requestDownload () {
+  sleep(milliseconds) {
+    return new Promise(resolve => {
+        setTimeout(resolve, milliseconds);
+    });
+  }
+
+  async startDownload() {
     this.waiting = true
-    this.status = "Working..."
-    this.http.get(this.downloadUrl, { 
+    this.status = "Waiting..."
+    while (this.waiting) {
+      await this.requestDownload()
+      if (this.data) {
+        if (this.data['code'] === 200) {
+            this.waiting = false
+            this.status = this.label
+            this.download = this.data['body']
+            this.onDownload()
+
+          } else if (this.data['code'] === 202) {
+            this.status = "Working..."
+          }
+      }
+      await this.sleep(5000)
+    }
+  }
+
+  async requestDownload () { 
+    return this.http.get(this.downloadUrl, { 
       observe: 'body', 
       responseType: 'json'
     }).subscribe( (data) => {
-      if (data['code'] === 200) {
-        this.waiting = false
-        this.status = this.label
-        this.download = data['body']
-        this.onDownload()
-      } else if (data['code'] === 202) {
-        // TODO
-      }
+      this.data = data
     })
   }
 
