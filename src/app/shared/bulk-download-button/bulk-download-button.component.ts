@@ -8,14 +8,14 @@ import { HttpClient } from '@angular/common/http';
 })
 export class BulkDownloadButtonComponent implements OnInit {
   
-  @Input() downloadUrl: string;
-  @Input() label: string;
+  @Input() downloadUrl: string; // url with family search arguments from browse-panel
+  @Input() label: string;       // type of download button
 
-  status: string;
-  download: string;
-  type: string;
-  waiting: boolean;
-  data: object;
+  status: string;               // the text rendered on the button
+  download: string;             // the data to be downloaded as a file
+  type: string;                 // type of data, lowercased from label
+  waiting: boolean;             // variable controlling the http request loop
+  data: object = {code: 202};   // http response variable, start with code 202 to kick off request
 
   constructor(
     private http: HttpClient
@@ -34,23 +34,24 @@ export class BulkDownloadButtonComponent implements OnInit {
   }
 
   async startDownload() {
-    this.waiting = true
-    this.status = "Waiting..."
-    while (this.waiting) {
-      await this.requestDownload()
-      if (this.data) {
-        if (this.data['code'] === 200) {
-            this.waiting = false
-            this.status = this.label
-            this.download = this.data['body']
-            this.onDownload()
+    this.waiting = true                         // start loop
 
-          } else if (this.data['code'] === 202) {
-            this.status = "Working..."
-          }
+    while (this.waiting) {
+      if (this.data['code'] === 200) {          // when job is done
+          this.waiting = false                  // stop waiting
+          this.status = this.label              // reset button label
+          this.download = this.data['body']     // set download variable
+          break                                 // break loop to avoid last sleep
+          
+      } else if (this.data['code'] === 202) {   // if job is working, or first request
+        this.status = "Working..."              // change button label
+        this.data = {code: 0}                   // set code to 0 so that loop conditions are skipped until request finishes
+        await this.requestDownload()            // initiate request
       }
-      await this.sleep(5000)
+      await this.sleep(5000)                    // pause requests
     }
+
+    this.onDownload()                           // after loop trigger file download
   }
 
   async requestDownload () { 
@@ -58,7 +59,7 @@ export class BulkDownloadButtonComponent implements OnInit {
       observe: 'body', 
       responseType: 'json'
     }).subscribe( (data) => {
-      this.data = data
+        this.data = data
     })
   }
 
