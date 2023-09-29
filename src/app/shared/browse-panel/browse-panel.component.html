@@ -92,6 +92,13 @@
   </div>
   <mat-divider></mat-divider>
   <p>Total results: {{searchSubmitting ? "..." : families.total_count }}</p>
+  <div *ngIf="displayNotes.length">
+    <mat-list >
+      <mat-list-item *ngFor="let note of displayNotes">
+        <p>{{note}}</p>
+      </mat-list-item>
+    </mat-list> 
+  </div>
 </mat-expansion-panel>
 <br/>
 <div>

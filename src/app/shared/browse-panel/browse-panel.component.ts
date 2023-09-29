@@ -65,6 +65,12 @@ export class BrowsePanelComponent implements OnInit {
 
   unusualNameCharacter?: string = null;
 
+  notes:object= {
+      classification: 'Classification Searches include all descendant classifications',
+      // include_raw: 'Uncurated Families can slow down the search significantly'
+  }
+  displayNotes: string[] = []
+
   private classSearchTerm = new Subject<string>();
   private cladeSearchTerm = new Subject<string>();
   private updateUrlTask = new Subject<void>();
@@ -257,6 +263,15 @@ export class BrowsePanelComponent implements OnInit {
     });
   }
 
+  updateNotes() {
+    this.displayNotes = []
+    Object.keys(this.searchApiOptions).forEach((option) => {
+      if (this.searchApiOptions[option]){
+        this.displayNotes.push(this.notes[option])
+      }
+    }) 
+  }
+
   searchChanged() {
     this.unusualNameCharacter = this.findUnusualCharacter(this.search.name_accession);
 
@@ -267,6 +282,7 @@ export class BrowsePanelComponent implements OnInit {
     this.searchApiOptions.clade_descendants = this.search.clade_descendants;
     this.searchApiOptions.keywords = this.search.keywords;
     this.searchApiOptions.include_raw = this.search.include_raw;
+    this.updateNotes()
 
     this.pageIndex = 0;
     this.updateUrlTask.next();
