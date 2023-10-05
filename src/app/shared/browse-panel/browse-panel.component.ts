@@ -60,7 +60,8 @@ export class BrowsePanelComponent implements OnInit {
   cladeOptions: any[] = [];
 
   disableDownload = false;
-  downloadLimit: number = 2000;
+  downloadLimit: number = 10000;
+  // downloadLimit: number = 2000;
   downloadUrls = {};
 
   unusualNameCharacter?: string = null;
