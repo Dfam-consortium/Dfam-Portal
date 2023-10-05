@@ -15,6 +15,7 @@ export class BulkDownloadButtonComponent implements OnInit {
   @Input() label: string;       // type of download button
 
   status: string;               // the text rendered on the button
+  // download: ArrayBuffer;             // the data to be downloaded as a file
   download: string;             // the data to be downloaded as a file
   type: string;                 // type of data, lowercased from label
   waiting: boolean;             // variable controlling the http request loop
@@ -45,12 +46,10 @@ export class BulkDownloadButtonComponent implements OnInit {
     while (this.waiting) {
       if (this.data['code'] === 200) {          // when job is done
           this.waiting = false                  // stop waiting
-          // this.status = this.label              // reset button label
           this.download = this.data['body']     // set download variable
           break                                 // break loop to avoid last sleep
           
       } else if (this.data['code'] === 202) {   // if job is working, or first request
-        // this.status = "Working..."              // change button label
         this.data = {code: 0}                   // set code to 0 so that loop conditions are skipped until request finishes
         this.sub = await this.requestDownload() // initiate request
 
@@ -80,8 +79,9 @@ export class BulkDownloadButtonComponent implements OnInit {
 
   onDownload() {
     if (this.download) {
-      const blob = new Blob([this.download], { type: 'text/plain' });
-      window.saveAs(blob, `dfam-${this.type}-download.${this.type}`);
+      const str = window.atob(this.download)
+      const blob = new Blob([str], { type: 'application/gzip' });
+      window.saveAs(blob, `dfam-${this.type}-download.${this.type}.gz`);
     }
   }
 
