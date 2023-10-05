@@ -68,7 +68,7 @@ export class BrowsePanelComponent implements OnInit {
 
   notes:object= {
       classification: 'Classification Searches include all descendant classifications',
-      // include_raw: 'Uncurated Families can slow down the search significantly'
+      include_raw: 'Uncurated Families can slow down the search significantly'
   }
   displayNotes: string[] = []
 
@@ -268,7 +268,9 @@ export class BrowsePanelComponent implements OnInit {
     this.displayNotes = []
     Object.keys(this.searchApiOptions).forEach((option) => {
       if (this.searchApiOptions[option]){
-        this.displayNotes.push(this.notes[option])
+        if (this.notes[option]) {
+          this.displayNotes.push(this.notes[option])
+        }
       }
     }) 
   }
