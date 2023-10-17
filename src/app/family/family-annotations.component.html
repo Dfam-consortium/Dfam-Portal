@@ -32,13 +32,15 @@
 
       <tr *ngFor="let assembly of assemblies">
         <td style="text-align: right;">{{assembly.name}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm.avg_hit_length}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm.gathering_nonredundant}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm.gathering_divergence|number:'1.1-1'}}<span *ngIf="assembly.stats.hmm.gathering_divergence">%</span></td>
-        <td style="text-align: right;">{{assembly.stats.hmm.trusted_nonredundant}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm.trusted_divergence|number:'1.1-1'}}<span *ngIf="assembly.stats.hmm.trusted_divergence">%</span></td>
-        <td style="text-align: right;">{{assembly.stats.hmm.gathering_all}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm.trusted_all}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.avg_hit_length : ''}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_nonredundant : ''}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_divergence : ''}}<span *ngIf="assembly.stats.hmm && assembly.stats.hmm.gathering_divergence">%</span></td>
+        <!-- <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_divergence|number:'1.1-1' : ''}}<span *ngIf="assembly.stats.hmm.gathering_divergence">%</span></td> -->
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_nonredundant : ''}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_divergence : ''}}<span *ngIf="assembly.stats.hmm && assembly.stats.hmm.trusted_divergence">%</span></td>
+        <!-- <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_divergence|number:'1.1-1' : ''}}<span *ngIf="assembly.stats.hmm.trusted_divergence">%</span></td> -->
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_all : ''}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_all : ''}}</td>
       </tr>
 
       </table>
