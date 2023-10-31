@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, AfterViewInit, Input } from '@angular/core';
 import * as d3 from 'd3'
 
 @Component({
@@ -6,7 +6,9 @@ import * as d3 from 'd3'
     templateUrl: './chart.component.html',
     styleUrls: ['./chart.component.scss']
   })
-export class ChartComponent implements OnInit {
+
+
+export class ChartComponent implements AfterViewInit {
   @Input() data: Array<any>;
   @Input() chart_id: string
   @Input() specs: object
@@ -15,15 +17,13 @@ export class ChartComponent implements OnInit {
   width: number
   radius: number
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.height = this.specs['dimension']
     this.width = this.specs['dimension']
     this.radius = Math.min(this.width, this.height) / 2 - this.specs['margin'];
-    console.log(this.data)
     this.createSvg();
     this.createColors();
     this.drawChart();
-
   }
   
   private svg: any;
@@ -32,18 +32,14 @@ export class ChartComponent implements OnInit {
   private colors;
 
   private createSvg(): void {
-    console.log(this.chart_id)
-    this.svg = d3.select(`#${this.chart_id}`)
-    this.svg = d3.select(`figure#uncurated`)
-    console.log(this.svg)
-    // .append("svg")
-    // .attr("width", this.width)
-    // .attr("height", this.height)
-    // .append("g")
-    // .attr(
-    //   "transform",
-    //   "translate(" + this.width / 2 + "," + this.height / 2 + ")"
-    // );
+    this.svg = d3.select(`#${this.chart_id}`).append("svg")
+     .attr("width", this.width)
+     .attr("height", this.height)
+     .append("g")
+     .attr(
+       "transform",
+       "translate(" + this.width / 2 + "," + this.height / 2 + ")"
+     );
   }
 
   private createColors(): void {
