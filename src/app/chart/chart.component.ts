@@ -19,7 +19,7 @@ export class ChartComponent implements OnInit {
     this.height = this.specs['dimension']
     this.width = this.specs['dimension']
     this.radius = Math.min(this.width, this.height) / 2 - this.specs['margin'];
-
+    console.log(this.data)
     this.createSvg();
     this.createColors();
     this.drawChart();
@@ -32,15 +32,18 @@ export class ChartComponent implements OnInit {
   private colors;
 
   private createSvg(): void {
+    console.log(this.chart_id)
     this.svg = d3.select(`#${this.chart_id}`)
-    .append("svg")
-    .attr("width", this.width)
-    .attr("height", this.height)
-    .append("g")
-    .attr(
-      "transform",
-      "translate(" + this.width / 2 + "," + this.height / 2 + ")"
-    );
+    this.svg = d3.select(`figure#uncurated`)
+    console.log(this.svg)
+    // .append("svg")
+    // .attr("width", this.width)
+    // .attr("height", this.height)
+    // .append("g")
+    // .attr(
+    //   "transform",
+    //   "translate(" + this.width / 2 + "," + this.height / 2 + ")"
+    // );
   }
 
   private createColors(): void {
@@ -67,19 +70,19 @@ export class ChartComponent implements OnInit {
     .attr("stroke", "#121926")
     .style("stroke-width", "1px");
   
-    // Add labels
-    const labelLocation = d3.arc()
-    .innerRadius(100)
-    .outerRadius(this.radius);
+    // // Add labels
+    // const labelLocation = d3.arc()
+    // .innerRadius(100)
+    // .outerRadius(this.radius);
   
-    this.svg
-    .selectAll('pieces')
-    .data(pie(this.data))
-    .enter()
-    .append('text')
-    .text((d: any)=> d.data.group)
-    .attr("transform", (d: any) => "translate(" + labelLocation.centroid(d) + ")")
-    .style("text-anchor", "middle")
-    .style("font-size", 15);
+    // this.svg
+    // .selectAll('pieces')
+    // .data(pie(this.data))
+    // .enter()
+    // .append('text')
+    // .text((d: any)=> d.data.group)
+    // .attr("transform", (d: any) => "translate(" + labelLocation.centroid(d) + ")")
+    // .style("text-anchor", "middle")
+    // .style("font-size", 15);
   }
 }

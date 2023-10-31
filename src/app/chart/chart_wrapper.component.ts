@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   })
 export class ChartWrapperComponent implements OnInit {
     
-    datasets: object = {
+    datasets = {
         'uncurated': [
             { group : "Mammalia", count : 240940},
             { group : "Birds", count : 205910},
