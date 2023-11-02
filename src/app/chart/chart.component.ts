@@ -45,7 +45,7 @@ export class ChartComponent implements AfterViewInit {
   private createColors(): void {
     this.colors = d3.scaleOrdinal()
     .domain(this.data.map(d => d.count.toString()))
-    .range(["#c7d3ec", "#a5b8db", "#879cc4", "#677795", "#5a6782"]);
+    .range(['#eef2e5', '#9db166', '#6b8821', '#43610d']);
   }
 
   private drawChart(): void {
@@ -66,19 +66,19 @@ export class ChartComponent implements AfterViewInit {
     .attr("stroke", "#121926")
     .style("stroke-width", "1px");
   
-    // // Add labels
-    // const labelLocation = d3.arc()
-    // .innerRadius(100)
-    // .outerRadius(this.radius);
+    // Add labels
+    const labelLocation = d3.arc()
+    .innerRadius(100)
+    .outerRadius(this.radius);
   
-    // this.svg
-    // .selectAll('pieces')
-    // .data(pie(this.data))
-    // .enter()
-    // .append('text')
-    // .text((d: any)=> d.data.group)
-    // .attr("transform", (d: any) => "translate(" + labelLocation.centroid(d) + ")")
-    // .style("text-anchor", "middle")
-    // .style("font-size", 15);
+    this.svg
+    .selectAll('pieces')
+    .data(pie(this.data))
+    .enter()
+    .append('text')
+    .text((d: any)=> d.data.group)
+    .attr("transform", (d: any) => "translate(" + labelLocation.centroid(d) + ")")
+    .style("text-anchor", "middle")
+    .style("font-size", 15);
   }
 }
