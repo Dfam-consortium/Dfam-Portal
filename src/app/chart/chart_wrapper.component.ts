@@ -76,24 +76,42 @@ export class ChartWrapperComponent implements AfterViewInit {
         const pathArc = d3.arc()
             .innerRadius(30)
             .outerRadius(this.radius)
+        
+        let local = d3.local();
 
-        this.svg
+        let u = this.svg
         .selectAll('path')
         .data(pie(this.data))
-        .join('path')
+
+        u.enter()
+        .append('path')
+        .each(function(d) {
+            local.set(this, d)
+          })
+        .merge(u)
         .transition()
         .duration(1000)
         .attr('d', pathArc)
+        // .attrTween('d', function(d) { // magic code from https://stackoverflow.com/questions/59356095/error-when-transitioning-an-arc-path-attribute-d-expected-arc-flag-0-or
+        //     var i = d3.interpolate(local.get(this), d);
+        //     local.set(this, i(0));
+        //     return function(t) {
+        //       return pathArc(i(t));
+        //     };
+        //   })
         .attr('fill', (d: any, i: any) => (this.colors(i)))
         .attr("stroke", "white")
         .style("stroke-width", "1px")
         .style("opacity", 1)
         
+        u.exit()
+        .remove()
+
         const labelLocation = d3.arc()
         .innerRadius(50)
         .outerRadius(this.radius);
 
-        this.svg
+        this.svg 
         .selectAll('text')
         .data(pie(this.data))
         .join('text')

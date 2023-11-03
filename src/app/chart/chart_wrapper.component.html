@@ -1,9 +1,10 @@
-<div>
-    <div class="example-button-row">
-        <button mat-button (click)="makeChart('uncurated')" color="{{key === 'uncurated' ? 'primary' : ''}}">Uncurated</button>
-        <button mat-button  (click)="makeChart('curated')" color="{{key === 'curated' ? 'primary' : ''}}">Curated</button>
-    </div>
-    <!-- <dfam-chart [data]="datasets[data_key]" [chart_id]="data_key" [specs]="specs"></dfam-chart> -->
-    <div id="pie_chart"></div>
-
+<div class="chart">
+    <mat-card>
+        <div class="example-button-row">
+            <h3>Datasets: </h3>
+            <button mat-button (click)="makeChart('uncurated')" color="{{key === 'uncurated' ? 'primary' : ''}}">Uncurated</button>
+            <button mat-button  (click)="makeChart('curated')" color="{{key === 'curated' ? 'primary' : ''}}">Curated</button>
+        </div>
+        <div id="pie_chart"></div>
+    </mat-card>
 </div>
