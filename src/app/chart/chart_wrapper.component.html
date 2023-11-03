@@ -1,14 +1,9 @@
 <div>
-    <mat-tab-group animationDuration="0ms">
-        <mat-tab label="Uncurated">
-            <ng-template matTabContent>
-                <dfam-chart [data]="datasets['uncurated']" [chart_id]="'uncurated'" [specs]="specs"></dfam-chart>
-            </ng-template>
-        </mat-tab>
-        <mat-tab label="Curated">
-            <ng-template matTabContent>
-                <dfam-chart [data]="datasets['curated']" [chart_id]="'curated'" [specs]="specs"></dfam-chart>
-            </ng-template>
-        </mat-tab>
-    </mat-tab-group>
+    <div class="example-button-row">
+        <button mat-button (click)="makeChart('uncurated')" color="{{key === 'uncurated' ? 'primary' : ''}}">Uncurated</button>
+        <button mat-button  (click)="makeChart('curated')" color="{{key === 'curated' ? 'primary' : ''}}">Curated</button>
+    </div>
+    <!-- <dfam-chart [data]="datasets[data_key]" [chart_id]="data_key" [specs]="specs"></dfam-chart> -->
+    <div id="pie_chart"></div>
+
 </div>
