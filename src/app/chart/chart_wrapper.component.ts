@@ -13,7 +13,7 @@ export class ChartWrapperComponent implements AfterViewInit {
     data: Array<any>
     svg: any;
     colors: any;
-    default: string = 'uncurated'
+    default: string = 'curated'
     key: string = this.default
     margin: number = 20
 
@@ -54,7 +54,22 @@ export class ChartWrapperComponent implements AfterViewInit {
         .attr("width", this.width)
         .attr("height", this.height)
         .append("g")
-        .attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")");
+        .attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")")
+        
+        // this.svg.append("g")
+        // .attr("class", "slices");
+        
+        // this.svg.append("g")
+        // .attr("class", "labels");
+        
+        // this.svg.append("g")
+        // .attr("class", "lines");
+    }
+
+    createColors(): void {
+        this.colors = d3.scaleOrdinal()
+        .domain(this.data.map(d => d.count.toString()))
+        .range(['#eef2e5', '#9db166', '#6b8821', '#43610d']);
     }
 
     makeChart(key){
@@ -64,64 +79,100 @@ export class ChartWrapperComponent implements AfterViewInit {
         this.drawChart();
     }
 
-    createColors(): void {
-        this.colors = d3.scaleOrdinal()
-        .domain(this.data.map(d => d.count.toString()))
-        .range(['#eef2e5', '#9db166', '#6b8821', '#43610d']);
-    }
-
     drawChart(): void {
         const pie = d3.pie<any>().value((d: any) => d.count).sort(null);
+
+        const arc = d3.arc()
+            .innerRadius(this.radius * 0.4)
+            .outerRadius(this.radius * 0.8)
         
-        const pathArc = d3.arc()
-            .innerRadius(30)
-            .outerRadius(this.radius)
+        const outerArc = d3.arc()
+            .innerRadius(this.radius * 0.9)
+            .outerRadius(this.radius * 0.9)
+
+        function arcTween(a) {
+            const i = d3.interpolate(this._current, a);
+            this._current = i(1);
+            return (t) => arc(i(t));
+        }
+   
+        /* ------- PIE SLICES -------*/
+        // Join new data      Source/inspiration: https://gist.github.com/adamjanes/5e53cfa2ef3d3f05828020315a3ba18c
+        const path = this.svg.selectAll("path")
+            .data(pie(this.data));
+
+        // Update existing arcs
+        path.transition().duration(1000).attrTween("d", arcTween);
+
+        // Enter new arcs
+        path.enter().append("path")
+            .attr("fill", (d, i) => this.colors(i))
+            .attr("d", arc)
+            .attr("stroke", "white")
+            .attr("stroke-width", "1px")
+            .each(function(d) { this._current = d; });
         
-        let local = d3.local();
+        // /* ------- TEXT LABELS -------*/
+        // let text = this.svg.select(".labels").selectAll("text")
+		//     .data(pie(this.data), key);
 
-        let u = this.svg
-        .selectAll('path')
-        .data(pie(this.data))
+        // text.enter()
+        //     .append("text")
+        //     .attr("dy", ".35em")
+        //     .text(function(d) {
+        //         return d.data.group;
+        //     });
+	
+        // const midAngle = (d) => {
+        //     return d.startAngle + (d.endAngle - d.startAngle)/2;
+        // }
 
-        u.enter()
-        .append('path')
-        .each(function(d) {
-            local.set(this, d)
-          })
-        .merge(u)
-        .transition()
-        .duration(1000)
-        .attr('d', pathArc)
-        // .attrTween('d', function(d) { // magic code from https://stackoverflow.com/questions/59356095/error-when-transitioning-an-arc-path-attribute-d-expected-arc-flag-0-or
-        //     var i = d3.interpolate(local.get(this), d);
-        //     local.set(this, i(0));
-        //     return function(t) {
-        //       return pathArc(i(t));
-        //     };
-        //   })
-        .attr('fill', (d: any, i: any) => (this.colors(i)))
-        .attr("stroke", "white")
-        .style("stroke-width", "1px")
-        .style("opacity", 1)
-        
-        u.exit()
-        .remove()
+        // text.transition().duration(1000)
+        //     .attrTween("transform", function(d) {
+        //         this._current = this._current || d;
+        //         var interpolate = d3.interpolate(this._current, d);
+        //         this._current = interpolate(0);
+        //         return function(t) {
+        //             var d2 = interpolate(t);
+        //             var pos = outerArc.centroid(d2);
+        //             pos[0] = this.radius * (midAngle(d2) < Math.PI ? 1 : -1);
+        //             return "translate("+ pos +")";
+        //         };
+        //     })
+        //     .styleTween("text-anchor", function(d){
+        //         this._current = this._current || d;
+        //         var interpolate = d3.interpolate(this._current, d);
+        //         this._current = interpolate(0);
+        //         return function(t) {
+        //             var d2 = interpolate(t);
+        //             return midAngle(d2) < Math.PI ? "start":"end";
+        //         };
+        //     });
 
-        const labelLocation = d3.arc()
-        .innerRadius(50)
-        .outerRadius(this.radius);
+        // text.exit()
+        //     .remove();
+       
+        //     /* ------- SLICE TO TEXT POLYLINES -------*/
+	    // let polyline = this.svg.select(".lines").selectAll("polyline")
+        //     .data(pie(this.data), key);
 
-        this.svg 
-        .selectAll('text')
-        .data(pie(this.data))
-        .join('text')
-        .transition()
-        .duration(1000)
-        .attr('d', pathArc)
-        .text((d: any)=> d.data.group)
-        .attr("transform", (d: any) => "translate(" + labelLocation.centroid(d) + ")")
-        .style("text-anchor", "middle")
-        .style("font-size", 18)
-        .style( "text-shadow", "-1px 0 white, 0 1px white, 1px 0 white, 0 -1px white");
+        // polyline.enter()
+        //     .append("polyline");
+
+        // polyline.transition().duration(1000)
+        //     .attrTween("points", function(d){
+        //         this._current = this._current || d;
+        //         var interpolate = d3.interpolate(this._current, d);
+        //         this._current = interpolate(0);
+        //         return function(t) {
+        //             var d2 = interpolate(t);
+        //             var pos = outerArc.centroid(d2);
+        //             pos[0] = this.radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+        //             return [arc.centroid(d2), outerArc.centroid(d2), pos];
+        //         };			
+        //     });
+
+        // polyline.exit()
+        //     .remove();
     }
 }
