@@ -83,7 +83,7 @@ export class ChartWrapperComponent implements AfterViewInit {
         const pie = d3.pie<any>().value((d: any) => d.count).sort(null);
 
         const arc = d3.arc()
-            .innerRadius(this.radius * 0.4)
+            .innerRadius(this.radius * 0.2)
             .outerRadius(this.radius * 0.8)
         
         const outerArc = d3.arc()
@@ -113,8 +113,17 @@ export class ChartWrapperComponent implements AfterViewInit {
             .each(function(d) { this._current = d; });
         
         // /* ------- TEXT LABELS -------*/
-        // let text = this.svg.select(".labels").selectAll("text")
-		//     .data(pie(this.data), key);
+        const text = this.svg.selectAll("text")
+		    .data(pie(this.data));
+        
+        // text.transition().duration(1000).attrTween("d", arcTween);
+
+        text.enter().append("text")
+            .attr("d", outerArc)
+            .text(function(d) {
+                    return d.data.group;
+                })
+            .each(function(d) { this._current = d; });
 
         // text.enter()
         //     .append("text")
@@ -123,9 +132,9 @@ export class ChartWrapperComponent implements AfterViewInit {
         //         return d.data.group;
         //     });
 	
-        // const midAngle = (d) => {
-        //     return d.startAngle + (d.endAngle - d.startAngle)/2;
-        // }
+        const midAngle = (d) => {
+            return d.startAngle + (d.endAngle - d.startAngle)/2;
+        }
 
         // text.transition().duration(1000)
         //     .attrTween("transform", function(d) {

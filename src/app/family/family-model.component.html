@@ -50,47 +50,48 @@
   <dfam-assembly-picker [(value)]="selectedAssembly" [assemblies]="assemblies">
   </dfam-assembly-picker>
 
-  <mat-card appearance="outlined" *ngIf="selectedAssembly">
+  <mat-card appearance="raised" *ngIf="selectedAssembly">
+    <mat-card-title>
+      <h4>Coverage, Conservation, and Inserts <dfam-help-icon link="/help/family#model" [tooltip]="help.conservation"></dfam-help-icon></h4>
+    </mat-card-title>
+    <mat-card-content>
+      <p><strong>False discovery rate</strong>: {{assemblyData[selectedAssembly].hmm_fdr || "Unknown"}}</p>
 
-    <h4>Coverage, Conservation, and Inserts <dfam-help-icon link="/help/family#model" [tooltip]="help.conservation"></dfam-help-icon></h4>
+      <div *ngIf="assemblyData[selectedAssembly]?.thresholds?.length">
+        <mat-form-field class="threshold-field">
+          <mat-label>Threshold</mat-label>
+          <mat-select appearance="standard" [(value)]="selectedThreshold">
+            <mat-option *ngFor="let th of assemblyData[selectedAssembly]?.thresholds" value="{{th.id}}">
+              {{th.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <p><strong>False discovery rate</strong>: {{assemblyData[selectedAssembly].hmm_fdr || "Unknown"}}</p>
+        <dfam-family-model-conservation [data]="conservationData">
+        </dfam-family-model-conservation>
+      </div>
 
-    <div *ngIf="assemblyData[selectedAssembly]?.thresholds?.length">
-      <mat-form-field class="threshold-field">
-        <mat-label>Threshold</mat-label>
-        <mat-select appearance="standard" [(value)]="selectedThreshold">
-          <mat-option *ngFor="let th of assemblyData[selectedAssembly]?.thresholds" value="{{th.id}}">
-            {{th.label}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <ng-container *ngIf="coverageData; else noCoverage">
+        <h4>Non-Redundant Coverage <dfam-help-icon link="/help/family#model" [tooltip]="help.nrph"></dfam-help-icon></h4>
+        Number of aligned bases per model position, among the {{assemblyData[selectedAssembly].model_coverage?.nrph_hits}} non-redundant hits in dfamseq.
+        <dfam-family-model-coverage [data]="coverageData.nrph" colorSet="2">
+        </dfam-family-model-coverage>
 
-      <dfam-family-model-conservation [data]="conservationData">
-      </dfam-family-model-conservation>
-    </div>
+        <h4>Redundant Coverage <dfam-help-icon link="/help/family#model" [tooltip]="help.all"></dfam-help-icon></h4>
+        Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.all_hits}} hits in dfamseq.
+        <dfam-family-model-coverage [data]="coverageData.all" colorSet="2">
+        </dfam-family-model-coverage>
 
-    <ng-container *ngIf="coverageData; else noCoverage">
-      <h4>Non-Redundant Coverage <dfam-help-icon link="/help/family#model" [tooltip]="help.nrph"></dfam-help-icon></h4>
-      Number of aligned bases per model position, among the {{assemblyData[selectedAssembly].model_coverage?.nrph_hits}} non-redundant hits in dfamseq.
-      <dfam-family-model-coverage [data]="coverageData.nrph" colorSet="2">
-      </dfam-family-model-coverage>
+        <h4>False Coverage <dfam-help-icon link="/help/family#model" [tooltip]="help.false"></dfam-help-icon></h4>
+        Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.false_hits}} hits from an artificial sequence devoid of TEs.
+        <dfam-family-model-coverage [data]="coverageData.false">
+        </dfam-family-model-coverage>
+      </ng-container>
 
-      <h4>Redundant Coverage <dfam-help-icon link="/help/family#model" [tooltip]="help.all"></dfam-help-icon></h4>
-      Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.all_hits}} hits in dfamseq.
-      <dfam-family-model-coverage [data]="coverageData.all" colorSet="2">
-      </dfam-family-model-coverage>
-
-      <h4>False Coverage <dfam-help-icon link="/help/family#model" [tooltip]="help.false"></dfam-help-icon></h4>
-      Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.false_hits}} hits from an artificial sequence devoid of TEs.
-      <dfam-family-model-coverage [data]="coverageData.false">
-      </dfam-family-model-coverage>
-    </ng-container>
-
-    <ng-template #noCoverage>
-      No coverage data is present for this assembly.
-    </ng-template>
-
+      <ng-template #noCoverage>
+        No coverage data is present for this assembly.
+      </ng-template>
+    </mat-card-content>
   </mat-card>
 
 </div>
