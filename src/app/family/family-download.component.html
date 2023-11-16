@@ -40,7 +40,9 @@
               iconHeight = "30"
               iconWidth = "30"
               altDescription="Non-redundant hits for this model/organism."
-              [href]="annotationsUrl(assembly.id,true)">
+              [href]="annotationsUrl(assembly.id,true)"
+              [assembly]="assembly.id" 
+              [nrph]="true">
             </dfam-family-download-button>
           </td>
           <td>
@@ -49,7 +51,9 @@
               iconHeight = "30"
               iconWidth = "30"
               altDescription="All hits for this model/organism."
-              [href]="annotationsUrl(assembly.id,false)">
+              [href]="annotationsUrl(assembly.id,false)"
+              [assembly]="assembly.id" 
+              [nrph]="false">
             </dfam-family-download-button>
           </td>
         </tr>

@@ -14,9 +14,17 @@ export class FamilyDownloadButtonComponent implements OnInit {
   @Input() iconHeight: number;
   @Input() iconWidth: number;
   @Input() href: string;
+  @Input() assembly: string;
+  @Input() nrph: string;
+  filename: string;
 
   constructor() { }
 
   ngOnInit() {
+    const href_split = this.href.split('/')
+    let accession = href_split[3]
+    if (this.assembly && this.nrph !== undefined) {
+     this.filename = `${accession}.${this.assembly}.${this.nrph ? 'nr-' : ''}hits.tsv`
+    }
   }
 }
