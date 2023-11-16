@@ -334,11 +334,11 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
         .set('end', end.toString())
     };
 
-    if (family !== null) {
+    if (family) {
       options.params = options.params.set('family', family);
     }
 
-    if (nrph !== null) {
+    if (nrph) {
       options.params = options.params.set('nrph', nrph.toString());
     }
 
