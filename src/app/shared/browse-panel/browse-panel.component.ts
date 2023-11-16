@@ -48,8 +48,8 @@ export class BrowsePanelComponent implements OnInit {
   families: any = {};
 
   search: any = {};
-  sortActive: string = null;
-  sortDirection: SortDirection = 'asc';
+  sortActive: string = '';
+  sortDirection: SortDirection = '';
   pageSize = 20;
   pageIndex = 0;
   searchApiOptions: any = { };
@@ -88,6 +88,8 @@ export class BrowsePanelComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
   ) { }
+
+  @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit() {
     this.classSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
@@ -358,10 +360,12 @@ export class BrowsePanelComponent implements OnInit {
   }
 
   sortChanged(sort: Sort) {
-    if (sort.direction) {
+    this.sortActive = sort.active
+    this.sortDirection = sort.direction
+    if (this.sortDirection) {
       this.searchApiOptions.sort = sort.active + ':' + sort.direction;
     } else {
-      delete this.searchApiOptions.sort;
+      delete this.searchApiOptions.sort
     }
     this.updateUrlTask.next();
     this.getFamilies();
