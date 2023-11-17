@@ -47,11 +47,10 @@ Run `ng test` to execute the unit tests via
 
 ## Running end-to-end tests
 
-Initially we stub'd out Protractor based e2e testing framework.  This was never
-fully realized and the Protractor project will be abandoned in 2023.  Cypress 
-would be a good alternative to consider if we decide to pursue this form of
-testing.
-[Cypress](http://cypress.io/).
+Running Cypress
+```
+npx cypress open
+```
 
 ## Further help
 
