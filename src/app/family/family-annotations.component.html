@@ -1,6 +1,6 @@
 <h3 class="underline-span">Overview <dfam-help-icon link="/help/family#annotations" [tooltip]="help.overview"></dfam-help-icon></h3>
 
-<div data-layout="row">
+<div data-layout="row" class="indent">
   <div data-layout="column" data-layout-align="stretch" data-flex="auto" flex-offset="2">
     For each annotated genome within this family's taxa we calculate
     the count, length, and Kimura divergence of HMM-produced annotations above the 
@@ -32,13 +32,15 @@
 
       <tr *ngFor="let assembly of assemblies">
         <td style="text-align: right;">{{assembly.name}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm.avg_hit_length}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm.gathering_nonredundant}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm.gathering_divergence|number:'1.1-1'}}<span *ngIf="assembly.stats.hmm.gathering_divergence">%</span></td>
-        <td style="text-align: right;">{{assembly.stats.hmm.trusted_nonredundant}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm.trusted_divergence|number:'1.1-1'}}<span *ngIf="assembly.stats.hmm.trusted_divergence">%</span></td>
-        <td style="text-align: right;">{{assembly.stats.hmm.gathering_all}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm.trusted_all}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.avg_hit_length : ''}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_nonredundant : ''}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_divergence : ''}}<span *ngIf="assembly.stats.hmm && assembly.stats.hmm.gathering_divergence">%</span></td>
+        <!-- <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_divergence|number:'1.1-1' : ''}}<span *ngIf="assembly.stats.hmm.gathering_divergence">%</span></td> -->
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_nonredundant : ''}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_divergence : ''}}<span *ngIf="assembly.stats.hmm && assembly.stats.hmm.trusted_divergence">%</span></td>
+        <!-- <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_divergence|number:'1.1-1' : ''}}<span *ngIf="assembly.stats.hmm.trusted_divergence">%</span></td> -->
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_all : ''}}</td>
+        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_all : ''}}</td>
       </tr>
 
       </table>
@@ -54,7 +56,7 @@ No statistics are available for this family. It might not be in any assemblies c
 
 <h3 class="underline-span">Genome Annotation Distribution <dfam-help-icon link="/help/family#annotations" [tooltip]="help.distribution"></dfam-help-icon></h3>
 
-<div data-layout="row">
+<div data-layout="row" class="indent">
   <div class="karyotype-section" data-layout="column" flex-offset="2">
 
     <div *ngIf="assemblies?.length === 0">
@@ -65,7 +67,7 @@ No statistics are available for this family. It might not be in any assemblies c
       <dfam-assembly-picker [(value)]="selectedAssembly" [assemblies]="assemblies">
       </dfam-assembly-picker>
 
-      <mat-card appearance="outlined" *ngIf="selectedAssembly">
+      <mat-card *ngIf="selectedAssembly">
         <mat-radio-group [(ngModel)]="selectedVisualizationType">
           <mat-radio-button name="image_type" value="nrph">Non-Redundant Hits</mat-radio-button>
           &nbsp;

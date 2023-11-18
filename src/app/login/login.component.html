@@ -7,54 +7,52 @@
     </button>
   </div>
   <div data-layout="column" data-layout-align="center center" style="height: 100%">
-    <div>
-      <mat-card appearance="outlined" style="min-width: 260px; max-width: 400px;">
-        <mat-card-title data-layout="row" data-layout-align="center center">
-          <img height="55" width="177" src="assets/images/dfam_logo.png" alt="Dfam">
-        </mat-card-title>
-        <mat-card-content>
-          <form data-layout="column" data-layout-align="space-around center">
-            <p></p>
-            <a [routerLink]="['/login']" *ngIf="loginType == 'register'">Have an account?</a>
-            <a [routerLink]="['/register']" *ngIf="loginType == 'login'">Need an account?</a>
-            <mat-form-field *ngIf="loginType == 'register'">
-              <mat-label>Full Name</mat-label>
-              <input matInput
-                  type="text"
-                  name="fullName"
-                  [disabled]="isSubmitting"
-                  [(ngModel)]="fullName">
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Email</mat-label>
-              <input matInput
-                  type="text"
-                  name="email"
-                  [disabled]="isSubmitting"
-                  [(ngModel)]="email">
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Password</mat-label>
-              <input matInput
-                  type="password"
-                  name="password"
-                  [disabled]="isSubmitting"
-                  [(ngModel)]="password">
-            </mat-form-field>
-            <p *ngIf="loginType == 'register'">
-              After registering an account and verifying your email address,
-              we will enable your account for data submission.
-              See the <a routerLink="/help/workbench">help page</a> for more information
-              about submitting data to Dfam.
-            </p>
-            <button type="submit" [disabled]="isSubmitting" mat-raised-button color="primary" (click)="submitForm()">
-             {{ title }}
-            </button>
-            <p>{{ message }}</p>
-          </form>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    <mat-card appearance="raised" style="min-width: 260px; max-width: 400px;">
+      <mat-card-title data-layout="row" data-layout-align="center center" style="padding: 1em; margin: auto">
+        <img height="55" width="177" src="assets/images/dfam_logo.png" alt="Dfam">
+      </mat-card-title>
+      <mat-card-content>
+        <form data-layout="column" data-layout-align="space-around center">
+          <a [routerLink]="['/login']" *ngIf="loginType == 'register'">Have an account?</a>
+          <a [routerLink]="['/register']" *ngIf="loginType == 'login'">Need an account?</a>
+          <br/>
+          <mat-form-field *ngIf="loginType == 'register'">
+            <mat-label>Full Name</mat-label>
+            <input matInput
+                type="text"
+                name="fullName"
+                [disabled]="isSubmitting"
+                [(ngModel)]="fullName">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput
+                type="text"
+                name="email"
+                [disabled]="isSubmitting"
+                [(ngModel)]="email">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput
+                type="password"
+                name="password"
+                [disabled]="isSubmitting"
+                [(ngModel)]="password">
+          </mat-form-field>
+          <p *ngIf="loginType == 'register'">
+            After registering an account and verifying your email address,
+            we will enable your account for data submission.
+            See the <a routerLink="/help/workbench">help page</a> for more information
+            about submitting data to Dfam.
+          </p>
+          <button type="submit" [disabled]="isSubmitting" mat-raised-button color="primary" (click)="submitForm()">
+            {{ title }}
+          </button>
+          <p>{{ message }}</p>
+        </form>
+      </mat-card-content>
+    </mat-card>
   </div>
 </body>
 

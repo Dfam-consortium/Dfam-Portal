@@ -299,6 +299,14 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
     );
   }
 
+  getVersionData(): Observable<any> {
+    const url = endpoint + 'version'
+
+    return this.http.get(url).pipe(
+      catchError(this.handleError('getVersionData', { count: undefined })),
+    );
+  }
+
   getTaxaCoverage(): Observable<any> {
     const url = endpoint + 'taxa/coverage';
 
@@ -326,11 +334,11 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
         .set('end', end.toString())
     };
 
-    if (family !== null) {
+    if (family) {
       options.params = options.params.set('family', family);
     }
 
-    if (nrph !== null) {
+    if (nrph) {
       options.params = options.params.set('nrph', nrph.toString());
     }
 

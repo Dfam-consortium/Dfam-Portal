@@ -1,6 +1,6 @@
 <div> 
 
-<mat-card appearance="outlined">
+<mat-card appearance="raised">
   <mat-card-header>
     <mat-card-title>Using the Dfam API</mat-card-title>
   </mat-card-header>
@@ -26,7 +26,7 @@
 
   <p>
   Documentation of APIs, parameters, and response formats is available
-  at <a href="https://dfam.org/releases/Dfam_3.7/apidocs/">https://dfam.org/releases/Dfam_3.7/apidocs/</a>.
+  at <a href="https://dfam.org/releases/Dfam_3.8/apidocs/">https://dfam.org/releases/Dfam_3.8/apidocs/</a>.
   The full API documentation will be expanded upon with more details
   and examples of useful queries in future releases.
   </p>
@@ -34,7 +34,7 @@
   <h3>Examples</h3>
 
   <h4>Retrieve family details (curl, <a class="ext" href="https://stedolan.github.io/jq/">jq</a>)</h4>
-  <pre>$ curl -s https://dfam.org/api/families/DF0000001 | jq '.classification, .consensus_sequence'
+  <pre>$ curl -s https://dfam.org/api/families/DF000000001 | jq '.classification, .consensus_sequence'
 
 "root;Interspersed_Repeat;Transposable_Element;Retrotransposed_Element;LINE-depe
 ndent_Retroposon;SINE;tRNA_Promoter;MIR-core;L2-end"

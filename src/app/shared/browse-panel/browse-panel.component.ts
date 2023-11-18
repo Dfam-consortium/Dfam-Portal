@@ -48,19 +48,29 @@ export class BrowsePanelComponent implements OnInit {
   families: any = {};
 
   search: any = {};
-  sortActive: string = null;
-  sortDirection: SortDirection = 'asc';
+  sortActive: string = '';
+  sortDirection: SortDirection = '';
   pageSize = 20;
   pageIndex = 0;
   searchApiOptions: any = { };
+
+  searchSubmitting: boolean;
 
   classOptions: any[] = [];
   cladeOptions: any[] = [];
 
   disableDownload = false;
+  downloadLimit: number = 10000;
+  // downloadLimit: number = 2000;
   downloadUrls = {};
 
   unusualNameCharacter?: string = null;
+
+  notes:object= {
+      classification: 'Classification searches include all descendant classifications',
+      include_raw: 'Including uncurated families in the search will take extra time'
+  }
+  displayNotes: string[] = []
 
   private classSearchTerm = new Subject<string>();
   private cladeSearchTerm = new Subject<string>();
@@ -78,6 +88,8 @@ export class BrowsePanelComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
   ) { }
+
+  @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit() {
     this.classSearchTerm.pipe(debounceTime(300)).subscribe(search_term => {
@@ -254,16 +266,28 @@ export class BrowsePanelComponent implements OnInit {
     });
   }
 
+  updateNotes() {
+    this.displayNotes = []
+    Object.keys(this.searchApiOptions).forEach((option) => {
+      if (this.searchApiOptions[option]){
+        if (this.notes[option]) {
+          this.displayNotes.push(this.notes[option])
+        }
+      }
+    }) 
+  }
+
   searchChanged() {
     this.unusualNameCharacter = this.findUnusualCharacter(this.search.name_accession);
 
     this.searchApiOptions.name_accession = this.search.name_accession;
-    this.searchApiOptions.classification = this.search.classification ? this.search.classification.full_name : null;
+    this.searchApiOptions.classification = this.search.classification ? encodeURIComponent(this.search.classification.full_name) : null;
     this.searchApiOptions.clade = this.search.clade ? this.search.clade.id : null;
     this.searchApiOptions.clade_ancestors = this.search.clade_ancestors;
     this.searchApiOptions.clade_descendants = this.search.clade_descendants;
     this.searchApiOptions.keywords = this.search.keywords;
     this.searchApiOptions.include_raw = this.search.include_raw;
+    this.updateNotes()
 
     this.pageIndex = 0;
     this.updateUrlTask.next();
@@ -277,7 +301,7 @@ export class BrowsePanelComponent implements OnInit {
       queryParams.name_accession = this.searchApiOptions.name_accession;
     }
     if (this.searchApiOptions.classification) {
-      queryParams.classification = this.searchApiOptions.classification;
+      queryParams.classification = encodeURIComponent(this.searchApiOptions.classification);
     }
     if (this.searchApiOptions.clade) {
       queryParams.clade = this.searchApiOptions.clade;
@@ -336,10 +360,12 @@ export class BrowsePanelComponent implements OnInit {
   }
 
   sortChanged(sort: Sort) {
-    if (sort.direction) {
+    this.sortActive = sort.active
+    this.sortDirection = sort.direction
+    if (this.sortDirection) {
       this.searchApiOptions.sort = sort.active + ':' + sort.direction;
     } else {
-      delete this.searchApiOptions.sort;
+      delete this.searchApiOptions.sort
     }
     this.updateUrlTask.next();
     this.getFamilies();
@@ -356,14 +382,15 @@ export class BrowsePanelComponent implements OnInit {
     if (this.getFamiliesSubscription) {
       this.getFamiliesSubscription.unsubscribe();
     }
+    this.searchSubmitting = true
     this.searchApiOptions.limit = this.pageSize;
     this.searchApiOptions.start = this.pageSize * this.pageIndex;
     this.getFamiliesSubscription = this.repository.getFamilies(this.searchApiOptions).subscribe(data => {
-      this.disableDownload = (data.total_count <= 0 || data.total_count > 2000);
+      this.disableDownload = (data.total_count <= 0 || data.total_count > this.downloadLimit);
       for (const format of ['hmm', 'embl', 'fasta']) {
         this.downloadUrls[format] = this.repository.getFamiliesDownloadUrl(this.searchApiOptions, format);
       }
-
+      this.searchSubmitting = false
       this.families = data;
       this.families.results.forEach(function(family) {
         if (family.classification) {

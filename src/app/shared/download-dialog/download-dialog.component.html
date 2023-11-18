@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Download Requested</h1>
+<div mat-dialog-content>
+    <p>Your download is being processed and will automatically complete when it is available. 
+      <br><br>
+      It can be accessed with the same search parameters from this page, or at the following url:
+    </p>
+    <div data-layout="row">
+      <mat-card>
+        <mat-card-content>
+          {{fullUrl}}
+        </mat-card-content> 
+      </mat-card>
+      <button mat-icon-button [cdkCopyToClipboard]="fullUrl"><mat-icon >content_copy</mat-icon></button>
+    </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="onClose()">Ok</button>
+  <button mat-button (click)="onCancel()">Cancel</button>
+</div>

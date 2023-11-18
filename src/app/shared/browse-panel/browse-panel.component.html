@@ -91,10 +91,22 @@
     </div>
   </div>
   <mat-divider></mat-divider>
-  <p>Total results: {{families.total_count}}</p>
+  <p>Total results: {{searchSubmitting ? "..." : families.total_count }}</p>
+  <div *ngIf="displayNotes.length">
+    <p>Search Notes:</p>
+    <mat-list >
+      <mat-list-item *ngFor="let note of displayNotes">
+        <p class="tab"><i>{{note}}</i></p>
+      </mat-list-item>
+    </mat-list> 
+  </div>
 </mat-expansion-panel>
+<br/>
+<div>
 
-<div class="browse">
+<dfam-loader *ngIf="searchSubmitting" [loading]=true></dfam-loader>
+
+<div *ngIf="!searchSubmitting" class="browse">
   <table mat-table matSort
         [matSortActive]="sortActive"
         [matSortDirection]="sortDirection"
@@ -156,9 +168,12 @@
     <div data-layout="row" data-layout-align="left center">
       <div data-layout-gap="15px" [class.hidden]="disableDownload">
         <span>Download these results:</span>
-        <a [href]="downloadUrls['hmm']">HMM</a>
-        <a [href]="downloadUrls['embl']">EMBL</a>
-        <a [href]="downloadUrls['fasta']">FASTA</a>
+        <dfam-bulk-download-button [downloadUrl]="downloadUrls['hmm']" [label]="'HMM'"></dfam-bulk-download-button>
+        <dfam-bulk-download-button [downloadUrl]="downloadUrls['embl']" [label]="'EMBL'"></dfam-bulk-download-button>
+        <dfam-bulk-download-button [downloadUrl]="downloadUrls['fasta']" [label]="'FASTA'"></dfam-bulk-download-button>
+      </div>
+      <div data-layout-gap="15px" [class.hidden]="!disableDownload">
+        <span>Large Queries Can Be Downloaded With <a href="https://github.com/Dfam-consortium/FamDB" target="_blank">FamDB</a></span>
       </div>
     </div>
 
@@ -167,4 +182,6 @@
       [length]="families?.total_count" (page)="pageChanged($event)">
     </mat-paginator>
   </div>
-</div>
+
+</div> 
+

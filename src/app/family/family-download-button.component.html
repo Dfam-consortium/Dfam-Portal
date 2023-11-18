@@ -1,19 +1,17 @@
-<a  data-layout="column" data-layout-align="center center"  [href]="href"> 
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>
-        {{title}}
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div data-layout="row" data-layout-align="end">
+<a  data-layout="column" data-layout-align="center center"  [href]="href" download="{{filename}}"> 
+  <mat-card appearance="raised">
+      <div data-layout="row" data-layout-align="end" style="padding-top: 0.3em; padding-left: 0.8em; padding-bottom: 0.1em; padding-right: 0.8em">
         <div>
-          {{description}}
+          <mat-card-subtitle>
+            {{title}}
+          </mat-card-subtitle>
+          <div>
+            {{description}}
+          </div>
         </div>
-      <div>
-        <img [src]="icon" [alt]="altDescription" [attr.height]="iconHeight" [attr.width]="iconWidth">
+        <div>
+          <img [src]="icon" [alt]="altDescription" [attr.height]="iconHeight" [attr.width]="iconWidth">
+        </div>
       </div>
-      </div>
-    </mat-card-content>
   </mat-card>
 </a>

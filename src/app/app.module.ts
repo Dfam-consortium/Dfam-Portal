@@ -65,6 +65,7 @@ import { HelpApiComponent } from './help/help-api.component';
 import { AssemblyPickerComponent } from './shared/assembly-picker/assembly-picker.component';
 import { VerifyComponent } from './login/verify.component';
 import { PublicationsComponent } from './publications/publications.component';
+import { ChartWrapperComponent } from './chart/chart_wrapper.component'
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -130,6 +131,7 @@ const globalRippleConfig: RippleGlobalOptions = {
     ClassificationLayoutComponent,
     PublicationsComponent,
     HelpWorkbenchComponent,
+    ChartWrapperComponent
   ],
   imports: [
     CommonModule,
