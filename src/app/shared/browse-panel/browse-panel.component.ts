@@ -67,8 +67,8 @@ export class BrowsePanelComponent implements OnInit {
   unusualNameCharacter?: string = null;
 
   notes:object= {
-      classification: 'Classification Searches include all descendant classifications',
-      include_raw: 'Uncurated Families can slow down the search significantly'
+      classification: 'Classification searches include all descendant classifications',
+      include_raw: 'Including uncurated families in the search will take extra time'
   }
   displayNotes: string[] = []
 
