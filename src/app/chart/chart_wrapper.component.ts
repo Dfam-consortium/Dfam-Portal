@@ -8,37 +8,37 @@ import * as d3 from 'd3'
   })
 export class ChartWrapperComponent implements AfterViewInit {
     height: number = 300
-    width: number = 300
-    radius: number
+    width: number = 450 
+    margin: number = 20
+    radius: number = Math.min(this.width, this.height) / 2 - this.margin;
     data: Array<any>
     svg: any;
     colors: any;
     default: string = 'curated'
     key: string = this.default
-    margin: number = 20
 
     datasets = {
         'uncurated': [
+            { group : "Protostomes", count : 1951101},
             { group : "Mammalia", count : 240940},
-            { group : "Birds", count : 205910},
+            { group : "Echinoderms", count : 9256},
             { group : "Reptiles", count : 145365},
             { group : "Amphibians", count : 46715},
-            { group : "Fish", count : 788964},
-            { group : "Plants", count : 176667},
-            { group : "Echinoderms", count : 9256},
-            { group : "Protostomes", count : 1951101},
             { group : "Fungi", count : 43},
+            { group : "Fish", count : 788964},
             { group : "Other", count : 9106},
+            { group : "Plants", count : 176667},
+            { group : "Birds", count : 205910},
         ],
         'curated': [
+            { group : "Mammalia", count : 240940},
+            { group : "Protostomes", count : 43},
+            { group : "Birds", count : 205910},
             { group : "ASFAFS", count : 7964},
             { group : "AFSFASF", count : 17667},
-            { group : "Protostomes", count : 43},
-            { group : "ASgsfgbds", count : 195101},
-            { group : "Mammalia", count : 240940},
-            { group : "Birds", count : 205910},
             { group : "Reptiles", count : 14565},
             { group : "Other", count : 9106},
+            { group : "ASgsfgbds", count : 195101},
         ]
     }
 
@@ -54,16 +54,7 @@ export class ChartWrapperComponent implements AfterViewInit {
         .attr("width", this.width)
         .attr("height", this.height)
         .append("g")
-        .attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")")
-        
-        // this.svg.append("g")
-        // .attr("class", "slices");
-        
-        // this.svg.append("g")
-        // .attr("class", "labels");
-        
-        // this.svg.append("g")
-        // .attr("class", "lines");
+        .attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")");
     }
 
     createColors(): void {
@@ -77,10 +68,14 @@ export class ChartWrapperComponent implements AfterViewInit {
         this.data = this.datasets[key]
         this.createColors();
         this.drawChart();
+        this.drawChart();  // This is necessary because the .enter() functions do not
+                           // fully initialize each element. TODO.
     }
 
     drawChart(): void {
-        const pie = d3.pie<any>().value((d: any) => d.count).sort(null);
+        // Sort order is defined in the datastructure so don't allow d3.pie() to automatically
+        // sort the data by using ".sort(null)".  
+        const pie = d3.pie<any>().sort(null).value((d: any) => d.count);
 
         const arc = d3.arc()
             .innerRadius(this.radius * 0.2)
@@ -96,92 +91,97 @@ export class ChartWrapperComponent implements AfterViewInit {
             return (t) => arc(i(t));
         }
    
+        function lkey(d) { if ( d ) { return d.data.group; }else { return this.getAttribute("id"); } }
+
         /* ------- PIE SLICES -------*/
-        // Join new data      Source/inspiration: https://gist.github.com/adamjanes/5e53cfa2ef3d3f05828020315a3ba18c
-        const path = this.svg.selectAll("path")
-            .data(pie(this.data));
+        // Join new data. Source/inspiration: https://gist.github.com/adamjanes/5e53cfa2ef3d3f05828020315a3ba18c
+        const slice = this.svg.selectAll("path")
+            .data(pie(this.data), lkey);
 
-        // Update existing arcs
-        path.transition().duration(1000).attrTween("d", arcTween);
+        slice.enter()
+          .insert("path")
+          .attr("id", (d,i) => d.data.group)
+          .style("fill", (d,i) => this.colors(i))
+          .attr("d", (d,i) => arc(d))
 
-        // Enter new arcs
-        path.enter().append("path")
-            .attr("fill", (d, i) => this.colors(i))
-            .attr("d", arc)
-            .attr("stroke", "white")
-            .attr("stroke-width", "1px")
-            .each(function(d) { this._current = d; });
-        
-        // /* ------- TEXT LABELS -------*/
+        slice   
+          .transition().duration(1000)
+          .attrTween("d", function(d) {
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+              return arc(interpolate(t));
+            };
+          })
+
+        slice.exit()
+          .remove();
+
+        /* ------- TEXT LABELS -------*/
         const text = this.svg.selectAll("text")
-		    .data(pie(this.data));
-        
-        // text.transition().duration(1000).attrTween("d", arcTween);
+            		    .data(pie(this.data), lkey);
 
-        text.enter().append("text")
-            .attr("d", outerArc)
-            .text(function(d) {
-                    return d.data.group;
-                })
-            .each(function(d) { this._current = d; });
+        text.enter()
+             .append("text")
+             .attr("dy", ".35em")
+             .attr("style", "font-size:11px;")
+             .text(function(d) {
+                 return d.data.group;
+             });
 
-        // text.enter()
-        //     .append("text")
-        //     .attr("dy", ".35em")
-        //     .text(function(d) {
-        //         return d.data.group;
-        //     });
-	
         const midAngle = (d) => {
             return d.startAngle + (d.endAngle - d.startAngle)/2;
         }
 
-        // text.transition().duration(1000)
-        //     .attrTween("transform", function(d) {
-        //         this._current = this._current || d;
-        //         var interpolate = d3.interpolate(this._current, d);
-        //         this._current = interpolate(0);
-        //         return function(t) {
-        //             var d2 = interpolate(t);
-        //             var pos = outerArc.centroid(d2);
-        //             pos[0] = this.radius * (midAngle(d2) < Math.PI ? 1 : -1);
-        //             return "translate("+ pos +")";
-        //         };
-        //     })
-        //     .styleTween("text-anchor", function(d){
-        //         this._current = this._current || d;
-        //         var interpolate = d3.interpolate(this._current, d);
-        //         this._current = interpolate(0);
-        //         return function(t) {
-        //             var d2 = interpolate(t);
-        //             return midAngle(d2) < Math.PI ? "start":"end";
-        //         };
-        //     });
+        const radius = this.radius;
+        text.transition().duration(1000)
+             .attrTween("transform", function(d) {
+                 this._current = this._current || d;
+                 var interpolate = d3.interpolate(this._current, d);
+                 this._current = interpolate(0);
+                 return function(t) {
+                     var d2 = interpolate(t);
+                     var pos = outerArc.centroid(d2);
+                     pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
+                     return "translate("+ pos +")";
+                 };
+             })
+             .styleTween("text-anchor", function(d){
+                 this._current = this._current || d;
+                 var interpolate = d3.interpolate(this._current, d);
+                 this._current = interpolate(0);
+                 return function(t) {
+                     var d2 = interpolate(t);
+                     return midAngle(d2) < Math.PI ? "start":"end";
+                 };
+             });
 
-        // text.exit()
-        //     .remove();
+         text.exit()
+             .remove();
        
-        //     /* ------- SLICE TO TEXT POLYLINES -------*/
-	    // let polyline = this.svg.select(".lines").selectAll("polyline")
-        //     .data(pie(this.data), key);
+         /* ------- SLICE TO TEXT POLYLINES -------*/
+	       let polyline = this.svg.selectAll("polyline")
+             .data(pie(this.data), lkey);
 
-        // polyline.enter()
-        //     .append("polyline");
+         polyline.enter()
+             .append("polyline")
+             .attr("style", "fill:none;opacity: .3;stroke:black;stroke-width:2px;");
 
-        // polyline.transition().duration(1000)
-        //     .attrTween("points", function(d){
-        //         this._current = this._current || d;
-        //         var interpolate = d3.interpolate(this._current, d);
-        //         this._current = interpolate(0);
-        //         return function(t) {
-        //             var d2 = interpolate(t);
-        //             var pos = outerArc.centroid(d2);
-        //             pos[0] = this.radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-        //             return [arc.centroid(d2), outerArc.centroid(d2), pos];
-        //         };			
-        //     });
+         polyline.transition().duration(1000)
+             .attrTween("points", function(d){
+                 this._current = this._current || d;
+                 var interpolate = d3.interpolate(this._current, d);
+                 this._current = interpolate(0);
+                 return function(t) {
+                     var d2 = interpolate(t);
+                     var pos = outerArc.centroid(d2);
+                     pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+                     return [arc.centroid(d2), outerArc.centroid(d2), pos];
+                 };			
+             });
 
-        // polyline.exit()
-        //     .remove();
+         polyline.exit()
+             .remove();
     }
 }
