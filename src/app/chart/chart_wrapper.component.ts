@@ -95,9 +95,19 @@ export class ChartWrapperComponent implements AfterViewInit {
 
         /* ------- PIE SLICES -------*/
         // Join new data. Source/inspiration: https://gist.github.com/adamjanes/5e53cfa2ef3d3f05828020315a3ba18c
+     
+        // this.svg points to the <g transform...> element so selectAll will apply 
+        // to everything below that.  In this case all <path> elements.  Supposedly
+        // the lkey function is supposed to support the dividing up of selected 
+        // elements into two sets.  The ones that are already defined and the ones
+        // that need to be created.
         const slice = this.svg.selectAll("path")
             .data(pie(this.data), lkey);
 
+        // This creates any new data elements that haven't yet been created
+        // as path elements.  NOTE: This is the one case where .enter() 
+        // generates a full element on the first pass.  The text and line 
+        // .enter() routines still need fixing.
         slice.enter()
           .insert("path")
           .attr("id", (d,i) => d.data.group)
