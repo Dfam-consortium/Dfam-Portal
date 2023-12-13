@@ -20,25 +20,25 @@ export class ChartWrapperComponent implements AfterViewInit {
     datasets = {
         'uncurated': [
             { group : "Protostomes", count : 1951101},
+            { group : "Fish", count : 788964},
             { group : "Mammalia", count : 240940},
-            { group : "Echinoderms", count : 9256},
+            { group : "Birds", count : 205910},
+            { group : "Plants", count : 176667},
             { group : "Reptiles", count : 145365},
             { group : "Amphibians", count : 46715},
-            { group : "Fungi", count : 43},
-            { group : "Fish", count : 788964},
+            { group : "Echinoderms", count : 9256},
             { group : "Other", count : 9106},
-            { group : "Plants", count : 176667},
-            { group : "Birds", count : 205910},
+            { group : "Fungi", count : 43},
         ],
         'curated': [
             { group : "Mammalia", count : 240940},
-            { group : "Protostomes", count : 43},
             { group : "Birds", count : 205910},
-            { group : "ASFAFS", count : 7964},
+            { group : "ASgsfgbds", count : 195101},
             { group : "AFSFASF", count : 17667},
             { group : "Reptiles", count : 14565},
             { group : "Other", count : 9106},
-            { group : "ASgsfgbds", count : 195101},
+            { group : "ASFAFS", count : 7964},
+            { group : "Protostomes", count : 43},
         ]
     }
 
