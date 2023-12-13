@@ -1,0 +1,24 @@
+{
+    "uncurated": [
+        { "group" : "Protostomes", "count" : 1951101},
+        { "group" : "Fungi", "count" : 43},
+        { "group" : "Fish", "count" : 788964},
+        { "group" : "Other", "count" : 9106},
+        { "group" : "Mammalia", "count" : 240940},
+        { "group" : "Echinoderms", "count" : 9256},
+        { "group" : "Birds", "count" : 205910},
+        { "group" : "Amphibians", "count" : 46715},
+        { "group" : "Plants", "count" : 176667},
+        { "group" : "Reptiles", "count" : 145365}
+    ],
+    "curated": [
+        { "group" : "Mammalia", "count" : 240940},
+        { "group" : "Reptiles", "count" : 14565},
+        { "group" : "Protostomes", "count" : 43},
+        { "group" : "Birds", "count" : 205910},
+        { "group" : "ASFAFS", "count" : 7964},
+        { "group" : "GARMANARNAR", "count" : 195101},
+        { "group" : "Other", "count" : 9106},
+        { "group" : "FUNKY", "count" : 17667}
+    ]
+}

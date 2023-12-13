@@ -1,5 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3'
+import * as datasets from "./datasets.json";
 
 @Component({
     selector: 'dfam-chart-wrapper',
@@ -16,34 +17,11 @@ export class ChartWrapperComponent implements AfterViewInit {
     colors: any;
     default: string = 'curated'
     key: string = this.default
-
-    datasets = {
-        'uncurated': [
-            { group : "Protostomes", count : 1951101},
-            { group : "Fish", count : 788964},
-            { group : "Mammalia", count : 240940},
-            { group : "Birds", count : 205910},
-            { group : "Plants", count : 176667},
-            { group : "Reptiles", count : 145365},
-            { group : "Amphibians", count : 46715},
-            { group : "Echinoderms", count : 9256},
-            { group : "Other", count : 9106},
-            { group : "Fungi", count : 43},
-        ],
-        'curated': [
-            { group : "Mammalia", count : 240940},
-            { group : "Birds", count : 205910},
-            { group : "ASgsfgbds", count : 195101},
-            { group : "AFSFASF", count : 17667},
-            { group : "Reptiles", count : 14565},
-            { group : "Other", count : 9106},
-            { group : "ASFAFS", count : 7964},
-            { group : "Protostomes", count : 43},
-        ]
-    }
+    datasets: object
 
     ngAfterViewInit(): void {
         this.radius = Math.min(this.width, this.height) / 2 - this.margin;
+        this.datasets = datasets
         this.createSvg();
         this.makeChart(this.default)
     }
@@ -58,9 +36,10 @@ export class ChartWrapperComponent implements AfterViewInit {
     }
 
     createColors(): void {
-        this.colors = d3.scaleOrdinal()
-        .domain(this.data.map(d => d.count.toString()))
-        .range(['#eef2e5', '#9db166', '#6b8821', '#43610d']);
+        let vals = this.data.map(d=>d.count)
+        let min = Math.min(...vals);
+        let max = Math.max(...vals);
+        this.colors = d3.scaleLinear([min, max], ['#eef2e5','#43610d'])
     }
 
     makeChart(key){
@@ -84,12 +63,6 @@ export class ChartWrapperComponent implements AfterViewInit {
         const outerArc = d3.arc()
             .innerRadius(this.radius * 0.9)
             .outerRadius(this.radius * 0.9)
-
-        function arcTween(a) {
-            const i = d3.interpolate(this._current, a);
-            this._current = i(1);
-            return (t) => arc(i(t));
-        }
    
         function lkey(d) { if ( d ) { return d.data.group; }else { return this.getAttribute("id"); } }
 
@@ -111,7 +84,7 @@ export class ChartWrapperComponent implements AfterViewInit {
         slice.enter()
           .insert("path")
           .attr("id", (d,i) => d.data.group)
-          .style("fill", (d,i) => this.colors(i))
+          .style("fill", (d,i) => this.colors(d.data.count))
           .attr("d", (d,i) => arc(d))
 
         slice   
