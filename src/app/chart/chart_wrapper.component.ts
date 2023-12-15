@@ -1,4 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as d3 from 'd3'
 import * as datasets from "./datasets.json";
 
@@ -18,6 +19,9 @@ export class ChartWrapperComponent implements AfterViewInit {
     default: string = 'curated'
     key: string = this.default
     datasets: object
+    constructor(
+        private router: Router,
+      ) {}
 
     ngAfterViewInit(): void {
         this.radius = Math.min(this.width, this.height) / 2 - this.margin;
@@ -66,6 +70,29 @@ export class ChartWrapperComponent implements AfterViewInit {
    
         function lkey(d) { if ( d ) { return d.data.group; }else { return this.getAttribute("id"); } }
 
+        // cool drop shadow effect from https://codepen.io/Aayushrij/pen/rLzwwJ
+        var defs = this.svg.append("defs");
+        var filter = defs.append("filter")
+                        .attr("id", "drop-shadow")
+                        .attr("height","130%");
+
+        filter.append("feGaussianBlur")
+                .attr("in","SourceAlpha")
+                .attr("stdDeviation", 3)
+                .attr("result", "blur");
+
+        filter.append("feOffset")
+            .attr("in", "blur")
+            .attr("dx", 3)
+            .attr("dy", 3)
+            .attr("result", "offsetBlur");
+            var feMerge = filter.append("feMerge");
+
+        feMerge.append("feMergeNode")
+            .attr("in", "offsetBlur")
+        feMerge.append("feMergeNode")
+            .attr("in", "SourceGraphic");
+
         /* ------- PIE SLICES -------*/
         // Join new data. Source/inspiration: https://gist.github.com/adamjanes/5e53cfa2ef3d3f05828020315a3ba18c
      
@@ -82,36 +109,54 @@ export class ChartWrapperComponent implements AfterViewInit {
         // generates a full element on the first pass.  The text and line 
         // .enter() routines still need fixing.
         slice.enter()
-          .insert("path")
-          .attr("id", (d,i) => d.data.group)
-          .style("fill", (d,i) => this.colors(d.data.count))
-          .attr("d", (d,i) => arc(d))
+            .insert("path")
+            .attr("id", (d,i) => d.data.group)
+            .style("fill", (d,i) => this.colors(d.data.count))
+            .attr("d", (d,i) => arc(d))
+            .on('mouseover', (d,i,n)=> {
+                if (d.data.taxon > 0){
+                    d3.select(n[i])
+                    .attr("stroke","#fff")
+                    .attr("stroke-width","2px")
+                    .style("filter", "url(#drop-shadow)")
+                }
+            })
+            .on('mouseout', (d,i,n)=> d3.select(n[i])
+                .attr('stroke','none')
+                .style('filter','none'))
+            .on('click', (d) => {
+                if (d.data.taxon > 0){
+                    let params = { 'clade': d.data.taxon, 'clade_descendants': true} 
+                    this.key === 'uncurated' ? params['include_raw'] = true : {}
+                    this.router.navigate(['browse'], { queryParams: params });
+                }
+            })
 
         slice   
-          .transition().duration(1000)
-          .attrTween("d", function(d) {
+            .transition().duration(1000)
+            .attrTween("d", function(d) {
             this._current = this._current || d;
             var interpolate = d3.interpolate(this._current, d);
             this._current = interpolate(0);
             return function(t) {
-              return arc(interpolate(t));
+                return arc(interpolate(t));
             };
-          })
+            })
 
         slice.exit()
-          .remove();
+            .remove();
 
         /* ------- TEXT LABELS -------*/
         const text = this.svg.selectAll("text")
-            		    .data(pie(this.data), lkey);
+            .data(pie(this.data), lkey);
 
         text.enter()
-             .append("text")
-             .attr("dy", ".35em")
-             .attr("style", "font-size:11px;")
-             .text(function(d) {
-                 return d.data.group;
-             });
+            .append("text")
+            .attr("dy", ".35em")
+            .attr("style", "font-size:11px;")
+            .text(function(d) {
+                return d.data.group;
+            });
 
         const midAngle = (d) => {
             return d.startAngle + (d.endAngle - d.startAngle)/2;
@@ -119,52 +164,53 @@ export class ChartWrapperComponent implements AfterViewInit {
 
         const radius = this.radius;
         text.transition().duration(1000)
-             .attrTween("transform", function(d) {
-                 this._current = this._current || d;
-                 var interpolate = d3.interpolate(this._current, d);
-                 this._current = interpolate(0);
-                 return function(t) {
-                     var d2 = interpolate(t);
-                     var pos = outerArc.centroid(d2);
-                     pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
-                     return "translate("+ pos +")";
-                 };
-             })
-             .styleTween("text-anchor", function(d){
-                 this._current = this._current || d;
-                 var interpolate = d3.interpolate(this._current, d);
-                 this._current = interpolate(0);
-                 return function(t) {
-                     var d2 = interpolate(t);
-                     return midAngle(d2) < Math.PI ? "start":"end";
-                 };
-             });
+            .attrTween("transform", function(d) {
+                this._current = this._current || d;
+                var interpolate = d3.interpolate(this._current, d);
+                this._current = interpolate(0);
+                return function(t) {
+                    var d2 = interpolate(t);
+                    var pos = outerArc.centroid(d2);
+                    pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
+                    return "translate("+ pos +")";
+                };
+            })
+            .styleTween("text-anchor", function(d){
+                this._current = this._current || d;
+                var interpolate = d3.interpolate(this._current, d);
+                this._current = interpolate(0);
+                return function(t) {
+                    var d2 = interpolate(t);
+                    return midAngle(d2) < Math.PI ? "start":"end";
+                };
+            });
 
-         text.exit()
-             .remove();
+        text.exit()
+            .remove();
        
-         /* ------- SLICE TO TEXT POLYLINES -------*/
-	       let polyline = this.svg.selectAll("polyline")
-             .data(pie(this.data), lkey);
+        /* ------- SLICE TO TEXT POLYLINES -------*/
+        let polyline = this.svg.selectAll("polyline")
+            .data(pie(this.data), lkey);
 
-         polyline.enter()
-             .append("polyline")
-             .attr("style", "fill:none;opacity: .3;stroke:black;stroke-width:2px;");
+        polyline.enter().remove()
+            .append("polyline")
+            .attr("style", "fill:none;opacity: .3;stroke:black;stroke-width:2px; z-index:999;");
 
-         polyline.transition().duration(1000)
-             .attrTween("points", function(d){
-                 this._current = this._current || d;
-                 var interpolate = d3.interpolate(this._current, d);
-                 this._current = interpolate(0);
-                 return function(t) {
-                     var d2 = interpolate(t);
-                     var pos = outerArc.centroid(d2);
-                     pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-                     return [arc.centroid(d2), outerArc.centroid(d2), pos];
-                 };			
-             });
+        polyline.transition().duration(1000)
+            .attrTween("points", function(d){
+                this._current = this._current || d;
+                var interpolate = d3.interpolate(this._current, d);
+                this._current = interpolate(0);
+                return function(t) {
+                    var d2 = interpolate(t);
+                    var pos = outerArc.centroid(d2);
+                    pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+                    var cent = arc.centroid(d2).map(d=>d*1.62)
+                    return [cent, outerArc.centroid(d2), pos];
+                };			
+            });
 
-         polyline.exit()
-             .remove();
+        polyline.exit()
+            .remove();
     }
 }
