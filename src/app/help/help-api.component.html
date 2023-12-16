@@ -61,7 +61,7 @@ params = {{ '{' }}
 
     # Include families from ancestor and descendant taxa in the results
     "clade_relatives": "both",
-}
+&#125;
 
 response = requests.get(url, params=params)
 results = response.json()["results"]
@@ -93,7 +93,7 @@ $response-&gt;is_success or die $response-&gt;status_line;
 
 my $json = decode_json $response-&gt;decoded_content;
 # Prints '24.5' at the time of this writing
-print "${{ '{' }}$json}{{ '{' }}'hits'}[0]{{ '{' }}'bit_score'}\n";
+print "${{ '{' }}$json&#125;{{ '{' }}'hits'&#125;[0]{{ '{' }}'bit_score'&#125;\n";
 </pre>
 </mat-card-content>
 </mat-card>
