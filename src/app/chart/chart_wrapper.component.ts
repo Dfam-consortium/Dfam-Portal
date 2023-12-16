@@ -11,7 +11,7 @@ import * as datasets from "./datasets.json";
 export class ChartWrapperComponent implements AfterViewInit {
     height: number = 300
     width: number = 450 
-    margin: number = 20
+    margin: number = 25
     radius: number = Math.min(this.width, this.height) / 2 - this.margin;
     data: Array<any>
     svg: any;
@@ -40,10 +40,8 @@ export class ChartWrapperComponent implements AfterViewInit {
     }
 
     createColors(): void {
-        let vals = this.data.map(d=>d.count)
-        let min = Math.min(...vals);
-        let max = Math.max(...vals);
-        this.colors = d3.scaleLinear([min, max], ['#eef2e5','#43610d'])
+        this.colors = d3.scaleOrdinal()
+        .range(["#43610d", "#dce7c1", "#567126", "#c8d5aa", "#68813b", "#b5c493", "#7b9151", "#a1b37c", "#8ea266" ]);
     }
 
     makeChart(key){
@@ -86,7 +84,8 @@ export class ChartWrapperComponent implements AfterViewInit {
             .attr("dx", 3)
             .attr("dy", 3)
             .attr("result", "offsetBlur");
-            var feMerge = filter.append("feMerge");
+        
+        var feMerge = filter.append("feMerge");
 
         feMerge.append("feMergeNode")
             .attr("in", "offsetBlur")
@@ -111,7 +110,7 @@ export class ChartWrapperComponent implements AfterViewInit {
         slice.enter()
             .insert("path")
             .attr("id", (d,i) => d.data.group)
-            .style("fill", (d,i) => this.colors(d.data.count))
+            .style("fill", (d,i) => this.colors(i))
             .attr("d", (d,i) => arc(d))
             .on('mouseover', (d,i,n)=> {
                 if (d.data.taxon > 0){
@@ -134,6 +133,7 @@ export class ChartWrapperComponent implements AfterViewInit {
 
         slice   
             .transition().duration(1000)
+            .style("fill", (d,i) => this.colors(i))
             .attrTween("d", function(d) {
             this._current = this._current || d;
             var interpolate = d3.interpolate(this._current, d);
