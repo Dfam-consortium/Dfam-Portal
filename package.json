@@ -44,7 +44,7 @@
     "@angular-eslint/builder": "16.0.3",
     "@angular-eslint/eslint-plugin": "16.0.3",
     "@angular-eslint/eslint-plugin-template": "16.0.3",
-    "@angular-eslint/schematics": "16.0.3",
+    "@angular-eslint/schematics": "17.2.1",
     "@angular-eslint/template-parser": "16.0.3",
     "@angular/compiler-cli": "^17.0.5",
     "@angular/language-service": "^17.0.5",
@@ -69,14 +69,14 @@
   },
   "overrides": {
     "@flowjs/ngx-flow": {
-      "@angular/animations": "16",
-      "@angular/common": "16",
-      "@angular/compiler": "16",
-      "@angular/core": "16",
-      "@angular/forms": "16",
-      "@angular/platform-browser": "16",
-      "@angular/platform-browser-dynamic": "16",
-      "@angular/router": "16"
+      "@angular/animations": "17",
+      "@angular/common": "17",
+      "@angular/compiler": "17",
+      "@angular/core": "17",
+      "@angular/forms": "17",
+      "@angular/platform-browser": "17",
+      "@angular/platform-browser-dynamic": "17",
+      "@angular/router": "17"
     }
   }
 }
