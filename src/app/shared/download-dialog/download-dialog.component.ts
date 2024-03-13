@@ -19,7 +19,7 @@ export interface DialogData {
 export class DownloadDialogComponent implements OnInit {
 
     public fullUrl:string;
-
+    public emailString:string;
     constructor(
         public dialogRef: MatDialogRef<DownloadDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -27,6 +27,7 @@ export class DownloadDialogComponent implements OnInit {
 
     ngOnInit() {
         this.fullUrl = `www.dfam.org${this.data.url}`
+        this.emailString = `mailto:help@dfam.org?Subject=Download Help&body=${this.fullUrl}`;
     }
     
     onClose() {

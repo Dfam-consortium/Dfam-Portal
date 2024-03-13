@@ -12,6 +12,9 @@
       </mat-card>
       <button mat-icon-button [cdkCopyToClipboard]="fullUrl"><mat-icon >content_copy</mat-icon></button>
     </div>
+    <p>
+      If the download is not available after a few hours, email <a href="{{emailString}}" target="_top">help&#64;dfam.org</a> with the above url for assistance. 
+    </p>
 </div>
 <div mat-dialog-actions>
   <button mat-raised-button color="primary" (click)="onClose()">Ok</button>
