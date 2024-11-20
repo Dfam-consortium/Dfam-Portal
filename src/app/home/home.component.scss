@@ -29,23 +29,6 @@ button {
   min-width: unset;
 }
 
-.stats {
-  border-collapse: collapse;
-  margin-top: auto;
-  margin-bottom: 1%;
-  box-shadow: 1px 1px 1px #999;
-}
-
-.stats th,td {
-  border: 1px solid #cccccc;
-  padding: .5em 1em;
-  white-space: nowrap;
-}
-
-.stats td:nth-child(1) {
-  text-align: right;
-}
-
 .blog-article-title {
   font-size: 1em;
 }
@@ -53,9 +36,4 @@ button {
 .blog-article-date {
   font-size: .9em;
   color: #777;
-}
-
-.stats_row {
-  display: flex;
-  justify-content: left;
 }

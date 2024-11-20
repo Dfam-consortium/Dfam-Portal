@@ -66,6 +66,8 @@ import { AssemblyPickerComponent } from './shared/assembly-picker/assembly-picke
 import { VerifyComponent } from './login/verify.component';
 import { PublicationsComponent } from './publications/publications.component';
 import { ChartWrapperComponent } from './chart/chart_wrapper.component'
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { StatsComponent } from './stats/stats.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -131,7 +133,9 @@ const globalRippleConfig: RippleGlobalOptions = {
     ClassificationLayoutComponent,
     PublicationsComponent,
     HelpWorkbenchComponent,
-    ChartWrapperComponent
+    ChartWrapperComponent,
+    LeaderboardComponent,
+    StatsComponent
   ],
   imports: [
     CommonModule,

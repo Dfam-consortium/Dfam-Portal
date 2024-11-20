@@ -4,20 +4,7 @@
     <div>
       <div data-layout="row" data-layout-gt-lg="row wrap" data-layout-lt-md="column wrap" class="stats_row">
         <dfam-chart-wrapper></dfam-chart-wrapper>
-        <table class="stats">
-          <tr>
-            <td>{{totalFamilies ? (totalFamilies | number) : "..."}}</td>
-            <td>total families</td>
-          </tr>
-          <tr>
-            <td>{{curatedFamilies ? (curatedFamilies | number) : "..."}}</td>
-            <td>curated families</td>
-          </tr>
-          <tr>
-            <td>{{coveredSpecies ? (coveredSpecies | number) : "..."}}</td>
-            <td>species</td>
-          </tr>
-        </table>
+        <dfam-leaderboard></dfam-leaderboard>
       </div>
       <p>
         The Dfam database is a open collection of <b>Transposable Element</b> DNA

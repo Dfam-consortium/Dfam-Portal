@@ -19,6 +19,7 @@
       "dom"
     ],
     "useDefineForClassFields": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
   }
 }

@@ -1,0 +1,12 @@
+[
+    {"name": "Boron", "count": 50},
+    {"name": "Carbon", "count": 50},
+    {"name": "Nitrogen", "count": 50},
+    {"name": "Oxygen", "count": 50},
+    {"name": "Fluorine", "count": 50},
+    {"name": "Neon", "count": 50},
+    {"name": "Hydrogen", "count": 50},
+    {"name": "Helium", "count": 50},
+    {"name": "Lithium", "count": 50},
+    {"name": "Beryllium", "count": 50}
+]

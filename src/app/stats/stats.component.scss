@@ -1,0 +1,29 @@
+.stats {
+    border-collapse: collapse;
+    margin-top: auto;
+    margin-bottom: 1%;
+    box-shadow: 1px 1px 1px #999;
+  }
+  
+.stats th,td {
+    border: 1px solid #cccccc;
+    padding: .5em 1em;
+    white-space: nowrap;
+}
+
+.stats td:nth-child(1) {
+    text-align: right;
+}
+
+.stats_row {
+    display: flex;
+    justify-content: left;
+}
+  
+.stats_div{
+    margin: 10px;
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: center;
+}
