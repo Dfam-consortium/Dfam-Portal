@@ -3,10 +3,14 @@
   width: 100%;
 }
 
-// .mat-mdc-row  {
-//   height: 20px;
-// }
+.mat-mdc-row  {
+  height: 35px !important;
+}
 
-// .mat-mdc-header-row  {
-//   height: 20px;
-// }
+.mat-mdc-header-row  {
+  height: 40px !important;
+}
+
+.leaderboard {
+  margin: 10px;
+}

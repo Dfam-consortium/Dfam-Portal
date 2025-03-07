@@ -1,0 +1,12 @@
+[
+    {"name": "F. Martin (EBI), et al.", "tooltip": "F. Martin and D. Ogeh (European Bioinformatics Institute)", "count": 2374228},
+    {"name": "JS. Sproul, et al.", "tooltip": "John S. Sproul, Scott Hotaling, Jacqueline Heckenhauer, Ashlyn Powell, Amanda M. Larracuente, Joanna L. Kelley, Steffen U. Pauls, Paul B. Frandsen", "count": 1030592},
+    {"name": "L. Gozashti, et al.", "tooltip": "Landen Gozashti, Daniel L. Hartl and Russell Corbett-Detig", "count": 303115},
+    {"name": "H. Clawson (UCSC), et al.", "tooltip": "H. Clawson (UCSC), Vertebrate Genomes Project", "count": 229725},
+    {"name": "L. Santana, et al.", "tooltip": "Liliane Santana, Douglas Silva Domingues and Alexandre Paschoal", "count": 118765},
+    {"name": "DA. Ray, et al.", "tooltip": "David A Ray, Carlos Garcia, Jenna R Grimshaw, Michaela K Halsey, Robert M Hubley, Jennifer M Korstian, Diana Moreno-Santillan, Austin B Osmanski, Nicole S Paulat, and Kevin AM Sullivan.", "count": 8262},
+    {"name": "Kanae Nishii", "tooltip": null, "count": 6826},
+    {"name": "Chen Yidan", "tooltip": null, "count": 5294},
+    {"name": "Nicholas Kron", "tooltip": null, "count": 4025},
+    {"name": "Juan Paolo  Sicat", "tooltip": null, "count": 3885}
+]
