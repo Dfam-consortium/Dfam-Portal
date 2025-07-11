@@ -176,14 +176,24 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
     return this.familyPath(accession) + '/seed?format=stockholm&download=true';
   }
 
-  getFamilySeedPlot(accession: string): Observable<any> {
+  getFamilySAMData(accession: string): Observable<any> {
     const url = this.familyPath(accession) + '/seed';
     const options = {
-      params: new HttpParams().set('format', 'alignment_summary'),
-      responseType: 'json' as 'json',
+      params: new HttpParams().set('format', 'sam'),
+      responseType: 'text' as 'json',
     };
     return this.http.get(url, options)
-      .pipe(catchError(this.handleError('getFamilySeedPlot', null)));
+      .pipe(catchError(this.handleError('getFamilySAMData', null)));
+  }
+
+  getFamilyConsensus(accession: string): Observable<any> {
+    const url = this.familyPath(accession) + '/sequence';
+    const options = {
+      params: new HttpParams().set('format', 'fasta'),
+      responseType: 'text' as 'json',
+    };
+    return this.http.get(url, options)
+      .pipe(catchError(this.handleError('getFamilyConsensus', null)));
   }
 
   getFamilyEmblDownloadUrl(accession: string): string {

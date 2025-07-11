@@ -1,6 +1,6 @@
 {
   "name": "dfam",
-  "version": "3.9.0",
+  "version": "3.9.2",
   "license": "CC0-1.0",
   "scripts": {
     "ng": "ng",
@@ -26,7 +26,7 @@
     "@flowjs/flow.js": "^2.14.1",
     "@flowjs/ngx-flow": "^0.6.0",
     "@sodaviz/dfam-soda": "^1.0.1",
-    "AlignmentSummaryViewer": "git+https://github.com/Dfam-consortium/AlignmentSummaryViewer.git#0.1.5",
+    "dfam_igv.js": "git+https://github.com/Dfam-consortium/dfam_igv.js#1.0.0",
     "core-js": "~3.5.0",
     "css-fx-layout": "^3.0.4",
     "custom-event-polyfill": "^1.0.7",

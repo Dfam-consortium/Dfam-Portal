@@ -12,11 +12,12 @@ export class FamilyComponent implements OnInit {
 
   navLinks = [
     { path: './summary', label: 'SUMMARY', available: true },
-    { path: './seed', label: 'SEED', available: true },
-    { path: './features', label: 'FEATURES', available: true },
+    { path: './browser', label: 'BROWSER', available: true },
+    // { path: './seed', label: 'SEED', available: true },
+    // { path: './features', label: 'FEATURES', available: true },
     { path: './model', label: 'MODEL', available: true },
     { path: './annotations', label: 'ANNOTATIONS', available: true },
-    { path: './relationships', label: 'RELATIONSHIPS', available: true },
+    // { path: './relationships', label: 'RELATIONSHIPS', available: true },
     { path: './download', label: 'DOWNLOAD', available: true },
   ];
 

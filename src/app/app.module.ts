@@ -29,8 +29,9 @@ import { PublicFooterComponent,
 import { LoginComponent } from './login/login.component';
 import { FamilyComponent } from './family/family.component';
 import { FamilySummaryComponent } from './family/family-summary.component';
-import { FamilySeedComponent } from './family/family-seed.component';
-import { FamilyFeaturesComponent } from './family/family-features.component';
+import { FamilyBrowserComponent } from './family/family-browser.component';
+// import { FamilySeedComponent } from './family/family-seed.component';
+// import { FamilyFeaturesComponent } from './family/family-features.component';
 import { FamilyModelComponent } from './family/family-model.component';
 import { FamilyAnnotationsComponent } from './family/family-annotations.component';
 import { FamilyRelationshipsComponent } from './family/family-relationships.component';
@@ -97,8 +98,9 @@ const globalRippleConfig: RippleGlobalOptions = {
     LoginComponent,
     FamilyComponent,
     FamilySummaryComponent,
-    FamilySeedComponent,
-    FamilyFeaturesComponent,
+    FamilyBrowserComponent,
+    // FamilySeedComponent,
+    // FamilyFeaturesComponent,
     FamilyModelComponent,
     FamilyAnnotationsComponent,
     FamilyRelationshipsComponent,
