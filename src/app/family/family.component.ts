@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Family } from '../shared/dfam-api/types';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
+import { FamilyDataService } from './family-data-service';
 
 @Component({
   selector: 'dfam-family',
@@ -28,6 +29,7 @@ export class FamilyComponent implements OnInit {
   constructor(
     private dfamapi: DfamAPIService,
     private route: ActivatedRoute,
+    private familyDataService: FamilyDataService
   ) { }
 
   ngOnInit() {
@@ -48,6 +50,7 @@ export class FamilyComponent implements OnInit {
     const accession = this.route.snapshot.params['id'];
     this.dfamapi.getFamily(accession).subscribe((data: Family) => {
       this.family = data;
+      this.familyDataService.setFamily(this.family);
       this.navLinks.forEach(l => {
         l.available = true;
 

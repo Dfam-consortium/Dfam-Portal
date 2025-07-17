@@ -186,6 +186,30 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
       .pipe(catchError(this.handleError('getFamilySAMData', null)));
   }
 
+  getULTRAData(accession: string): Observable<any> {
+    const url = this.familyPath(accession) + '/tandem_repeats';
+    return this.http.get(url)
+      .pipe(catchError(this.handleError('getULTRAData', null)));
+  }
+
+  getSelfAlignData(accession: string): Observable<any> {
+    const url = this.familyPath(accession) + '/self_alignments';
+    return this.http.get(url)
+      .pipe(catchError(this.handleError('getSelfAlignData', null)));
+  }
+
+  getHomologyData(accession: string): Observable<any> {
+    const url = this.familyPath(accession) + '/dfam_relationships';
+    return this.http.get(url)
+      .pipe(catchError(this.handleError('getHomologyData', null)));
+  }
+
+  getProteinData(accession: string): Observable<any> {
+    const url = this.familyPath(accession) + '/protein_alignments';
+    return this.http.get(url)
+      .pipe(catchError(this.handleError('v', null)));
+  }
+
   getFamilyConsensus(accession: string): Observable<any> {
     const url = this.familyPath(accession) + '/sequence';
     const options = {
