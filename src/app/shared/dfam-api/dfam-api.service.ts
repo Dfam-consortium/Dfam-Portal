@@ -198,9 +198,11 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
       .pipe(catchError(this.handleError('getSelfAlignData', null)));
   }
 
-  getHomologyData(accession: string): Observable<any> {
+  getHomologyData(accession: string, payload: string): Observable<any> {
     const url = this.familyPath(accession) + '/dfam_relationships';
-    return this.http.get(url)
+    const body = new HttpParams()
+      .set('altcha_payload', payload)
+    return this.http.post(url, body.toString())
       .pipe(catchError(this.handleError('getHomologyData', null)));
   }
 

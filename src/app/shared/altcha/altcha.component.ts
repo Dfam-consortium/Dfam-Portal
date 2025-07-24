@@ -1,5 +1,5 @@
 
-import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild, forwardRef, AfterViewInit } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild, forwardRef, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, ValidationErrors } from '@angular/forms';
 
 import 'altcha';
@@ -25,7 +25,7 @@ import 'altcha';
 })
 export class AltchaComponent implements ControlValueAccessor, Validator, AfterViewInit {
   @ViewChild('altchaWidget', { static: true }) altchaWidget!: ElementRef;
-
+  @Output() notify = new EventEmitter<string>();
   value = '';
   onChange: CallableFunction = () => undefined;
   onTouched: CallableFunction = () => undefined;
@@ -63,6 +63,7 @@ export class AltchaComponent implements ControlValueAccessor, Validator, AfterVi
   onStateChange(state: 'unverified' | 'verifying' | 'verified' | 'error', payload = '') {
     this.value = state === 'verified' ? payload : '';
     this.onChange(this.value);
+    this.notify.emit(this.value);
     this.onTouched();
   }
 }
