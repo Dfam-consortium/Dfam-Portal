@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy, ElementRef, ViewChild } fr
 import { fromEvent, Unsubscribable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import {Browser, createBrowser} from 'dfam_igv.js/dist/igv.esm.min.js';
+import igv from 'dfam_igv.js/dist/igv.esm.min.js';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 import { FamilyDataService } from './family-data-service';
 
@@ -16,7 +16,7 @@ export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy 
   @ViewChild('igvDiv')
   private igvDiv: ElementRef;
   loading = true;
-  viewer: Browser;
+  viewer: igv.Browser;
   resizeSubscription: Unsubscribable;
   ver_num: number;
   accession: string;
@@ -60,7 +60,7 @@ export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy 
       reference: { fastaURL: this.url + '/sequence?format=fasta', indexed: false },
       tracks: [instance_track]
     };
-    this.viewer = await createBrowser(this.igvDiv.nativeElement, options);
+    this.viewer = await igv.createBrowser(this.igvDiv.nativeElement, options);
     this.loading = false;
   }
 
