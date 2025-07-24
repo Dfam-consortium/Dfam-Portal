@@ -1,6 +1,15 @@
 <div>
     <dfam-altcha (notify)="onChildNotify($event)"></dfam-altcha>
-    <button id="loadTracks" (click)="getAllTracks()">Load Tracks</button>
     <div style="margin-left: 2%;" #igvDiv></div>
     <dfam-loader [loading]="loading"></dfam-loader>
+    <a mat-button color="primary" 
+        (click)="getAllTracks()" 
+        *ngIf="!allTracks" 
+        style="display: flex;
+            justify-content: center;
+            align-items: center;
+            width: max-content;
+            margin: 2% auto;
+            text-align: center;"
+    >Load Additional Tracks</a>
 </div>

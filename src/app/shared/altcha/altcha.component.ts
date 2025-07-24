@@ -1,6 +1,7 @@
 
-import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild, forwardRef, AfterViewInit, EventEmitter, Output } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild, forwardRef, AfterViewInit, EventEmitter, Output, Inject, Injectable } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, ValidationErrors } from '@angular/forms';
+import { DOCUMENT } from '@angular/common';
 
 import 'altcha';
 
@@ -23,12 +24,17 @@ import 'altcha';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
+@Injectable({ providedIn: 'root' })
 export class AltchaComponent implements ControlValueAccessor, Validator, AfterViewInit {
+
+  constructor(@Inject(DOCUMENT) private document: Document) {}
+
   @ViewChild('altchaWidget', { static: true }) altchaWidget!: ElementRef;
   @Output() notify = new EventEmitter<string>();
   value = '';
   onChange: CallableFunction = () => undefined;
   onTouched: CallableFunction = () => undefined;
+  challengeurl = this.document.location.origin + "/api/altcha";
 
   ngAfterViewInit(): void {
     const el = this.altchaWidget.nativeElement as HTMLElement;
