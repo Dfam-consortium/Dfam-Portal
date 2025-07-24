@@ -186,32 +186,6 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
       .pipe(catchError(this.handleError('getFamilySAMData', null)));
   }
 
-  getULTRAData(accession: string): Observable<any> {
-    const url = this.familyPath(accession) + '/tandem_repeats';
-    return this.http.get(url)
-      .pipe(catchError(this.handleError('getULTRAData', null)));
-  }
-
-  getSelfAlignData(accession: string): Observable<any> {
-    const url = this.familyPath(accession) + '/self_alignments';
-    return this.http.get(url)
-      .pipe(catchError(this.handleError('getSelfAlignData', null)));
-  }
-
-  getHomologyData(accession: string, payload: string): Observable<any> {
-    const url = this.familyPath(accession) + '/dfam_relationships';
-    const body = new HttpParams()
-      .set('altcha_payload', payload)
-    return this.http.post(url, body.toString())
-      .pipe(catchError(this.handleError('getHomologyData', null)));
-  }
-
-  getProteinData(accession: string): Observable<any> {
-    const url = this.familyPath(accession) + '/protein_alignments';
-    return this.http.get(url)
-      .pipe(catchError(this.handleError('v', null)));
-  }
-
   getFamilyConsensus(accession: string): Observable<any> {
     const url = this.familyPath(accession) + '/sequence';
     const options = {
@@ -451,6 +425,51 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
       map(this.extractData),
       catchError(this.handleError('getBlogPosts', [])),
     );
+  }
+
+  // Altcha Protected Endpoints
+  getULTRAData(accession: string, payload: string): Observable<any> {
+    const url = this.familyPath(accession) + '/tandem_repeats';
+    const body = {'altcha_payload': payload};
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),};
+    return this.http.post(url, body, headers)
+      .pipe(catchError(this.handleError('getULTRAData', null)));
+  }
+
+  getSelfAlignData(accession: string, payload: string): Observable<any> {
+    const url = this.familyPath(accession) + '/self_alignments';
+    const body = {'altcha_payload': payload};
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),};
+    return this.http.post(url, body, headers)
+      .pipe(catchError(this.handleError('getSelfAlignData', null)));
+  }
+
+  getHomologyData(accession: string, payload: string): Observable<any> {
+    const url = this.familyPath(accession) + '/dfam_relationships';
+    const body = {'altcha_payload': payload};
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),};
+    return this.http.post(url, body, headers)
+      .pipe(catchError(this.handleError('getHomologyData', null)));
+  }
+
+  getProteinData(accession: string, payload: string): Observable<any> {
+    const url = this.familyPath(accession) + '/protein_alignments';
+    const body = {'altcha_payload': payload};
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),};
+    return this.http.post(url, body, headers)
+      .pipe(catchError(this.handleError('v', null)));
   }
 
   private handleError<T>(operation = 'operation', result: T) {

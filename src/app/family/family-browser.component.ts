@@ -72,10 +72,10 @@ export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy 
       if (this.payload) {
         this.loading = true;
 
-        let ultra_data = await this.dfamapi.getULTRAData(this.accession).toPromise(); // TODO deprecated, newer rxjs uses firstValueFrom()
-        let self_align_data = await this.dfamapi.getSelfAlignData(this.accession).toPromise();
+        let ultra_data = await this.dfamapi.getULTRAData(this.accession, this.payload).toPromise(); // TODO deprecated, newer rxjs uses firstValueFrom()
+        let self_align_data = await this.dfamapi.getSelfAlignData(this.accession, this.payload).toPromise();
         let homology_data = await this.dfamapi.getHomologyData(this.accession, this.payload).toPromise();
-        let protein_data = await this.dfamapi.getProteinData(this.accession).toPromise();
+        let protein_data = await this.dfamapi.getProteinData(this.accession, this.payload).toPromise();
         
         // convert from 1-based, fully closed -> 0-based, half open, add accession
         if (ultra_data && ultra_data.length > 0) {
@@ -104,7 +104,6 @@ export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy 
           let self_align_track = {
             "name": "Self Alignments",
             "type": "selfpair",
-            "url": this.url + '/self_alignments',
             "displayMode": "EXPANDED",
             "autoHeight": true,
             "features": self_align_data
