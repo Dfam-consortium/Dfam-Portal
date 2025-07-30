@@ -13,7 +13,7 @@ export class FamilyComponent implements OnInit {
 
   navLinks = [
     { path: './summary', label: 'SUMMARY', available: true },
-    { path: './browser', label: 'BROWSER', available: true },
+    { path: './browser', label: 'BROWSER', badge: 'NEW', available: true },
     { path: './model', label: 'MODEL', available: true },
     { path: './annotations', label: 'ANNOTATIONS', available: true },
     { path: './download', label: 'DOWNLOAD', available: true },

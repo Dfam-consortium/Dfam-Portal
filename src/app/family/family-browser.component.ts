@@ -12,6 +12,11 @@ import { FamilyDataService } from './family-data-service';
 })
 export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  help = {
+      tebrowser: 'A comprehensive view of annotations relative to the family consensus',
+  };
+
+
   @ViewChild('igvDiv')
   private igvDiv: ElementRef;
   loading = true;

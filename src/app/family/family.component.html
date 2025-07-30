@@ -15,18 +15,21 @@
         {{family.title}}
       </div>
   
-      <nav mat-tab-nav-bar mat-stretch-tabs data-hide-lt-md='true' [tabPanel]="tabPanel">
+      <nav mat-tab-nav-bar mat-stretch-tabs data-hide-lt-md="true" [tabPanel]="tabPanel">
         <ng-container *ngFor="let link of navLinks">
           <a mat-tab-link
-            *ngIf="link.available"
-            [routerLink]="link.path"
-            routerLinkActive #rla="routerLinkActive"
-            [active]="rla.isActive">
-            {{link.label}}
+             *ngIf="link.available"
+             [routerLink]="link.path"
+             routerLinkActive #rla="routerLinkActive"
+             [active]="rla.isActive">
+            <span class="tab-label">
+              {{ link.label }}
+              <sup *ngIf="link.badge" class="badge">{{ link.badge }}</sup>
+            </span>
           </a>
         </ng-container>
-      </nav>
-  
+      </nav> 
+
       <button mat-flat-button [matMenuTriggerFor]="menu" data-hide-gt-sm='true'>
           <div data-layout="row" data-layout-align=" center">
           <mat-icon>menu</mat-icon> 
