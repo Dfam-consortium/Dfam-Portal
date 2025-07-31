@@ -103,11 +103,10 @@
 The TE Browser is a lightweight genome browser that uses the transposable element (TE) family consensus sequence as the reference genome. It integrates multiple feature types into a single, convenient view, including protein alignments, inter-family alignments, tandem repeat annotations, and self-alignments. The browser features a fully zoomable interface that reveals increasing detail at higher magnification levels. Users can customize display settings for each track and export publication-ready images in PNG or SVG formats.
 </p>
 <p>
-The TE Browser is based largely on <img src="assets/igv_logo.png"><a href="https://github.com/igvteam/igv.js">IGV.js</a> project with track extensions to support the visualization of TE datasets.  We also provide a standalone version of this visualization that may be used with user-supplied family consensus sequences and/or seed alignments.  See the <a href="https://github.com/Dfam-consortium/DfamTEBrowser">DfamTEBrowser project</a> for more details.
+The TE Browser is based on <a href="https://github.com/igvteam/igv.js">IGV.js</a> project with track extensions to support the visualization of TE datasets.  We also provide a standalone version of this visualization that may be used with user-supplied family consensus sequences and/or seed alignments.  See the <a href="https://github.com/Dfam-consortium/DfamTEBrowser">DfamTEBrowser project</a> for more details.
 </p>
 <h4>Seed Alignment Track</h4>
 
-blah blah blah
 <p>
   <a href="assets/videos/FamilyVisualizationChangesFixed.webm" target="_blank" style="display: inline-flex; align-items: center; gap: 0.4em; text-decoration: underline;">
     <mat-icon style="vertical-align: middle;">ondemand_video</mat-icon>
@@ -115,40 +114,126 @@ blah blah blah
   </a>
 </p>
 
+<p>
+The seed alignment track is a composite visualization that displays both the coverage depth 
+and the alignment quality of transposable element (TE) sequences in the Dfam seed alignment. 
+The coverage plot (at the top) provides a quick overview of how well different regions of the 
+family are represented. The accompanying whisker plot offers additional insight into the 
+fragmentation of aligned instances and the overall quality of the alignments.
+</p>
+<p>
+  By default, <strong>mismatches and gaps</strong> are indicated using colored blocks:
+</p>
+<ul>
+  <li><code>'A'</code>: <span style="color: green;">Green</span></li>
+  <li><code>'C'</code>: <span style="color: blue;">Blue</span></li>
+  <li><code>'G'</code>: <span style="color: orange;">Orange</span></li>
+  <li><code>'T'</code>: <span style="color: red;">Red</span></li>
+  <li>Deletion: <strong>Black</strong></li>
+  <li>Insertion:<strong style="color: purple;">Purple</strong></li>
+</ul>
+<p>
+  <img src="assets/images/DR002183002-seed-1.png" width="100%">
+</p>
+<br>
+<p>
+To see all positions colored in a similar fashion, the "Show all bases" option may be selected from the configuration menu to the right of the track as shown below.  
+<img src="assets/images/DR002183002-seed-3.png" width="100%">
+</p>
+<br>
+<p>
+More detail may be shown by selecting the "Expanded" or "Full" display modes from the track menu, and zooming in on the track ( slider at the top of the browser, or double-clicking on the track ).  For example, in this zoomed-in section the instance glyph is taller allowing for the mismatch bases to be labeled, deletions to be annotated with lines, and insrtions using the "I".
+<img src="assets/images/DR002183002-seed-2.png" width="100%">
+</p>
+
+
 <h4>Tandem Repeats Track</h4>
-blah blah blah
 <p>
   <a href="assets/videos/FamilyVisualizationChangesFixed.webm" target="_blank" style="display: inline-flex; align-items: center; gap: 0.4em; text-decoration: underline;">
     <mat-icon style="vertical-align: middle;">ondemand_video</mat-icon>
     <span>Tandem Repeats Track Tutorial</span>
   </a>
 </p>
+<p>
+The tandem repeats track is a new Dfam feature that highlights stretches of tandemly repeated patterns within a family consensus sequence, identified using the <a href="https://github.com/TravisWheelerLab/ULTRA" target="_blank">ULTRA</a> tool. The consensus pattern of each tandem repeat unit is used as its annotation label. For example, in this family, there are two tandem repeat annotations, both representing monomer repeats. Note that the track label currently obscures the first annotation; this can be resolved by toggling off the "Track Labels" option at the top of the browser.
+</p>
+<p>
+<img src="assets/images/DR002183002-ultra-1.png" width="100%">
+</p>
+<p><strong>Note:</strong> This track will only be displayed if tandem repeat annotations are present for the family.</p>
 
 <h4>Self Alignments Track</h4>
-blah blah blah
 <p>
   <a href="assets/videos/FamilyVisualizationChangesFixed.webm" target="_blank" style="display: inline-flex; align-items: center; gap: 0.4em; text-decoration: underline;">
     <mat-icon style="vertical-align: middle;">ondemand_video</mat-icon>
     <span>Self Alignment Track Tutorial</span>
   </a>
 </p>
+<p>
+This track identifies pairs of subsequences within a family consensus that are alignable (self alignments). These may correspond to tandem repeats, overlapping with the previous tandem repeat track, or to other types of repeated patterns such as Long Terminal Repeats (LTRs) or Terminally Inverted Repeats (TIRs), which are characteristic of certain transposable element classes. When matched regions are located at a distance from each other, they are connected by a dashed arc, with orientation indicated by arrow-style glyphs, as shown in the example below.
+</p>
+<p>
+<img src="assets/images/DR002183002-self-1.png" width="100%">
+</p>
+<p>
+When self-aligned pairs overlap, they are displayed with <strong>hashing</strong> to indicate the overlapping region of the alignment, as illustrated below.
+<img src="assets/images/DR003600822-self-1.png" width="100%">
+</p>
 
 <h4>Dfam Relationships Track</h4>
-blah blah blah
 <p>
   <a href="assets/videos/FamilyVisualizationChangesFixed.webm" target="_blank" style="display: inline-flex; align-items: center; gap: 0.4em; text-decoration: underline;">
     <mat-icon style="vertical-align: middle;">ondemand_video</mat-icon>
     <span>Dfam Relationships Track Tutorial</span>
   </a>
 </p>
+<p>
+The Relationship track visualizes similarities between the current TE family and curated families (DF records) in Dfam. By default, the track displays the top-scoring, minimally overlapping subset of alignments to the family.
+</p>
+
+<p>
+Each annotation includes the region of the current family that aligns (shown as a rectangular box). When possible, the coordinates of the aligned region in the matching family are also shown as bare numbers in the top corners of the rectangle. Additionally, the lengths (bps) of the unaligned segments in the matching family may be indicated using dashed extension arms before and after the rectangle.
+</p>
+
+<p>
+  <strong>Note:</strong> At lower zoom levels, some alignment details, such as coordinates and unaligned lengths, may be hidden for clarity. Simply zooming in on a specific region will reveal these details.
+</p>
+<p>
+The annotation shown in green below includes an extra number in brackets above the rectangle. This value represents the unaligned length (in base pairs) when the right-side extension arm cannot be drawn, such as at the right edge of the reference sequence or at higher zoom levels.
+</p>
+<p>
+  <img src="assets/images/DR002183002-rel-1.png" width="100%" alt="Relationship track example - overview">
+</p>
+<p>
+At higher zoom levels, mismatch and gap details are displayed within each annotation, as shown in the example below.
+</p>
+<p>
+  <img src="assets/images/DR002183002-rel-2.png" width="100%" alt="Relationship track example - zoomed in">
+</p>
+<p>
+To view all alignments to Dfam curated families, select "Show All" from the track configuration menu.
+</p>
+
+
 
 <h4>TE Protein Homology Track</h4>
-blah blah blah
 <p>
   <a href="assets/videos/FamilyVisualizationChangesFixed.webm" target="_blank" style="display: inline-flex; align-items: center; gap: 0.4em; text-decoration: underline;">
     <mat-icon style="vertical-align: middle;">ondemand_video</mat-icon>
     <span>TE Protein Homology Track Tutorial</span>
   </a>
+</p>
+<p>
+This track displays high-scoring BLASTx alignments to a curated set of known transposable element (TE)-derived proteins.  In the default view, alignments are shown as oriented features, each colored using a rotating palette based on the feature label.
+</p>
+<p>
+  <img src="assets/images/DR002548210-prot-1.png" width="100%">
+</p>
+<p>
+At higher zoom levels, this track reveals amino acid alignment details, using shades of purple to indicate exact matches and orange to highlight mismatches, as shown below. Additionally, clicking on an individual feature opens a popup displaying the alignment range for that feature.
+</p>
+<p>
+  <img src="assets/images/DR002548210-prot-2.png" width="100%">
 </p>
 
   </mat-card-content>
