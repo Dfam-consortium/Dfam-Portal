@@ -53,7 +53,7 @@ export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy 
   async buildIGVBrowser() {
      let instance_track = {
       "name": "Seed Alignment",
-      "type": "alignment",
+      "type": "seedalign",
       "format": "sam",
       "sourceType": "sam",
       "url": this.url + '/seed?format=sam',
@@ -62,6 +62,9 @@ export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy 
     };
     const options = {
       reference: { fastaURL: this.url + '/sequence?format=fasta', indexed: false },
+      showCenterGuideButton: false,
+      showMultiSelectButton: false,
+      cursorLabelPosition: "crosshair",
       tracks: [instance_track]
     };
     this.viewer = await igv.createBrowser(this.igvDiv.nativeElement, options);
