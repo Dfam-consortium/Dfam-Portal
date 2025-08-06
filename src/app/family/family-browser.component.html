@@ -1,0 +1,30 @@
+<div>
+    <div style="text-align: center; margin-top: 1.5em;">
+        <a href="assets/videos/FamilyVisualizationChangesFixed.webm" 
+               target="_blank"
+               style="font-size: 0.9em; color: #739025; text-decoration: underline;"
+        >
+        What happened to the SEED/FEATURES/RELATIONSHIPS tabs?
+        </a>
+    </div>
+    <h3 class="underline-span">TE Browser<dfam-help-icon link="/help/family#tebrowser" [tooltip]="help.tebrowser"></dfam-help-icon></h3>
+    <ul>
+      <li>Double-click anywhere in the viewer to zoom in.</li>
+      <li>Hold <kbd>Shift</kbd> and double-click to zoom out.</li>
+      <li>For more information and tutorials, see the 
+          <a href="/help/family#tebrowser">TE Browser section</a> of the help documentation.</li>
+    </ul>
+    <dfam-altcha (notify)="onChildNotify($event)"></dfam-altcha>
+    <div style="margin-left: 2%;" #igvDiv></div>
+    <dfam-loader [loading]="loading"></dfam-loader>
+    <a mat-button color="primary" 
+        (click)="getAllTracks()" 
+        *ngIf="!allTracks" 
+        style="display: flex;
+            justify-content: center;
+            align-items: center;
+            width: max-content;
+            margin: 2% auto;
+            text-align: center;"
+    >Load Additional Tracks</a>
+</div>

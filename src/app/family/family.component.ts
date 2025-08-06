@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Family } from '../shared/dfam-api/types';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
+import { FamilyDataService } from './family-data-service';
 
 @Component({
   selector: 'dfam-family',
@@ -12,11 +13,9 @@ export class FamilyComponent implements OnInit {
 
   navLinks = [
     { path: './summary', label: 'SUMMARY', available: true },
-    { path: './seed', label: 'SEED', available: true },
-    { path: './features', label: 'FEATURES', available: true },
+    { path: './browser', label: 'BROWSER', badge: 'NEW', available: true },
     { path: './model', label: 'MODEL', available: true },
     { path: './annotations', label: 'ANNOTATIONS', available: true },
-    { path: './relationships', label: 'RELATIONSHIPS', available: true },
     { path: './download', label: 'DOWNLOAD', available: true },
   ];
 
@@ -27,6 +26,7 @@ export class FamilyComponent implements OnInit {
   constructor(
     private dfamapi: DfamAPIService,
     private route: ActivatedRoute,
+    private familyDataService: FamilyDataService
   ) { }
 
   ngOnInit() {
@@ -47,6 +47,7 @@ export class FamilyComponent implements OnInit {
     const accession = this.route.snapshot.params['id'];
     this.dfamapi.getFamily(accession).subscribe((data: Family) => {
       this.family = data;
+      this.familyDataService.setFamily(this.family);
       this.navLinks.forEach(l => {
         l.available = true;
 

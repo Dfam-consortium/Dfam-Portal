@@ -28,6 +28,8 @@ import { BrowsePanelComponent } from './browse-panel/browse-panel.component';
 import { LoaderComponent } from './loader/loader.component';
 import { BulkDownloadButtonComponent } from './bulk-download-button/bulk-download-button.component';
 
+import { AltchaComponent } from './altcha/altcha.component';
+
 @NgModule({
   declarations: [
     ErrorsSnackbarComponent,
@@ -58,6 +60,7 @@ import { BulkDownloadButtonComponent } from './bulk-download-button/bulk-downloa
     MatTooltipModule,
 
     RouterModule,
+    AltchaComponent
   ],
   exports: [
     FormsModule,
@@ -81,6 +84,7 @@ import { BulkDownloadButtonComponent } from './bulk-download-button/bulk-downloa
     ErrorsSnackbarComponent,
     BrowsePanelComponent,
     LoaderComponent,
+    AltchaComponent
   ],
 })
 export class SharedModule { }

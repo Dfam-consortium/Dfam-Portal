@@ -26,7 +26,17 @@ the live API at https://www.dfam.org/
 
 Run `ng serve` for a dev server, optionally with `--port <port>`, and navigate
 to `http://localhost:10050/`. The app will automatically reload if you change
-any of the source files.
+any of the source files.  Note, that to support altcha API features the server
+will need to be run with `--ssl true` or proxied through a server that supports
+https.
+
+e.g:
+
+ng serve --port 10202 --ssl true
+
+You will also need to verify that a Dfam-API server is running and the 
+portal is configured with the correct address:port in the src/proxy.conf.json
+file.  It currently defaults to localhost:10012
 
 For testing in IE, you will need to run `ng serve --configuration es5`.
 

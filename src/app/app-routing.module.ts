@@ -4,11 +4,9 @@ import { HomeComponent } from './home/home.component';
 import { BrowseComponent } from './browse/browse.component';
 import { FamilyComponent } from './family/family.component';
 import { FamilySummaryComponent } from './family/family-summary.component';
-import { FamilySeedComponent } from './family/family-seed.component';
-import { FamilyFeaturesComponent } from './family/family-features.component';
+import { FamilyBrowserComponent } from './family/family-browser.component';
 import { FamilyModelComponent } from './family/family-model.component';
 import { FamilyAnnotationsComponent } from './family/family-annotations.component';
-import { FamilyRelationshipsComponent } from './family/family-relationships.component';
 import { FamilyDownloadComponent } from './family/family-download.component';
 import { SearchComponent } from './search/search.component';
 import { SearchSequenceComponent } from './search/search-sequence.component';
@@ -44,11 +42,9 @@ export const PUBLIC_ROUTES: Routes = [
   { path: 'family/:id', component: FamilyComponent, children: [
     { path: '', redirectTo: 'summary', pathMatch: 'full' },
     { path: 'summary', component: FamilySummaryComponent },
-    { path: 'seed', component: FamilySeedComponent },
-    { path: 'features', component: FamilyFeaturesComponent },
+    { path: 'browser', component: FamilyBrowserComponent },
     { path: 'model', component: FamilyModelComponent },
     { path: 'annotations', component: FamilyAnnotationsComponent },
-    { path: 'relationships', component: FamilyRelationshipsComponent },
     { path: 'download', component: FamilyDownloadComponent },
   ]},
   { path: 'classification', component: ClassificationLayoutComponent, children: [

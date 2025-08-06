@@ -41,3 +41,20 @@
 
   color: #B00020;
 }
+
+/*
+ * For NEW badge
+ */
+.tab-label {
+  position: relative;
+  display: inline-block;
+}
+
+.badge {
+  font-size: 0.55em;
+  font-weight: bold;
+  color: red;
+  position: absolute;
+  top: -0.6em;
+  right: -2.0em;
+}
