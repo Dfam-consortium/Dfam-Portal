@@ -7,7 +7,7 @@
     }
   },
   "/api": {
-    "target": "https://localhost:10012",
+    "target": "https://localhost:10011",
     "secure": false,
     "pathRewrite": {
       "^/api": ""
