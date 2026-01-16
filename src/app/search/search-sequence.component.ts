@@ -274,6 +274,12 @@ TCGGCTCACTTCGACCTCTGCCTCCCCAGTTCAAGTGATTCTCCTGCCTCAGTCTCCTGA`,
     });
   }
 
+  onAssemblyChange(newValue: string) {
+    if (newValue === 'other') {
+      this.search.cutoff = 'evalue';
+    }
+  }
+
   onSubmit() {
     if (this.sequenceInput.invalid) {
       return;

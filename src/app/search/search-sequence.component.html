@@ -49,13 +49,14 @@
     [assemblies]="assemblies"
     [(value)]="search.assembly"
     [showIds]="false"
+    (valueChange)="onAssemblyChange($event)"
     placeholder="Query Organism">
   </dfam-assembly-picker>
 
   <div>
     Cut-off:
     <mat-radio-group name="cutoff" [(ngModel)]="search.cutoff">
-      <mat-radio-button value="curated">Dfam curated threshold</mat-radio-button>
+      <mat-radio-button value="curated" [disabled]="search.assembly === 'other'">Dfam curated threshold</mat-radio-button>
       <mat-radio-button value="evalue">E-value</mat-radio-button>
     </mat-radio-group>
   </div>
