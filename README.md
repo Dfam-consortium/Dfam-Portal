@@ -5,6 +5,9 @@ Transposable Element sequence alignments, hidden Markov Models (HMMs),
 consensus sequences, and genome annotations. The portal is based on Angular 10.x
 and requires an instance of the REST Dfam-API running on the same machine.
 
+Tested With
+ Node: 20.3.1
+
 ## Dependencies
 
 All client-side dependencies are specified in `package.json` or shipped in
