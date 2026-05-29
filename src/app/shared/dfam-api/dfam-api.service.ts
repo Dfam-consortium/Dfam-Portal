@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, tap, catchError } from 'rxjs/operators';
+import { map, tap, catchError, shareReplay } from 'rxjs/operators';
 
 import { ErrorsService } from '../services/errors.service';
 import { FamilyCriteria, FamilyRepository, FamilyResults, ClassesRepository, TaxaResults, TaxaRepository } from './common';
 import { Family, Classification, Taxon } from './types';
+import { environment } from '../../../environments/environment';
 
-//
-// TODO: Can this constant come from the app.json file so that it's easy to redirect?
-//
-const endpoint = '/api/';
+//const endpoint = '/api/';
+const endpoint = environment.apiEndpoint; 
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +17,11 @@ const endpoint = '/api/';
 export class DfamAPIService implements FamilyRepository, ClassesRepository, TaxaRepository {
 
   constructor(private http: HttpClient, private errorsService: ErrorsService) { }
+
+  versionData$ = this.http.get<any>(endpoint + 'version').pipe(
+    catchError(this.handleError('getVersionData', {})),                                            
+    shareReplay(1),                                                                                
+  );                
 
   private extractData(res: Response) {
     const body = res;
