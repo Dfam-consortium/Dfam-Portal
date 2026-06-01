@@ -1,1 +1,106 @@
-{"curated": [{"group": "Mammals", "taxon": 40674, "count": 10728}, {"group": "Ray-Finned Fish", "taxon": 7898, "count": 2492}, {"group": "Butterflies & Moths", "taxon": 104431, "count": 630}, {"group": "Beetles", "taxon": 7041, "count": 3359}, {"group": "Flies", "taxon": 7147, "count": 701}, {"group": "Roundworms", "taxon": 6231, "count": 3259}, {"group": "Birds", "taxon": 8782, "count": 157}, {"group": "Other", "taxon": 0, "count": 4014}], "uncurated": [{"group": "Mammals", "taxon": 40674, "count": 240906}, {"group": "Birds", "taxon": 8782, "count": 205910}, {"group": "Lepidosaurs", "taxon": 8504, "count": 83460}, {"group": "Turtles", "taxon": 8459, "count": 58086}, {"group": "Ray-Finned Fish", "taxon": 7898, "count": 770822}, {"group": "Amphibians", "taxon": 8292, "count": 46715}, {"group": "Plants", "taxon": 33090, "count": 176667}, {"group": "Butterflies & Moths", "taxon": 104431, "count": 611842}, {"group": "Ants, Bees & Wasps", "taxon": 7399, "count": 321661}, {"group": "Flies", "taxon": 7147, "count": 345908}, {"group": "Other", "taxon": 0, "count": 712125}], "meta": {"db_version": "3.8", "db_date": "2023-11-14"}}
+{
+  "curated": [
+    {
+      "group": "Mammals",
+      "taxon": 40674,
+      "count": 10785
+    },
+    {
+      "group": "Ray-Finned Fish",
+      "taxon": 7898,
+      "count": 2645
+    },
+    {
+      "group": "Arthropods",
+      "taxon": 6656,
+      "count": 11124
+    },
+    {
+      "group": "Roundworms",
+      "taxon": 6231,
+      "count": 3259
+    },
+    {
+      "group": "Birds",
+      "taxon": 8782,
+      "count": 157
+    },
+    {
+      "group": "Bivalves",
+      "taxon": 6544,
+      "count": 1648
+    },
+    {
+      "group": "Other",
+      "taxon": 0,
+      "count": 1003
+    }
+  ],
+  "uncurated": [
+    {
+      "group": "Mammals",
+      "taxon": 40674,
+      "count": 304453
+    },
+    {
+      "group": "Birds",
+      "taxon": 8782,
+      "count": 236327
+    },
+    {
+      "group": "Reptiles",
+      "taxon": 32561,
+      "count": 497310
+    },
+    {
+      "group": "Ray-Finned Fish",
+      "taxon": 7898,
+      "count": 1235935
+    },
+    {
+      "group": "Amphibians",
+      "taxon": 8292,
+      "count": 106767
+    },
+    {
+      "group": "Plants",
+      "taxon": 33090,
+      "count": 1247834
+    },
+    {
+      "group": "Insects",
+      "taxon": 50557,
+      "count": 2844274
+    },
+    {
+      "group": "Arachnids",
+      "taxon": 6854,
+      "count": 75723
+    },
+    {
+      "group": "Crustaceans",
+      "taxon": 6657,
+      "count": 48672
+    },
+    {
+      "group": "Cnidarians",
+      "taxon": 6073,
+      "count": 197147
+    },
+    {
+      "group": "Fungi",
+      "taxon": 4751,
+      "count": 460031
+    },
+    {
+      "group": "Other",
+      "taxon": 0,
+      "count": 578871
+    }
+  ],
+  "meta": {
+    "db_version": "4.0",
+    "db_date": "2026-05-22",
+    "count_by": "families"
+  }
+}

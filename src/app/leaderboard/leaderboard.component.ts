@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import dataset from "./dataset_3.9.json"; // this is generated from running /Dfam-umbrella/Server/partition/scripts/getLeaderBoardData.py and hand editing the json
+import dataset from "./dataset.json"; // This is data gathered using the Server/countFamilyContributors.py script
 
 export interface PeriodicElement {
   name: string;
