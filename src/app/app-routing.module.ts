@@ -14,9 +14,11 @@ import { SearchSequenceResultsComponent } from './search/search-sequence-results
 import { SearchAnnotationsComponent } from './search/search-annotations.component';
 import { ClassificationComponent } from './classification/classification.component';
 import { ClassificationLayoutComponent } from './classification/classification-layout.component';
-import { RepositoryComponent } from './repository/repository.component';
 import { DnaTerminiComponent } from './classification/dna-termini.component';
 import { PublicationsComponent } from './publications/publications.component';
+import { RepbaseLandingComponent } from './repbase/repbase-landing.component';
+import { RepbaseReleasesComponent } from './repbase/repbase-releases.component';
+import { RepbaseDetailComponent } from './repbase/repbase-detail.component';
 import { HelpComponent } from './help/help.component';
 import { HelpFamilyComponent } from './help/help-family.component';
 import { HelpBrowseComponent } from './help/help-browse.component';
@@ -25,6 +27,7 @@ import { HelpWorkbenchComponent } from './help/help-workbench.component';
 import { HelpToolsComponent } from './help/help-tools.component';
 import { HelpApiComponent } from './help/help-api.component';
 import { AboutComponent } from './about/about.component';
+import { AnnouncementComponent } from './announcement/announcement.component';
 import { LoginComponent } from './login/login.component';
 import { VerifyComponent } from './login/verify.component';
 import { PublicLayoutComponent } from './shared';
@@ -52,8 +55,10 @@ export const PUBLIC_ROUTES: Routes = [
     { path: 'tree', component: ClassificationComponent },
     { path: 'dna-termini', component: DnaTerminiComponent },
   ]},
-  { path: 'repository', component: RepositoryComponent},
   { path: 'publications', component: PublicationsComponent},
+  { path: 'repbase', component: RepbaseLandingComponent },
+  { path: 'repbase/releases', component: RepbaseReleasesComponent },
+  { path: 'repbase/releases/:id', component: RepbaseDetailComponent },
   { path: 'help', component: HelpComponent, children: [
     { path: '', redirectTo: 'family', pathMatch: 'full' },
     { path: 'family', component: HelpFamilyComponent },
@@ -64,6 +69,7 @@ export const PUBLIC_ROUTES: Routes = [
     { path: 'api', component: HelpApiComponent },
   ] },
   { path: 'about', component: AboutComponent},
+  { path: 'announcement', component: AnnouncementComponent },
 
   // TODO: Set up a more useful 'not found' page
   { path: '**', redirectTo: 'home', pathMatch: 'full' },

@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  apiBase: '/api/backend',
   apiEndpoint: '/api/'
 };
 

@@ -1,0 +1,160 @@
+<div class="repbase-detail">
+
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a routerLink="/repbase">Repbase Archive</a> &rsaquo;
+      <a routerLink="/repbase/releases">Releases</a> &rsaquo;
+      {{ release?.release }}
+    </div>
+    <h2>{{ release?.release }} <b>Rebase Update</b> collection</h2>
+    <p class="release-date" *ngIf="release">Released: {{ release.date }}</p>
+  </div>
+
+  <div *ngIf="notFound" class="not-found">
+    <p>Release not found.</p>
+    <a mat-button routerLink="/repbase/releases">Back to releases</a>
+  </div>
+
+  <ng-container *ngIf="release">
+
+    <!-- EMBL Format -->
+    <div class="file-section" *ngIf="release.files.embl?.length">
+      <h3>EMBL Format</h3>
+      <p class="section-desc">
+        Repbase data in EMBL flat-file format. This is the primary distribution
+        format, containing full sequence records with annotations, cross-references,
+        and classification information.
+      </p>
+      <table class="file-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Size</th>
+            <th>Date</th>
+            <th>SHA256</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of release.files.embl">
+            <td class="file-name">{{ f.name }}</td>
+            <td class="file-size">{{ f.size_mb | number:'1.2-2' }} MB</td>
+            <td class="file-date">{{ f.date }}</td>
+            <td class="file-sha">{{ f.sha256 }}</td>
+            <td class="file-dl">
+              <a mat-stroked-button [href]="downloadUrl(f.path)">
+                <mat-icon>download</mat-icon> Download
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FASTA Format -->
+    <div class="file-section" *ngIf="release.files.fasta?.length">
+      <h3>FASTA Format</h3>
+      <p class="section-desc">
+        Repbase sequences in FASTA format. Suitable for direct use with sequence
+        analysis tools such as BLAST, HMMER, and RepeatMasker.
+      </p>
+      <table class="file-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Size</th>
+            <th>Date</th>
+            <th>SHA256</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of release.files.fasta">
+            <td class="file-name">{{ f.name }}</td>
+            <td class="file-size">{{ f.size_mb | number:'1.2-2' }} MB</td>
+            <td class="file-date">{{ f.date }}</td>
+            <td class="file-sha">{{ f.sha256 }}</td>
+            <td class="file-dl">
+              <a mat-stroked-button [href]="downloadUrl(f.path)">
+                <mat-icon>download</mat-icon> Download
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- RepeatMasker Library -->
+    <div class="file-section" *ngIf="release.files.repeatmasker?.length">
+      <h3>RepeatMasker Library</h3>
+      <p class="section-desc">
+        Repbase library pre-formatted for use with
+        <a href="http://www.repeatmasker.org" class="ext">RepeatMasker</a>.
+        RepeatMasker library files are canonical releases that may be associated
+        with one or more Repbase versions.
+      </p>
+      <table class="file-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Size</th>
+            <th>Date</th>
+            <th>SHA256</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of release.files.repeatmasker">
+            <td class="file-name">{{ f.name }}</td>
+            <td class="file-size">{{ f.size_mb | number:'1.2-2' }} MB</td>
+            <td class="file-date">{{ f.date }}</td>
+            <td class="file-sha">{{ f.sha256 }}</td>
+            <td class="file-dl">
+              <a mat-stroked-button [href]="downloadUrl(f.path)">
+                <mat-icon>download</mat-icon> Download
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- REPET Library -->
+    <div class="file-section" *ngIf="release.files.repet?.length">
+      <h3>REPET Library</h3>
+      <p class="section-desc">
+        Repbase library in FASTA format for use with the
+        <a href="https://urgi.versailles.inrae.fr/Tools/REPET" class="ext">REPET</a>
+        transposable element annotation pipeline.
+        REPET library files are canonical releases that may be associated with
+        one or more Repbase versions.
+      </p>
+      <table class="file-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Size</th>
+            <th>Date</th>
+            <th>SHA256</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of release.files.repet">
+            <td class="file-name">{{ f.name }}</td>
+            <td class="file-size">{{ f.size_mb | number:'1.2-2' }} MB</td>
+            <td class="file-date">{{ f.date }}</td>
+            <td class="file-sha">{{ f.sha256 }}</td>
+            <td class="file-dl">
+              <a mat-stroked-button [href]="downloadUrl(f.path)">
+                <mat-icon>download</mat-icon> Download
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </ng-container>
+
+</div>

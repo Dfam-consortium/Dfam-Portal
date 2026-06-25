@@ -1,0 +1,49 @@
+<div class="repbase-landing">
+
+  <h2>Repbase Archive</h2>
+
+  <div class="intro-section">
+    <p>
+      <!-- Introductory text to be written -->
+    </p>
+    <p>
+      <!-- Additional descriptive text to be written -->
+    </p>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="browse-section">
+    <h3>Browse Releases</h3>
+    <p>
+      Repbase is a longstanding reference collection of repetitive DNA sequences that has played a central role in repeat identification, masking, and annotation for eukaryotic genomes. Developed beginning in 1990 under the direction of Jerzy Jurka at the Genetic Information Research Institute (GIRI), Repbase contains consensus sequences and representative examples from thousands of transposable element and repeat families. Archived releases from version 2.23 (1998) through the final release are available below for historical reference and reproducibility of published analyses.
+    </p>
+    <p>
+    Beginning on June 25 2026, all Repbase archival releases were made available under the same open license as Dfam, the Creative Commons Zero (<a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>) Public Domain Dedication. These materials may be freely downloaded, used, modified, and redistributed without restriction.
+    </p>
+    <a mat-raised-button color="primary" routerLink="/repbase/releases">
+      <mat-icon>list</mat-icon>
+      Browse All Releases ({{ releaseCount }})
+    </a>
+  </div>
+
+  <mat-divider *ngIf="extras.length > 0"></mat-divider>
+
+  <div class="extras-section" *ngIf="extras.length > 0">
+    <h3>Additional Downloads</h3>
+    The Repbase source data used to create the initial release of Dfam 1.0.
+    <table class="file-table">
+      <tr *ngFor="let file of extras">
+        <td class="file-name">
+          <a [href]="archiveBase + '/' + file.path">
+            <mat-icon>archive</mat-icon>{{ file.name }}
+          </a>
+        </td>
+        <td class="file-size">{{ file.size_mb | number:'1.2-2' }} MB</td>
+        <td class="file-date">{{ file.date }}</td>
+        <td class="file-sha">SHA256: {{ file.sha256 }}</td>
+      </tr>
+    </table>
+  </div>
+
+</div>

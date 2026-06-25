@@ -1,0 +1,62 @@
+<div class="repbase-releases">
+
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a routerLink="/repbase">Repbase Archive</a> &rsaquo; Releases
+    </div>
+    <h2>Repbase Releases</h2>
+    <p class="subtitle">{{ filteredReleases.length }} of {{ allReleases.length }} releases</p>
+  </div>
+
+  <div class="filter-row">
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Filter releases</mat-label>
+      <input matInput [(ngModel)]="filterText" (ngModelChange)="applyFilter()" placeholder="e.g. RepBase19 or 2015">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div class="release-table-wrap">
+    <table class="release-table">
+      <thead>
+        <tr>
+          <th class="col-release">Release</th>
+          <th class="col-date">Date</th>
+          <th class="col-type" title="EMBL format">EMBL</th>
+          <th class="col-type" title="FASTA format">FASTA</th>
+          <th class="col-type" title="RepeatMasker library">RM</th>
+          <th class="col-type" title="REPET library">REPET</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let release of filteredReleases"
+            class="release-row"
+            (click)="openRelease(release)">
+          <td class="col-release">
+            <a [routerLink]="['/repbase/releases', release.release]"
+               (click)="$event.stopPropagation()">
+              {{ release.release }}
+            </a>
+          </td>
+          <td class="col-date">{{ release.date }}</td>
+          <td class="col-type">
+            <mat-icon class="check" *ngIf="hasEmbl(release)">check</mat-icon>
+          </td>
+          <td class="col-type">
+            <mat-icon class="check" *ngIf="hasFasta(release)">check</mat-icon>
+          </td>
+          <td class="col-type">
+            <mat-icon class="check" *ngIf="hasRepeatMasker(release)">check</mat-icon>
+          </td>
+          <td class="col-type">
+            <mat-icon class="check" *ngIf="hasRepet(release)">check</mat-icon>
+          </td>
+        </tr>
+        <tr *ngIf="filteredReleases.length === 0">
+          <td colspan="6" class="no-results">No releases match the filter.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

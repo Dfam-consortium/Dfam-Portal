@@ -1,0 +1,82 @@
+.repbase-landing {
+  max-width: 900px;
+  margin: 2em auto;
+  padding: 0 1em;
+}
+
+h2 {
+  margin-bottom: 0.5em;
+}
+
+.intro-section {
+  margin: 1.5em 0;
+}
+
+mat-divider {
+  margin: 1.5em 0;
+}
+
+.browse-section {
+  margin: 1.5em 0;
+
+  a[mat-raised-button] {
+    margin-top: 0.5em;
+    mat-icon {
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+  }
+}
+
+.extras-section {
+  margin: 1.5em 0;
+}
+
+.file-table {
+  border-collapse: collapse;
+  width: 100%;
+
+  tr {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  td {
+    padding: 0.6em 0.8em;
+    vertical-align: middle;
+  }
+}
+
+.file-name a {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  mat-icon {
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+  }
+}
+
+.file-size {
+  white-space: nowrap;
+  color: #555;
+}
+
+.file-date {
+  white-space: nowrap;
+  color: #555;
+}
+
+.file-sha {
+  font-family: monospace;
+  font-size: 0.8em;
+  color: #777;
+  word-break: break-all;
+}

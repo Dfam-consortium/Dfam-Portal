@@ -1,0 +1,184 @@
+<div data-layout="row" data-flex-gt-sm="60" offset-gt-sm="20">
+  <div class="announcement-page">
+
+    <h2 class="paper-title">Unifying Repbase and Dfam: A New Open Foundation for Transposable Element Research</h2>
+
+    <div class="paper-authors">
+      Kenji K. Kojima<sup>1</sup>, Arian F.A. Smit<sup>2</sup>, Weidong Bao<sup>1</sup>,
+      Oleksiy Kohany<sup>1</sup>, Noriko F. Kojima<sup>1</sup>, Timothy Jurka<sup>1</sup>,<br>
+      Robert Hubley<sup>2</sup>, Travis J. Wheeler<sup>3</sup>
+    </div>
+
+    <div class="paper-affiliations">
+      <sup>1</sup>Genetic Information Research Institute, East Palo Alto, CA 94303, USA.<br>
+      <sup>2</sup>Institute for Systems Biology, Seattle, WA 98109, USA.<br>
+      <sup>3</sup>College of Pharmacy, University of Arizona, Tucson, AZ 85719, USA.
+    </div>
+
+    <div class="paper-citation">
+      <em>Mobile DNA</em>, Volume 17, article number 17 (2026)<br>
+      <!-- TODO: fill in the Volume and Issue numbers above -->
+      <a href="https://link.springer.com/article/10.1186/s13100-026-00409-9" target="_blank" rel="noopener noreferrer">
+        https://link.springer.com/article/10.1186/s13100-026-00409-9
+      </a>
+    </div>
+
+    <div class="paper-abstract">
+      <h3>Abstract</h3>
+      <p>
+        Repbase and Dfam, the two foundational resources for transposable element
+        annotation, are being unified into a single, fully open access framework, with
+        Repbase released under CC-0 and its core curation team joining the Dfam project.
+      </p>
+    </div>
+
+    <div class="paper-body">
+
+      <p>
+        Accurate identification and classification of transposable elements (TEs) and their
+        remnants is foundational to genome assembly, gene annotation, evolutionary analysis,
+        and an expanding range of biomedical and agricultural applications. For over three
+        decades, this work has depended on two complementary resources: Repbase
+        [<a href="#ref1">1</a>, <a href="#ref2">2</a>] and Dfam [<a href="#ref3">3</a>, <a href="#ref4">4</a>].
+        We write to announce that these resources are being brought together under a unified,
+        fully open access framework.
+      </p>
+
+      <p>
+        Repbase was founded in 1990 by Jerzy Jurka at the Linus Pauling Institute of Science
+        and Medicine and relocated to the Genetic Information Research Institute (GIRI) in
+        1994, where it has served as the primary reference collection of eukaryotic TE consensus
+        sequences for the genomics community. Arian Smit was an earlier contributor to Repbase
+        and his RepeatMasker software became the library's most prominent user and its main
+        pathway to the broader community. The strength of Repbase lies in meticulous expert
+        curation: each entry reflects careful attention to family boundaries, classification,
+        and consensus reconstruction. Over the years, the team at GIRI, with contributions from
+        the community, expanded the database to cover TEs across a wide range of eukaryotic
+        lineages, characterizing numerous superfamilies and contributing foundational knowledge
+        to the field.
+      </p>
+
+      <figure class="paper-figure">
+        <img src="assets/images/Arian_Jerzy_crop2.png"
+             alt="Arian Smit (left) and Jerzy Jurka (right) at the 2006 Genomic Impact of Eukaryotic Transposable Elements conference at Asilomar.">
+        <figcaption>
+          <strong>Fig. 1</strong> Arian Smit (left) and Jerzy Jurka (right) at the 2006 Genomic Impact of Eukaryotic
+          Transposable Elements conference at Asilomar. Twenty years later, Repbase and Dfam are coming together.
+          (photo by Jerzy Kulski)
+        </figcaption>
+      </figure>
+
+      <p>
+        Dfam originated in 2012 as an alternative and open resource. It represents TE families
+        with profile hidden Markov models (HMMs) built from seed alignments of genomic instances;
+        because the underlying instances and their genomic coordinates are retained, the evidence
+        supporting each family model remains transparent and traceable. Developed by a broad
+        collaboration that included Jerzy Jurka, it is now maintained by Robert Hubley and Arian
+        Smit at the Institute for Systems Biology, and Travis Wheeler at the University of Arizona.
+        Dfam was designed from the outset as an open access resource. It has since grown to house
+        TE family models for nearly 3,000 species, supported by partnerships with the European
+        Bioinformatics Institute, the Vertebrate Genomes Project [<a href="#ref5">5</a>], the
+        Zoonomia project [<a href="#ref6">6</a>], and other large-scale sequencing efforts. Dfam
+        now serves as the default open TE library for RepeatMasker.
+      </p>
+
+      <p>
+        While both resources have been indispensable, they have evolved along separate paths.
+        Repbase offers unmatched depth of expert curation but has operated under a restrictive
+        licensing model and subscription fees were introduced for all users in 2019 due to
+        widespread cuts in NIH funding for life sciences databases. Dfam provides open access
+        and scalable infrastructure but has absorbed large volumes of de novo generated libraries
+        that have not undergone the level of manual refinement characteristic of Repbase entries.
+        The community has long needed both the curation depth of one and the openness and
+        scalability of the other.
+      </p>
+
+      <p>
+        In the 2016 Dfam paper [<a href="#ref7">7</a>], reflecting a growing relationship between
+        the two projects, we wrote that &#8220;in the coming years we will ... continue the protocol
+        used here to build alignments and profile HMMs [based on] the Repbase-derived RepeatMasker
+        library&#8221;. A decade later, we are pleased to announce a far more comprehensive realization
+        of that goal: GIRI has decided to release the full Repbase collection under a CC-0 (public
+        domain) license and to partner with the Dfam team to integrate these important resources.
+        Concurrent with this transition, the core Repbase group will soon be joining the Dfam team.
+        There, they will continue their expert curation work and play a key role in efforts to merge
+        the two resources. To catalyze this transition, GIRI is providing a generous gift to the
+        University of Arizona that will seed the personnel and operational work required to begin
+        building the integrated resource.
+      </p>
+
+      <p>
+        The integration effort is significant. It will require developing methods to faithfully
+        convert curated Repbase consensus sequences into Dfam&#8217;s seed alignment format,
+        reconciling overlapping and redundant family entries across the two databases, and migrating
+        GIRI&#8217;s specialized curation tools and workflows into the Dfam infrastructure. The
+        integration effort will proceed in stages over the coming releases. An initial open release
+        of Repbase data will be made available in its current form, followed by progressive
+        incorporation into the Dfam framework.
+      </p>
+
+      <p>
+        Beyond the immediate data and software integration, we plan to leverage the combined
+        expertise to develop improved methods for semi-automated curation of the rapidly growing
+        volume of de novo TE libraries being contributed by the community. We also plan to expand
+        community engagement through workshops, tutorials, and enhanced web services that preserve
+        features valued by Repbase users while taking advantage of Dfam&#8217;s open platform.
+      </p>
+
+      <p>
+        We view this as a pivotal moment for the field. Decades of expert knowledge accumulated at
+        GIRI will now be channeled into a fully open resource, available to every researcher without
+        restriction. This unified effort will benefit researchers at every scale, whether annotating
+        a single newly sequenced genome or generating TE libraries across hundreds of species. The
+        result will be a single, coherent resource that combines Repbase&#8217;s curation depth with
+        Dfam&#8217;s open infrastructure and broad taxonomic coverage. The new collaborative team is
+        excited to work with the TE research community to build on this foundation.
+      </p>
+
+    </div>
+
+    <div class="paper-references">
+      <h3>References</h3>
+      <ol>
+        <li id="ref1">
+          Jurka J, Kapitonov VV, Pavlicek A, Klonowski P, Kohany O, Walichiewicz J.
+          Repbase Update, a database of eukaryotic repetitive elements.
+          <em>Cytogenetic and genome research.</em> 2005;110(1-4):462&#8211;467.
+        </li>
+        <li id="ref2">
+          Bao W, Kojima KK, Kohany O. Repbase Update, a database of repetitive elements
+          in eukaryotic genomes. <em>Mobile DNA.</em> 2015;6(1):11.
+        </li>
+        <li id="ref3">
+          Wheeler TJ, Clements J, Eddy SR, Hubley R, Jones TA, Jurka J, et al. Dfam: a
+          database of repetitive DNA based on profile hidden Markov models.
+          <em>Nucleic acids research.</em> 2012;41(D1):D70&#8211;D82.
+        </li>
+        <li id="ref4">
+          Storer J, Hubley R, Rosen J, Wheeler TJ, Smit AF. The Dfam community resource
+          of transposable element families, sequence models, and genome annotations.
+          <em>Mobile DNA.</em> 2021;12(1):2.
+        </li>
+        <li id="ref5">
+          Rhie A, McCarthy SA, Fedrigo O, Damas J, Formenti G, Koren S, et al. Towards
+          complete and error-free genome assemblies of all vertebrate species.
+          <em>Nature.</em> 2021;592(7856):737&#8211;746.
+        </li>
+        <li id="ref6">
+          Zoonomia Consortium. A comparative genomics multitool for scientific discovery
+          and conservation. <em>Nature.</em> 2020;587(7833):240&#8211;245.
+        </li>
+        <li id="ref7">
+          Hubley R, Finn RD, Clements J, Eddy SR, Jones TA, Bao W, et al. The Dfam
+          database of repetitive DNA families.
+          <em>Nucleic acids research.</em> 2016;44(D1):D81&#8211;D89.
+        </li>
+      </ol>
+    </div>
+
+    <div class="announcement-footer">
+      <a routerLink="/home">&larr; Back to Dfam Home</a>
+    </div>
+
+  </div>
+</div>

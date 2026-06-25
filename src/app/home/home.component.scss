@@ -29,6 +29,56 @@ button {
   min-width: unset;
 }
 
+/* TEMPORARY ANNOUNCEMENT BANNER — remove with banner HTML when done */
+.announcement-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #fff8e1;
+  border: 2px solid #f9a825;
+  border-left: 6px solid #f9a825;
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+
+  .announcement-label {
+    background: #f9a825;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.75em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  .announcement-body {
+    flex: 1;
+
+    p {
+      margin: 0 0 8px 0;
+      font-size: 0.95em;
+      color: #333;
+      line-height: 1.5;
+    }
+  }
+
+  .announcement-link {
+    font-weight: 600;
+    font-size: 0.95em;
+    color: #e65100;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+/* END TEMPORARY ANNOUNCEMENT BANNER */
+
 .blog-article-title {
   font-size: 1em;
 }

@@ -23,6 +23,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { BrowseComponent } from './browse/browse.component';
 import { AboutComponent } from './about/about.component';
+import { AnnouncementComponent } from './announcement/announcement.component';
 import { PublicFooterComponent,
          PublicHeaderComponent, PublicLayoutComponent,
          SeqViewComponent } from './shared';
@@ -63,6 +64,9 @@ import { HelpApiComponent } from './help/help-api.component';
 import { AssemblyPickerComponent } from './shared/assembly-picker/assembly-picker.component';
 import { VerifyComponent } from './login/verify.component';
 import { PublicationsComponent } from './publications/publications.component';
+import { RepbaseLandingComponent } from './repbase/repbase-landing.component';
+import { RepbaseReleasesComponent } from './repbase/repbase-releases.component';
+import { RepbaseDetailComponent } from './repbase/repbase-detail.component';
 import { ChartWrapperComponent } from './chart/chart_wrapper.component'
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { StatsComponent } from './stats/stats.component';
@@ -88,6 +92,7 @@ const globalRippleConfig: RippleGlobalOptions = {
     HomeComponent,
     BrowseComponent,
     AboutComponent,
+    AnnouncementComponent,
     PublicFooterComponent,
     PublicLayoutComponent,
     SeqViewComponent,
@@ -128,6 +133,9 @@ const globalRippleConfig: RippleGlobalOptions = {
     DnaTerminiComponent,
     ClassificationLayoutComponent,
     PublicationsComponent,
+    RepbaseLandingComponent,
+    RepbaseReleasesComponent,
+    RepbaseDetailComponent,
     HelpWorkbenchComponent,
     ChartWrapperComponent,
     LeaderboardComponent,
