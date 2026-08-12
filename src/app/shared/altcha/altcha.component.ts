@@ -1,5 +1,5 @@
 
-import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild, forwardRef, AfterViewInit, EventEmitter, Output, Inject, Injectable } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild, forwardRef, AfterViewInit, EventEmitter, Input, Output, Inject, Injectable } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, ValidationErrors } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 
@@ -34,7 +34,10 @@ export class AltchaComponent implements ControlValueAccessor, Validator, AfterVi
   value = '';
   onChange: CallableFunction = () => undefined;
   onTouched: CallableFunction = () => undefined;
-  challengeurl = this.document.location.origin + "/api/altcha";
+  // Defaults to the public Dfam API's challenge endpoint. The registration form
+  // overrides this to point at the backend API, which signs its challenges with
+  // a different key and expires them; see Dfam-Backend-API/service/AltchaService.js.
+  @Input() challengeurl = this.document.location.origin + "/api/altcha";
 
   ngAfterViewInit(): void {
     const el = this.altchaWidget.nativeElement as HTMLElement;
@@ -71,5 +74,38 @@ export class AltchaComponent implements ControlValueAccessor, Validator, AfterVi
     this.onChange(this.value);
     this.notify.emit(this.value);
     this.onTouched();
+
+    if (this.pendingSolve && state !== 'verifying') {
+      const resolve = this.pendingSolve;
+      this.pendingSolve = null;
+      resolve(this.value);
+    }
+  }
+
+  private pendingSolve: ((payload: string) => void) | null = null;
+
+  // Discards the current solution and solves a fresh challenge, resolving with
+  // the new payload (or '' if it could not be solved).
+  //
+  // The widget refetches on its own when a challenge expires while the page is
+  // open, so this is only needed for the narrow race where a challenge lapses
+  // between being solved and the form being submitted, and the server rejects
+  // the payload as expired.
+  solveAgain(): Promise<string> {
+    const el = this.altchaWidget.nativeElement as HTMLElement & {
+      reset: () => void;
+      verify: () => Promise<void>;
+    };
+
+    return new Promise<string>((resolve) => {
+      this.pendingSolve = resolve;
+      el.reset();
+      el.verify().catch(() => {
+        if (this.pendingSolve) {
+          this.pendingSolve = null;
+          resolve('');
+        }
+      });
+    });
   }
 }

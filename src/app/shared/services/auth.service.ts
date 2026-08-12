@@ -114,7 +114,7 @@ export class AuthService implements CanActivate {
           return this.loadUserData();
         }), concatAll());
     } else if (type === 'register') {
-      return this.dfamBackendAPIService.register( credentials.fullname, credentials.email, credentials.password )
+      return this.dfamBackendAPIService.register( credentials.fullname, credentials.email, credentials.password, credentials.altchaPayload )
         .pipe(map(data => data));
     }
   }

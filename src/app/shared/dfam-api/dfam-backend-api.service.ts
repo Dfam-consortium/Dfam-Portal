@@ -244,11 +244,12 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     ).pipe(map(this.extractData));
   }
 
-  register(fullname, email, password): Observable<any> {
+  register(fullname, email, password, altchaPayload): Observable<any> {
     const body = new HttpParams()
       .set('email', email)
       .set('name', fullname)
-      .set('password', password);
+      .set('password', password)
+      .set('altcha_payload', altchaPayload || '');
 
     const options = {
         headers: new HttpHeaders().set('Content-Type',

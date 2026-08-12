@@ -46,6 +46,9 @@
             See the <a routerLink="/help/workbench">help page</a> for more information
             about submitting data to Dfam.
           </p>
+          <dfam-altcha *ngIf="loginType == 'register'"
+              [challengeurl]="altchaChallengeUrl"
+              (notify)="onAltchaNotify($event)"></dfam-altcha>
           <button type="submit" [disabled]="isSubmitting" mat-raised-button color="primary" (click)="submitForm()">
             {{ title }}
           </button>
