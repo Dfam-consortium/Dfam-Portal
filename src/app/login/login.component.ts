@@ -88,7 +88,10 @@ export class LoginComponent implements OnInit {
 
   async submitForm(isAltchaRetry = false) {
     if (this.loginType === 'register' && !this.humanCheckPassed) {
-      this.message = `Please enter the number ${this.humanCheckNumber} in the field above.`;
+      // Deliberately does not repeat the expected number. The prompt is already
+      // on screen for anyone reading the page, and echoing it back on failure
+      // would hand it to a client that submits without reading the form.
+      this.message = 'Please check the highlighted field above and try again.';
       return;
     }
 
@@ -100,6 +103,14 @@ export class LoginComponent implements OnInit {
     // path a fresh payload has already been solved by the error handler below.
     if (this.loginType === 'register' && !isAltchaRetry && this.altcha) {
       this.altchaPayload = await this.altcha.solveFor(this.registerChallengeUrl());
+
+      // Submitting anyway would just come back as a rejected registration with
+      // no proof of work, which tells the user nothing useful.
+      if (!this.altchaPayload) {
+        this.message = 'Could not verify that this request came from a browser. Please reload the page and try again.';
+        this.isSubmitting = false;
+        return;
+      }
     }
 
     const credentials = { email: this.email || "",

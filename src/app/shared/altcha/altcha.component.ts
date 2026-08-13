@@ -80,14 +80,26 @@ export class AltchaComponent implements ControlValueAccessor, Validator, AfterVi
     this.notify.emit(this.value);
     this.onTouched();
 
-    if (this.pendingSolve && state !== 'verifying') {
-      const resolve = this.pendingSolve;
-      this.pendingSolve = null;
-      resolve(this.value);
+    // Only a terminal state answers a pending solve. 'unverified' is also what
+    // reset() emits on its way to fetching a fresh challenge, and treating that
+    // as an answer would resolve with an empty payload before any work had
+    // happened -- which reaches the server as a registration with no proof of
+    // work at all.
+    if (state === 'verified' || state === 'error') {
+      this.settleSolve(this.value);
     }
   }
 
   private pendingSolve: ((payload: string) => void) | null = null;
+
+  // Resolves a solve that is still waiting, at most once.
+  private settleSolve(payload: string) {
+    if (this.pendingSolve) {
+      const resolve = this.pendingSolve;
+      this.pendingSolve = null;
+      resolve(payload);
+    }
+  }
 
   // Discards the current solution and solves a fresh challenge, resolving with
   // the new payload (or '' if it could not be solved).
@@ -117,14 +129,19 @@ export class AltchaComponent implements ControlValueAccessor, Validator, AfterVi
     el.setAttribute('challengeurl', challengeurl);
 
     return new Promise<string>((resolve) => {
-      this.pendingSolve = resolve;
+      // reset() emits a statechange of its own, so the callback is armed only
+      // after it has been called: otherwise that event settles this promise
+      // with an empty payload before the challenge has even been fetched.
       el.reset();
-      el.verify().catch(() => {
-        if (this.pendingSolve) {
-          this.pendingSolve = null;
-          resolve('');
-        }
-      });
+      this.pendingSolve = resolve;
+
+      // The 'verified' or 'error' statechange normally settles this. These are
+      // a backstop for a verify() that finishes without emitting one, so a
+      // failed solve cannot leave the form waiting forever.
+      el.verify().then(
+        () => this.settleSolve(this.value),
+        () => this.settleSolve(''),
+      );
     });
   }
 }
