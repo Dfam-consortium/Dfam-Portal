@@ -40,6 +40,15 @@
                 [disabled]="isSubmitting"
                 [(ngModel)]="password">
           </mat-form-field>
+          <mat-form-field *ngIf="loginType == 'register'">
+            <mat-label>Enter the number {{ humanCheckNumber }} in this field</mat-label>
+            <input matInput
+                type="text"
+                name="humanCheck"
+                autocomplete="off"
+                [disabled]="isSubmitting"
+                [(ngModel)]="humanCheckAnswer">
+          </mat-form-field>
           <p *ngIf="loginType == 'register'">
             After registering an account and verifying your email address,
             we will enable your account for data submission.
@@ -48,6 +57,7 @@
           </p>
           <dfam-altcha *ngIf="loginType == 'register'"
               [challengeurl]="altchaChallengeUrl"
+              [auto]="null"
               (notify)="onAltchaNotify($event)"></dfam-altcha>
           <button type="submit" [disabled]="isSubmitting" mat-raised-button color="primary" (click)="submitForm()">
             {{ title }}
