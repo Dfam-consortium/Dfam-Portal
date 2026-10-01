@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
@@ -7,7 +8,13 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
   templateUrl: './search-sequence-results.component.html',
   styleUrls: ['./search-sequence-results.component.scss']
 })
-export class SearchSequenceResultsComponent implements OnInit {
+export class SearchSequenceResultsComponent implements OnInit, OnDestroy {
+
+  // Poll for results after 2s, waiting 1.5x longer each time up to 30s,
+  // and stop after 30 minutes.
+  static readonly POLL_START_MS = 2000;
+  static readonly POLL_MAX_MS = 30000;
+  static readonly POLL_GIVE_UP_MS = 30 * 60 * 1000;
 
   loading = true;
 
@@ -19,6 +26,11 @@ export class SearchSequenceResultsComponent implements OnInit {
   results: any;
   selectedResult: any;
 
+  private pollDelay = SearchSequenceResultsComponent.POLL_START_MS;
+  private pollStarted = Date.now();
+  private pollTimer: ReturnType<typeof setTimeout>;
+  private request: Subscription;
+
   constructor(
     private dfamapi: DfamAPIService,
     private route: ActivatedRoute,
@@ -28,9 +40,17 @@ export class SearchSequenceResultsComponent implements OnInit {
     this.getResults();
   }
 
+  ngOnDestroy() {
+    // Stop polling when the user leaves the page.
+    clearTimeout(this.pollTimer);
+    if (this.request) {
+      this.request.unsubscribe();
+    }
+  }
+
   getResults() {
     const id = this.route.snapshot.params.id;
-    this.dfamapi.getSearchResults(id).subscribe(res => {
+    this.request = this.dfamapi.getSearchResults(id).subscribe(res => {
       this.serverResponse = res;
 
       if (res) {
@@ -39,7 +59,7 @@ export class SearchSequenceResultsComponent implements OnInit {
           this.message = res.message;
         } else if (res.message) {
           this.message = res.message;
-          setTimeout(this.getResults.bind(this), 2000);
+          this.schedulePoll();
         } else if (res.results) {
           this.loading = false;
           this.message = null;
@@ -75,6 +95,17 @@ export class SearchSequenceResultsComponent implements OnInit {
         this.message = 'An error occurred in contacting the server. Please try refreshing the page or re-submitting this search query.';
       }
     });
+  }
+
+  schedulePoll() {
+    const C = SearchSequenceResultsComponent;
+    if (Date.now() - this.pollStarted > C.POLL_GIVE_UP_MS) {
+      this.loading = false;
+      this.message = 'This search is taking longer than expected. Reload the page to check again.';
+      return;
+    }
+    this.pollTimer = setTimeout(() => this.getResults(), this.pollDelay);
+    this.pollDelay = Math.min(this.pollDelay * 1.5, C.POLL_MAX_MS);
   }
 
   getAlignment(query) {
