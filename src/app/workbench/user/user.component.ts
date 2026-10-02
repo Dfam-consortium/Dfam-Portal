@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService, User } from '../../shared/services/auth.service';
 
 @Component({
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+    templateUrl: './user.component.html',
+    styleUrls: ['./user.component.scss'],
+    standalone: false
 })
 export class WorkbenchUserComponent implements OnInit {
   title = 'Dfam';

@@ -6,9 +6,9 @@ import { AltchaComponent } from '../shared/altcha/altcha.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
-
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: false
 })
 export class LoginComponent implements OnInit {
   loginType = '';

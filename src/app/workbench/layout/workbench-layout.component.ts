@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
-  styleUrls: ['./workbench-layout.component.scss'],
-  templateUrl: './workbench-layout.component.html'
+    styleUrls: ['./workbench-layout.component.scss'],
+    templateUrl: './workbench-layout.component.html',
+    standalone: false
 })
 export class WorkbenchLayoutComponent implements OnInit {
   title = 'Dfam';

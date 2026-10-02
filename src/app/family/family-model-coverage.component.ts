@@ -3,9 +3,10 @@ import { Component, Input, AfterViewChecked, ElementRef, ViewChild } from '@angu
 import { CoveragePlot } from '../../js/conservation';
 
 @Component({
-  selector: 'dfam-family-model-coverage',
-  templateUrl: './family-model-coverage.component.html',
-  styleUrls: ['./family-model-coverage.component.scss']
+    selector: 'dfam-family-model-coverage',
+    templateUrl: './family-model-coverage.component.html',
+    styleUrls: ['./family-model-coverage.component.scss'],
+    standalone: false
 })
 export class FamilyModelCoverageComponent implements AfterViewChecked {
 

@@ -3,9 +3,10 @@ import { Component, Input, AfterViewChecked, ElementRef, ViewChild } from '@angu
 import Karyotype from 'Karyotype/src/Karyotype';
 
 @Component({
-  selector: 'dfam-family-annotations-karyotype',
-  templateUrl: './family-annotations-karyotype.component.html',
-  styleUrls: ['./family-annotations-karyotype.component.scss']
+    selector: 'dfam-family-annotations-karyotype',
+    templateUrl: './family-annotations-karyotype.component.html',
+    styleUrls: ['./family-annotations-karyotype.component.scss'],
+    standalone: false
 })
 export class FamilyAnnotationsKaryotypeComponent implements AfterViewChecked {
 

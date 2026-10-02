@@ -2,9 +2,10 @@ import { Component, AfterViewInit, Input, ElementRef, ViewChild } from '@angular
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'dfam-classification-tree',
-  templateUrl: './classification-tree.component.html',
-  styleUrls: ['./classification-tree.component.scss']
+    selector: 'dfam-classification-tree',
+    templateUrl: './classification-tree.component.html',
+    styleUrls: ['./classification-tree.component.scss'],
+    standalone: false
 })
 export class ClassificationTreeComponent implements AfterViewInit {
 

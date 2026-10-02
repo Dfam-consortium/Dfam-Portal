@@ -4,9 +4,10 @@ import { AuthService } from '../../shared/services/auth.service';
 import { DfamBackendAPIService } from '../../shared/dfam-api/dfam-backend-api.service';
 
 @Component({
-  selector: 'dfam-workbench-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+    selector: 'dfam-workbench-users',
+    templateUrl: './users.component.html',
+    styleUrls: ['./users.component.scss'],
+    standalone: false
 })
 export class WorkbenchUsersComponent implements AfterViewInit {
 

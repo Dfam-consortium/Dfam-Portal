@@ -4,9 +4,10 @@ import { switchMap } from 'rxjs/operators';
 import { ARCHIVE_BASE, Release, RepbaseService } from './repbase.service';
 
 @Component({
-  selector: 'dfam-repbase-detail',
-  templateUrl: './repbase-detail.component.html',
-  styleUrls: ['./repbase-detail.component.scss']
+    selector: 'dfam-repbase-detail',
+    templateUrl: './repbase-detail.component.html',
+    styleUrls: ['./repbase-detail.component.scss'],
+    standalone: false
 })
 export class RepbaseDetailComponent implements OnInit {
   release: Release | undefined;

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'dfam-classification-layout',
-  templateUrl: './classification-layout.component.html',
-  styleUrls: ['./classification-layout.component.scss']
+    selector: 'dfam-classification-layout',
+    templateUrl: './classification-layout.component.html',
+    styleUrls: ['./classification-layout.component.scss'],
+    standalone: false
 })
 export class ClassificationLayoutComponent implements OnInit {
 

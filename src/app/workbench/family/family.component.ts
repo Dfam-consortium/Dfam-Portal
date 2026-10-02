@@ -32,9 +32,10 @@ function preg_quote( str ) {
 
 
 @Component({
-  selector: 'dfam-workbench-family',
-  templateUrl: './family.component.html',
-  styleUrls: ['./family.component.scss']
+    selector: 'dfam-workbench-family',
+    templateUrl: './family.component.html',
+    styleUrls: ['./family.component.scss'],
+    standalone: false
 })
 export class WorkbenchFamilyComponent implements OnInit {
   family;

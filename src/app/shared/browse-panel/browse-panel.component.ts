@@ -36,9 +36,10 @@ function has_duplicates(array: any[]) {
 const UNUSUAL_REGEXP = /[^A-Za-z0-9._-]/;
 
 @Component({
-  selector: 'dfam-browse-panel',
-  templateUrl: './browse-panel.component.html',
-  styleUrls: ['./browse-panel.component.scss']
+    selector: 'dfam-browse-panel',
+    templateUrl: './browse-panel.component.html',
+    styleUrls: ['./browse-panel.component.scss'],
+    standalone: false
 })
 export class BrowsePanelComponent implements OnInit {
 

@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: 'dfam-search-sequence',
-  templateUrl: './search-sequence.component.html',
-  styleUrls: ['./search-sequence.component.scss']
+    selector: 'dfam-search-sequence',
+    templateUrl: './search-sequence.component.html',
+    styleUrls: ['./search-sequence.component.scss'],
+    standalone: false
 })
 export class SearchSequenceComponent implements OnInit {
 

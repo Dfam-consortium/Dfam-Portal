@@ -6,9 +6,10 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 import { FamilyDataService } from './family-data-service';
 
 @Component({
-  selector: 'dfam-family-browser',
-  templateUrl: './family-browser.component.html',
-  styleUrl: './family-browser.component.scss',
+    selector: 'dfam-family-browser',
+    templateUrl: './family-browser.component.html',
+    styleUrl: './family-browser.component.scss',
+    standalone: false
 })
 export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy {
 

@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'dfam-search-results-alignment',
-  templateUrl: './search-results-alignment.component.html',
-  styleUrls: ['./search-results-alignment.component.scss']
+    selector: 'dfam-search-results-alignment',
+    templateUrl: './search-results-alignment.component.html',
+    styleUrls: ['./search-results-alignment.component.scss'],
+    standalone: false
 })
 export class SearchResultsAlignmentComponent implements OnInit {
 

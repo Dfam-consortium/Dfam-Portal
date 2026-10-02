@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { DfamBackendAPIService } from '../shared/dfam-api/dfam-backend-api.service';
 
 @Component({
-  selector: 'dfam-verify',
-  templateUrl: './verify.component.html',
-  styleUrls: ['./verify.component.scss']
+    selector: 'dfam-verify',
+    templateUrl: './verify.component.html',
+    styleUrls: ['./verify.component.scss'],
+    standalone: false
 })
 export class VerifyComponent implements OnInit {
 

@@ -9,9 +9,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Classification } from '../../shared/dfam-api/types';
 
 @Component({
-  selector: 'dfam-family-classification-dialog',
-  templateUrl: './family-classification-dialog.component.html',
-  styleUrls: ['./family-classification-dialog.component.scss']
+    selector: 'dfam-family-classification-dialog',
+    templateUrl: './family-classification-dialog.component.html',
+    styleUrls: ['./family-classification-dialog.component.scss'],
+    standalone: false
 })
 export class FamilyClassificationDialogComponent implements OnInit {
 

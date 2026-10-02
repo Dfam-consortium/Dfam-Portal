@@ -5,9 +5,10 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'dfam-public-layout-header',
-  styleUrls: ['./public-header.component.scss'],
-  templateUrl: './public-header.component.html'
+    selector: 'dfam-public-layout-header',
+    styleUrls: ['./public-header.component.scss'],
+    templateUrl: './public-header.component.html',
+    standalone: false
 })
 export class PublicHeaderComponent {
   constructor(private authService: AuthService) {}

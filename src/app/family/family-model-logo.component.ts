@@ -7,9 +7,10 @@ declare global {
 }
 
 @Component({
-  selector: 'dfam-family-model-logo',
-  templateUrl: './family-model-logo.component.html',
-  styleUrls: ['./family-model-logo.component.scss']
+    selector: 'dfam-family-model-logo',
+    templateUrl: './family-model-logo.component.html',
+    styleUrls: ['./family-model-logo.component.scss'],
+    standalone: false
 })
 export class FamilyModelLogoComponent implements AfterViewChecked {
   private needsRedraw;

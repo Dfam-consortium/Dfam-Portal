@@ -4,9 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: 'dfam-search-annotations',
-  templateUrl: './search-annotations.component.html',
-  styleUrls: ['./search-annotations.component.scss']
+    selector: 'dfam-search-annotations',
+    templateUrl: './search-annotations.component.html',
+    styleUrls: ['./search-annotations.component.scss'],
+    standalone: false
 })
 export class SearchAnnotationsComponent implements OnInit {
 

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: 'dfam-browse',
-  templateUrl: './browse.component.html',
-  styleUrls: ['./browse.component.scss']
+    selector: 'dfam-browse',
+    templateUrl: './browse.component.html',
+    styleUrls: ['./browse.component.scss'],
+    standalone: false
 })
 export class BrowseComponent implements OnInit {
 

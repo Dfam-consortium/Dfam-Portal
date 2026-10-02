@@ -4,9 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: 'dfam-family-annotations',
-  templateUrl: './family-annotations.component.html',
-  styleUrls: ['./family-annotations.component.scss']
+    selector: 'dfam-family-annotations',
+    templateUrl: './family-annotations.component.html',
+    styleUrls: ['./family-annotations.component.scss'],
+    standalone: false
 })
 export class FamilyAnnotationsComponent implements OnInit {
 

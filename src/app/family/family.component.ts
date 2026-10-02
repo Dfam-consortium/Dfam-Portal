@@ -5,9 +5,10 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 import { FamilyDataService } from './family-data-service';
 
 @Component({
-  selector: 'dfam-family',
-  templateUrl: './family.component.html',
-  styleUrls: ['./family.component.scss']
+    selector: 'dfam-family',
+    templateUrl: './family.component.html',
+    styleUrls: ['./family.component.scss'],
+    standalone: false
 })
 export class FamilyComponent implements OnInit {
 

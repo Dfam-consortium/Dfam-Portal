@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { NavigationEnd } from '@angular/router';
 
 @Component({
-  selector: 'dfam-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'dfam-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent {
   title = 'Dfam';

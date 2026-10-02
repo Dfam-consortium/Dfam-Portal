@@ -3,8 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorsService } from '../services/errors.service';
 
 @Component({
-  selector: 'dfam-errors-snackbar',
-  template: ``,
+    selector: 'dfam-errors-snackbar',
+    template: ``,
+    standalone: false
 })
 export class ErrorsSnackbarComponent implements OnInit, OnDestroy {
 

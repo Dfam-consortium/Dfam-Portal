@@ -13,9 +13,8 @@ export interface DialogData {
 
 @Component({
     templateUrl: './download-dialog.component.html',
-    imports: [MatDialogModule, ClipboardModule, MatButtonModule, MatIconModule, MatCardModule],
-    standalone: true
-  })
+    imports: [MatDialogModule, ClipboardModule, MatButtonModule, MatIconModule, MatCardModule]
+})
 export class DownloadDialogComponent implements OnInit {
 
     public fullUrl:string;

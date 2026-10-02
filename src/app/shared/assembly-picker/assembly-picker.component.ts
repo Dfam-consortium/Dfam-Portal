@@ -8,9 +8,10 @@ interface Assembly {
 }
 
 @Component({
-  selector: 'dfam-assembly-picker',
-  templateUrl: './assembly-picker.component.html',
-  styleUrls: ['./assembly-picker.component.scss']
+    selector: 'dfam-assembly-picker',
+    templateUrl: './assembly-picker.component.html',
+    styleUrls: ['./assembly-picker.component.scss'],
+    standalone: false
 })
 export class AssemblyPickerComponent implements OnInit {
 

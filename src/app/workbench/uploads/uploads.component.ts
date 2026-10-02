@@ -15,9 +15,10 @@ import { UploadCloseDialogComponent } from './upload-close-dialog.component';
 enum UploaderState { NoFileSelected, FileSelected, InProgress, Error, Succeeded }
 
 @Component({
-  selector: 'dfam-workbench-uploads',
-  templateUrl: './uploads.component.html',
-  styleUrls: ['./uploads.component.scss']
+    selector: 'dfam-workbench-uploads',
+    templateUrl: './uploads.component.html',
+    styleUrls: ['./uploads.component.scss'],
+    standalone: false
 })
 export class WorkbenchUploadsComponent implements AfterViewInit, OnInit, OnDestroy {
 

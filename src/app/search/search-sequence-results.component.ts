@@ -4,9 +4,10 @@ import { Subscription } from 'rxjs';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: 'dfam-search-sequence-results',
-  templateUrl: './search-sequence-results.component.html',
-  styleUrls: ['./search-sequence-results.component.scss']
+    selector: 'dfam-search-sequence-results',
+    templateUrl: './search-sequence-results.component.html',
+    styleUrls: ['./search-sequence-results.component.scss'],
+    standalone: false
 })
 export class SearchSequenceResultsComponent implements OnInit, OnDestroy {
 

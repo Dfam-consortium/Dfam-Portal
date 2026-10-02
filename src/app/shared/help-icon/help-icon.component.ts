@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'dfam-help-icon',
-  templateUrl: './help-icon.component.html',
-  styleUrls: ['./help-icon.component.scss']
+    selector: 'dfam-help-icon',
+    templateUrl: './help-icon.component.html',
+    styleUrls: ['./help-icon.component.scss'],
+    standalone: false
 })
 export class HelpIconComponent implements OnInit {
 

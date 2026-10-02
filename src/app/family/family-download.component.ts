@@ -9,9 +9,10 @@ declare global {
 }
 
 @Component({
-  selector: 'dfam-family-download',
-  templateUrl: './family-download.component.html',
-  styleUrls: ['./family-download.component.scss']
+    selector: 'dfam-family-download',
+    templateUrl: './family-download.component.html',
+    styleUrls: ['./family-download.component.scss'],
+    standalone: false
 })
 export class FamilyDownloadComponent implements OnInit {
 

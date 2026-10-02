@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'dfam-upload-close-dialog',
-  templateUrl: './upload-close-dialog.component.html',
-  styleUrls: ['./upload-close-dialog.component.scss']
+    selector: 'dfam-upload-close-dialog',
+    templateUrl: './upload-close-dialog.component.html',
+    styleUrls: ['./upload-close-dialog.component.scss'],
+    standalone: false
 })
 export class UploadCloseDialogComponent implements OnInit {
 

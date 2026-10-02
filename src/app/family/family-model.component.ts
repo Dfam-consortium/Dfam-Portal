@@ -5,9 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: 'dfam-family-model',
-  templateUrl: './family-model.component.html',
-  styleUrls: ['./family-model.component.scss']
+    selector: 'dfam-family-model',
+    templateUrl: './family-model.component.html',
+    styleUrls: ['./family-model.component.scss'],
+    standalone: false
 })
 export class FamilyModelComponent implements OnInit {
 

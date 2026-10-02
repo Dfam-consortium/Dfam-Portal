@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'dfam-family-download-button',
-  templateUrl: './family-download-button.component.html',
-  styleUrls: ['./family-download-button.component.scss']
+    selector: 'dfam-family-download-button',
+    templateUrl: './family-download-button.component.html',
+    styleUrls: ['./family-download-button.component.scss'],
+    standalone: false
 })
 export class FamilyDownloadButtonComponent implements OnInit {
 

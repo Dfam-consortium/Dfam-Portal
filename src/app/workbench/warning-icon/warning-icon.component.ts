@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'dfam-workbench-warning-icon',
-  templateUrl: './warning-icon.component.html',
-  styleUrls: ['./warning-icon.component.scss']
+    selector: 'dfam-workbench-warning-icon',
+    templateUrl: './warning-icon.component.html',
+    styleUrls: ['./warning-icon.component.scss'],
+    standalone: false
 })
 export class WarningIconComponent implements OnInit {
 

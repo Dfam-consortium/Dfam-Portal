@@ -6,10 +6,11 @@ import { debounceTime } from 'rxjs/operators';
  * @title Basic Inputs
  */
 @Component({
-  selector: 'dfam-seq-view',
-  styleUrls: ['seq-view.component.scss'],
-  templateUrl: 'seq-view.component.html',
-  encapsulation: ViewEncapsulation.None
+    selector: 'dfam-seq-view',
+    styleUrls: ['seq-view.component.scss'],
+    templateUrl: 'seq-view.component.html',
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class SeqViewComponent implements OnInit {
 

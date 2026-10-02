@@ -4,9 +4,10 @@ import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 import { isRealDoi, doiUrl, pubmedUrl, orcidUrl } from '../shared/dfam-api/citation-links';
 
 @Component({
-  selector: 'dfam-family-summary',
-  templateUrl: './family-summary.component.html',
-  styleUrls: ['./family-summary.component.scss']
+    selector: 'dfam-family-summary',
+    templateUrl: './family-summary.component.html',
+    styleUrls: ['./family-summary.component.scss'],
+    standalone: false
 })
 export class FamilySummaryComponent implements OnInit {
 

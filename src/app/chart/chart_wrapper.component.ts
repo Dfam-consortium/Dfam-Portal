@@ -6,8 +6,9 @@ import * as datasets from "./datasets.json"; // From data gathered using the Fam
 @Component({
     selector: 'dfam-chart-wrapper',
     templateUrl: './chart_wrapper.component.html',
-    styleUrls: ['./chart_wrapper.component.scss']
-  })
+    styleUrls: ['./chart_wrapper.component.scss'],
+    standalone: false
+})
 export class ChartWrapperComponent implements AfterViewInit {
     height: number = 300
     width: number = 450 

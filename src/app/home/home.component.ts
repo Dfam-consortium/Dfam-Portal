@@ -5,8 +5,9 @@ import { SearchSequenceComponent } from '../search/search-sequence.component';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: false
 })
 export class HomeComponent implements OnInit {
 

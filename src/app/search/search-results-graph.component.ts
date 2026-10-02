@@ -5,9 +5,10 @@ import { debounceTime } from 'rxjs/operators';
 import { DfamAnnotationsGraphic, DfamAnnotationGraphicConfig } from '@sodaviz/dfam-soda';
 
 @Component({
-  selector: 'dfam-search-results-graph',
-  templateUrl: './search-results-graph.component.html',
-  styleUrls: ['./search-results-graph.component.scss']
+    selector: 'dfam-search-results-graph',
+    templateUrl: './search-results-graph.component.html',
+    styleUrls: ['./search-results-graph.component.scss'],
+    standalone: false
 })
 export class SearchResultsGraphComponent implements OnInit, OnDestroy, AfterViewChecked {
 

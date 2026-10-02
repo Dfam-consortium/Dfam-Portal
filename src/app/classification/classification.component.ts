@@ -5,9 +5,10 @@ import { debounceTime } from 'rxjs/operators';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: 'dfam-classification',
-  templateUrl: './classification.component.html',
-  styleUrls: ['./classification.component.scss']
+    selector: 'dfam-classification',
+    templateUrl: './classification.component.html',
+    styleUrls: ['./classification.component.scss'],
+    standalone: false
 })
 export class ClassificationComponent implements OnInit {
 

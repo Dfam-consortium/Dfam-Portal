@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'dfam-repository-entry',
-  templateUrl: './repository-entry.component.html',
-  styleUrls: ['./repository-entry.component.scss']
+    selector: 'dfam-repository-entry',
+    templateUrl: './repository-entry.component.html',
+    styleUrls: ['./repository-entry.component.scss'],
+    standalone: false
 })
 export class RepositoryEntryComponent implements OnInit {
 

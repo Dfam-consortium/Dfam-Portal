@@ -2,9 +2,10 @@ import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'dfam-dna-termini',
-  templateUrl: './dna-termini.component.html',
-  styleUrls: ['./dna-termini.component.scss']
+    selector: 'dfam-dna-termini',
+    templateUrl: './dna-termini.component.html',
+    styleUrls: ['./dna-termini.component.scss'],
+    standalone: false
 })
 export class DnaTerminiComponent {
 

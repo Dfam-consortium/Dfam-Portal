@@ -1,9 +1,10 @@
 import { Component, AfterViewChecked, Input, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
-  selector: 'dfam-loader',
-  templateUrl: './loader.component.html',
-  styleUrls: ['./loader.component.scss']
+    selector: 'dfam-loader',
+    templateUrl: './loader.component.html',
+    styleUrls: ['./loader.component.scss'],
+    standalone: false
 })
 export class LoaderComponent implements AfterViewChecked {
 

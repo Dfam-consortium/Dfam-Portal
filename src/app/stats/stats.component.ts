@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
 
 @Component({
-  selector: 'dfam-stats',
-  templateUrl: './stats.component.html',
-  styleUrl: './stats.component.scss'
+    selector: 'dfam-stats',
+    templateUrl: './stats.component.html',
+    styleUrl: './stats.component.scss',
+    standalone: false
 })
 export class StatsComponent implements OnInit {
 

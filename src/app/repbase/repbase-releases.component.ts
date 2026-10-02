@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { Release, RepbaseService } from './repbase.service';
 
 @Component({
-  selector: 'dfam-repbase-releases',
-  templateUrl: './repbase-releases.component.html',
-  styleUrls: ['./repbase-releases.component.scss']
+    selector: 'dfam-repbase-releases',
+    templateUrl: './repbase-releases.component.html',
+    styleUrls: ['./repbase-releases.component.scss'],
+    standalone: false
 })
 export class RepbaseReleasesComponent implements OnInit {
   allReleases: Release[] = [];

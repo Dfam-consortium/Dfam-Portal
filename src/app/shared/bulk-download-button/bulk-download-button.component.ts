@@ -5,9 +5,10 @@ import { Subscription } from 'rxjs';
 import { DownloadDialogComponent } from '../download-dialog/download-dialog.component';
 
 @Component({
-  selector: 'dfam-bulk-download-button',
-  templateUrl: './bulk-download-button.component.html',
-  styleUrls: ['./bulk-download-button.component.scss']
+    selector: 'dfam-bulk-download-button',
+    templateUrl: './bulk-download-button.component.html',
+    styleUrls: ['./bulk-download-button.component.scss'],
+    standalone: false
 })
 export class BulkDownloadButtonComponent implements OnInit {
   
