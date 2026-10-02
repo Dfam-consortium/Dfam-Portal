@@ -31,53 +31,55 @@
 
   <dfam-loader [loading]="!classes">
     <dfam-classification-tree #classificationTree
-        [classes]="classes"
-        [initialClass]="initialClass"
-        [search]="searchInput">
+      [classes]="classes"
+      [initialClass]="initialClass"
+      [search]="searchInput">
     </dfam-classification-tree>
   </dfam-loader>
 
   <hr>
 
-  <h4>Download</h4>
-  <p>
-    A raw export of the classification dataset can be obtained as a
-    tab-separated file suitable for loading into Excel.
-  </p>
+    <h4>Download</h4>
+    <p>
+      A raw export of the classification dataset can be obtained as a
+      tab-separated file suitable for loading into Excel.
+    </p>
 
-  <div data-layout="row" data-layout-align="space-between">
-    <button *ngIf="tsv" mat-button type="button" (click)="onDownload()">
-      <img src="/assets/images/tsv_file.png">
-    </button>
-  </div>
+    <div data-layout="row" data-layout-align="space-between">
+      @if (tsv) {
+        <button mat-button type="button" (click)="onDownload()">
+          <img src="/assets/images/tsv_file.png">
+        </button>
+      }
+    </div>
 
-  <hr>
+    <hr>
 
-  <div>
-    <h4>References</h4>
-    <p>
-      Piégu, Benoît, et al. "A survey of transposable element classification
-      systems - a call for a fundamental update to meet the challenge of their
-      diversity and complexity." Molecular phylogenetics and evolution 86 (2015):
-      90-109.
-    </p>
-    <p>
-      Kapitonov, Vladimir V., and Jerzy Jurka. "A universal classification of
-      eukaryotic transposable elements implemented in Repbase." Nature Reviews
-      Genetics 9.5 (2008): 411-412.
-    </p>
-    <p>
-      Wicker, Thomas, et al. "A unified classification system for eukaryotic
-      transposable elements." Nature Reviews Genetics 8.12 (2007): 973-982.
-    </p>
-    <p>
-      Curcio, M. Joan, and Keith M. Derbyshire. "The outs and ins of
-      transposition: from mu to kangaroo." Nature Reviews Molecular Cell Biology
-      4.11 (2003): 865-877.
-    </p>
-    <p>
-      Asmit AFA, Hubley R &amp; Green, P. RepeatMasker Open-4.0. 2013-2019
-      http://www.repeatmasker.org.
-    </p>
-  </div>
-</div>
+      <div>
+        <h4>References</h4>
+        <p>
+          Piégu, Benoît, et al. "A survey of transposable element classification
+          systems - a call for a fundamental update to meet the challenge of their
+          diversity and complexity." Molecular phylogenetics and evolution 86 (2015):
+          90-109.
+        </p>
+        <p>
+          Kapitonov, Vladimir V., and Jerzy Jurka. "A universal classification of
+          eukaryotic transposable elements implemented in Repbase." Nature Reviews
+          Genetics 9.5 (2008): 411-412.
+        </p>
+        <p>
+          Wicker, Thomas, et al. "A unified classification system for eukaryotic
+          transposable elements." Nature Reviews Genetics 8.12 (2007): 973-982.
+        </p>
+        <p>
+          Curcio, M. Joan, and Keith M. Derbyshire. "The outs and ins of
+          transposition: from mu to kangaroo." Nature Reviews Molecular Cell Biology
+          4.11 (2003): 865-877.
+        </p>
+        <p>
+          Asmit AFA, Hubley R &amp; Green, P. RepeatMasker Open-4.0. 2013-2019
+          http://www.repeatmasker.org.
+        </p>
+      </div>
+    </div>

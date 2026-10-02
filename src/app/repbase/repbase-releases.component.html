@@ -29,32 +29,44 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let release of filteredReleases"
+        @for (release of filteredReleases; track release) {
+          <tr
             class="release-row"
             (click)="openRelease(release)">
-          <td class="col-release">
-            <a [routerLink]="['/repbase/releases', release.release]"
-               (click)="$event.stopPropagation()">
-              {{ release.release }}
-            </a>
-          </td>
-          <td class="col-date">{{ release.date }}</td>
-          <td class="col-type">
-            <mat-icon class="check" *ngIf="hasEmbl(release)">check</mat-icon>
-          </td>
-          <td class="col-type">
-            <mat-icon class="check" *ngIf="hasFasta(release)">check</mat-icon>
-          </td>
-          <td class="col-type">
-            <mat-icon class="check" *ngIf="hasRepeatMasker(release)">check</mat-icon>
-          </td>
-          <td class="col-type">
-            <mat-icon class="check" *ngIf="hasRepet(release)">check</mat-icon>
-          </td>
-        </tr>
-        <tr *ngIf="filteredReleases.length === 0">
-          <td colspan="6" class="no-results">No releases match the filter.</td>
-        </tr>
+            <td class="col-release">
+              <a [routerLink]="['/repbase/releases', release.release]"
+                (click)="$event.stopPropagation()">
+                {{ release.release }}
+              </a>
+            </td>
+            <td class="col-date">{{ release.date }}</td>
+            <td class="col-type">
+              @if (hasEmbl(release)) {
+                <mat-icon class="check">check</mat-icon>
+              }
+            </td>
+            <td class="col-type">
+              @if (hasFasta(release)) {
+                <mat-icon class="check">check</mat-icon>
+              }
+            </td>
+            <td class="col-type">
+              @if (hasRepeatMasker(release)) {
+                <mat-icon class="check">check</mat-icon>
+              }
+            </td>
+            <td class="col-type">
+              @if (hasRepet(release)) {
+                <mat-icon class="check">check</mat-icon>
+              }
+            </td>
+          </tr>
+        }
+        @if (filteredReleases.length === 0) {
+          <tr>
+            <td colspan="6" class="no-results">No releases match the filter.</td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

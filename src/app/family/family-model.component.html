@@ -1,101 +1,101 @@
 <dfam-loader [loading]="!family">
 
-<div *ngIf="family">
-
-<h3 class="underline-span">Consensus<dfam-help-icon link="/help/family#model" [tooltip]="help.consensus"></dfam-help-icon></h3>
-<div data-layout="row">
-  <div data-layout="column" flex-offset="2">
-    <dfam-seq-view [sequence]="family.consensus_sequence"></dfam-seq-view>
-  </div>
-</div>
-
-<h3 class="underline-span">HMM<dfam-help-icon link="/help/family#model" [tooltip]="help.hmm"></dfam-help-icon></h3>
-<div data-layout="row">
-  <div data-layout="column" flex-offset="2" data-layout-align="space-around start" >
-    <p class="tight"><strong>Model Mask:</strong> {{family.model_mask || "None"}}</p>
-    <p class="tight" *ngIf="!family.is_raw"><strong>General threshold:</strong> {{family.hmm_general_threshold || "TBD"}} </p>
-    <div data-layout="row" data-layout-align=" center" style="margin-top: 8px;">
-      <strong>Logo</strong>
-      <dfam-help-icon link="/help/family#model" [tooltip]="help.logo"></dfam-help-icon>
-      <a [matTooltip]="help.downloadLogo" [href]="logoUrl">
-        <mat-icon>arrow_downward</mat-icon>
-      </a>
-    </div>
-  </div>
-</div>
-
-<dfam-loader [loading]="downloadingLogo">
-  <dfam-family-model-logo *ngIf="hmmLogo" [data]="hmmLogo">
-  </dfam-family-model-logo>
-
-  <ng-container *ngIf="!downloadingLogo && !hmmLogo">
-    No logo has been generated for this family.
-  </ng-container>
-</dfam-loader>
-
-<h3 class="underline-span">HMM Genome Specific Characteristics <dfam-help-icon link="/help/family#model" [tooltip]="help.genome"></dfam-help-icon></h3>
-<div *ngIf="!assemblies.length">
-  <div *ngIf="!family.is_raw; else noCharacteristicsForRaw">
-    Genome-specific characteristics are not available for this family.
-  </div>
-  <ng-template #noCharacteristicsForRaw>
+  @if (family) {
     <div>
-      Genome-specific characteristics are not available for uncurated entries.
-    </div>
-  </ng-template>
-</div>
-
-<div *ngIf="assemblies.length">
-
-  <dfam-assembly-picker [(value)]="selectedAssembly" [assemblies]="assemblies">
-  </dfam-assembly-picker>
-
-  <mat-card appearance="raised" *ngIf="selectedAssembly">
-    <mat-card-title>
-      <h4>Coverage, Conservation, and Inserts <dfam-help-icon link="/help/family#model" [tooltip]="help.conservation"></dfam-help-icon></h4>
-    </mat-card-title>
-    <mat-card-content>
-      <p><strong>False discovery rate</strong>: {{assemblyData[selectedAssembly].hmm_fdr || "Unknown"}}</p>
-
-      <div *ngIf="assemblyData[selectedAssembly]?.thresholds?.length">
-        <mat-form-field class="threshold-field">
-          <mat-label>Threshold</mat-label>
-          <mat-select appearance="standard" [(value)]="selectedThreshold">
-            <mat-option *ngFor="let th of assemblyData[selectedAssembly]?.thresholds" value="{{th.id}}">
-              {{th.label}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <dfam-family-model-conservation [data]="conservationData">
-        </dfam-family-model-conservation>
+      <h3 class="underline-span">Consensus<dfam-help-icon link="/help/family#model" [tooltip]="help.consensus"></dfam-help-icon></h3>
+      <div data-layout="row">
+        <div data-layout="column" flex-offset="2">
+          <dfam-seq-view [sequence]="family.consensus_sequence"></dfam-seq-view>
+        </div>
       </div>
-
-      <ng-container *ngIf="coverageData; else noCoverage">
-        <h4>Non-Redundant Coverage <dfam-help-icon link="/help/family#model" [tooltip]="help.nrph"></dfam-help-icon></h4>
-        Number of aligned bases per model position, among the {{assemblyData[selectedAssembly].model_coverage?.nrph_hits}} non-redundant hits in dfamseq.
-        <dfam-family-model-coverage [data]="coverageData.nrph" colorSet="2">
-        </dfam-family-model-coverage>
-
-        <h4>Redundant Coverage <dfam-help-icon link="/help/family#model" [tooltip]="help.all"></dfam-help-icon></h4>
-        Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.all_hits}} hits in dfamseq.
-        <dfam-family-model-coverage [data]="coverageData.all" colorSet="2">
-        </dfam-family-model-coverage>
-
-        <h4>False Coverage <dfam-help-icon link="/help/family#model" [tooltip]="help.false"></dfam-help-icon></h4>
-        Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.false_hits}} hits from an artificial sequence devoid of TEs.
-        <dfam-family-model-coverage [data]="coverageData.false">
-        </dfam-family-model-coverage>
-      </ng-container>
-
-      <ng-template #noCoverage>
-        No coverage data is present for this assembly.
-      </ng-template>
-    </mat-card-content>
-  </mat-card>
-
-</div>
-
-</div>
+      <h3 class="underline-span">HMM<dfam-help-icon link="/help/family#model" [tooltip]="help.hmm"></dfam-help-icon></h3>
+      <div data-layout="row">
+        <div data-layout="column" flex-offset="2" data-layout-align="space-around start" >
+          <p class="tight"><strong>Model Mask:</strong> {{family.model_mask || "None"}}</p>
+          @if (!family.is_raw) {
+            <p class="tight"><strong>General threshold:</strong> {{family.hmm_general_threshold || "TBD"}} </p>
+          }
+          <div data-layout="row" data-layout-align=" center" style="margin-top: 8px;">
+            <strong>Logo</strong>
+            <dfam-help-icon link="/help/family#model" [tooltip]="help.logo"></dfam-help-icon>
+            <a [matTooltip]="help.downloadLogo" [href]="logoUrl">
+              <mat-icon>arrow_downward</mat-icon>
+            </a>
+          </div>
+        </div>
+      </div>
+      <dfam-loader [loading]="downloadingLogo">
+        @if (hmmLogo) {
+          <dfam-family-model-logo [data]="hmmLogo">
+          </dfam-family-model-logo>
+        }
+        @if (!downloadingLogo && !hmmLogo) {
+          No logo has been generated for this family.
+        }
+      </dfam-loader>
+      <h3 class="underline-span">HMM Genome Specific Characteristics <dfam-help-icon link="/help/family#model" [tooltip]="help.genome"></dfam-help-icon></h3>
+      @if (!assemblies.length) {
+        <div>
+          @if (!family.is_raw) {
+            <div>
+              Genome-specific characteristics are not available for this family.
+            </div>
+          } @else {
+            <div>
+              Genome-specific characteristics are not available for uncurated entries.
+            </div>
+          }
+        </div>
+      }
+      @if (assemblies.length) {
+        <div>
+          <dfam-assembly-picker [(value)]="selectedAssembly" [assemblies]="assemblies">
+          </dfam-assembly-picker>
+          @if (selectedAssembly) {
+            <mat-card appearance="raised">
+              <mat-card-title>
+                <h4>Coverage, Conservation, and Inserts <dfam-help-icon link="/help/family#model" [tooltip]="help.conservation"></dfam-help-icon></h4>
+              </mat-card-title>
+              <mat-card-content>
+                <p><strong>False discovery rate</strong>: {{assemblyData[selectedAssembly].hmm_fdr || "Unknown"}}</p>
+                @if (assemblyData[selectedAssembly]?.thresholds?.length) {
+                  <div>
+                    <mat-form-field class="threshold-field">
+                      <mat-label>Threshold</mat-label>
+                      <mat-select appearance="standard" [(value)]="selectedThreshold">
+                        @for (th of assemblyData[selectedAssembly]?.thresholds; track th) {
+                          <mat-option value="{{th.id}}">
+                            {{th.label}}
+                          </mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                    <dfam-family-model-conservation [data]="conservationData">
+                    </dfam-family-model-conservation>
+                  </div>
+                }
+                @if (coverageData) {
+                  <h4>Non-Redundant Coverage <dfam-help-icon link="/help/family#model" [tooltip]="help.nrph"></dfam-help-icon></h4>
+                  Number of aligned bases per model position, among the {{assemblyData[selectedAssembly].model_coverage?.nrph_hits}} non-redundant hits in dfamseq.
+                  <dfam-family-model-coverage [data]="coverageData.nrph" colorSet="2">
+                  </dfam-family-model-coverage>
+                  <h4>Redundant Coverage <dfam-help-icon link="/help/family#model" [tooltip]="help.all"></dfam-help-icon></h4>
+                  Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.all_hits}} hits in dfamseq.
+                  <dfam-family-model-coverage [data]="coverageData.all" colorSet="2">
+                  </dfam-family-model-coverage>
+                  <h4>False Coverage <dfam-help-icon link="/help/family#model" [tooltip]="help.false"></dfam-help-icon></h4>
+                  Number of aligned bases per model position, using the {{assemblyData[selectedAssembly].model_coverage?.false_hits}} hits from an artificial sequence devoid of TEs.
+                  <dfam-family-model-coverage [data]="coverageData.false">
+                  </dfam-family-model-coverage>
+                } @else {
+                  No coverage data is present for this assembly.
+                }
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
+      }
+    </div>
+  }
 
 </dfam-loader>

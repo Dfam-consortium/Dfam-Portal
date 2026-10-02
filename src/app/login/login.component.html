@@ -13,52 +13,64 @@
       </mat-card-title>
       <mat-card-content>
         <form data-layout="column" data-layout-align="space-around center">
-          <a [routerLink]="['/login']" *ngIf="loginType == 'register'">Have an account?</a>
-          <a [routerLink]="['/register']" *ngIf="loginType == 'login'">Need an account?</a>
+          @if (loginType == 'register') {
+            <a [routerLink]="['/login']">Have an account?</a>
+          }
+          @if (loginType == 'login') {
+            <a [routerLink]="['/register']">Need an account?</a>
+          }
           <br/>
-          <mat-form-field *ngIf="loginType == 'register'">
-            <mat-label>Full Name</mat-label>
-            <input matInput
+          @if (loginType == 'register') {
+            <mat-form-field>
+              <mat-label>Full Name</mat-label>
+              <input matInput
                 type="text"
                 name="fullName"
                 [disabled]="isSubmitting"
                 [(ngModel)]="fullName">
-          </mat-form-field>
+            </mat-form-field>
+          }
           <mat-form-field>
             <mat-label>Email</mat-label>
             <input matInput
-                type="text"
-                name="email"
-                [disabled]="isSubmitting"
-                [(ngModel)]="email">
+              type="text"
+              name="email"
+              [disabled]="isSubmitting"
+              [(ngModel)]="email">
           </mat-form-field>
           <mat-form-field>
             <mat-label>Password</mat-label>
             <input matInput
-                type="password"
-                name="password"
-                [disabled]="isSubmitting"
-                [(ngModel)]="password">
+              type="password"
+              name="password"
+              [disabled]="isSubmitting"
+              [(ngModel)]="password">
           </mat-form-field>
-          <mat-form-field *ngIf="loginType == 'register'">
-            <mat-label>Enter the number {{ humanCheckNumber }} in this field</mat-label>
-            <input matInput
+          @if (loginType == 'register') {
+            <mat-form-field>
+              <mat-label>Enter the number {{ humanCheckNumber }} in this field</mat-label>
+              <input matInput
                 type="text"
                 name="humanCheck"
                 autocomplete="off"
                 [disabled]="isSubmitting"
                 [(ngModel)]="humanCheckAnswer">
-          </mat-form-field>
-          <p *ngIf="loginType == 'register'">
-            After registering an account and verifying your email address,
-            we will enable your account for data submission.
-            See the <a routerLink="/help/workbench">help page</a> for more information
-            about submitting data to Dfam.
-          </p>
-          <dfam-altcha *ngIf="loginType == 'register'"
+            </mat-form-field>
+          }
+          @if (loginType == 'register') {
+            <p>
+              After registering an account and verifying your email address,
+              we will enable your account for data submission.
+              See the <a routerLink="/help/workbench">help page</a> for more information
+              about submitting data to Dfam.
+            </p>
+          }
+          @if (loginType == 'register') {
+            <dfam-altcha
               [challengeurl]="altchaChallengeUrl"
               [auto]="null"
-              (notify)="onAltchaNotify($event)"></dfam-altcha>
+            (notify)="onAltchaNotify($event)"></dfam-altcha>
+          }
           <button type="submit" [disabled]="isSubmitting" mat-raised-button color="primary" (click)="submitForm()">
             {{ title }}
           </button>
@@ -70,8 +82,8 @@
 </body>
 
 <ng-template #registerDone>
-If you are a new user, an email has been sent to activate your account.
+  If you are a new user, an email has been sent to activate your account.
 
-<hr>
-<em>Having trouble? Send us an email at help&#64;dfam.org for assistance.</em>
-</ng-template>
+  <hr>
+    <em>Having trouble? Send us an email at help&#64;dfam.org for assistance.</em>
+  </ng-template>

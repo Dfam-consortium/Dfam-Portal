@@ -7,10 +7,11 @@
         noEntriesFoundLabel="No matches found">
       </ngx-mat-select-search>
     </mat-option>
-    <mat-option
-        *ngFor="let assembly of filteredAssemblies | async"
+    @for (assembly of filteredAssemblies | async; track assembly) {
+      <mat-option
         [value]="assembly.id" >
-      {{assembly.displayName}}
-    </mat-option>
+        {{assembly.displayName}}
+      </mat-option>
+    }
   </mat-select>
 </mat-form-field>

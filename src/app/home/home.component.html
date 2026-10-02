@@ -6,190 +6,192 @@
       <span class="announcement-label">Announcement</span>
       <div class="announcement-body">
         <p>
-        We are excited to share an important development for the transposable element research community: Repbase and Dfam are coming together under a unified open framework. GIRI is transitioning the full Repbase collection to an open-access license and joining the Dfam team to help create a comprehensive, community-driven resource for TE research.
+          We are excited to share an important development for the transposable element research community: Repbase and Dfam are coming together under a unified open framework. GIRI is transitioning the full Repbase collection to an open-access license and joining the Dfam team to help create a comprehensive, community-driven resource for TE research.
         </p>
         <a routerLink="/announcement" class="announcement-link">Read the full announcement &rsaquo;</a>
         <br>
-        <a routerLink="/repbase" class="announcement-link">Repbase archive mirror &rsaquo;</a>
-      </div>
-    </div>
-    <!-- END TEMPORARY ANNOUNCEMENT BANNER -->
-
-    <h2>Dfam{{releaseData ? releaseData : ""}}</h2>
-    <div>
-      <div data-layout="row" data-layout-gt-lg="row wrap" data-layout-lt-md="column wrap" class="stats_row">
-        <dfam-chart-wrapper></dfam-chart-wrapper>
-        <dfam-leaderboard></dfam-leaderboard>
-      </div>
-      <p>
-        The Dfam database is a open collection of <b>Transposable Element</b> DNA
-        sequence alignments, <b>hidden Markov Models (HMMs)</b>,
-        <b>consensus sequences</b>, and genome annotations.
-        In addition to accessing existing data, interested researchers can submit
-        their own TE libraries to Dfam via the <a routerLink="/workbench">Workbench</a>.
-        <br>
-        <a (click)="showMore1=!showMore1">{{showMore1==false ? 'More...' : 'Less...'}}</a>
-      </p>
-      <p [hidden]="!showMore1">
-        Transposable elements (or interspersed repeats) account for a substantial portion of eukaryotic genomes. Accurate annotation of TEs enables research into their biology and can shed light on the evolutionary processes that shape genomes. Dfam represents a collection of multiple sequence alignments, each containing a set of representative members of a specific transposable element family. These alignments (seed alignments) are used to generate HMMs and consensus sequences for each family. The Dfam website gives information about each family, and provides genome annotations for a collection of core genomes. The HMM models, and consensus sequences may also be downloaded from the ftp site, for example to mask repeats in new genomes.
-      </p>
-    </div>
-    
-    <div>
-      <h3>Quick Links</h3>
-      <p>You can find data in Dfam in various ways...</p>
-      <mat-accordion>
-        <mat-expansion-panel hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title color="primary">SEQUENCE SEARCH</mat-panel-title>
-            <mat-panel-description>Analyze your DNA sequence for Dfam matches</mat-panel-description>
-          </mat-expansion-panel-header>
-          <dfam-loader [loading]="searchSubmitting">
-            <div data-flex-gt-sm="80" offset-gt-sm="32">
-            <div>
-              <mat-form-field data-flex="100">
-                <mat-label>Sequence</mat-label>
-                <textarea matInput rows="10" cols="60" [(ngModel)]="searchSequence"></textarea>
-              </mat-form-field>
-            </div>
-
-            <div data-layout="row" data-layout-align="start center">
-              <dfam-assembly-picker
-                [assemblies]="searchSequenceAssemblies"
-                [(value)]="searchSequenceAssembly"
-                [showIds]="false"
-                placeholder="Organism">
-              </dfam-assembly-picker>
-
-              &nbsp;
-              <button mat-raised-button class="accordian-button" color="primary" (click)="onSubmitSearch()">Go</button>
-              &nbsp;
-              <button mat-raised-button type="button" (click)="onExampleSearch()">Example</button>
-            </div>
-            </div>
-          </dfam-loader>
-          <p>
-            This search will be run against all Dfam models (regardless of clade) using the
-            trusted cut-off thresholds (stringent). You can set your own search parameters
-            <a routerLink="/search/sequence">here</a>.
-          </p>
-        </mat-expansion-panel>
-        <mat-expansion-panel hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title color="primary">VIEW A DFAM ENTRY</mat-panel-title>
-            <mat-panel-description>View Dfam entry annotation and alignments</mat-panel-description>
-          </mat-expansion-panel-header>
-
-          <div offset-gt-sm="32">
-            <p>
-            Enter an accession or name (e.g. DF000000001 or Harlequin) to see all data for that entry.
-            </p>
-
-            <form data-layout="row">
-              <mat-form-field data-flex-gt-sm="80">
-                <mat-label>Accession</mat-label>
-                <input matInput type="text" name="accession" [(ngModel)]="gotoEntryTarget">
-              </mat-form-field>
-              &nbsp;
-              <div data-layout-align="space-around center">
-              <button mat-raised-button color="primary" (click)="onGotoEntry()">Go</button>
-              </div>
-            </form>
-          </div>
-        </mat-expansion-panel>
-        <mat-expansion-panel hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title>VIEW A SEQUENCE</mat-panel-title>
-            <mat-panel-description>View pre-calculated annotations on a DNA sequence</mat-panel-description>
-          </mat-expansion-panel-header>
-
-          <div data-layout="row">
-            <form data-flex-gt-sm="80" offset-gt-sm="32">
-
-              <div>
-                <dfam-assembly-picker
-                  data-flex="initial"
-                  [assemblies]="assemblies"
-                  [(value)]="annotations.assembly" >
-                </dfam-assembly-picker>
-                &nbsp;
-                <mat-form-field data-flex="initial">
-                  <mat-label>Chromosome</mat-label>
-                  <input matInput name="chromosome" [(ngModel)]="annotations.chromosome">
-                </mat-form-field>
-              </div>
-
-              <div>
-                <mat-form-field data-flex="initial">
-                  <mat-label>Start</mat-label>
-                  <input matInput name="start" [(ngModel)]="annotations.start">
-                </mat-form-field>
-                &nbsp;
-                <mat-form-field data-flex="initial">
-                  <mat-label>End</mat-label>
-                  <input matInput name="end" [(ngModel)]="annotations.end">
-                </mat-form-field>
-              </div>
-
-              <div>
-                <button mat-raised-button color="primary" (click)="onGotoAnnotations()">Go</button>
-                &nbsp;
-                <button mat-raised-button type="button" (click)="onExampleAnnotations()">Example</button>
-              </div>
-            </form>
-          </div>
-
-        </mat-expansion-panel>
-        <mat-expansion-panel hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title>KEYWORD SEARCH</mat-panel-title>
-            <mat-panel-description>Query Dfam by keywords</mat-panel-description>
-          </mat-expansion-panel-header>
-
-          <form data-layout-gt-sm="row">
-            <mat-form-field data-flex-gt-sm="80" offset-gt-sm="32">
-              <mat-label>Keywords</mat-label>
-              <input matInput type="text" name="keywords" [(ngModel)]="searchKeywords">
-            </mat-form-field>
-            &nbsp;
-            <div data-layout="row" data-layout-align="start center">
-              <button mat-raised-button color="primary" (click)="searchByKeywords()">Go</button>
-              &nbsp;
-              <button mat-raised-button type="button" (click)="searchKeywords='tigger'">Example</button>
-            </div>
-          </form>
-        </mat-expansion-panel>
-      </mat-accordion>
-      <hr>
-    </div>
-
-    <div id="citation">
-      <h3>Citing Dfam</h3>
-      <blockquote>
-        <a href="https://mobilednajournal.biomedcentral.com/articles/10.1186/s13100-020-00230-y" class="ext">The Dfam community resource of transposable element families, sequence models, and genome annotations</a>
-        <p>Jessica Storer; Robert Hubley; Jeb Rosen; Travis J. Wheeler; Arian F. Smit<br>
-        <span class="bold">Mobile DNA</span> (2021) 12, Article number: 2. doi: https://doi.org/10.1186/s13100-020-00230-y
-      </blockquote>
-      <hr>
-    </div>
-    <div class="blog clearfix">
-        <h3>Recent Dfam <a href="http://xfam.wordpress.com/tag/dfam/" class="ext">blog</a> posts</h3>
-        <div *ngFor="let art of dfamBlogArticles">
-          <a class="ext blog-article-title" href="{{art.link}}">{{art.title}}</a>
-          <br>
-          <span class="blog-article-date">{{art.date}}</span>
-          <p>{{art.snippet}}</p>
+          <a routerLink="/repbase" class="announcement-link">Repbase archive mirror &rsaquo;</a>
         </div>
-        <hr>
-    </div>
-    <div class="follow clearfix">
-      <h3>
-        Follow us on:
-        <a href="https://bsky.app/profile/dfam.bsky.social">
-          <img src="/assets/images/bluesky_logo.png" height="25" width="38" alt="Bluesky logo" style="vertical-align: middle; margin-left: 8px;">
-        </a>
-      </h3>
-      <hr>
-    </div>
-   </div>
-</div>
+      </div>
+      <!-- END TEMPORARY ANNOUNCEMENT BANNER -->
+
+      <h2>Dfam{{releaseData ? releaseData : ""}}</h2>
+      <div>
+        <div data-layout="row" data-layout-gt-lg="row wrap" data-layout-lt-md="column wrap" class="stats_row">
+          <dfam-chart-wrapper></dfam-chart-wrapper>
+          <dfam-leaderboard></dfam-leaderboard>
+        </div>
+        <p>
+          The Dfam database is a open collection of <b>Transposable Element</b> DNA
+          sequence alignments, <b>hidden Markov Models (HMMs)</b>,
+          <b>consensus sequences</b>, and genome annotations.
+          In addition to accessing existing data, interested researchers can submit
+          their own TE libraries to Dfam via the <a routerLink="/workbench">Workbench</a>.
+          <br>
+            <a (click)="showMore1=!showMore1">{{showMore1==false ? 'More...' : 'Less...'}}</a>
+          </p>
+          <p [hidden]="!showMore1">
+            Transposable elements (or interspersed repeats) account for a substantial portion of eukaryotic genomes. Accurate annotation of TEs enables research into their biology and can shed light on the evolutionary processes that shape genomes. Dfam represents a collection of multiple sequence alignments, each containing a set of representative members of a specific transposable element family. These alignments (seed alignments) are used to generate HMMs and consensus sequences for each family. The Dfam website gives information about each family, and provides genome annotations for a collection of core genomes. The HMM models, and consensus sequences may also be downloaded from the ftp site, for example to mask repeats in new genomes.
+          </p>
+        </div>
+
+        <div>
+          <h3>Quick Links</h3>
+          <p>You can find data in Dfam in various ways...</p>
+          <mat-accordion>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title color="primary">SEQUENCE SEARCH</mat-panel-title>
+                <mat-panel-description>Analyze your DNA sequence for Dfam matches</mat-panel-description>
+              </mat-expansion-panel-header>
+              <dfam-loader [loading]="searchSubmitting">
+                <div data-flex-gt-sm="80" offset-gt-sm="32">
+                  <div>
+                    <mat-form-field data-flex="100">
+                      <mat-label>Sequence</mat-label>
+                      <textarea matInput rows="10" cols="60" [(ngModel)]="searchSequence"></textarea>
+                    </mat-form-field>
+                  </div>
+
+                  <div data-layout="row" data-layout-align="start center">
+                    <dfam-assembly-picker
+                      [assemblies]="searchSequenceAssemblies"
+                      [(value)]="searchSequenceAssembly"
+                      [showIds]="false"
+                      placeholder="Organism">
+                    </dfam-assembly-picker>
+
+                    &nbsp;
+                    <button mat-raised-button class="accordian-button" color="primary" (click)="onSubmitSearch()">Go</button>
+                    &nbsp;
+                    <button mat-raised-button type="button" (click)="onExampleSearch()">Example</button>
+                  </div>
+                </div>
+              </dfam-loader>
+              <p>
+                This search will be run against all Dfam models (regardless of clade) using the
+                trusted cut-off thresholds (stringent). You can set your own search parameters
+                <a routerLink="/search/sequence">here</a>.
+              </p>
+            </mat-expansion-panel>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title color="primary">VIEW A DFAM ENTRY</mat-panel-title>
+                <mat-panel-description>View Dfam entry annotation and alignments</mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <div offset-gt-sm="32">
+                <p>
+                  Enter an accession or name (e.g. DF000000001 or Harlequin) to see all data for that entry.
+                </p>
+
+                <form data-layout="row">
+                  <mat-form-field data-flex-gt-sm="80">
+                    <mat-label>Accession</mat-label>
+                    <input matInput type="text" name="accession" [(ngModel)]="gotoEntryTarget">
+                  </mat-form-field>
+                  &nbsp;
+                  <div data-layout-align="space-around center">
+                    <button mat-raised-button color="primary" (click)="onGotoEntry()">Go</button>
+                  </div>
+                </form>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>VIEW A SEQUENCE</mat-panel-title>
+                <mat-panel-description>View pre-calculated annotations on a DNA sequence</mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <div data-layout="row">
+                <form data-flex-gt-sm="80" offset-gt-sm="32">
+
+                  <div>
+                    <dfam-assembly-picker
+                      data-flex="initial"
+                      [assemblies]="assemblies"
+                      [(value)]="annotations.assembly" >
+                    </dfam-assembly-picker>
+                    &nbsp;
+                    <mat-form-field data-flex="initial">
+                      <mat-label>Chromosome</mat-label>
+                      <input matInput name="chromosome" [(ngModel)]="annotations.chromosome">
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <mat-form-field data-flex="initial">
+                      <mat-label>Start</mat-label>
+                      <input matInput name="start" [(ngModel)]="annotations.start">
+                    </mat-form-field>
+                    &nbsp;
+                    <mat-form-field data-flex="initial">
+                      <mat-label>End</mat-label>
+                      <input matInput name="end" [(ngModel)]="annotations.end">
+                    </mat-form-field>
+                  </div>
+
+                  <div>
+                    <button mat-raised-button color="primary" (click)="onGotoAnnotations()">Go</button>
+                    &nbsp;
+                    <button mat-raised-button type="button" (click)="onExampleAnnotations()">Example</button>
+                  </div>
+                </form>
+              </div>
+
+            </mat-expansion-panel>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>KEYWORD SEARCH</mat-panel-title>
+                <mat-panel-description>Query Dfam by keywords</mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <form data-layout-gt-sm="row">
+                <mat-form-field data-flex-gt-sm="80" offset-gt-sm="32">
+                  <mat-label>Keywords</mat-label>
+                  <input matInput type="text" name="keywords" [(ngModel)]="searchKeywords">
+                </mat-form-field>
+                &nbsp;
+                <div data-layout="row" data-layout-align="start center">
+                  <button mat-raised-button color="primary" (click)="searchByKeywords()">Go</button>
+                  &nbsp;
+                  <button mat-raised-button type="button" (click)="searchKeywords='tigger'">Example</button>
+                </div>
+              </form>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <hr>
+          </div>
+
+          <div id="citation">
+            <h3>Citing Dfam</h3>
+            <blockquote>
+              <a href="https://mobilednajournal.biomedcentral.com/articles/10.1186/s13100-020-00230-y" class="ext">The Dfam community resource of transposable element families, sequence models, and genome annotations</a>
+              <p>Jessica Storer; Robert Hubley; Jeb Rosen; Travis J. Wheeler; Arian F. Smit<br>
+                <span class="bold">Mobile DNA</span> (2021) 12, Article number: 2. doi: https://doi.org/10.1186/s13100-020-00230-y
+              </blockquote>
+              <hr>
+              </div>
+              <div class="blog clearfix">
+                <h3>Recent Dfam <a href="http://xfam.wordpress.com/tag/dfam/" class="ext">blog</a> posts</h3>
+                @for (art of dfamBlogArticles; track art) {
+                  <div>
+                    <a class="ext blog-article-title" href="{{art.link}}">{{art.title}}</a>
+                    <br>
+                      <span class="blog-article-date">{{art.date}}</span>
+                      <p>{{art.snippet}}</p>
+                    </div>
+                  }
+                  <hr>
+                  </div>
+                  <div class="follow clearfix">
+                    <h3>
+                      Follow us on:
+                      <a href="https://bsky.app/profile/dfam.bsky.social">
+                        <img src="/assets/images/bluesky_logo.png" height="25" width="38" alt="Bluesky logo" style="vertical-align: middle; margin-left: 8px;">
+                      </a>
+                    </h3>
+                    <hr>
+                    </div>
+                  </div>
+                </div>

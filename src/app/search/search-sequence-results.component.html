@@ -1,27 +1,35 @@
 <dfam-loader [loading]="loading">
   <p>{{message}}</p>
 
-  <p *ngIf="results">
-  Job submitted: {{serverResponse?.submittedAt}}
-  <br>
-  Duration: {{serverResponse?.duration}}
-  <br>
-  Parameters: {{serverResponse?.searchParameters}}
-  </p>
+  @if (results) {
+    <p>
+      Job submitted: {{serverResponse?.submittedAt}}
+      <br>
+        Duration: {{serverResponse?.duration}}
+        <br>
+          Parameters: {{serverResponse?.searchParameters}}
+        </p>
+      }
 
-  <mat-form-field *ngIf="results">
-    <mat-label>Query</mat-label>
-    <mat-select [(ngModel)]="selectedResult">
-      <mat-option *ngFor="let result of results" [value]="result">{{result.query}}</mat-option>
-    </mat-select>
-  </mat-form-field>
+      @if (results) {
+        <mat-form-field>
+          <mat-label>Query</mat-label>
+          <mat-select [(ngModel)]="selectedResult">
+            @for (result of results; track result) {
+              <mat-option [value]="result">{{result.query}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
 
-  <p *ngIf="selectedResult?.hits?.length === 0">
-    No matches were found for this sequence in the chosen organism. If you
-    expected to find hits, try changing the search cutoff.
-  </p>
+      @if (selectedResult?.hits?.length === 0) {
+        <p>
+          No matches were found for this sequence in the chosen organism. If you
+          expected to find hits, try changing the search cutoff.
+        </p>
+      }
 
-  <dfam-search-results [data]="selectedResult" [getAlignCallback]="getAlignment.bind(this)">
-  </dfam-search-results>
+      <dfam-search-results [data]="selectedResult" [getAlignCallback]="getAlignment.bind(this)">
+      </dfam-search-results>
 
-</dfam-loader>
+    </dfam-loader>

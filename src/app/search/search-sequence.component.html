@@ -1,35 +1,35 @@
 <div data-flex-gt-sm="50" offset-gt-sm="25">
 
-<h3>Sequence Search</h3>
+  <h3>Sequence Search</h3>
 
-<div>
-  <p>
-  Find Dfam matches to your sequence of interest. Paste your nucleotide sequence
-  into the box below, to have it searched for matching Dfam entries.
-  </p>
+  <div>
+    <p>
+      Find Dfam matches to your sequence of interest. Paste your nucleotide sequence
+      into the box below, to have it searched for matching Dfam entries.
+    </p>
 
-  <p>
-  This search comprises of two parts, a search of the sequence against all of the
-  Dfam models and a search against TRF, the tandem repeat finder. Overlapping Dfam
-  matches (near perfect overlaps) are automatically removed as part of the search
-  method, in order to remove the model redundancy.
-  </p>
+    <p>
+      This search comprises of two parts, a search of the sequence against all of the
+      Dfam models and a search against TRF, the tandem repeat finder. Overlapping Dfam
+      matches (near perfect overlaps) are automatically removed as part of the search
+      method, in order to remove the model redundancy.
+    </p>
 
-  <p>
-  The recommended method of searching is to put the source organism of the query
-  sequence, and let the software determine the best cut-off for each model, where
-  the more stringent thresholds will be used for sequences where the source
-  organism does not match the model specificity. Otherwise the more liberal
-  gathering thresholds will be used. Alternatively, you can specify an E-value to
-  use for each model. The search system can be downloaded and run locally. There
-  are more details of both the search and dfamscan.pl in the help section.
-  </p>
-</div>
+    <p>
+      The recommended method of searching is to put the source organism of the query
+      sequence, and let the software determine the best cut-off for each model, where
+      the more stringent thresholds will be used for sequences where the source
+      organism does not match the model specificity. Otherwise the more liberal
+      gathering thresholds will be used. Alternatively, you can specify an E-value to
+      use for each model. The search system can be downloaded and run locally. There
+      are more details of both the search and dfamscan.pl in the help section.
+    </p>
+  </div>
 
-<form>
-  <mat-form-field>
-    <mat-label>Sequence</mat-label>
-    <textarea
+  <form>
+    <mat-form-field>
+      <mat-label>Sequence</mat-label>
+      <textarea
         matInput
         class="sequence-field"
         rows="10"
@@ -38,41 +38,45 @@
         minlength="50"
         [(ngModel)]="search.sequence"
         #sequenceInput="ngModel">
-    </textarea>
-    <div *ngIf="sequenceInput.invalid && (sequenceInput.dirty || sequenceInput.touched)"
-        class="error">
-      Sequence is too short.
+      </textarea>
+      @if (sequenceInput.invalid && (sequenceInput.dirty || sequenceInput.touched)) {
+        <div
+          class="error">
+          Sequence is too short.
+        </div>
+      }
+    </mat-form-field>
+
+    <dfam-assembly-picker
+      [assemblies]="assemblies"
+      [(value)]="search.assembly"
+      [showIds]="false"
+      (valueChange)="onAssemblyChange($event)"
+      placeholder="Query Organism">
+    </dfam-assembly-picker>
+
+    <div>
+      Cut-off:
+      <mat-radio-group name="cutoff" [(ngModel)]="search.cutoff">
+        <mat-radio-button value="curated" [disabled]="search.assembly === 'other'">Dfam curated threshold</mat-radio-button>
+        <mat-radio-button value="evalue">E-value</mat-radio-button>
+      </mat-radio-group>
     </div>
-  </mat-form-field>
 
-  <dfam-assembly-picker
-    [assemblies]="assemblies"
-    [(value)]="search.assembly"
-    [showIds]="false"
-    (valueChange)="onAssemblyChange($event)"
-    placeholder="Query Organism">
-  </dfam-assembly-picker>
+    @if (search.cutoff === 'evalue') {
+      <mat-form-field>
+        <mat-label>E-value</mat-label>
+        <input matInput type="text" name="evalue" [(ngModel)]="search.evalue">
+      </mat-form-field>
+    }
 
-  <div>
-    Cut-off:
-    <mat-radio-group name="cutoff" [(ngModel)]="search.cutoff">
-      <mat-radio-button value="curated" [disabled]="search.assembly === 'other'">Dfam curated threshold</mat-radio-button>
-      <mat-radio-button value="evalue">E-value</mat-radio-button>
-    </mat-radio-group>
-  </div>
+    <div class="buttons">
+      <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+      <button mat-raised-button type="button" (click)="onReset()">Reset</button>
+      <button mat-raised-button type="button" (click)="onExample()">Example</button>
+    </div>
+  </form>
 
-  <mat-form-field *ngIf="search.cutoff === 'evalue'">
-    <mat-label>E-value</mat-label>
-    <input matInput type="text" name="evalue" [(ngModel)]="search.evalue">
-  </mat-form-field>
-
-  <div class="buttons">
-    <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
-    <button mat-raised-button type="button" (click)="onReset()">Reset</button>
-    <button mat-raised-button type="button" (click)="onExample()">Example</button>
-  </div>
-</form>
-
-<dfam-loader [loading]="loading"></dfam-loader>
+  <dfam-loader [loading]="loading"></dfam-loader>
 
 </div>

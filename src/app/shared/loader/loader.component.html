@@ -1,5 +1,7 @@
 <div #container [ngClass]="{ 'loading': loading }">
-  <mat-spinner class="spinner" [diameter]="diameter" *ngIf="loading"></mat-spinner>
+  @if (loading) {
+    <mat-spinner class="spinner" [diameter]="diameter"></mat-spinner>
+  }
   <div class="content">
     <ng-content></ng-content>
   </div>

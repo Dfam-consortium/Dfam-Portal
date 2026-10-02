@@ -3,95 +3,109 @@
 <div data-layout="row" class="indent">
   <div data-layout="column" data-layout-align="stretch" data-flex="auto" flex-offset="2">
     For each annotated genome within this family's taxa we calculate
-    the count, length, and Kimura divergence of HMM-produced annotations above the 
+    the count, length, and Kimura divergence of HMM-produced annotations above the
     score thresholds.
 
     <div class="table-container">
-      <table *ngIf="assemblies?.length > 0">
-
-      <thead>
-        <tr>
-          <th rowspan="3">Species</th>
-          <th colspan="5">Non-Redundant Hits</th>
-          <th colspan="2">All Hits</th>
-        </tr>
-        <tr>
-          <th rowspan="2">Avg. Hit Length</th>
-          <th colspan="2">Gathering Threshold</th>
-          <th colspan="2">Trusted Threshold</th>
-          <th rowspan="2" style="word-break: break-word; max-width: 100px;">Gathering Threshold Count</th>
-          <th rowspan="2" style="word-break: break-word; max-width: 100px;">Trusted Threshold Count</th>
-        </tr>
-        <tr>
-          <th>Count</th>
-          <th>Kimura Div.</th>
-          <th>Count</th>
-          <th>Kimura Div.</th>
-        </tr>
-      </thead>
-
-      <tr *ngFor="let assembly of assemblies">
-        <td style="text-align: right;">{{assembly.name}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.avg_hit_length : ''}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_nonredundant : ''}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_divergence : ''}}<span *ngIf="assembly.stats.hmm && assembly.stats.hmm.gathering_divergence">%</span></td>
-        <!-- <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_divergence|number:'1.1-1' : ''}}<span *ngIf="assembly.stats.hmm.gathering_divergence">%</span></td> -->
-        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_nonredundant : ''}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_divergence : ''}}<span *ngIf="assembly.stats.hmm && assembly.stats.hmm.trusted_divergence">%</span></td>
-        <!-- <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_divergence|number:'1.1-1' : ''}}<span *ngIf="assembly.stats.hmm.trusted_divergence">%</span></td> -->
-        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_all : ''}}</td>
-        <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_all : ''}}</td>
-      </tr>
-
-      </table>
+      @if (assemblies?.length > 0) {
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="3">Species</th>
+              <th colspan="5">Non-Redundant Hits</th>
+              <th colspan="2">All Hits</th>
+            </tr>
+            <tr>
+              <th rowspan="2">Avg. Hit Length</th>
+              <th colspan="2">Gathering Threshold</th>
+              <th colspan="2">Trusted Threshold</th>
+              <th rowspan="2" style="word-break: break-word; max-width: 100px;">Gathering Threshold Count</th>
+              <th rowspan="2" style="word-break: break-word; max-width: 100px;">Trusted Threshold Count</th>
+            </tr>
+            <tr>
+              <th>Count</th>
+              <th>Kimura Div.</th>
+              <th>Count</th>
+              <th>Kimura Div.</th>
+            </tr>
+          </thead>
+          @for (assembly of assemblies; track assembly) {
+            <tr>
+              <td style="text-align: right;">{{assembly.name}}</td>
+              <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.avg_hit_length : ''}}</td>
+              <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_nonredundant : ''}}</td>
+              <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_divergence : ''}}@if (assembly.stats.hmm && assembly.stats.hmm.gathering_divergence) {
+                <span>%</span>
+              }</td>
+              <!-- <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_divergence|number:'1.1-1' : ''}}<span *ngIf="assembly.stats.hmm.gathering_divergence">%</span></td> -->
+              <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_nonredundant : ''}}</td>
+              <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_divergence : ''}}@if (assembly.stats.hmm && assembly.stats.hmm.trusted_divergence) {
+                <span>%</span>
+              }</td>
+              <!-- <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_divergence|number:'1.1-1' : ''}}<span *ngIf="assembly.stats.hmm.trusted_divergence">%</span></td> -->
+              <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.gathering_all : ''}}</td>
+              <td style="text-align: right;">{{assembly.stats.hmm ? assembly.stats.hmm.trusted_all : ''}}</td>
+            </tr>
+          }
+        </table>
+      }
     </div>
   </div>
 </div>
 
 <dfam-loader [loading]="!assemblies">
 
-<div *ngIf="assemblies?.length === 0">
-No statistics are available for this family. It might not be in any assemblies currently available in Dfam.
-</div>
-
-<h3 class="underline-span">Genome Annotation Distribution <dfam-help-icon link="/help/family#annotations" [tooltip]="help.distribution"></dfam-help-icon></h3>
-
-<div data-layout="row" class="indent">
-  <div class="karyotype-section" data-layout="column" flex-offset="2">
-
-    <div *ngIf="assemblies?.length === 0">
-      Genome-specific characteristics are not available for this family.
+  @if (assemblies?.length === 0) {
+    <div>
+      No statistics are available for this family. It might not be in any assemblies currently available in Dfam.
     </div>
+  }
 
-    <div *ngIf="assemblies?.length > 0">
-      <dfam-assembly-picker [(value)]="selectedAssembly" [assemblies]="assemblies">
-      </dfam-assembly-picker>
+  <h3 class="underline-span">Genome Annotation Distribution <dfam-help-icon link="/help/family#annotations" [tooltip]="help.distribution"></dfam-help-icon></h3>
 
-      <mat-card *ngIf="selectedAssembly">
-        <mat-radio-group [(ngModel)]="selectedVisualizationType">
-          <mat-radio-button name="image_type" value="nrph">Non-Redundant Hits</mat-radio-button>
-          &nbsp;
-          <mat-radio-button name="image_type" value="all">All Hits</mat-radio-button>
-          &nbsp;
-          <mat-radio-button *ngIf="hasGiemsa" name="image_type" value="giemsa">Giemsa Staining</mat-radio-button>
-        </mat-radio-group>
-        <dfam-loader [loading]="loadingKaryotype">
-          <dfam-family-annotations-karyotype #karyotype [data]="karyotypeData" [visualizationType]="selectedVisualizationType">
-          </dfam-family-annotations-karyotype>
+  <div data-layout="row" class="indent">
+    <div class="karyotype-section" data-layout="column" flex-offset="2">
 
-          <ng-container *ngIf="!loadingKaryotype && !karyotypeData">
-            No genome annotation distribution is available for this assembly.
-            Annotations for this assembly may still be downloaded from the "Download" tab.
-          </ng-container>
-        </dfam-loader>
+      @if (assemblies?.length === 0) {
+        <div>
+          Genome-specific characteristics are not available for this family.
+        </div>
+      }
 
-        <dfam-loader [loading]="loadingAnnotationData">
-          <dfam-search-results-hits *ngIf="annotationData" [assembly]="selectedAssembly" [data]="annotationData.hits" [search]="annotationData.title" [getAlignCallback]="getAlignment.bind(this)">
-          </dfam-search-results-hits>
-        </dfam-loader>
-      </mat-card>
+      @if (assemblies?.length > 0) {
+        <div>
+          <dfam-assembly-picker [(value)]="selectedAssembly" [assemblies]="assemblies">
+          </dfam-assembly-picker>
+          @if (selectedAssembly) {
+            <mat-card>
+              <mat-radio-group [(ngModel)]="selectedVisualizationType">
+                <mat-radio-button name="image_type" value="nrph">Non-Redundant Hits</mat-radio-button>
+                &nbsp;
+                <mat-radio-button name="image_type" value="all">All Hits</mat-radio-button>
+                &nbsp;
+                @if (hasGiemsa) {
+                  <mat-radio-button name="image_type" value="giemsa">Giemsa Staining</mat-radio-button>
+                }
+              </mat-radio-group>
+              <dfam-loader [loading]="loadingKaryotype">
+                <dfam-family-annotations-karyotype #karyotype [data]="karyotypeData" [visualizationType]="selectedVisualizationType">
+                </dfam-family-annotations-karyotype>
+                @if (!loadingKaryotype && !karyotypeData) {
+                  No genome annotation distribution is available for this assembly.
+                  Annotations for this assembly may still be downloaded from the "Download" tab.
+                }
+              </dfam-loader>
+              <dfam-loader [loading]="loadingAnnotationData">
+                @if (annotationData) {
+                  <dfam-search-results-hits [assembly]="selectedAssembly" [data]="annotationData.hits" [search]="annotationData.title" [getAlignCallback]="getAlignment.bind(this)">
+                  </dfam-search-results-hits>
+                }
+              </dfam-loader>
+            </mat-card>
+          }
+        </div>
+      }
     </div>
   </div>
-</div>
 
 </dfam-loader>

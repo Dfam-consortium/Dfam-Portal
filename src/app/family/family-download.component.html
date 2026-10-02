@@ -1,68 +1,71 @@
 <h3 class="underline-span">Seed Alignment <dfam-help-icon link="/help/family#download" [tooltip]="help.seed"></dfam-help-icon></h3>
 
 <div data-layout="row" data-layout-gap="15px" class="indent">
-   <dfam-family-download-button flex-offset="1" title='STK' description='Stockholm formatted seed alignment used to generate the HMM and consensus.' icon="/assets/images/stk-file.png" altDescription="Download the Stockholm seed alignment for this family." [href]="seedUrl"></dfam-family-download-button>
+  <dfam-family-download-button flex-offset="1" title='STK' description='Stockholm formatted seed alignment used to generate the HMM and consensus.' icon="/assets/images/stk-file.png" altDescription="Download the Stockholm seed alignment for this family." [href]="seedUrl"></dfam-family-download-button>
 </div>
 
 <h3 class="underline-span">Models <dfam-help-icon link="/help/family#download" [tooltip]="help.models"></dfam-help-icon></h3>
 
 <div data-layout="row wrap" data-layout-gap="15px" class="indent">
-   <dfam-family-download-button flex-offset="1" title='HMM' description='Hidden Markov Model representing this family.' icon="/assets/images/hmm-file.png" altDescription="Download the Hidden Markov Model for this family." [href]="hmmUrl"></dfam-family-download-button>
+  <dfam-family-download-button flex-offset="1" title='HMM' description='Hidden Markov Model representing this family.' icon="/assets/images/hmm-file.png" altDescription="Download the Hidden Markov Model for this family." [href]="hmmUrl"></dfam-family-download-button>
 
-   <dfam-family-download-button title='EMBL' description='EMBL-formatted consensus sequence and metadata.' icon="/assets/images/embl-file.png" altDescription="Download the consensus sequence and metadata for this family as EMBL." [href]="emblUrl"></dfam-family-download-button>
+  <dfam-family-download-button title='EMBL' description='EMBL-formatted consensus sequence and metadata.' icon="/assets/images/embl-file.png" altDescription="Download the consensus sequence and metadata for this family as EMBL." [href]="emblUrl"></dfam-family-download-button>
 
-   <dfam-family-download-button title='FASTA' description='FASTA-formatted consensus sequence.' icon="/assets/images/fasta_file.png" altDescription="Download the consensus sequence for this family as FASTA." [href]="fastaUrl"></dfam-family-download-button>
+  <dfam-family-download-button title='FASTA' description='FASTA-formatted consensus sequence.' icon="/assets/images/fasta_file.png" altDescription="Download the consensus sequence for this family as FASTA." [href]="fastaUrl"></dfam-family-download-button>
 </div>
 
 <h3 class="underline-span">Annotations <dfam-help-icon link="/help/family#download" [tooltip]="help.annotations"></dfam-help-icon></h3>
 
 <dfam-loader [loading]="!assemblies">
 
-<div data-layout="row">
-  <div data-layout="column" flex-offset="2" *ngIf="assemblies?.length; else noAssemblies" class="indent">
-    <p>
-    Annotations produced by the HMM model for applicable species at, or above, the gathering threshold.  The Non-redundant download is a subset of the annotations for which no other repeat family dominates it ( overlaps with a higher score ).  Both file are in tab-separated format and compressed with gzip.
-    </p>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Species</th>
-            <th>Non-redundant</th>
-            <th>All</th>
-          </tr>
-        </thead>
-        <tr *ngFor="let assembly of assemblies">
-          <td>{{assembly.name}} [{{assembly.id}}]</td>
-          <td>
-            <dfam-family-download-button
-              icon="/assets/images/gzipd-file.png"
-              iconHeight = "30"
-              iconWidth = "30"
-              altDescription="Non-redundant hits for this model/organism."
-              [href]="annotationsUrl(assembly.id,true)"
-              [assembly]="assembly.id" 
-              [nrph]="true">
-            </dfam-family-download-button>
-          </td>
-          <td>
-            <dfam-family-download-button
-              icon="/assets/images/gzipd-file.png"
-              iconHeight = "30"
-              iconWidth = "30"
-              altDescription="All hits for this model/organism."
-              [href]="annotationsUrl(assembly.id,false)"
-              [assembly]="assembly.id" 
-              [nrph]="false">
-            </dfam-family-download-button>
-          </td>
-        </tr>
-      </table>
-    </div>
+  <div data-layout="row">
+    @if (assemblies?.length) {
+      <div data-layout="column" flex-offset="2" class="indent">
+        <p>
+          Annotations produced by the HMM model for applicable species at, or above, the gathering threshold.  The Non-redundant download is a subset of the annotations for which no other repeat family dominates it ( overlaps with a higher score ).  Both file are in tab-separated format and compressed with gzip.
+        </p>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Species</th>
+                <th>Non-redundant</th>
+                <th>All</th>
+              </tr>
+            </thead>
+            @for (assembly of assemblies; track assembly) {
+              <tr>
+                <td>{{assembly.name}} [{{assembly.id}}]</td>
+                <td>
+                  <dfam-family-download-button
+                    icon="/assets/images/gzipd-file.png"
+                    iconHeight = "30"
+                    iconWidth = "30"
+                    altDescription="Non-redundant hits for this model/organism."
+                    [href]="annotationsUrl(assembly.id,true)"
+                    [assembly]="assembly.id"
+                    [nrph]="true">
+                  </dfam-family-download-button>
+                </td>
+                <td>
+                  <dfam-family-download-button
+                    icon="/assets/images/gzipd-file.png"
+                    iconHeight = "30"
+                    iconWidth = "30"
+                    altDescription="All hits for this model/organism."
+                    [href]="annotationsUrl(assembly.id,false)"
+                    [assembly]="assembly.id"
+                    [nrph]="false">
+                  </dfam-family-download-button>
+                </td>
+              </tr>
+            }
+          </table>
+        </div>
+      </div>
+    } @else {
+      <p>No assembly-specific annotations available for this family.</p>
+    }
   </div>
-</div>
-<ng-template #noAssemblies>
-  <p>No assembly-specific annotations available for this family.</p>
-</ng-template>
 
 </dfam-loader>

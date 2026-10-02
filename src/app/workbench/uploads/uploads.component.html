@@ -1,35 +1,35 @@
 <div data-flex="100" data-flex-gt-sm="60" offset-gt-sm="20">
 
-<h2>Uploads</h2>
+  <h2>Uploads</h2>
 
-<p>
-  The Dfam database primarily consists of curated Transposable Element (TE)
-  families derived from seed alignments.  In addition, Dfam now supports
-  submission of raw output from <em>de novo</em> pipelines such as
-  RepeatModeler, which may include fragments, redundancies, and non-TE
-  repetitive DNA such as gene families or segmental duplications. Such entries
-  will be made available through Dfam but will not go through the full
-  species-specific threshold calculation and annotation processes. Raw families
-  can later be replaced by curated equivalents.
-</p>
+  <p>
+    The Dfam database primarily consists of curated Transposable Element (TE)
+    families derived from seed alignments.  In addition, Dfam now supports
+    submission of raw output from <em>de novo</em> pipelines such as
+    RepeatModeler, which may include fragments, redundancies, and non-TE
+    repetitive DNA such as gene families or segmental duplications. Such entries
+    will be made available through Dfam but will not go through the full
+    species-specific threshold calculation and annotation processes. Raw families
+    can later be replaced by curated equivalents.
+  </p>
 
-<p>
-  Submissions should be in the form of <em>seed alignments</em>: multiple
-  alignments of (putative) repetitive element families. The preferred format is
-  Stockholm, as produced by the RepeatModeler tool, however other formats may
-  be submitted.  We do not want format issues to be a barrier to submission,
-  and have resources to assist in this process.  If available, each library
-  should include additional metadata such as family classifications,
-  organism/assembly details, citations, and/or additional project background.
-  We recommend that each dataset be compressed before upload.
-</p>
+  <p>
+    Submissions should be in the form of <em>seed alignments</em>: multiple
+    alignments of (putative) repetitive element families. The preferred format is
+    Stockholm, as produced by the RepeatModeler tool, however other formats may
+    be submitted.  We do not want format issues to be a barrier to submission,
+    and have resources to assist in this process.  If available, each library
+    should include additional metadata such as family classifications,
+    organism/assembly details, citations, and/or additional project background.
+    We recommend that each dataset be compressed before upload.
+  </p>
 
-<p>
-  Data submitted through this portal may be included in future Dfam releases
-  after review by the Dfam team. By submitting data for inclusion in Dfam, you
-  agree to release it under the Creative Commons CC0 1.0 public domain license.
-  More information about this license is available at <a
-  href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank">
+  <p>
+    Data submitted through this portal may be included in future Dfam releases
+    after review by the Dfam team. By submitting data for inclusion in Dfam, you
+    agree to release it under the Creative Commons CC0 1.0 public domain license.
+    More information about this license is available at <a
+    href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank">
   https://creativecommons.org/publicdomain/zero/1.0/</a>
 </p>
 
@@ -42,162 +42,169 @@
   <mat-card-header>
     <mat-card-title>Submit a data file</mat-card-title>
   </mat-card-header>
-<mat-card-content>
-  <p><strong>Required information:</strong></p>
+  <mat-card-content>
+    <p><strong>Required information:</strong></p>
 
-  <strong>TE family format.</strong><br>
-  For example: <strong>seed alignments</strong>, <strong>consensus sequences</strong>,
-  or <strong>genomic coordinates of instances</strong> for each TE family. In the case of
-  consensus sequences, see also the <a routerLink="/help/workbench" target="_blank">help page</a>
-  for more information about seed alignments in Dfam.
-  <mat-form-field class="wide" appearance="fill">
-    <mat-label>e.g. seed alignments</mat-label>
-    <input matInput type="text" [formControl]="formData.controls.dataFormat">
-  </mat-form-field>
+    <strong>TE family format.</strong><br>
+    For example: <strong>seed alignments</strong>, <strong>consensus sequences</strong>,
+    or <strong>genomic coordinates of instances</strong> for each TE family. In the case of
+    consensus sequences, see also the <a routerLink="/help/workbench" target="_blank">help page</a>
+    for more information about seed alignments in Dfam.
+    <mat-form-field class="wide" appearance="fill">
+      <mat-label>e.g. seed alignments</mat-label>
+      <input matInput type="text" [formControl]="formData.controls.dataFormat">
+    </mat-form-field>
 
-  <strong>Species.</strong><br>
-  <mat-form-field class="wide" appearance="fill">
-    <mat-label>e.g. Homo sapiens</mat-label>
-    <input matInput type="text" [formControl]="formData.controls.species">
-  </mat-form-field>
+    <strong>Species.</strong><br>
+    <mat-form-field class="wide" appearance="fill">
+      <mat-label>e.g. Homo sapiens</mat-label>
+      <input matInput type="text" [formControl]="formData.controls.species">
+    </mat-form-field>
 
-  <strong>Genome assembly.</strong><br>
-  What genome assembly was used to create this library? For libraries
-  submitted as consensus sequences, an assembly is necessary to generate seed alignments.
-  For more information about how we use the genome assembly, see the <a routerLink="/help/workbench" target="_blank">help page</a>.
-  <mat-form-field class="wide" appearance="fill">
-    <mat-label>e.g. GRCh38</mat-label>
-    <input matInput type="text" [formControl]="formData.controls.assembly">
-  </mat-form-field>
+    <strong>Genome assembly.</strong><br>
+    What genome assembly was used to create this library? For libraries
+    submitted as consensus sequences, an assembly is necessary to generate seed alignments.
+    For more information about how we use the genome assembly, see the <a routerLink="/help/workbench" target="_blank">help page</a>.
+    <mat-form-field class="wide" appearance="fill">
+      <mat-label>e.g. GRCh38</mat-label>
+      <input matInput type="text" [formControl]="formData.controls.assembly">
+    </mat-form-field>
 
-  <hr>
+    <hr>
 
-  <p><strong>Suggested information:</strong></p>
+      <p><strong>Suggested information:</strong></p>
 
-  <strong>TE discovery method.</strong><br>
-  What method or tool was used to generate this library? For example,
-  RepeatModeler, REPET, or EDTA.
-  <mat-form-field class="wide" appearance="fill">
-    <mat-label>e.g. RepeatModeler</mat-label>
-    <input matInput type="text" [formControl]="formData.controls.discoveryMethod">
-  </mat-form-field>
+      <strong>TE discovery method.</strong><br>
+      What method or tool was used to generate this library? For example,
+      RepeatModeler, REPET, or EDTA.
+      <mat-form-field class="wide" appearance="fill">
+        <mat-label>e.g. RepeatModeler</mat-label>
+        <input matInput type="text" [formControl]="formData.controls.discoveryMethod">
+      </mat-form-field>
 
-  <strong>Curation method.</strong><br>
-  What further processing or curation, if any, was performed on this library?
-  Please briefly describe. For example: removing duplicate elements,
-  comparing to known TE databases, classification.
-  <mat-form-field class="wide" appearance="fill">
-    <input matInput type="text" [formControl]="formData.controls.curationMethod">
-  </mat-form-field>
+      <strong>Curation method.</strong><br>
+      What further processing or curation, if any, was performed on this library?
+      Please briefly describe. For example: removing duplicate elements,
+      comparing to known TE databases, classification.
+      <mat-form-field class="wide" appearance="fill">
+        <input matInput type="text" [formControl]="formData.controls.curationMethod">
+      </mat-form-field>
 
-  <hr>
+      <hr>
 
-  Please provide any additional information here:
-  <mat-form-field class="wide" appearance="fill">
-    <mat-label>e.g. methods described in paper: https://...</mat-label>
-    <textarea matInput [formControl]="formData.controls.notes">
-    </textarea>
-  </mat-form-field>
+        Please provide any additional information here:
+        <mat-form-field class="wide" appearance="fill">
+          <mat-label>e.g. methods described in paper: https://...</mat-label>
+          <textarea matInput [formControl]="formData.controls.notes">
+          </textarea>
+        </mat-form-field>
 
-  <hr>
+        <hr>
 
-  <ng-container #flow="flow" [flowConfig]="flowConfig"></ng-container>
+          <ng-container #flow="flow" [flowConfig]="flowConfig"></ng-container>
 
-  <div data-layout="column" data-layout-gap="1em" data-layout-align="center stretch">
-    <input #fileInput type="file" class="hidden" flowButton [flow]="flow.flowJs" [disabled]="!canSelectFile">
-    <div class="drop-area" flowDrop [flow]="flow.flowJs"
-        data-layout="row" data-layout-align="center center">
-      Drop a file here
-    </div>
-    <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">
-      Browse
-    </button>
-  </div>
+          <div data-layout="column" data-layout-gap="1em" data-layout-align="center stretch">
+            <input #fileInput type="file" class="hidden" flowButton [flow]="flow.flowJs" [disabled]="!canSelectFile">
+            <div class="drop-area" flowDrop [flow]="flow.flowJs"
+              data-layout="row" data-layout-align="center center">
+              Drop a file here
+            </div>
+            <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">
+              Browse
+            </button>
+          </div>
 
-  <p *ngIf="selectedFile">Selected file: {{selectedFile.name}}</p>
+          @if (selectedFile) {
+            <p>Selected file: {{selectedFile.name}}</p>
+          }
 
-  <hr>
+          <hr>
 
-  <div>
-    <mat-checkbox [(ngModel)]="uploadTermsAgreed">
-      I agree to allow the Dfam Consortium to release this dataset under the
-      CC0 Public Domain license.
-    </mat-checkbox>
-    <br>
-    <button type="button" mat-raised-button color="primary"
-        (click)="flow.upload()" [disabled]="!canStartUpload">
-      Upload
-    </button>
-    <p>{{statusText}}</p>
-    <mat-progress-bar *ngIf="uploaderState == UploaderState.InProgress" mode="determinate" [value]="100 * uploadProgress">
-    </mat-progress-bar>
-  </div>
-</mat-card-content>
-</mat-card>
+            <div>
+              <mat-checkbox [(ngModel)]="uploadTermsAgreed">
+                I agree to allow the Dfam Consortium to release this dataset under the
+                CC0 Public Domain license.
+              </mat-checkbox>
+              <br>
+                <button type="button" mat-raised-button color="primary"
+                  (click)="flow.upload()" [disabled]="!canStartUpload">
+                  Upload
+                </button>
+                <p>{{statusText}}</p>
+                @if (uploaderState == UploaderState.InProgress) {
+                  <mat-progress-bar mode="determinate" [value]="100 * uploadProgress">
+                  </mat-progress-bar>
+                }
+              </div>
+            </mat-card-content>
+          </mat-card>
 
-<dfam-loader [loading]="loading">
+          <dfam-loader [loading]="loading">
 
-<div class="uploads-area">
+            <div class="uploads-area">
 
-<table mat-table multiTemplateDataRows class="wide" [dataSource]="uploads">
-  <ng-container matColumnDef="expander">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let upload"><button (click)="upload.show_notes = !upload.show_notes">{{upload.show_notes ? 'v' : '&gt;'}}</button></td>
-  </ng-container>
-  <ng-container matColumnDef="file_name">
-    <th mat-header-cell *matHeaderCellDef>File Name</th>
-    <td mat-cell *matCellDef="let upload">
-      {{upload.file_name}}
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="upload_date">
-    <th mat-header-cell *matHeaderCellDef>Date</th>
-    <td mat-cell *matCellDef="let upload">
-      {{upload.upload_date}}
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="status">
-    <th mat-header-cell *matHeaderCellDef>Status</th>
-    <td mat-cell *matCellDef="let upload">
-      <ng-container *ngIf="editableStatus; else readonlyStatus">
-        <input type="text" class="wide"
-          [value]="upload.status"
-          (change)="changeUploadStatus(upload, $event)">
-      </ng-container>
-      <ng-template #readonlyStatus>
-        {{upload.status}}
-      </ng-template>
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="uploaded_by">
-    <th mat-header-cell *matHeaderCellDef>Uploaded By</th>
-    <td mat-cell *matCellDef="let upload">
-      {{upload.uploaded_by}}
-    </td>
-  </ng-container>
+              <table mat-table multiTemplateDataRows class="wide" [dataSource]="uploads">
+                <ng-container matColumnDef="expander">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let upload"><button (click)="upload.show_notes = !upload.show_notes">{{upload.show_notes ? 'v' : '&gt;'}}</button></td>
+                </ng-container>
+                <ng-container matColumnDef="file_name">
+                  <th mat-header-cell *matHeaderCellDef>File Name</th>
+                  <td mat-cell *matCellDef="let upload">
+                    {{upload.file_name}}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="upload_date">
+                  <th mat-header-cell *matHeaderCellDef>Date</th>
+                  <td mat-cell *matCellDef="let upload">
+                    {{upload.upload_date}}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let upload">
+                    @if (editableStatus) {
+                      <input type="text" class="wide"
+                        [value]="upload.status"
+                        (change)="changeUploadStatus(upload, $event)">
+                    } @else {
+                      {{upload.status}}
+                    }
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="uploaded_by">
+                  <th mat-header-cell *matHeaderCellDef>Uploaded By</th>
+                  <td mat-cell *matCellDef="let upload">
+                    {{upload.uploaded_by}}
+                  </td>
+                </ng-container>
 
-  <ng-container matColumnDef="notes_expander">
-    <td *matCellDef="let upload"></td>
-  </ng-container>
-  <ng-container matColumnDef="notes">
-    <td [colSpan]="displayColumns.length - 1" *matCellDef="let upload">
-      <div *ngIf="upload.show_notes" class="upload-notes">
-        {{upload.notes}}
-      </div>
-    </td>
-  </ng-container>
+                <ng-container matColumnDef="notes_expander">
+                  <td *matCellDef="let upload"></td>
+                </ng-container>
+                <ng-container matColumnDef="notes">
+                  <td [colSpan]="displayColumns.length - 1" *matCellDef="let upload">
+                    @if (upload.show_notes) {
+                      <div class="upload-notes">
+                        {{upload.notes}}
+                      </div>
+                    }
+                  </td>
+                </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
-  <tr mat-row *matRowDef="let upload; columns: displayColumns"></tr>
-  <tr mat-row [ngClass]="{'hidden': !upload.show_notes}" *matRowDef="let upload; columns: ['notes_expander', 'notes']"></tr>
-</table>
+                <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+                <tr mat-row *matRowDef="let upload; columns: displayColumns"></tr>
+                <tr mat-row [ngClass]="{'hidden': !upload.show_notes}" *matRowDef="let upload; columns: ['notes_expander', 'notes']"></tr>
+              </table>
 
-<p *ngIf="!loading && !uploads.length">
-  You have not submitted any files to Dfam.
-</p>
+              @if (!loading && !uploads.length) {
+                <p>
+                  You have not submitted any files to Dfam.
+                </p>
+              }
 
-</div>
+            </div>
 
-</dfam-loader>
+          </dfam-loader>
 
-</div>
+        </div>

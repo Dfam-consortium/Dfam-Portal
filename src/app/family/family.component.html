@@ -1,58 +1,67 @@
-<div *ngIf="family" >
-  <div class="family-content" data-layout-gt-sm="row" data-layout-align="center start" >
-
-    <div data-flex="100" data-flex-gt-sm="90">
-      <h2 class="green" style="margin-bottom:5px;">{{family.accession}}.{{family.version}}
-        <span *ngIf="family.name">
-        [{{family.name}}]
-        </span>
-      </h2>
-      <div style="font-size:1.15em;">
-        <mat-icon *ngIf="family.is_raw" class="raw-warning-icon"
-            matTooltip="This database entry has not been validated or curated.">
-          warning
-        </mat-icon>
-        {{family.title}}
-      </div>
-  
-      <nav mat-tab-nav-bar mat-stretch-tabs data-hide-lt-md="true" [tabPanel]="tabPanel">
-        <ng-container *ngFor="let link of navLinks">
-          <a mat-tab-link
-             *ngIf="link.available"
-             [routerLink]="link.path"
-             routerLinkActive #rla="routerLinkActive"
-             [active]="rla.isActive">
-            <span class="tab-label">
-              {{ link.label }}
-              <sup *ngIf="link.badge" class="badge">{{ link.badge }}</sup>
+@if (family) {
+  <div >
+    <div class="family-content" data-layout-gt-sm="row" data-layout-align="center start" >
+      <div data-flex="100" data-flex-gt-sm="90">
+        <h2 class="green" style="margin-bottom:5px;">{{family.accession}}.{{family.version}}
+          @if (family.name) {
+            <span>
+              [{{family.name}}]
             </span>
-          </a>
-        </ng-container>
-      </nav> 
-
-      <button mat-flat-button [matMenuTriggerFor]="menu" data-hide-gt-sm='true'>
+          }
+        </h2>
+        <div style="font-size:1.15em;">
+          @if (family.is_raw) {
+            <mat-icon class="raw-warning-icon"
+              matTooltip="This database entry has not been validated or curated.">
+              warning
+            </mat-icon>
+          }
+          {{family.title}}
+        </div>
+        <nav mat-tab-nav-bar mat-stretch-tabs data-hide-lt-md="true" [tabPanel]="tabPanel">
+          @for (link of navLinks; track link) {
+            @if (link.available) {
+              <a mat-tab-link
+                [routerLink]="link.path"
+                routerLinkActive #rla="routerLinkActive"
+                [active]="rla.isActive">
+                <span class="tab-label">
+                  {{ link.label }}
+                  @if (link.badge) {
+                    <sup class="badge">{{ link.badge }}</sup>
+                  }
+                </span>
+              </a>
+            }
+          }
+        </nav>
+        <button mat-flat-button [matMenuTriggerFor]="menu" data-hide-gt-sm='true'>
           <div data-layout="row" data-layout-align=" center">
-          <mat-icon>menu</mat-icon> 
-          <div class="menu-gap"></div>
-          <h3><b class="menu-selected-label">{{menuLabel}}</b></h3>
+            <mat-icon>menu</mat-icon>
+            <div class="menu-gap"></div>
+            <h3><b class="menu-selected-label">{{menuLabel}}</b></h3>
           </div>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item *ngFor="let link of navLinks"
-            (click)="setMenuLabel(link.label)"
-            [routerLink]="link.path">
-            <span>{{link.label}}</span>
         </button>
-      </mat-menu>
-      <mat-divider data-hide-gt-md='true'></mat-divider>
-    
-      <mat-tab-nav-panel #tabPanel>
-        <router-outlet></router-outlet>
-      </mat-tab-nav-panel>
+        <mat-menu #menu="matMenu">
+          @for (link of navLinks; track link) {
+            <button mat-menu-item
+              (click)="setMenuLabel(link.label)"
+              [routerLink]="link.path">
+              <span>{{link.label}}</span>
+            </button>
+          }
+        </mat-menu>
+        <mat-divider data-hide-gt-md='true'></mat-divider>
+        <mat-tab-nav-panel #tabPanel>
+          <router-outlet></router-outlet>
+        </mat-tab-nav-panel>
+      </div>
     </div>
   </div>
-</div>
+}
 
-<div *ngIf="!family">
-  No such family found.
-</div>
+@if (!family) {
+  <div>
+    No such family found.
+  </div>
+}

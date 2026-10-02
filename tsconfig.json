@@ -2,10 +2,10 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "downlevelIteration": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
+    "esModuleInterop": true,
     "module": "es2020",
     "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
@@ -14,12 +14,7 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "lib": [
-      "es2018",
-      "dom"
-    ],
     "useDefineForClassFields": false,
-    "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "resolveJsonModule": true
   }
 }

@@ -1,128 +1,149 @@
-<div class="content" *ngIf="family">
-
-<ng-container *ngIf="family.description">
-  <h3 class="underline-span">Description</h3>
-  <p>{{family.description}}</p>
-</ng-container>
-
-<h3 class="underline-span">Classification and Taxa <dfam-help-icon link="/help/family#summary" [tooltip]="help.classification"></dfam-help-icon></h3>
-<div data-layout="row">
-  <div data-layout="column" flex-offset="2">
-    <p><strong>Classification:</strong>
-      {{family.display_classification.path}}
-      <ng-container *ngIf="family.display_classification.last">;
-        <a routerLink="/classification"
-          [fragment]="family.classification">
-          {{family.display_classification.last}}
-        </a>
-      </ng-container>
-    </p>
-    <div data-layout="row" data-layout-gap="5px">
-      <div>
-        <strong>Taxa:</strong>
-      </div>
-      <div data-layout="column" data-layout-align="space-between none" data-layout-gap="10px" >
-        <ng-container *ngFor="let clade of family.display_clades; let i = index;">
-          <div data-layout="row">
-            <a (click)="taxa_expand[i] = !taxa_expand[i];">{{taxa_expand[i]==false ? '[...]' : ''}}</a>
-            <div [hidden]="!taxa_expand[i]">
-              {{clade.path}}
-              <ng-container *ngIf="clade.last">;
-                <a class="ext"
+@if (family) {
+  <div class="content">
+    @if (family.description) {
+      <h3 class="underline-span">Description</h3>
+      <p>{{family.description}}</p>
+    }
+    <h3 class="underline-span">Classification and Taxa <dfam-help-icon link="/help/family#summary" [tooltip]="help.classification"></dfam-help-icon></h3>
+    <div data-layout="row">
+      <div data-layout="column" flex-offset="2">
+        <p><strong>Classification:</strong>
+        {{family.display_classification.path}}
+        @if (family.display_classification.last) {
+          ;
+          <a routerLink="/classification"
+            [fragment]="family.classification">
+            {{family.display_classification.last}}
+          </a>
+        }
+      </p>
+      <div data-layout="row" data-layout-gap="5px">
+        <div>
+          <strong>Taxa:</strong>
+        </div>
+        <div data-layout="column" data-layout-align="space-between none" data-layout-gap="10px" >
+          @for (clade of family.display_clades; track clade; let i = $index) {
+            <div data-layout="row">
+              <a (click)="taxa_expand[i] = !taxa_expand[i];">{{taxa_expand[i]==false ? '[...]' : ''}}</a>
+              <div [hidden]="!taxa_expand[i]">
+                {{clade.path}}
+                @if (clade.last) {
+                  ;
+                  <a class="ext"
                     href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?name={{clade.last}}">
-                  {{clade.last}}
-                </a>
-              </ng-container>
+                    {{clade.last}}
+                  </a>
+                }
+              </div>
+              <div [hidden]="taxa_expand[i]">
+                @if (clade.last) {
+                  ;
+                  <a class="ext"
+                    href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?name={{clade.last}}">
+                    {{clade.last}}
+                  </a>
+                }
+              </div>
             </div>
-            <div [hidden]="taxa_expand[i]">
-              <ng-container *ngIf="clade.last">;
-                <a class="ext"
-                  href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?name={{clade.last}}">
-                  {{clade.last}}
-                </a>
-              </ng-container>
-            </div>
-          </div>
-        </ng-container>
+          }
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-<h3 class="underline-span">Curation Details<dfam-help-icon link="/help/family#summary" [tooltip]="help.curation"></dfam-help-icon></h3>
-<div data-layout="row">
-  <div data-layout="column" flex-offset="2">
-    <p class="tight"><strong>Status:</strong> {{family.curation_state_name}} <dfam-help-icon link="/help/family#summary" [tooltip]="family.curation_state_description"></dfam-help-icon></p>
-    <p *ngIf="family.source_method || family.source_method_description" class="tight">
-      <strong>Method:</strong>
-      <span>
-        {{family.source_method}}
-        {{family.source_method_description}}
-      </span>
-    </p>
-    <p *ngIf="family.source_assembly" class="tight"><strong>Source Assembly:</strong>&nbsp;
-      <a *ngIf="family.source_assembly.hyperlink; else asmNoLink"
-        class="ext"
-        href="{{family.source_assembly.hyperlink}}">{{family.source_assembly.label}}</a>
-      <ng-template #asmNoLink>{{family.source_assembly.label}}</ng-template>
-    </p>
+  <h3 class="underline-span">Curation Details<dfam-help-icon link="/help/family#summary" [tooltip]="help.curation"></dfam-help-icon></h3>
+  <div data-layout="row">
+    <div data-layout="column" flex-offset="2">
+      <p class="tight"><strong>Status:</strong> {{family.curation_state_name}} <dfam-help-icon link="/help/family#summary" [tooltip]="family.curation_state_description"></dfam-help-icon></p>
+      @if (family.source_method || family.source_method_description) {
+        <p class="tight">
+          <strong>Method:</strong>
+          <span>
+            {{family.source_method}}
+            {{family.source_method_description}}
+          </span>
+        </p>
+      }
+      @if (family.source_assembly) {
+        <p class="tight"><strong>Source Assembly:</strong>&nbsp;
+        @if (family.source_assembly.hyperlink) {
+          <a
+            class="ext"
+          href="{{family.source_assembly.hyperlink}}">{{family.source_assembly.label}}</a>
+        } @else {
+          {{family.source_assembly.label}}
+        }
+      </p>
+    }
     <p class="tight"><strong>Length:</strong> {{family.length}}</p>
     <p class="tight"><strong>Target Site Duplication:</strong> {{family.target_site_cons || "Unknown"}}</p>
   </div>
 </div>
-
 <h3 class="underline-span">Citations <dfam-help-icon link="/help/family#summary" [tooltip]="help.citations"></dfam-help-icon></h3>
-<div *ngIf="!family.citations.length">
-No recorded citations for this family.
-</div>
-
+@if (!family.citations.length) {
+  <div>
+    No recorded citations for this family.
+  </div>
+}
 <ol>
-  <li *ngFor="let cit of family.citations">
-    <p>
-      <em>{{cit.title}}</em>
-      <span *ngIf="cit.is_preprint" class="preprint">Preprint</span>
-      <br>
-      {{cit.authors}}
-      <br>
-      <strong>{{cit.journal}} </strong>
-      <a *ngIf="isRealDoi(cit.doi)" class="ext" [href]="doiUrl(cit.doi)">DOI: {{cit.doi}}</a>
-      <ng-container *ngIf="isRealDoi(cit.doi) && cit.pmid"> &nbsp; </ng-container>
-      <a *ngIf="cit.pmid" class="ext" [href]="pubmedUrl(cit.pmid)">PubMed</a>
-    </p>
-  </li>
-</ol>
-
-<h3 class="underline-span">Aliases and External Links <dfam-help-icon link="/help/family#summary" [tooltip]="help.aliases"></dfam-help-icon></h3>
-<div *ngIf="!family.aliases.length">
-No recorded aliases for this family.
-</div>
-
-<ul>
-  <li *ngFor="let alias of family.aliases">
-    {{alias.database}}: {{alias.alias}}
-  </li>
-</ul>
-
-<h3 class="underline-span">Source</h3>
-<div data-layout="row">
-  <div data-layout="column" flex-offset="2">
-    <p class="tight" *ngIf="family.submitter"><strong>Submitter:</strong> {{family.submitter}}</p>
-    <p class="tight"><strong>Author: </strong>
-      <ng-container *ngIf="family.author_list?.length; else plainAuthor">
-        <ng-container *ngFor="let a of family.author_list; last as isLast">
-          <a *ngIf="a.orcid" class="ext" [href]="orcidUrl(a.orcid)" [title]="'ORCID iD ' + a.orcid">{{a.name}}</a>
-          <ng-container *ngIf="!a.orcid">{{a.name}}</ng-container><ng-container *ngIf="!isLast">; </ng-container>
-        </ng-container>
-      </ng-container>
-      <ng-template #plainAuthor>{{family.author || "Unknown"}}</ng-template>
-    </p>
-    <p class="tight"><strong>Created On:</strong> {{family.date_created | date: 'medium'}}</p>
-    <p class="tight"><strong>Modified On:</strong> {{family.date_modified | date: 'medium'}}</p>
+  @for (cit of family.citations; track cit) {
+    <li>
+      <p>
+        <em>{{cit.title}}</em>
+        @if (cit.is_preprint) {
+          <span class="preprint">Preprint</span>
+        }
+        <br>
+          {{cit.authors}}
+          <br>
+            <strong>{{cit.journal}} </strong>
+            @if (isRealDoi(cit.doi)) {
+              <a class="ext" [href]="doiUrl(cit.doi)">DOI: {{cit.doi}}</a>
+            }
+            @if (isRealDoi(cit.doi) && cit.pmid) {
+              &nbsp;
+            }
+            @if (cit.pmid) {
+              <a class="ext" [href]="pubmedUrl(cit.pmid)">PubMed</a>
+            }
+          </p>
+        </li>
+      }
+    </ol>
+    <h3 class="underline-span">Aliases and External Links <dfam-help-icon link="/help/family#summary" [tooltip]="help.aliases"></dfam-help-icon></h3>
+    @if (!family.aliases.length) {
+      <div>
+        No recorded aliases for this family.
+      </div>
+    }
+    <ul>
+      @for (alias of family.aliases; track alias) {
+        <li>
+          {{alias.database}}: {{alias.alias}}
+        </li>
+      }
+    </ul>
+    <h3 class="underline-span">Source</h3>
+    <div data-layout="row">
+      <div data-layout="column" flex-offset="2">
+        @if (family.submitter) {
+          <p class="tight"><strong>Submitter:</strong> {{family.submitter}}</p>
+        }
+        <p class="tight"><strong>Author: </strong>
+        @if (family.author_list?.length) {
+          @for (a of family.author_list; track $index; let isLast = $last) {@if (a.orcid) {<a class="ext" [href]="orcidUrl(a.orcid)" [title]="'ORCID iD ' + a.orcid">{{a.name}}</a>} @else {<span>{{a.name}}</span>}@if (!isLast) {<span>; </span>}}
+        } @else {
+          {{family.author || "Unknown"}}
+        }
+      </p>
+      <p class="tight"><strong>Created On:</strong> {{family.date_created | date: 'medium'}}</p>
+      <p class="tight"><strong>Modified On:</strong> {{family.date_modified | date: 'medium'}}</p>
+    </div>
   </div>
 </div>
+}
 
-</div>
-
-<div *ngIf="!family">
-Loading data...
-</div>
+@if (!family) {
+  <div>
+    Loading data...
+  </div>
+}

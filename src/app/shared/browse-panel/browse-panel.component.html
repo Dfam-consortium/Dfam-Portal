@@ -8,41 +8,46 @@
       <mat-form-field>
         <mat-label>Name/Accession</mat-label>
         <input matInput type="text"
-            [(ngModel)]="search.name_accession"
-            (input)="searchChanged()">
-        <mat-icon class="input-warn" matSuffix
+          [(ngModel)]="search.name_accession"
+          (input)="searchChanged()">
+        @if (unusualNameCharacter) {
+          <mat-icon class="input-warn" matSuffix
             [matTooltip]="'Invalid character for names: ' + unusualNameCharacter"
-            *ngIf="unusualNameCharacter">
-          warning
-        </mat-icon>
+            >
+            warning
+          </mat-icon>
+        }
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Classification</mat-label>
         <input matInput type="text"
-            [(ngModel)]="search.classification"
-            [matAutocomplete]="classAutocomplete"
-            (input)="updateClasses()">
+          [(ngModel)]="search.classification"
+          [matAutocomplete]="classAutocomplete"
+          (input)="updateClasses()">
       </mat-form-field>
       <mat-autocomplete
-          #classAutocomplete="matAutocomplete"
-          [displayWith]="displayClass"
-          panelWidth="40em"
-          (optionSelected)="searchChanged()">
-        <mat-option
+        #classAutocomplete="matAutocomplete"
+        [displayWith]="displayClass"
+        panelWidth="40em"
+        (optionSelected)="searchChanged()">
+        @for (class of classOptions; track class) {
+          <mat-option
             class="classification-option"
-            *ngFor="let class of classOptions"
             [value]="class">
-          <span [innerHTML]="class.name_markup"></span>
-          <span class="right" *ngIf="class.count"> [{{class.count}}]</span>
-        </mat-option>
+            <span [innerHTML]="class.name_markup"></span>
+            @if (class.count) {
+              <span class="right"> [{{class.count}}]</span>
+            }
+          </mat-option>
+        }
       </mat-autocomplete>
 
       <mat-form-field>
         <mat-label>Keywords</mat-label>
         <input matInput type="text"
-            [(ngModel)]="search.keywords"
-            (input)="searchChanged()">
+          [(ngModel)]="search.keywords"
+          (input)="searchChanged()">
       </mat-form-field>
     </div>
 
@@ -50,38 +55,39 @@
       <mat-form-field>
         <mat-label>Taxon</mat-label>
         <input matInput type="text"
-            [(ngModel)]="search.clade"
-            [matAutocomplete]="cladeAutocomplete"
-            (input)="updateClades()">
+          [(ngModel)]="search.clade"
+          [matAutocomplete]="cladeAutocomplete"
+          (input)="updateClades()">
       </mat-form-field>
       <mat-autocomplete
-          #cladeAutocomplete="matAutocomplete"
-          [displayWith]="displayClade"
-          panelWidth="40em"
-          (optionSelected)="searchChanged()">
-        <mat-option
+        #cladeAutocomplete="matAutocomplete"
+        [displayWith]="displayClade"
+        panelWidth="40em"
+        (optionSelected)="searchChanged()">
+        @for (clade of cladeOptions; track clade) {
+          <mat-option
             class="clade-option"
-            *ngFor="let clade of cladeOptions"
             [value]="clade">
-          <span [innerHTML]="clade.name_markup"></span>
-        </mat-option>
+            <span [innerHTML]="clade.name_markup"></span>
+          </mat-option>
+        }
       </mat-autocomplete>
-      
+
       <mat-checkbox
-          [(ngModel)]="search.clade_ancestors"
-          (change)="searchChanged()">
+        [(ngModel)]="search.clade_ancestors"
+        (change)="searchChanged()">
         Ancestors
       </mat-checkbox>
 
       <mat-checkbox
-          [(ngModel)]="search.clade_descendants"
-          (change)="searchChanged()">
+        [(ngModel)]="search.clade_descendants"
+        (change)="searchChanged()">
         Descendants
       </mat-checkbox>
 
       <mat-checkbox
-          [(ngModel)]="search.include_raw"
-          (change)="searchChanged()">
+        [(ngModel)]="search.include_raw"
+        (change)="searchChanged()">
         Include Uncurated
       </mat-checkbox>
     </div>
@@ -92,96 +98,102 @@
   </div>
   <mat-divider></mat-divider>
   <p>Total results: {{searchSubmitting ? "..." : families.total_count }}</p>
-  <div *ngIf="displayNotes.length">
-    <p>Search Notes:</p>
-    <mat-list >
-      <mat-list-item *ngFor="let note of displayNotes">
-        <p class="tab"><i>{{note}}</i></p>
-      </mat-list-item>
-    </mat-list> 
-  </div>
+  @if (displayNotes.length) {
+    <div>
+      <p>Search Notes:</p>
+      <mat-list >
+        @for (note of displayNotes; track note) {
+          <mat-list-item>
+            <p class="tab"><i>{{note}}</i></p>
+          </mat-list-item>
+        }
+      </mat-list>
+    </div>
+  }
 </mat-expansion-panel>
 <br/>
 <div>
 
-<dfam-loader *ngIf="searchSubmitting" [loading]=true></dfam-loader>
+  @if (searchSubmitting) {
+    <dfam-loader [loading]=true></dfam-loader>
+  }
 
-<div *ngIf="!searchSubmitting" class="browse">
-  <table mat-table matSort
+  @if (!searchSubmitting) {
+    <div class="browse">
+      <table mat-table matSort
         [matSortActive]="sortActive"
         [matSortDirection]="sortDirection"
         (matSortChange)="sortChanged($event)"
         [dataSource]="families.results">
-    <ng-container matColumnDef="accession">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Accession</th>
-      <td mat-cell *matCellDef="let family">
-        <a routerLink="../family/{{family.accession}}">
-          {{family.accession}}
-          <mat-icon class="edit-icon" *ngIf="isEditing">edit</mat-icon>
-        </a>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-      <td mat-cell *matCellDef="let family">{{family.name}}</td>
-    </ng-container>
-    <ng-container matColumnDef="classification">
-      <th mat-header-cell *matHeaderCellDef>Classification</th>
-      <td mat-cell *matCellDef="let family">
-        <a routerLink="/classification/tree"
-            [fragment]="family.classification"
-            [matTooltip]="family.classification_tooltip">
-          {{family.classification_display}}
-        </a>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="clades">
-      <th mat-header-cell *matHeaderCellDef>Clades</th>
-      <td mat-cell *matCellDef="let family">
-        <ng-container *ngFor="let clade of family.display_clades; last as isLast">
-          <a class="ext"
-              href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?name={{clade.name}}"
-              [matTooltip]="clade.tooltip">
-            {{clade.name}}
-          </a><ng-container *ngIf="!isLast">, </ng-container>
+        <ng-container matColumnDef="accession">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Accession</th>
+          <td mat-cell *matCellDef="let family">
+            <a routerLink="../family/{{family.accession}}">
+              {{family.accession}}
+              @if (isEditing) {
+                <mat-icon class="edit-icon">edit</mat-icon>
+              }
+            </a>
+          </td>
         </ng-container>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef>Description</th>
-      <td mat-cell *matCellDef="let family">{{family.title}}</td>
-    </ng-container>
-    <ng-container matColumnDef="length">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Length</th>
-      <td mat-cell *matCellDef="let family">{{family.length}}</td>
-    </ng-container>
-    <ng-container matColumnDef="abundance">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Abundance</th>
-      <td mat-cell *matCellDef="let family">{{family.abundance}}</td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
-    <tr mat-row *matRowDef="let families; columns: displayColumns"></tr>
-  </table>
-
-  <div data-layout="row">
-    <div data-layout="row" data-layout-align="left center">
-      <div data-layout-gap="15px" [class.hidden]="disableDownload">
-        <span>Download these results:</span>
-        <dfam-bulk-download-button [downloadUrl]="downloadUrls['hmm']" [label]="'HMM'"></dfam-bulk-download-button>
-        <dfam-bulk-download-button [downloadUrl]="downloadUrls['embl']" [label]="'EMBL'"></dfam-bulk-download-button>
-        <dfam-bulk-download-button [downloadUrl]="downloadUrls['fasta']" [label]="'FASTA'"></dfam-bulk-download-button>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let family">{{family.name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="classification">
+          <th mat-header-cell *matHeaderCellDef>Classification</th>
+          <td mat-cell *matCellDef="let family">
+            <a routerLink="/classification/tree"
+              [fragment]="family.classification"
+              [matTooltip]="family.classification_tooltip">
+              {{family.classification_display}}
+            </a>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="clades">
+          <th mat-header-cell *matHeaderCellDef>Clades</th>
+          <td mat-cell *matCellDef="let family">
+            @for (clade of family.display_clades; track clade; let isLast = $last) {
+              <a class="ext"
+                href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?name={{clade.name}}"
+                [matTooltip]="clade.tooltip">
+                {{clade.name}}
+              </a>@if (!isLast) {<span>, </span>}
+          }
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let family">{{family.title}}</td>
+      </ng-container>
+      <ng-container matColumnDef="length">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Length</th>
+        <td mat-cell *matCellDef="let family">{{family.length}}</td>
+      </ng-container>
+      <ng-container matColumnDef="abundance">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Abundance</th>
+        <td mat-cell *matCellDef="let family">{{family.abundance}}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+      <tr mat-row *matRowDef="let families; columns: displayColumns"></tr>
+    </table>
+    <div data-layout="row">
+      <div data-layout="row" data-layout-align="left center">
+        <div data-layout-gap="15px" [class.hidden]="disableDownload">
+          <span>Download these results:</span>
+          <dfam-bulk-download-button [downloadUrl]="downloadUrls['hmm']" [label]="'HMM'"></dfam-bulk-download-button>
+          <dfam-bulk-download-button [downloadUrl]="downloadUrls['embl']" [label]="'EMBL'"></dfam-bulk-download-button>
+          <dfam-bulk-download-button [downloadUrl]="downloadUrls['fasta']" [label]="'FASTA'"></dfam-bulk-download-button>
+        </div>
+        <div data-layout-gap="15px" [class.hidden]="!disableDownload">
+          <span>Large Queries Can Be Downloaded With <a href="https://github.com/Dfam-consortium/FamDB" target="_blank">FamDB</a></span>
+        </div>
       </div>
-      <div data-layout-gap="15px" [class.hidden]="!disableDownload">
-        <span>Large Queries Can Be Downloaded With <a href="https://github.com/Dfam-consortium/FamDB" target="_blank">FamDB</a></span>
-      </div>
+      <mat-paginator
+        [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[20,50,100]"
+        [length]="families?.total_count" (page)="pageChanged($event)">
+      </mat-paginator>
     </div>
-
-    <mat-paginator
-      [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[20,50,100]"
-      [length]="families?.total_count" (page)="pageChanged($event)">
-    </mat-paginator>
   </div>
-
-</div> 
+}
 

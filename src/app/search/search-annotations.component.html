@@ -2,73 +2,75 @@
   <div data-layout="row">
     <div data-flex-gt-sm="50" offset-gt-sm="25">
 
-    <h3>Retrieve Hits</h3>
+      <h3>Retrieve Hits</h3>
 
-    <div>
-      <p>
-      Retrieve pre-calculated Dfam matches for ranges of genomic
-      sequence.  Up to a 1Mbp range can be retrieved at a time, but
-      100Kbp or smaller is recommended for readability and performance
-      depending on your machine.
-      </p>
+      <div>
+        <p>
+          Retrieve pre-calculated Dfam matches for ranges of genomic
+          sequence.  Up to a 1Mbp range can be retrieved at a time, but
+          100Kbp or smaller is recommended for readability and performance
+          depending on your machine.
+        </p>
 
-      <p>
-      Pre-calculated matches are from Dfam + nhmmer searches against dfamseq, which
-      contains reference assemblies for selected genomes covered by families
-      in Dfam.
-      </p>
+        <p>
+          Pre-calculated matches are from Dfam + nhmmer searches against dfamseq, which
+          contains reference assemblies for selected genomes covered by families
+          in Dfam.
+        </p>
 
-      <p>
-      By default, redundant profile hits (RPH) will be removed as indicated by the
-      checkbox. You can optionally make the search specific to a model by entering
-      the Dfam accession or identifier.
-      </p>
+        <p>
+          By default, redundant profile hits (RPH) will be removed as indicated by the
+          checkbox. You can optionally make the search specific to a model by entering
+          the Dfam accession or identifier.
+        </p>
 
-      <p>
-      The search will analyze both strands between the co-ordinate range, fetching
-      both Dfam model matches that score above the gathering threshold and Tandem
-      Repeat Finder (TRF) matches.
-      </p>
-    </div>
-
-    <form>
-      <dfam-assembly-picker [(value)]="search.assembly" [assemblies]="assemblies">
-      </dfam-assembly-picker>
-
-      <mat-form-field>
-        <mat-label>Chromosome</mat-label>
-        <input matInput name="chromosome" [(ngModel)]="search.chromosome">
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Start</mat-label>
-        <input matInput name="start" [(ngModel)]="search.start">
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>End</mat-label>
-        <input matInput name="end" [(ngModel)]="search.end">
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Dfam entry (optional)</mat-label>
-        <input matInput name="family" [(ngModel)]="search.family">
-      </mat-form-field>
-
-      <mat-checkbox name="nrph" [(ngModel)]="search.nrph">Remove redundant profile hits</mat-checkbox>
-
-      <div class="buttons">
-        <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
-        <button mat-raised-button type="button" (click)="onReset()">Reset</button>
-        <button mat-raised-button type="button" (click)="onExample()">Example</button>
+        <p>
+          The search will analyze both strands between the co-ordinate range, fetching
+          both Dfam model matches that score above the gathering threshold and Tandem
+          Repeat Finder (TRF) matches.
+        </p>
       </div>
-    </form>
+
+      <form>
+        <dfam-assembly-picker [(value)]="search.assembly" [assemblies]="assemblies">
+        </dfam-assembly-picker>
+
+        <mat-form-field>
+          <mat-label>Chromosome</mat-label>
+          <input matInput name="chromosome" [(ngModel)]="search.chromosome">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Start</mat-label>
+          <input matInput name="start" [(ngModel)]="search.start">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>End</mat-label>
+          <input matInput name="end" [(ngModel)]="search.end">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Dfam entry (optional)</mat-label>
+          <input matInput name="family" [(ngModel)]="search.family">
+        </mat-form-field>
+
+        <mat-checkbox name="nrph" [(ngModel)]="search.nrph">Remove redundant profile hits</mat-checkbox>
+
+        <div class="buttons">
+          <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+          <button mat-raised-button type="button" (click)="onReset()">Reset</button>
+          <button mat-raised-button type="button" (click)="onExample()">Example</button>
+        </div>
+      </form>
 
     </div>
   </div>
 
   <dfam-loader [loading]="loading">
-    <dfam-search-results *ngIf="results" [data]="results" [getAlignCallback]="getAlignment.bind(this)">
-    </dfam-search-results>
+    @if (results) {
+      <dfam-search-results [data]="results" [getAlignCallback]="getAlignment.bind(this)">
+      </dfam-search-results>
+    }
   </dfam-loader>
 </div>

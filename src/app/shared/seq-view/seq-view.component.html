@@ -5,18 +5,24 @@
   </mat-form-field>
 </form>
 <div data-layout="row" data-layout-gap="10px" class="sequence-div">
-    <div data-layout="column" >
-      <div *ngFor="let line of formatted_sequence_lines" class="seq-font">
-       {{line.start}}
+  <div data-layout="column" >
+    @for (line of formatted_sequence_lines; track line) {
+      <div class="seq-font">
+        {{line.start}}
       </div>
-    </div>
-    <div data-layout="column" >
-      <div *ngFor="let line of formatted_sequence_lines" class="seq-font" [innerHTML]="line.text">
+    }
+  </div>
+  <div data-layout="column" >
+    @for (line of formatted_sequence_lines; track line) {
+      <div class="seq-font" [innerHTML]="line.text">
       </div>
-    </div>
-    <div data-layout="column" >
-      <div *ngFor="let line of formatted_sequence_lines" class="seq-font">
+    }
+  </div>
+  <div data-layout="column" >
+    @for (line of formatted_sequence_lines; track line) {
+      <div class="seq-font">
         {{line.end}}
       </div>
-    </div> 
+    }
+  </div>
 </div>

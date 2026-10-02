@@ -1,18 +1,20 @@
 <mat-card appearance="raised">
-<mat-card-header>
-  <mat-card-title>{{data.name}}</mat-card-title>
-</mat-card-header>
+  <mat-card-header>
+    <mat-card-title>{{data.name}}</mat-card-title>
+  </mat-card-header>
   <mat-card-content>
     <p class="description">{{data.description}}</p>
     <h4>Files:</h4>
     <ul>
-      <li *ngFor="let file of data.files">
-        <a href="/TE_repository/{{file.path}}">{{file.name}}</a> ({{file.size}} bytes)
-      </li>
+      @for (file of data.files; track file) {
+        <li>
+          <a href="/TE_repository/{{file.path}}">{{file.name}}</a> ({{file.size}} bytes)
+        </li>
+      }
     </ul>
   </mat-card-content>
   <br>
-  <mat-card-footer>
-    Uploaded {{data.uploadDate}}
-  </mat-card-footer>
-</mat-card>
+    <mat-card-footer>
+      Uploaded {{data.uploadDate}}
+    </mat-card-footer>
+  </mat-card>
