@@ -48,7 +48,8 @@ export class WorkbenchFamilyComponent implements OnInit {
   curationStateOptions: any[];
   rmStageOptions: any[];
 
-  knownCitations: { [index: number]: string } = {};
+  // Citation titles keyed by lower-cased DOI, for the label beside each row.
+  knownCitations: { [doi: string]: string } = {};
 
   saving = false;
 
@@ -68,6 +69,32 @@ export class WorkbenchFamilyComponent implements OnInit {
     search_stages: this.fb.array([]),
     buffer_stages: this.fb.array([]),
   });
+
+  // Curators enter a citation as a PubMed ID, a DOI (optionally as a doi.org
+  // URL), or a PMID:/NOREF: placeholder. The backend rejects placeholders
+  // that are not already in the database.
+  static validateCitationId(control: AbstractControl): { [key: string]: any } | null {
+    const value = (control.value || '').toString().trim();
+    if (!value) {
+      return { 'required': { } };
+    }
+    if (/^\d+$/.test(value) ||
+        /^(https?:\/\/(dx\.)?doi\.org\/)?10\.\d{4,9}\/\S+$/i.test(value) ||
+        /^(PMID:\d+|NOREF:\S+)$/.test(value)) {
+      return null;
+    }
+    return { 'citationId': { } };
+  }
+
+  // Turns the identifier typed in a citation row into the request object
+  // the backend expects: digits are a PubMed ID, anything else a DOI.
+  static citationRequest(id: string, comment: string): any {
+    const value = (id || '').toString().trim();
+    if (/^\d+$/.test(value)) {
+      return { pmid: parseInt(value, 10), comment };
+    }
+    return { doi: value, comment };
+  }
 
   static validateClade(control: AbstractControl): { [key: string]: any } | null {
     if (!control.value) {
@@ -145,9 +172,9 @@ export class WorkbenchFamilyComponent implements OnInit {
 
   addCitation(data?) {
     const citationsArray = this.familyForm.controls.citations as FormArray;
-    data = data || { pmid: null, comment: '' };
+    data = data || { doi: '', comment: '' };
     citationsArray.push(this.fb.group({
-      pmid: [data.pmid, Validators.required],
+      id: [data.doi || '', WorkbenchFamilyComponent.validateCitationId],
       comment: [data.comment],
     }));
   }
@@ -207,7 +234,7 @@ export class WorkbenchFamilyComponent implements OnInit {
       this.knownCitations = {};
       this.family.citations.forEach(c => {
         this.addCitation(c);
-        this.knownCitations[c.pmid] = c.title;
+        this.knownCitations[c.doi.toLowerCase()] = c.title;
       });
 
       const cladesArray = controls.clades as FormArray;
@@ -345,21 +372,17 @@ export class WorkbenchFamilyComponent implements OnInit {
     const citationObjs = (citationsArray.controls as FormGroup[]).map(c => {
       const cit_controls = c.controls as { [key: string]: FormControl };
       return {
-        pmid: cit_controls['pmid'].value,
+        id: (cit_controls['id'].value || '').toString().trim(),
         comment: cit_controls['comment'].value || '',
       };
     });
 
     let citationsChanged = false;
     if (citationObjs.length === old.citations.length) {
-      const citationFieldChanged = function(i, field) {
-        return citationObjs[i][field] !== old.citations[i][field];
-      };
-
       for (let i = 0; i < citationObjs.length; i++) {
         if (
-            citationFieldChanged(i, 'pmid') ||
-            citationFieldChanged(i, 'comment')
+            citationObjs[i].id !== old.citations[i].doi ||
+            citationObjs[i].comment !== (old.citations[i].comment || '')
         ) {
           citationsChanged = true;
           break;
@@ -370,7 +393,8 @@ export class WorkbenchFamilyComponent implements OnInit {
     }
 
     if (citationsChanged) {
-      changeset.citations = citationObjs;
+      changeset.citations = citationObjs.map(c =>
+        WorkbenchFamilyComponent.citationRequest(c.id, c.comment));
       hasChanges = true;
     }
 
@@ -502,8 +526,8 @@ export class WorkbenchFamilyComponent implements OnInit {
     return clade ? clade.name : '';
   }
 
-  displayCitationById(id: number): string {
-    return this.knownCitations[id] || '';
+  displayCitationById(id: string): string {
+    return this.knownCitations[(id || '').toString().trim().toLowerCase()] || '';
   }
 
   openHelp() {

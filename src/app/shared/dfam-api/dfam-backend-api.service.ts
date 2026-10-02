@@ -56,7 +56,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     const url = endpoint + 'users/' + encodeURIComponent(id);
     const opts = this.optsWithAuth();
     return this.http.patch<any>(url, changeset, opts)
-      .pipe(tap({ error: e => this.handleError('patchUser', null) }));
+      .pipe(tap({ error: e => this.handleError('patchUser', null)(e) }));
   }
 
   getUploads(): Observable<any> {
@@ -68,7 +68,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     const url = endpoint + 'uploads/' + encodeURIComponent(id);
     const opts = this.optsWithAuth();
     return this.http.patch<any>(url, changeset, opts)
-      .pipe(tap({ error: e => this.handleError('patchUpload', null) }));
+      .pipe(tap({ error: e => this.handleError('patchUpload', null)(e) }));
   }
 
   getFlowConfig() {
@@ -118,7 +118,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     const url = this.familyPath(accession);
     const opts = this.optsWithAuth();
     return this.http.patch<any>(url, changeset, opts)
-      .pipe(tap({ error: e => this.handleError('patchFamily', null) }));
+      .pipe(tap({ error: e => this.handleError('patchFamily', null)(e) }));
   }
 
   // NB: If download is true, criteria.start and criteria.limit are ignored.

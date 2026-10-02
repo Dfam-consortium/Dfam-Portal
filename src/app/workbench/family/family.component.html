@@ -220,13 +220,14 @@
             <mat-list-item *ngFor="let group of this.familyForm.controls.citations.controls; index as i;">
               <div data-layout="row" data-layout-align="start baseline" class="wide">
                 <span class="clipped" data-flex="auto"
-                    [matTooltip]="displayCitationById(group.controls.pmid.value)">
-                  {{displayCitationById(group.controls.pmid.value)}}
+                    [matTooltip]="displayCitationById(group.controls.id.value)">
+                  {{displayCitationById(group.controls.id.value)}}
                 </span>
                 <mat-form-field  flex-offset="1em">
-                  <mat-label>PubMed ID</mat-label>
-                  <input matInput type="number"
-                    [formControl]="group.controls.pmid">
+                  <mat-label>DOI or PubMed ID</mat-label>
+                  <input matInput type="text"
+                    [formControl]="group.controls.id">
+                  <mat-error *ngIf="group.controls.id.hasError('citationId')">Not a DOI or PubMed ID</mat-error>
                 </mat-form-field>
                 <mat-form-field  flex-offset="1em">
                   <mat-label>Comment</mat-label>
@@ -303,6 +304,7 @@
     <mat-form-field class="wide">
       <mat-label>Author(s)</mat-label>
       <input matInput type="text" [formControl]="familyForm.controls.author">
+      <mat-hint>Separate names with semicolons. Dfam adds any name it doesn't already have as a new contributor, so check the spelling.</mat-hint>
     </mat-form-field>
   </p>
   <p><strong>Created On:</strong> {{family.date_created | date: 'medium'}}</p>
