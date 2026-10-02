@@ -35,7 +35,7 @@ export class FamilyModelConservationComponent implements OnInit, AfterViewChecke
   ngOnInit() {
     this.resizeSubscription = fromEvent(window, 'resize')
       .pipe(debounceTime(300))
-      .subscribe(e => this.redraw());
+      .subscribe(() => this.redraw());
   }
 
   ngAfterViewChecked() {

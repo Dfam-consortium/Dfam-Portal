@@ -34,7 +34,7 @@ export class SearchResultsGraphComponent implements OnInit, OnDestroy, AfterView
   ngOnInit() {
     this.resizeSubscription = fromEvent(window, 'resize')
       .pipe(debounceTime(50))
-      .subscribe(e => this.graphic?.resize());
+      .subscribe(() => this.graphic?.resize());
   }
 
   ngAfterViewChecked() {

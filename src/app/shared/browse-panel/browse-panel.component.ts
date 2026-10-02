@@ -19,7 +19,7 @@ function preg_quote( str ) {
     // *     example 3: preg_quote("\\.+*?[^]$(){}=!<>|:");
     // *     returns 3: '\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:'
 
-    return (str + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, '\\$1');
+    return (str + '').replace(/([\\.+*?[^\]$(){}=!<>|:])/g, '\\$1');
 }
 
 function has_duplicates(array: any[]) {

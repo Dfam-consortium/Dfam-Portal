@@ -120,7 +120,7 @@ export class LoginComponent implements OnInit {
     this.authService
       .attemptAuth(this.loginType, credentials)
       .subscribe(
-        data => {
+        () => {
           if (this.loginType === 'login') {
             this.router.navigateByUrl('/workbench/user');
           } else if (this.loginType === 'register') {

@@ -27,7 +27,7 @@ function preg_quote( str ) {
     // *     example 3: preg_quote("\\.+*?[^]$(){}=!<>|:");
     // *     returns 3: '\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:'
 
-    return (str + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, '\\$1');
+    return (str + '').replace(/([\\.+*?[^\]$(){}=!<>|:])/g, '\\$1');
 }
 
 
@@ -105,7 +105,7 @@ export class WorkbenchFamilyComponent implements OnInit {
     // This is a somewhat roundabout way to check if a clade was actually
     // clicked - which results in value being a { id: ..., name: ... } object -
     // or just typed, which results in a string with no 'id' property.
-    if (!control.value.hasOwnProperty('id')) {
+    if (!Object.hasOwn(control.value, 'id')) {
       return { 'cladeNotConfirmed': { } };
     }
 
@@ -501,10 +501,10 @@ export class WorkbenchFamilyComponent implements OnInit {
     // Send the patch request.
 
     if (changeset) {
-      this.dfambackendapi.patchFamily(this.family.accession, changeset).subscribe(r => {
+      this.dfambackendapi.patchFamily(this.family.accession, changeset).subscribe(() => {
         this.saving = false;
         this.getFamily();
-      }, e => {
+      }, () => {
         this.saving = false;
       });
     } else {
@@ -561,9 +561,9 @@ export class CanDeactivateWorkbenchFamilyComponent implements CanDeactivate<Work
 
   canDeactivate(
     component: WorkbenchFamilyComponent,
-    currentRoute: ActivatedRouteSnapshot,
-    currentState: RouterStateSnapshot,
-    nextState: RouterStateSnapshot,
+    _currentRoute: ActivatedRouteSnapshot,
+    _currentState: RouterStateSnapshot,
+    _nextState: RouterStateSnapshot,
   ): Observable<boolean> | boolean {
     if (component.getChangeset()) {
       const dialogRef = this.dialog.open(FamilyCloseDialogComponent);

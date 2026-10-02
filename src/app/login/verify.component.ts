@@ -22,7 +22,7 @@ export class VerifyComponent implements OnInit {
   }
 
   verify(token) {
-    this.dfamBackendAPIService.verify(token).subscribe(data => {
+    this.dfamBackendAPIService.verify(token).subscribe(() => {
       this.message = 'Thank you for verifying your email address! Your account has been enabled for login.';
     }, response => {
       if (response.status === 400 && response.error.message) {

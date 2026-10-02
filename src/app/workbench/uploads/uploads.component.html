@@ -131,7 +131,7 @@
                   Upload
                 </button>
                 <p>{{statusText}}</p>
-                @if (uploaderState == UploaderState.InProgress) {
+                @if (uploaderState === UploaderState.InProgress) {
                   <mat-progress-bar mode="determinate" [value]="100 * uploadProgress">
                   </mat-progress-bar>
                 }

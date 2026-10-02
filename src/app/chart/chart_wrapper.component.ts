@@ -112,9 +112,9 @@ export class ChartWrapperComponent implements AfterViewInit {
         // .enter() routines still need fixing.
         slice.enter()
             .insert("path")
-            .attr("id", (d,i) => d.data.group)
+            .attr("id", (d) => d.data.group)
             .style("fill", (d,i) => this.colors(i))
-            .attr("d", (d,i) => arc(d))
+            .attr("d", (d) => arc(d))
             .on('mouseover', (d,i,n)=> {
                 if (d.data.taxon > 0){
                     d3.select(n[i])
@@ -129,7 +129,7 @@ export class ChartWrapperComponent implements AfterViewInit {
             .on('click', (d) => {
                 if (d.data.taxon > 0){
                     const params = { 'clade': d.data.taxon, 'clade_descendants': true} 
-                    this.key === 'uncurated' ? params['include_raw'] = true : {}
+                    if (this.key === 'uncurated') { params['include_raw'] = true; }
                     this.router.navigate(['browse'], { queryParams: params });
                 }
             })

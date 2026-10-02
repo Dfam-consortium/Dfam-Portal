@@ -76,7 +76,7 @@ export class WorkbenchUploadsComponent implements AfterViewInit, OnInit, OnDestr
       }
     });
 
-    this.formData.statusChanges.forEach(s => this.updateStatusText());
+    this.formData.statusChanges.forEach(() => this.updateStatusText());
 
     this.flowConfig = this.dfambackendapi.getFlowConfig();
     this.flowConfig.query = (_file, _chunk, isTest) => isTest ? undefined : { notes: this.generateNotes() };
@@ -194,9 +194,9 @@ export class CanDeactivateWorkbenchUploadsComponent implements CanDeactivate<Wor
 
   canDeactivate(
     component: WorkbenchUploadsComponent,
-    currentRoute: ActivatedRouteSnapshot,
-    currentState: RouterStateSnapshot,
-    nextState: RouterStateSnapshot,
+    _currentRoute: ActivatedRouteSnapshot,
+    _currentState: RouterStateSnapshot,
+    _nextState: RouterStateSnapshot,
   ): Observable<boolean> | boolean {
     if (component.uploaderState === UploaderState.InProgress) {
       const dialogRef = this.dialog.open(UploadCloseDialogComponent);

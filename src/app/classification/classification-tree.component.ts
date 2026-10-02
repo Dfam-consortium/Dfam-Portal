@@ -312,7 +312,6 @@ export class ClassificationTreeComponent implements AfterViewInit {
       .attr('transform', 'translate(' + this.margin.left + ',' + (this.margin.top - minDx) + ')');
 
     // Update nodes
-    const self = this;
     const nodes = this.svgGTag.selectAll('g.node')
       .data(d3Root.descendants(), d => d.data.full_name);
 
@@ -320,13 +319,13 @@ export class ClassificationTreeComponent implements AfterViewInit {
     const nodeEnter = nodes.enter().append('g')
       .attr('class', 'node')
       .style('cursor', 'pointer')
-      .attr('transform', function(d) {
+      .attr('transform', function() {
         return 'translate(' + fromPos.y + ',' + fromPos.x + ')';
       })
-      .on('click', function(d) {
+      .on('click', (d) => {
         // Toggle children on click.
         d.data._collapsed = !d.data._collapsed;
-        self.render(d);
+        this.render(d);
       });
 
     const tooltipTag = this.tooltipTag;
@@ -347,7 +346,7 @@ export class ClassificationTreeComponent implements AfterViewInit {
             .style('top', (d3event.pageY - 28) + 'px');
         }
       })
-      .on('mouseout', function(d) {
+      .on('mouseout', function() {
         tooltipTag.transition()
           .duration(500)
           .style('opacity', 0);
@@ -429,7 +428,7 @@ export class ClassificationTreeComponent implements AfterViewInit {
       .style('fill', 'none')
       .style('stroke', '#cccccc')
       .style('stroke-width', '1.5px')
-      .attr('d', function(d) {
+      .attr('d', function() {
         return diagonal(fromPos, fromPos);
       });
 

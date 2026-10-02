@@ -13,14 +13,14 @@
       </mat-card-title>
       <mat-card-content>
         <form data-layout="column" data-layout-align="space-around center">
-          @if (loginType == 'register') {
+          @if (loginType === 'register') {
             <a [routerLink]="['/login']">Have an account?</a>
           }
-          @if (loginType == 'login') {
+          @if (loginType === 'login') {
             <a [routerLink]="['/register']">Need an account?</a>
           }
           <br/>
-          @if (loginType == 'register') {
+          @if (loginType === 'register') {
             <mat-form-field>
               <mat-label>Full Name</mat-label>
               <input matInput
@@ -46,7 +46,7 @@
               [disabled]="isSubmitting"
               [(ngModel)]="password">
           </mat-form-field>
-          @if (loginType == 'register') {
+          @if (loginType === 'register') {
             <mat-form-field>
               <mat-label>Enter the number {{ humanCheckNumber }} in this field</mat-label>
               <input matInput
@@ -57,7 +57,7 @@
                 [(ngModel)]="humanCheckAnswer">
             </mat-form-field>
           }
-          @if (loginType == 'register') {
+          @if (loginType === 'register') {
             <p>
               After registering an account and verifying your email address,
               we will enable your account for data submission.
@@ -65,7 +65,7 @@
               about submitting data to Dfam.
             </p>
           }
-          @if (loginType == 'register') {
+          @if (loginType === 'register') {
             <dfam-altcha
               [challengeurl]="altchaChallengeUrl"
               [auto]="null"

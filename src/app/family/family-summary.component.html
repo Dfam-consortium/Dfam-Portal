@@ -24,7 +24,7 @@
         <div data-layout="column" data-layout-align="space-between none" data-layout-gap="10px" >
           @for (clade of family.display_clades; track clade; let i = $index) {
             <div data-layout="row">
-              <a (click)="taxa_expand[i] = !taxa_expand[i];">{{taxa_expand[i]==false ? '[...]' : ''}}</a>
+              <a (click)="taxa_expand[i] = !taxa_expand[i];">{{taxa_expand[i] === false ? '[...]' : ''}}</a>
               <div [hidden]="!taxa_expand[i]">
                 {{clade.path}}
                 @if (clade.last) {

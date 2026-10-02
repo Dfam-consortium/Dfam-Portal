@@ -38,7 +38,7 @@ export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnInit() {
     this.resizeSubscription = fromEvent(window, 'resize')
       .pipe(debounceTime(300))
-      .subscribe(e => { if (this.viewer) { this.viewer.resize(); } });
+      .subscribe(() => { if (this.viewer) { this.viewer.resize(); } });
 
     const family = this.familyDataService.getFamily();
     this.ver_num = family?.version;
