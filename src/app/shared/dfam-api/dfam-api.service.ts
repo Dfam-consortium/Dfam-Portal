@@ -128,7 +128,7 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
 
     const options = {
       params: new HttpParams().set('format', 'hmm'),
-      responseType: 'text' as 'text',
+      responseType: 'text' as const,
     };
     return this.http.get(url, options)
       .pipe(catchError(this.handleError('getFamilyHmm', '')));
@@ -155,7 +155,7 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
 
     const options = {
       params: new HttpParams().set('format', 'image'),
-      responseType: 'blob' as 'blob',
+      responseType: 'blob' as const,
     };
     return this.http.get(url, options).pipe(
       catchError(this.handleError('getFamilyHmmLogoImage', null))
@@ -170,7 +170,7 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
     const url = this.familyPath(accession) + '/seed';
     const options = {
       params: new HttpParams().set('format', 'stockholm'),
-      responseType: 'text' as 'text',
+      responseType: 'text' as const,
     };
     return this.http.get(url, options)
       .pipe(catchError(this.handleError('getFamilySeed', '')));
@@ -258,7 +258,7 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
     const url = this.familyAssemblyPath(accession, assembly) + '/annotations';
     const options = {
       params: new HttpParams().set('nrph', nrph.toString()),
-      responseType: 'text' as 'text',
+      responseType: 'text' as const,
     };
     return this.http.get(url, options)
       .pipe(catchError(this.handleError('getFamilyAssemblyAnnotations', '')));
@@ -287,7 +287,7 @@ export class DfamAPIService implements FamilyRepository, ClassesRepository, Taxa
     const url = endpoint + 'classes';
     const options = {
       params: new HttpParams(),
-      responseType: 'json' as 'json',
+      responseType: 'json' as const,
     };
     if (name) {
       options.params = options.params.set('name', name);

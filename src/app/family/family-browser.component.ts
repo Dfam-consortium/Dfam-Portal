@@ -52,7 +52,7 @@ export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   async buildIGVBrowser() {
-     let instance_track = {
+     const instance_track = {
       "name": "Seed Alignment",
       "type": "seedalign",
       "format": "sam",
@@ -81,10 +81,10 @@ export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy 
       if (this.payload) {
         this.loading = true;
 
-        let ultra_data = await this.dfamapi.getULTRAData(this.accession, this.payload).toPromise(); // TODO deprecated, newer rxjs uses firstValueFrom()
-        let self_align_data = await this.dfamapi.getSelfAlignData(this.accession, this.payload).toPromise();
-        let homology_data = await this.dfamapi.getHomologyData(this.accession, this.payload).toPromise();
-        let protein_data = await this.dfamapi.getProteinData(this.accession, this.payload).toPromise();
+        const ultra_data = await this.dfamapi.getULTRAData(this.accession, this.payload).toPromise(); // TODO deprecated, newer rxjs uses firstValueFrom()
+        const self_align_data = await this.dfamapi.getSelfAlignData(this.accession, this.payload).toPromise();
+        const homology_data = await this.dfamapi.getHomologyData(this.accession, this.payload).toPromise();
+        const protein_data = await this.dfamapi.getProteinData(this.accession, this.payload).toPromise();
         
         // convert from 1-based, fully closed -> 0-based, half open, add accession
         if (ultra_data && ultra_data.length > 0) {
@@ -110,7 +110,7 @@ export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy 
             f.sstart -= 1;
             f.chr = this.full_accession;
           });
-          let self_align_track = {
+          const self_align_track = {
             "name": "Self Alignments",
             "type": "selfpair",
             "displayMode": "EXPANDED",
@@ -141,7 +141,7 @@ export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy 
             delete f.oseq;
             delete f.cigar;
           });
-          let dfam_relationship_track =  {
+          const dfam_relationship_track =  {
             "name": "Dfam Relationships",
             "type": "chain",
             "displayMode": "EXPANDED",
@@ -171,7 +171,7 @@ export class FamilyBrowserComponent implements OnInit, AfterViewInit, OnDestroy 
               "cdEnd" : f.cdEnd,
             }];
           });
-          let protein_homology_track =  {
+          const protein_homology_track =  {
             "name": "TE Protein Homology",
             "type": "annotation",
             "labelColor": "black",

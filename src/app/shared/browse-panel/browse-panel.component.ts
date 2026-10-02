@@ -49,7 +49,7 @@ export class BrowsePanelComponent implements OnInit {
   families: any = {};
 
   search: any = {};
-  sortActive: string = '';
+  sortActive = '';
   sortDirection: SortDirection = '';
   pageSize = 20;
   pageIndex = 0;
@@ -61,7 +61,7 @@ export class BrowsePanelComponent implements OnInit {
   cladeOptions: any[] = [];
 
   disableDownload = false;
-  downloadLimit: number = 10000;
+  downloadLimit = 10000;
   // downloadLimit: number = 2000;
   downloadUrls = {};
 

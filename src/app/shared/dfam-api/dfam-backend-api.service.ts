@@ -191,7 +191,7 @@ export class DfamBackendAPIService implements FamilyRepository, ClassesRepositor
     const options = {
       headers: opts.headers,
       params: new HttpParams(),
-      responseType: 'json' as 'json',
+      responseType: 'json' as const,
     };
 
     if (name) {

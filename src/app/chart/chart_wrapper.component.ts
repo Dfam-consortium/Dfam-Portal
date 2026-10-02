@@ -10,14 +10,14 @@ import * as datasets from "./datasets.json"; // From data gathered using the Fam
     standalone: false
 })
 export class ChartWrapperComponent implements AfterViewInit {
-    height: number = 300
-    width: number = 450 
-    margin: number = 25
+    height = 300
+    width = 450 
+    margin = 25
     radius: number = Math.min(this.width, this.height) / 2 - this.margin;
-    data: Array<any>
+    data: any[]
     svg: any;
     colors: any;
-    default: string = 'curated'
+    default = 'curated'
     key: string = this.default
     datasets: object
     constructor(
@@ -72,8 +72,8 @@ export class ChartWrapperComponent implements AfterViewInit {
         function lkey(d) { if ( d ) { return d.data.group; }else { return this.getAttribute("id"); } }
 
         // cool drop shadow effect from https://codepen.io/Aayushrij/pen/rLzwwJ
-        var defs = this.svg.append("defs");
-        var filter = defs.append("filter")
+        const defs = this.svg.append("defs");
+        const filter = defs.append("filter")
                         .attr("id", "drop-shadow")
                         .attr("height","130%");
 
@@ -88,7 +88,7 @@ export class ChartWrapperComponent implements AfterViewInit {
             .attr("dy", 3)
             .attr("result", "offsetBlur");
         
-        var feMerge = filter.append("feMerge");
+        const feMerge = filter.append("feMerge");
 
         feMerge.append("feMergeNode")
             .attr("in", "offsetBlur")
@@ -128,7 +128,7 @@ export class ChartWrapperComponent implements AfterViewInit {
                 .style('filter','none'))
             .on('click', (d) => {
                 if (d.data.taxon > 0){
-                    let params = { 'clade': d.data.taxon, 'clade_descendants': true} 
+                    const params = { 'clade': d.data.taxon, 'clade_descendants': true} 
                     this.key === 'uncurated' ? params['include_raw'] = true : {}
                     this.router.navigate(['browse'], { queryParams: params });
                 }
@@ -139,7 +139,7 @@ export class ChartWrapperComponent implements AfterViewInit {
             .style("fill", (d,i) => this.colors(i))
             .attrTween("d", function(d) {
             this._current = this._current || d;
-            var interpolate = d3.interpolate(this._current, d);
+            const interpolate = d3.interpolate(this._current, d);
             this._current = interpolate(0);
             return function(t) {
                 return arc(interpolate(t));
@@ -184,19 +184,19 @@ export class ChartWrapperComponent implements AfterViewInit {
         text.transition().duration(1000)
             .attrTween("transform", function(d) {
                 this._current = this._current || d;
-                var interpolate = d3.interpolate(this._current, d);
+                const interpolate = d3.interpolate(this._current, d);
                 this._current = interpolate(0);
                 return function(t) {
-                    var d2 = interpolate(t);
+                    const d2 = interpolate(t);
                     return "translate(" + labelPos[d2.data.group] + ")";
                 };
             })
             .styleTween("text-anchor", function(d){
                 this._current = this._current || d;
-                var interpolate = d3.interpolate(this._current, d);
+                const interpolate = d3.interpolate(this._current, d);
                 this._current = interpolate(0);
                 return function(t) {
-                    var d2 = interpolate(t);
+                    const d2 = interpolate(t);
                     return midAngle(d2) < Math.PI ? "start" : "end";
                 };
             });
@@ -205,7 +205,7 @@ export class ChartWrapperComponent implements AfterViewInit {
             .remove();
 
         /* ------- SLICE TO TEXT POLYLINES -------*/
-        let polyline = this.svg.selectAll("polyline")
+        const polyline = this.svg.selectAll("polyline")
             .data(pie(this.data), lkey);
 
         polyline.enter().remove()
@@ -215,14 +215,14 @@ export class ChartWrapperComponent implements AfterViewInit {
         polyline.transition().duration(1000)
             .attrTween("points", function(d){
                 this._current = this._current || d;
-                var interpolate = d3.interpolate(this._current, d);
+                const interpolate = d3.interpolate(this._current, d);
                 this._current = interpolate(0);
                 return function(t) {
-                    var d2 = interpolate(t);
-                    var resolvedPos = labelPos[d2.data.group];
-                    var elbow: [number, number] = [outerArc.centroid(d2)[0], resolvedPos[1]];
-                    var lineEnd: [number, number] = [resolvedPos[0] * 0.95, resolvedPos[1]];
-                    var cent = arc.centroid(d2).map(d=>d*1.62)
+                    const d2 = interpolate(t);
+                    const resolvedPos = labelPos[d2.data.group];
+                    const elbow: [number, number] = [outerArc.centroid(d2)[0], resolvedPos[1]];
+                    const lineEnd: [number, number] = [resolvedPos[0] * 0.95, resolvedPos[1]];
+                    const cent = arc.centroid(d2).map(d=>d*1.62)
                     return [cent, elbow, lineEnd];
                 };
             });

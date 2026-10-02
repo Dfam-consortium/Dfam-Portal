@@ -84,11 +84,11 @@ export class BulkDownloadButtonComponent implements OnInit {
 
       // magic code from: https://stackoverflow.com/questions/38658654/how-to-convert-a-base64-string-into-a-file
       // create an ArrayBuffer and a view (as unsigned 8-bit)
-      let buffer = new ArrayBuffer(decode.length);
-      let view = new Uint8Array(buffer);
+      const buffer = new ArrayBuffer(decode.length);
+      const view = new Uint8Array(buffer);
 
       // fill the view, using the decoded base64
-      for(var n = 0; n < decode.length; n++) {
+      for(let n = 0; n < decode.length; n++) {
         view[n] = decode.charCodeAt(n);
       }
       // end magic code

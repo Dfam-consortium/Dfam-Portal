@@ -38,7 +38,7 @@ export class AssemblyPickerComponent implements OnInit {
 
   lastFilter?: string;
 
-  filteredAssemblies: ReplaySubject<Assembly[]> = new ReplaySubject(1);
+  filteredAssemblies = new ReplaySubject<Assembly[]>(1);
 
   _value: Assembly;
   get value(): Assembly {

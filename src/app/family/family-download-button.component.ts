@@ -23,7 +23,7 @@ export class FamilyDownloadButtonComponent implements OnInit {
 
   ngOnInit() {
     const href_split = this.href.split('/')
-    let accession = href_split[3]
+    const accession = href_split[3]
     if (this.assembly && this.nrph !== undefined) {
      this.filename = `${accession}.${this.assembly}.${this.nrph ? 'nr-' : ''}hits.tsv`
     }

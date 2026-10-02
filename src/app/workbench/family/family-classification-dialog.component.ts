@@ -22,7 +22,7 @@ export class FamilyClassificationDialogComponent implements OnInit {
 
   classificationTreeDataSource = new MatTreeNestedDataSource<Classification>();
   classificationTreeControl = new NestedTreeControl<Classification>(node => node.children);
-  hiddenNodes: { [index: number]: boolean } = {};
+  hiddenNodes: Record<number, boolean> = {};
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data: any,

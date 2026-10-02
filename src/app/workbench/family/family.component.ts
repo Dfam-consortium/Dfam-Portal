@@ -50,7 +50,7 @@ export class WorkbenchFamilyComponent implements OnInit {
   rmStageOptions: any[];
 
   // Citation titles keyed by lower-cased DOI, for the label beside each row.
-  knownCitations: { [doi: string]: string } = {};
+  knownCitations: Record<string, string> = {};
 
   saving = false;
 
@@ -74,7 +74,7 @@ export class WorkbenchFamilyComponent implements OnInit {
   // Curators enter a citation as a PubMed ID, a DOI (optionally as a doi.org
   // URL), or a PMID:/NOREF: placeholder. The backend rejects placeholders
   // that are not already in the database.
-  static validateCitationId(control: AbstractControl): { [key: string]: any } | null {
+  static validateCitationId(control: AbstractControl): Record<string, any> | null {
     const value = (control.value || '').toString().trim();
     if (!value) {
       return { 'required': { } };
@@ -97,7 +97,7 @@ export class WorkbenchFamilyComponent implements OnInit {
     return { doi: value, comment };
   }
 
-  static validateClade(control: AbstractControl): { [key: string]: any } | null {
+  static validateClade(control: AbstractControl): Record<string, any> | null {
     if (!control.value) {
       return { 'required': { } };
     }
@@ -332,7 +332,7 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     const aliasesArray = controls.aliases as FormArray;
     const aliasObjs = (aliasesArray.controls as FormGroup[]).map(a => {
-       const alias_controls = a.controls as { [key: string]: FormControl };
+       const alias_controls = a.controls as Record<string, FormControl>;
       return {
         database: alias_controls['database'].value,
         alias: alias_controls['alias'].value,
@@ -371,7 +371,7 @@ export class WorkbenchFamilyComponent implements OnInit {
 
     const citationsArray = controls.citations as FormArray;
     const citationObjs = (citationsArray.controls as FormGroup[]).map(c => {
-      const cit_controls = c.controls as { [key: string]: FormControl };
+      const cit_controls = c.controls as Record<string, FormControl>;
       return {
         id: (cit_controls['id'].value || '').toString().trim(),
         comment: cit_controls['comment'].value || '',
