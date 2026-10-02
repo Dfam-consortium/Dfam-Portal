@@ -5,7 +5,7 @@ import { Subscription, Observable } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
 
-import { FlowDirective } from '@flowjs/ngx-flow';
+import { FlowConfig } from '@flowjs/ngx-flow';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { DfamBackendAPIService } from '../../shared/dfam-api/dfam-backend-api.service';
@@ -28,7 +28,7 @@ export class WorkbenchUploadsComponent implements AfterViewInit, OnInit, OnDestr
   editableStatus = false;
 
   flowConfig;
-  @ViewChild('flow', { static: false }) flow: FlowDirective;
+  @ViewChild('flow', { static: false }) flow: FlowConfig;
   flowSubscription: Subscription;
 
   UploaderState = UploaderState;

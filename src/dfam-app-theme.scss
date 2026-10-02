@@ -92,19 +92,19 @@ $dfam-app-theme: mat.m2-define-light-theme((
 // RMH: 7/27/23 : This was necessary to set the tab navigation font to match the
 //                theme colors.  This is perhaps not the best way to do this.
 .mat-mdc-tab-group, .mat-mdc-tab-nav-bar {
-//  --mdc-tab-indicator-active-indicator-color: $dfam-app-primary;
-  --mat-tab-header-inactive-label-text-color: $dfam-app-primary;
-//  --mat-tab-header-active-label-text-color: $dfam-app-accent;
-//  --mat-tab-header-active-ripple-color: $dfam-app-accent;
-  --mat-tab-header-inactive-focus-label-text-color: $dfam-app-accent;
-  --mat-tab-header-inactive-hover-label-text-color: $dfam-app-accent;
-//  --mat-tab-header-active-focus-label-text-color: $dfam-app-accent;
-//  --mat-tab-header-active-hover-label-text-color: $dfam-app-accent;
-//  --mat-tab-header-active-focus-indicator-color: $dfam-app-accent;
-//  --mat-tab-header-active-hover-indicator-color: $dfam-app-accent;
-//  --mat-tab-header-disabled-ripple-color: rgba(0, 0, 0, 0.38);
-//  --mat-tab-header-pagination-icon-color: #000;
-//  --mat-tab-header-inactive-ripple-color: $dfam-app-primary;
+//  --mat-tab-active-indicator-color: $dfam-app-primary;
+  --mat-tab-inactive-label-text-color: $dfam-app-primary;
+//  --mat-tab-active-label-text-color: $dfam-app-accent;
+//  --mat-tab-active-ripple-color: $dfam-app-accent;
+  --mat-tab-inactive-focus-label-text-color: $dfam-app-accent;
+  --mat-tab-inactive-hover-label-text-color: $dfam-app-accent;
+//  --mat-tab-active-focus-label-text-color: $dfam-app-accent;
+//  --mat-tab-active-hover-label-text-color: $dfam-app-accent;
+//  --mat-tab-active-focus-indicator-color: $dfam-app-accent;
+//  --mat-tab-active-hover-indicator-color: $dfam-app-accent;
+//  --mat-tab-disabled-ripple-color: rgba(0, 0, 0, 0.38);
+//  --mat-tab-pagination-icon-color: #000;
+//  --mat-tab-inactive-ripple-color: $dfam-app-primary;
 }
 
 

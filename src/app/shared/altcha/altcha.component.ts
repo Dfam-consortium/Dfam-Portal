@@ -1,7 +1,7 @@
 
-import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild, forwardRef, AfterViewInit, EventEmitter, Input, Output, Inject, Injectable } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, ViewChild, forwardRef, AfterViewInit, EventEmitter, Input, Output, Inject, Injectable, DOCUMENT } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, ValidationErrors } from '@angular/forms';
-import { DOCUMENT } from '@angular/common';
+
 
 import 'altcha';
 
