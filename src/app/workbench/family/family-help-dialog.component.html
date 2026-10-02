@@ -79,7 +79,10 @@ about the same family.</p>
 
 <dl>
   <dt>Citations</dt><dd>References to articles where the family has been
-  published, discussed, or described. Currently only accepts PubMed IDs.</dd>
+  published, discussed, or described. Enter each one as a DOI (10.xxxx/…, or
+  a doi.org link) or a PubMed ID. When you save, Dfam looks up any citation it
+  doesn't already have at PubMed or doi.org. If a lookup fails, Dfam saves
+  nothing and shows an error that includes the citation you entered.</dd>
 
   <dt>Aliases</dt><dd>References to the same family in other databases.</dd>
 </dl>
@@ -90,7 +93,10 @@ about the same family.</p>
 
 <dl>
   <dt>Submitter</dt><dd>The original uploader of the family to Dfam.</dd>
-  <dt>Author(s)</dt><dd>The authors of the family.</dd>
+  <dt>Author(s)</dt><dd>The people credited with the family, separated by
+  semicolons, in the order they should appear. Dfam matches each name to an
+  existing contributor, ignoring case, and adds any name it doesn't recognize
+  as a new contributor, so check the spelling.</dd>
 </dl>
 
 </mat-dialog-content>
