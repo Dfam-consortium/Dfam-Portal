@@ -10,6 +10,7 @@ export class Family {
   repeat_subtype_name?: string;
   consensus_sequence: string;
   author: string;
+  author_list?: {name: string; orcid: string | null}[];
   date_created: string;
   date_modified: string;
   target_site_cons: string;
@@ -21,7 +22,11 @@ export class Family {
   aliases: {database: string; alias: string}[];
   search_stages: {name: string}[];
   buffer_stages: {name: string; start: number; end: number}[];
-  citations: {pmid: number; title: string; authors: string; journal: string; pubdate: string}[];
+  citations: {
+    doi: string; pmid: number | null; is_preprint: boolean;
+    title: string; authors: string; journal: string; pubdate: string;
+    comment?: string;
+  }[];
   clades: string[];
   features: any[];
   coding_seqs: any[];

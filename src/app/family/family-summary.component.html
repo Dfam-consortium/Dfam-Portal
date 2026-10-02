@@ -80,11 +80,14 @@ No recorded citations for this family.
   <li *ngFor="let cit of family.citations">
     <p>
       <em>{{cit.title}}</em>
+      <span *ngIf="cit.is_preprint" class="preprint">Preprint</span>
       <br>
       {{cit.authors}}
       <br>
       <strong>{{cit.journal}} </strong>
-      <a class="ext" href="http://www.ncbi.nlm.nih.gov/pubmed/{{cit.pmid}}">Pubmed</a>
+      <a *ngIf="isRealDoi(cit.doi)" class="ext" [href]="doiUrl(cit.doi)">DOI: {{cit.doi}}</a>
+      <ng-container *ngIf="isRealDoi(cit.doi) && cit.pmid"> &nbsp; </ng-container>
+      <a *ngIf="cit.pmid" class="ext" [href]="pubmedUrl(cit.pmid)">PubMed</a>
     </p>
   </li>
 </ol>
@@ -104,7 +107,15 @@ No recorded aliases for this family.
 <div data-layout="row">
   <div data-layout="column" flex-offset="2">
     <p class="tight" *ngIf="family.submitter"><strong>Submitter:</strong> {{family.submitter}}</p>
-    <p class="tight"><strong>Author:</strong> {{family.author || "Unknown"}}</p>
+    <p class="tight"><strong>Author: </strong>
+      <ng-container *ngIf="family.author_list?.length; else plainAuthor">
+        <ng-container *ngFor="let a of family.author_list; last as isLast">
+          <a *ngIf="a.orcid" class="ext" [href]="orcidUrl(a.orcid)" [title]="'ORCID iD ' + a.orcid">{{a.name}}</a>
+          <ng-container *ngIf="!a.orcid">{{a.name}}</ng-container><ng-container *ngIf="!isLast">; </ng-container>
+        </ng-container>
+      </ng-container>
+      <ng-template #plainAuthor>{{family.author || "Unknown"}}</ng-template>
+    </p>
     <p class="tight"><strong>Created On:</strong> {{family.date_created | date: 'medium'}}</p>
     <p class="tight"><strong>Modified On:</strong> {{family.date_modified | date: 'medium'}}</p>
   </div>

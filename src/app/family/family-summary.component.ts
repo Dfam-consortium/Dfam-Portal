@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DfamAPIService } from '../shared/dfam-api/dfam-api.service';
+import { isRealDoi, doiUrl, pubmedUrl, orcidUrl } from '../shared/dfam-api/citation-links';
 
 @Component({
   selector: 'dfam-family-summary',
@@ -19,6 +20,11 @@ export class FamilySummaryComponent implements OnInit {
   };
 
   family;
+
+  isRealDoi = isRealDoi;
+  doiUrl = doiUrl;
+  pubmedUrl = pubmedUrl;
+  orcidUrl = orcidUrl;
 
   constructor(
     private dfamapi: DfamAPIService,
