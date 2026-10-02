@@ -53,6 +53,15 @@ export class AltchaComponent implements ControlValueAccessor, Validator, AfterVi
         this.onStateChange(state, payload);
       }
     });
+
+    // The widget checks its auto attribute once, when it mounts (in a microtask
+    // after it is attached to the page). When the user switches tabs, the router
+    // attaches this view before Angular applies bindings, so Angular sets a bound
+    // auto attribute too late and the widget never solves. We call verify() from
+    // a timeout instead, which runs after the widget has mounted in either case.
+    if (this.auto === 'onload') {
+      setTimeout(() => (el as HTMLElement & { verify: () => Promise<void> }).verify());
+    }
   }
 
   writeValue(value: string): void {
