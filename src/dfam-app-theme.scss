@@ -44,33 +44,33 @@ $mat-dfam: (
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$dfam-app-primary: mat.define-palette($mat-dfam, 500);
-$dfam-app-accent:  mat.define-palette($mat-dfam, 600, A100, A400);
+$dfam-app-primary: mat.m2-define-palette($mat-dfam, 500);
+$dfam-app-accent:  mat.m2-define-palette($mat-dfam, 600, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$dfam-app-warn:    mat.define-palette(mat.$red-palette);
+$dfam-app-warn:    mat.m2-define-palette(mat.$m2-red-palette);
 
-$display-4: mat.define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em);
+$display-4: mat.m2-define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em);
 
-$dfam-typography-config: mat.define-typography-config(
+$dfam-typography-config: mat.m2-define-typography-config(
   $font-family: 'Roboto',
-  $headline-1: mat.define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
-  $headline-2: mat.define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
-  $headline-3: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
-  $headline-4: mat.define-typography-level(34px, 40px, 400),
-  $headline-5: mat.define-typography-level(24px, 32px, 400),
-  $headline-6: mat.define-typography-level(20px, 32px, 400),
-  $subtitle-1: mat.define-typography-level(16px, 28px, 400),
-  $body-1: mat.define-typography-level(14px, 20px, 400),
-  $body-2: mat.define-typography-level(14px, 20px, 400),
+  $headline-1: mat.m2-define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+  $headline-2: mat.m2-define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+  $headline-3: mat.m2-define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+  $headline-4: mat.m2-define-typography-level(34px, 40px, 400),
+  $headline-5: mat.m2-define-typography-level(24px, 32px, 400),
+  $headline-6: mat.m2-define-typography-level(20px, 32px, 400),
+  $subtitle-1: mat.m2-define-typography-level(16px, 28px, 400),
+  $body-1: mat.m2-define-typography-level(14px, 20px, 400),
+  $body-2: mat.m2-define-typography-level(14px, 20px, 400),
   // Changed from 16px to 14px, and line height from 28 to 20 and finally weight from 400 to 600
-  $subtitle-2: mat.define-typography-level(14px, 20px, 600),
-  $caption: mat.define-typography-level(12px, 20px, 400),
-  $button: mat.define-typography-level(14px, 14px, 500)
+  $subtitle-2: mat.m2-define-typography-level(14px, 20px, 600),
+  $caption: mat.m2-define-typography-level(12px, 20px, 400),
+  $button: mat.m2-define-typography-level(14px, 14px, 500)
 );
 
 // Create the theme object (a Sass map containing all of the palettes).
-$dfam-app-theme: mat.define-light-theme((
+$dfam-app-theme: mat.m2-define-light-theme((
     color: (
         primary: $dfam-app-primary, 
         accent: $dfam-app-accent, 

@@ -4,7 +4,7 @@
 @use '../../dfam-app-theme' as theme;
 
 // Reference standard color theme from dfam-app-theme
-$primary: mat.get-color-from-palette(theme.$dfam-app-primary, default);
+$primary: mat.m2-get-color-from-palette(theme.$dfam-app-primary, default);
 
 .mat-expansion-panel-header-title {
   flex-grow: 0;
